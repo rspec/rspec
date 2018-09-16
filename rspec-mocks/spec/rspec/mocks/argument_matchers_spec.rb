@@ -503,6 +503,18 @@ module RSpec
         end
       end
 
+      describe "a_block" do
+        before { expect(a_double).to receive(:random_call).with(a_block) }
+
+        it "matches a method call with a block" do
+          a_double.random_call { :a_dummy_block }
+        end
+
+        pending "fails if the method call has no block" do
+          expect { a_double.random_call }.to fail_including "(a block)"
+        end
+      end
+
       def hash_syntax(hash)
         hash.inspect.gsub(/\{(.*)\}/, '\1')
       end

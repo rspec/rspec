@@ -55,7 +55,7 @@ module RSpec
       # position of the arguments passed to `new`.
       #
       # @see #initialize
-      def args_match?(*actual_args)
+      def args_match?(*actual_args, &block)
         expected_args = resolve_expected_args_based_on(actual_args)
 
         return false if expected_args.size != actual_args.size
@@ -71,7 +71,11 @@ module RSpec
           end
         end
 
-        Support::FuzzyMatcher.values_match?(expected_args, actual_args)
+        if [ArgumentMatchers::BlockMatcher::INSTANCE] == expected_args
+          ArgumentMatchers::BlockMatcher::INSTANCE === block
+        else
+          Support::FuzzyMatcher.values_match?(expected_args, actual_args)
+        end
       end
       ruby2_keywords :args_match? if respond_to?(:ruby2_keywords, true)
 
