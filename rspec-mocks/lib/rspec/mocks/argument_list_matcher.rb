@@ -71,8 +71,8 @@ module RSpec
           end
         end
 
-        if [ArgumentMatchers::BlockMatcher::INSTANCE] == expected_args
-          ArgumentMatchers::BlockMatcher::INSTANCE === block
+        if ArgumentMatchers::BlockMatcher::INSTANCE == expected_args.last
+          Support::FuzzyMatcher.values_match?(expected_args, actual_args + [block])
         else
           Support::FuzzyMatcher.values_match?(expected_args, actual_args)
         end
