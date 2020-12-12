@@ -245,7 +245,7 @@ RSpec.describe "yield_control matcher" do
       }.to fail_with(/expected given block not to yield control/)
     end
 
-    it 'fails if the expect block does not accept an argument', :if => (RUBY_VERSION.to_f > 1.8) do
+    it 'fails if the expect block does not accept an argument' do
       expect {
         expect {}.not_to yield_control
       }.to raise_error(/expect block must accept an argument/)
@@ -336,7 +336,7 @@ RSpec.describe "yield_with_no_args matcher" do
       }.to fail_with(/expected given block not to yield with no arguments, but did/)
     end
 
-    it 'fails if the expect block does not accept an argument', :if => (RUBY_VERSION.to_f > 1.8) do
+    it 'fails if the expect block does not accept an argument' do
       expect {
         expect {}.not_to yield_with_no_args
       }.to raise_error(/expect block must accept an argument/)
@@ -459,7 +459,7 @@ RSpec.describe "yield_with_args matcher" do
       }.not_to yield_with_args(be_empty)
     end
 
-    it 'fails if the expect block does not accept an argument', :if => (RUBY_VERSION.to_f > 1.8) do
+    it 'fails if the expect block does not accept an argument' do
       expect {
         expect {}.not_to yield_with_args
       }.to raise_error(/expect block must accept an argument/)
@@ -766,7 +766,7 @@ RSpec.describe "yield_successive_args matcher" do
       }.to fail_with(/expected given block not to yield successively/)
     end
 
-    it 'fails if the expect block does not accept an argument', :if => (RUBY_VERSION.to_f > 1.8) do
+    it 'fails if the expect block does not accept an argument' do
       expect {
         expect {}.not_to yield_successive_args(1, 2, 3)
       }.to raise_error(/expect block must accept an argument/)

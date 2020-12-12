@@ -58,22 +58,10 @@ module RSpec
 
       private
 
-        if RUBY_VERSION.to_f > 1.8
-          def cover?(count, number)
-            count.cover?(number)
-          end
-        else
-          # :nocov:
-          def cover?(count, number)
-            number >= count.first && number <= count.last # rubocop:disable Style/ComparableBetween
-          end
-          # :nocov:
-        end
-
         def expected_count_matches?(actual_count)
           @actual_count = actual_count
           return @actual_count > 0 unless count_expectation_type
-          return cover?(expected_count, actual_count) if count_expectation_type == :<=>
+          return expected_count.cover?(actual_count) if count_expectation_type == :<=>
 
           @actual_count.__send__(count_expectation_type, expected_count)
         end

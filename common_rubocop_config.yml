@@ -272,9 +272,9 @@ Style/HashConversion:
 Style/HashEachMethods:
   Enabled: false
 
-# As long as we support ruby 1.8.7 we have to use hash rockets.
+# Supress during refactor for v4.0.0
 Style/HashSyntax:
-  EnforcedStyle: hash_rockets
+  Enabled: false
 
 Style/IdenticalConditionalBranches:
   Enabled: false

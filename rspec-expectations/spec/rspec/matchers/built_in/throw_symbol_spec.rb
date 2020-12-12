@@ -135,5 +135,11 @@ module RSpec::Matchers::BuiltIn
         expect(description).to eq("throw :foo with a string matching /bar/")
       end
     end
+
+    it "does not swallow other argument errors" do
+      expect {
+        expect { raise ArgumentError }.to throw_symbol(:foo)
+      }.to raise_error(ArgumentError)
+    end
   end
 end

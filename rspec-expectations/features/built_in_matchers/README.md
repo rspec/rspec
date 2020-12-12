@@ -122,7 +122,7 @@ expect([1, 2, 3]).to     contain_exactly(2, 1, 3)
 expect([1, 2, 3]).to     match_array([3, 2, 1])
 ```
 
-## Ranges (1.9+ only)
+## Ranges
 
 ```ruby
 expect(1..10).to cover(3)

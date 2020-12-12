@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...main)
 
+Breaking Changes:
+
+* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-expectations#1231)
+
 Enhancements:
 
 * Improve the IO emulation in the output capture matchers (`output(...).to_stdout` et al)

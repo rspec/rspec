@@ -21,7 +21,7 @@ RSpec.describe Object, "#should" do
     }.to fail_with("the failure message")
   end
 
-  context "on interpreters that have BasicObject", :if => defined?(BasicObject) do
+  context "on interpreters that have BasicObject" do
     let(:proxy_class) do
       Class.new(BasicObject) do
         def initialize(target)

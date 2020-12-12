@@ -82,21 +82,13 @@ module RSpec
 
     private
 
-      if Proc.method_defined?(:parameters)
-        def warn_about_block_args(name, declarations)
-          declarations.parameters.each do |type, arg_name|
-            next unless type == :block
-            RSpec.warning("Your `#{name}` custom matcher receives a block argument (`#{arg_name}`), " \
-                          "but due to limitations in ruby, RSpec cannot provide the block. Instead, " \
-                          "use the `block_arg` method to access the block")
-          end
+      def warn_about_block_args(name, declarations)
+        declarations.parameters.each do |type, arg_name|
+          next unless type == :block
+          RSpec.warning("Your `#{name}` custom matcher receives a block argument (`#{arg_name}`), " \
+                        "but due to limitations in ruby, RSpec cannot provide the block. Instead, " \
+                        "use the `block_arg` method to access the block")
         end
-      else
-        # :nocov:
-        def warn_about_block_args(*)
-          # There's no way to detect block params on 1.8 since the method reflection APIs don't expose it
-        end
-        # :nocov:
       end
 
       RSpec.configure { |c| c.extend self } if RSpec.respond_to?(:configure)
@@ -311,6 +303,8 @@ module RSpec
           end
         end
 
+      private
+
         def assign_attributes(attr_names)
           attr_reader(*attr_names)
           private(*attr_names)
@@ -321,12 +315,6 @@ module RSpec
             end
           end
         end
-
-        # assign_attributes isn't defined in the private section below because
-        # that makes MRI 1.9.2 emit a warning about private attributes.
-        private :assign_attributes
-
-      private
 
         # Does the following:
         #
@@ -504,21 +492,11 @@ module RSpec
           "#<#{self.class.name} #{name}>"
         end
 
-        if RUBY_VERSION.to_f >= 1.9
-          # Indicates that this matcher responds to messages
-          # from the `@matcher_execution_context` as well.
-          # Also, supports getting a method object for such methods.
-          def respond_to_missing?(method, include_private=false)
-            super || @matcher_execution_context.respond_to?(method, include_private)
-          end
-        else # for 1.8.7
-          # :nocov:
-          # Indicates that this matcher responds to messages
-          # from the `@matcher_execution_context` as well.
-          def respond_to?(method, include_private=false)
-            super || @matcher_execution_context.respond_to?(method, include_private)
-          end
-          # :nocov:
+        # Indicates that this matcher responds to messages
+        # from the `@matcher_execution_context` as well.
+        # Also, supports getting a method object for such methods.
+        def respond_to_missing?(method, include_private=false)
+          super || @matcher_execution_context.respond_to?(method, include_private)
         end
 
       private

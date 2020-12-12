@@ -178,16 +178,8 @@ module RSpec
           actual.any? { |value| values_match?(expected_item, value) }
         end
 
-        if RUBY_VERSION < '1.9'
-          # :nocov:
-          def count_enumerable(expected_item)
-            actual.select { |value| values_match?(expected_item, value) }.size
-          end
-          # :nocov:
-        else
-          def count_enumerable(expected_item)
-            actual.count { |value| values_match?(expected_item, value) }
-          end
+        def count_enumerable(expected_item)
+          actual.count { |value| values_match?(expected_item, value) }
         end
 
         def count_inclusions
