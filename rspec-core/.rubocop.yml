@@ -96,6 +96,11 @@ Style/ClassAndModuleChildren:
     - lib/rspec/core/option_parser.rb
     - lib/rspec/core/reporter.rb
 
+Style/ClassVars:
+  Exclude:
+    - 'benchmarks/singleton_example_groups/helper.rb'
+    - 'spec/rspec/core/formatters/html_snippet_extractor_spec.rb'
+
 Style/RaiseArgs:
   Exclude:
     - lib/rspec/core/configuration.rb

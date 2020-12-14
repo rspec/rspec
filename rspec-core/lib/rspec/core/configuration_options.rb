@@ -174,7 +174,7 @@ module RSpec
         return [] unless path && File.exist?(path)
         config_string = options_file_as_erb_string(path)
         config_lines = config_string.split(/\n+/).reject { |s| s =~ /\A\s*#/ }
-        FlatMap.flat_map(config_lines, &:shellsplit)
+        config_lines.flat_map(&:shellsplit)
       end
 
       # :nocov:

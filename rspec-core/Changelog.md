@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.4...main)
 
+Breaking Changes:
+
+* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-core#2787)
+
 Enhancements:
 
 * Add config option (`RSpec::Core::Configuration#force_line_number_for_spec_rerun`) to

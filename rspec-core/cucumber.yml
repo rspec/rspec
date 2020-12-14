@@ -1,11 +1,2 @@
-<%
-
-USE_TILDE_TAGS = !defined?(::RUBY_ENGINE_VERSION) || (::RUBY_ENGINE_VERSION < '2.0.0')
-NOT_WIP_TAG = USE_TILDE_TAGS ? '~@wip' : '"not @wip"'
-NOT_JRUBY_TAG = USE_TILDE_TAGS ? '~@no-jruby' : '"not @no-jruby"'
-
-exclusions = []
-exclusions << " --tags #{NOT_JRUBY_TAG}" if RUBY_PLATFORM == 'java'
-%>
-default: --require features --strict --format progress --tags <%= NOT_WIP_TAG %><%= exclusions.join %> features
+default: --require features --strict --format progress --tags 'not @wip' features
 wip:     --require features --tags @wip:30 --wip features

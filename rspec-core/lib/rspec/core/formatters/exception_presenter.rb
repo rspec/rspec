@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 RSpec::Support.require_rspec_core "formatters/console_codes"
 RSpec::Support.require_rspec_core "formatters/snippet_extractor"
 RSpec::Support.require_rspec_core 'formatters/syntax_highlighter'
@@ -44,38 +42,30 @@ module RSpec
             formatted_cause(exception)
         end
 
-        if RSpec::Support::RubyFeatures.supports_exception_cause?
-          def formatted_cause(exception)
-            last_cause = final_exception(exception, [exception])
-            cause = []
+        def formatted_cause(exception)
+          last_cause = final_exception(exception, [exception])
+          cause = []
 
-            if exception.cause
-              cause << '------------------'
-              cause << '--- Caused by: ---'
-              cause << "#{exception_class_name(last_cause)}:" unless exception_class_name(last_cause) =~ /RSpec/
+          if exception.cause
+            cause << '------------------'
+            cause << '--- Caused by: ---'
+            cause << "#{exception_class_name(last_cause)}:" unless exception_class_name(last_cause) =~ /RSpec/
 
-              encoded_string(exception_message_string(last_cause)).split("\n").each do |line|
-                cause << "  #{line}"
-              end
-
-              unless last_cause.backtrace.nil? || last_cause.backtrace.empty?
-                lines = backtrace_formatter.format_backtrace(last_cause.backtrace, example.metadata)
-                lines = [lines[0]] unless RSpec.configuration.full_cause_backtrace
-
-                lines.each do |line|
-                  cause << ("  #{line}")
-                end
-              end
+            encoded_string(exception_message_string(last_cause)).split("\n").each do |line|
+              cause << "  #{line}"
             end
 
-            cause
+            unless last_cause.backtrace.nil? || last_cause.backtrace.empty?
+              lines = backtrace_formatter.format_backtrace(last_cause.backtrace, example.metadata)
+              lines = [lines[0]] unless RSpec.configuration.full_cause_backtrace
+
+              lines.each do |line|
+                cause << ("  #{line}")
+              end
+            end
           end
-        else
-          # :nocov:
-          def formatted_cause(_)
-            []
-          end
-          # :nocov:
+
+          cause
         end
 
         def colorized_formatted_backtrace(colorizer=::RSpec::Core::Formatters::ConsoleCodes)
@@ -115,23 +105,12 @@ module RSpec
           end
         end
 
-        if String.method_defined?(:encoding)
-          def encoding_of(string)
-            string.encoding
-          end
+        def encoding_of(string)
+          string.encoding
+        end
 
-          def encoded_string(string)
-            RSpec::Support::EncodedString.new(string, Encoding.default_external)
-          end
-        else # for 1.8.7
-          # :nocov:
-          def encoding_of(_string)
-          end
-
-          def encoded_string(string)
-            RSpec::Support::EncodedString.new(string)
-          end
-          # :nocov:
+        def encoded_string(string)
+          RSpec::Support::EncodedString.new(string, Encoding.default_external)
         end
 
         def indent_lines(lines, failure_number)
@@ -286,17 +265,9 @@ module RSpec
           end
         end
 
-        if  String.method_defined?(:encoding)
-          def encoded_description(description)
-            return if description.nil?
-            encoded_string(description)
-          end
-        else # for 1.8.7
-          # :nocov:
-          def encoded_description(description)
-            description
-          end
-          # :nocov:
+        def encoded_description(description)
+          return if description.nil?
+          encoded_string(description)
         end
 
         def exception_backtrace
@@ -395,7 +366,7 @@ module RSpec
             common_backtrace_truncater = CommonBacktraceTruncater.new(exception)
 
             lambda do |failure_number, colorizer|
-              FlatMap.flat_map(exception.all_exceptions.each_with_index) do |failure, index|
+              exception.all_exceptions.each_with_index.flat_map do |failure, index|
                 options = with_multiple_error_options_as_needed(
                   failure,
                   :description             => nil,
