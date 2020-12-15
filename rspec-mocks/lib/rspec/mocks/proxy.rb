@@ -1,4 +1,4 @@
-RSpec::Support.require_rspec_support 'mutex'
+RSpec::Support.require_rspec_support "reentrant_mutex"
 
 module RSpec
   module Mocks
@@ -240,20 +240,14 @@ module RSpec
         :public
       end
 
-      if Support::RubyFeatures.module_prepends_supported?
-        def self.prepended_modules_of(klass)
-          ancestors = klass.ancestors
+      def self.prepended_modules_of(klass)
+        ancestors = klass.ancestors
+        singleton_index = ancestors.index(klass)
+        ancestors[0, singleton_index]
+      end
 
-          # `|| 0` is necessary for Ruby 2.0, where the singleton class
-          # is only in the ancestor list when there are prepended modules.
-          singleton_index = ancestors.index(klass) || 0
-
-          ancestors[0, singleton_index]
-        end
-
-        def prepended_modules_of_singleton_class
-          @prepended_modules_of_singleton_class ||= RSpec::Mocks::Proxy.prepended_modules_of(@object.singleton_class)
-        end
+      def prepended_modules_of_singleton_class
+        @prepended_modules_of_singleton_class ||= RSpec::Mocks::Proxy.prepended_modules_of(@object.singleton_class)
       end
 
       # @private
@@ -409,19 +403,6 @@ module RSpec
 
         return super unless unbound_method
         unbound_method.bind(object)
-        # :nocov:
-      rescue TypeError
-        if RUBY_VERSION == '1.8.7'
-          # In MRI 1.8.7, a singleton method on a class cannot be rebound to its subclass
-          if unbound_method && unbound_method.owner.ancestors.first != unbound_method.owner
-            # This is a singleton method; we can't do anything with it
-            # But we can work around this using a different implementation
-            double = method_double_from_ancestor_for(message)
-            return object.method(double.method_stasher.stashed_method_name)
-          end
-        end
-        raise
-        # :nocov:
       end
 
     protected

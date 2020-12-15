@@ -10,9 +10,8 @@ module RSpec
         method_ref = __mock_proxy.method_reference[message]
 
         case method_ref.visibility
-        when :public    then true
-        when :private   then include_private
-        when :protected then include_private || RUBY_VERSION.to_f < 2.0
+        when :public then true
+        when :private, :protected then include_private
         else !method_ref.unimplemented?
         end
       end
