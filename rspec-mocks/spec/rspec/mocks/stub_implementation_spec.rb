@@ -93,18 +93,14 @@ module RSpec
         before { RSpec::Mocks.configuration.verify_partial_doubles = true }
         include_examples "stubbing `new` on class objects"
 
-        if RSpec::Support::RubyFeatures.required_kw_args_supported?
-          binding.eval(<<-RUBY, __FILE__, __LINE__)
-          it "handles keyword arguments correctly" do
-            klass = Class.new do
-              def initialize(kw:)
-              end
+        it "handles keyword arguments correctly" do
+          klass = Class.new do
+            def initialize(key:)
             end
-
-            allow(klass).to receive(:new).and_call_original
-            klass.new(kw: 42)
           end
-          RUBY
+
+          allow(klass).to receive(:new).and_call_original
+          klass.new(key: 42)
         end
       end
     end

@@ -15,10 +15,8 @@ RSpec.describe RSpec::Support::ShellOut, :slow do
     _, _, good_status = shell_out("ruby", "-e", '3 + 3')
     expect(good_status.exitstatus).to eq(0)
 
-    unless RUBY_VERSION.to_f < 1.9 # except 1.8...
-      _, _, bad_status = shell_out("ruby", "-e", 'boom')
-      expect(bad_status.exitstatus).to eq(1)
-    end
+    _, _, bad_status = shell_out("ruby", "-e", 'boom')
+    expect(bad_status.exitstatus).to eq(1)
   end
 
   it 'can shell out to ruby with the current load path' do

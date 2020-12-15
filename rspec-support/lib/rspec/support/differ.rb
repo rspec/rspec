@@ -128,14 +128,8 @@ module RSpec
         end
       end
 
-      if String.method_defined?(:encoding)
-        def multiline?(string)
-          string.include?("\n".encode(string.encoding))
-        end
-      else
-        def multiline?(string)
-          string.include?("\n")
-        end
+      def multiline?(string)
+        string.include?("\n".encode(string.encoding))
       end
 
       def build_hunks(actual, expected)

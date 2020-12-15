@@ -19,8 +19,7 @@ module RSpec
         begin
           expected === actual
         rescue ArgumentError
-          # Some objects, like 0-arg lambdas on 1.9+, raise
-          # ArgumentError for `expected === actual`.
+          # Some objects, like 0-arg lambdas, raise ArgumentError when compared with ===.
           false
         end
       end

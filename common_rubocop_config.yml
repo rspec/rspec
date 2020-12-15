@@ -369,6 +369,7 @@ Style/RedundantHeredocDelimiterQuotes:
 Style/RedundantInterpolationUnfreeze:
   Exclude:
     - 'rspec-core/lib/rspec/core/drb.rb'
+    - 'rspec-expectations/lib/rspec/matchers/built_in/base_matcher.rb'
     - 'rspec-mocks/lib/rspec/mocks/error_generator.rb'
 
 Style/RedundantParentheses:

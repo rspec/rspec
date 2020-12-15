@@ -50,16 +50,6 @@ module RSpec
         expect(Ruby).to_not be_rbx
       end
 
-      specify "jruby_9000? reflects the state of RUBY_PLATFORM and JRUBY_VERSION" do
-        stub_const("RUBY_PLATFORM", "java")
-        stub_const("JRUBY_VERSION", "")
-        expect(Ruby).to_not be_jruby_9000
-        stub_const("JRUBY_VERSION", "9.0.3.0")
-        expect(Ruby).to be_jruby_9000
-        stub_const("RUBY_PLATFORM", "")
-        expect(Ruby).to_not be_jruby_9000
-      end
-
       specify "rbx? reflects the state of RUBY_ENGINE" do
         hide_const("RUBY_ENGINE")
         expect(Ruby).to be_mri
@@ -71,34 +61,12 @@ module RSpec
     end
 
     RSpec.describe RubyFeatures do
-      specify "#module_refinement_supported? reflects refinement support" do
-        if Ruby.mri? && RUBY_VERSION >= '2.1.0'
-          expect(RubyFeatures.module_refinement_supported?).to eq true
-        end
-      end
-
       specify "#fork_supported? exists" do
         RubyFeatures.fork_supported?
       end
 
-      specify "#supports_exception_cause? exists" do
-        RubyFeatures.supports_exception_cause?
-      end
-
-      specify "#kw_args_supported? exists" do
-        RubyFeatures.kw_args_supported?
-      end
-
-      specify "#required_kw_args_supported? exists" do
-        RubyFeatures.required_kw_args_supported?
-      end
-
       specify "distincts_kw_args_from_positional_hash?" do
         RubyFeatures.distincts_kw_args_from_positional_hash?
-      end
-
-      specify "#supports_rebinding_module_methods? exists" do
-        RubyFeatures.supports_rebinding_module_methods?
       end
 
       specify "#supports_syntax_suggest?" do
@@ -107,13 +75,6 @@ module RSpec
 
       specify "#supports_taint?" do
         RubyFeatures.supports_taint?
-      end
-
-      specify "#caller_locations_supported? exists" do
-        RubyFeatures.caller_locations_supported?
-        if Ruby.mri?
-          expect(RubyFeatures.caller_locations_supported?).to eq(RUBY_VERSION >= '2.0.0')
-        end
       end
 
       describe "#ripper_supported?" do
@@ -161,14 +122,10 @@ module RSpec
             require 'ripper'
             # It doesn't matter if keyword arguments don't exist.
             if Ruby.mri? || Ruby.jruby? || Ruby.truffleruby?
-              if RUBY_VERSION < '2.0'
-                true
-              else
-                begin
-                  !::Ripper.sexp('def a(**kw_args); end').nil?
-                rescue NoMethodError
-                  false
-                end
+              begin
+                !::Ripper.sexp('def a(**kw_args); end').nil?
+              rescue NoMethodError
+                false
               end
             end
           end

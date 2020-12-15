@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rspec/support/spec/shell_out'
+RSpec::Support.require_rspec_support 'ruby_features'
 
 module RSpec
   module Support
@@ -66,7 +67,7 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
 
     stdout, stderr, status = with_env 'NO_COVERAGE' => '1' do
       options = %w[ -w ]
-      options << "--disable=gem" if RUBY_VERSION.to_f >= 1.9 && RSpec::Support::Ruby.mri?
+      options << "--disable=gem" if RSpec::Support::Ruby.mri?
       run_ruby_with_current_load_path(command, *options)
     end
 
@@ -117,14 +118,6 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
   it 'only loads a known set of stdlibs so gem authors are forced ' \
      'to load libs they use to have passing specs', :slow do
     loaded_features = @loaded_feature_lines.split("\n")
-    if RUBY_VERSION == '1.8.7'
-      # On 1.8.7, $" returns the relative require path if that was used
-      # to require the file. LIB_REGEX will not match the relative version
-      # since it has a `/lib` prefix. Here we deal with this by expanding
-      # relative files relative to the $LOAD_PATH dir (lib).
-      Dir.chdir("lib") { loaded_features.map! { |f| File.expand_path(f) } }
-    end
-
     loaded_features.reject! { |feature| RSpec::CallerFilter::LIB_REGEX =~ feature }
     loaded_features.reject! { |feature| allowed_loaded_feature_regexps.any? { |r| r =~ feature } }
 

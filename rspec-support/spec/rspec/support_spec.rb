@@ -68,7 +68,7 @@ module RSpec
         }.to raise_error(NameError)
       end
 
-      context "for a BasicObject subclass", :if => RUBY_VERSION.to_f > 1.8 do
+      context "for a BasicObject subclass" do
         let(:basic_class) do
           Class.new(BasicObject) do
             def foo
@@ -99,19 +99,14 @@ module RSpec
           end
         end
 
-        it 'still works', :if => supports_rebinding_module_methods? do
+        it 'still works' do
           object = basic_class.new
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
         end
 
-        it 'works when `method` has been overridden', :if => supports_rebinding_module_methods? do
+        it 'works when `method` has been overridden' do
           object = basic_class_with_method_override.new
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
-        end
-
-        it 'allows `method` to be proxied', :unless => supports_rebinding_module_methods? do
-          object = basic_class_with_proxying.new
-          expect(Support.method_handle_for(object, :reverse).call).to eq "oof"
         end
 
         it 'still works when Kernel has been mixed in' do
@@ -136,24 +131,10 @@ module RSpec
 
       context 'with a BasicObject instance' do
         let(:object) do
-          basic_object_class.new
+          BasicObject.new
         end
 
-        let(:basic_object_class) do
-          defined?(BasicObject) ? BasicObject : fake_basic_object_class
-        end
-
-        let(:fake_basic_object_class) do
-          Class.new do
-            def self.to_s
-              'BasicObject'
-            end
-
-            undef class, inspect, respond_to?
-          end
-        end
-
-        it { is_expected.to equal(basic_object_class) }
+        it { should equal(BasicObject) }
       end
 
       context 'with nil' do

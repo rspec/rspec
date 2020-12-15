@@ -37,17 +37,6 @@ Before('@skip-when-no-ripper-or-jruby') do |scenario|
   end
 end
 
-Before('@kw-arguments') do |scenario|
-  unless RSpec::Support::RubyFeatures.kw_args_supported?
-    warn "Skipping scenario due to lack of keyword argument support"
-    if Cucumber::VERSION.to_f >= 3.0
-      skip_this_scenario
-    else
-      scenario.skip_invoke!
-    end
-  end
-end
-
 Before('@distincts_kw_args_from_positional_hash') do |scenario|
   unless RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?
     warn "Skipping scenario due to not applicable to this ruby"

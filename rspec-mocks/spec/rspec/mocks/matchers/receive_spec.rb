@@ -1,5 +1,6 @@
 module RSpec
   module Mocks
+    # rubocop:disable Naming/MethodParameterName
     RSpec.describe Matchers::Receive do
       include_context "with syntax", :expect
 
@@ -37,13 +38,11 @@ module RSpec
       # When we flatten those shared examples in RSpec 4 because
       # of no "should" syntax, it will become possible to put this
       # class definition closer to examples that use it.
-      if RSpec::Support::RubyFeatures.required_kw_args_supported?
-        binding.eval(<<-RUBY, __FILE__, __LINE__)
-        class TestObject
-          def kw_args_method(a:, b:); end
-        end
-        RUBY
+      # rubocop:disable Lint/ConstantDefinitionInBlock
+      class TestObject
+        def kw_args_method(a:, b:); end
       end
+      # rubocop:enable Lint/ConstantDefinitionInBlock
 
       shared_examples "a receive matcher" do |*options|
         it 'allows the caller to configure how the subject responds' do
@@ -86,90 +85,76 @@ module RSpec
             expect(receiver.foo).to eq(4)
           end
 
-          if RSpec::Support::RubyFeatures.kw_args_supported?
-            binding.eval(<<-RUBY, __FILE__, __LINE__)
-            it 'allows a `do...end` block implementation with keyword args to be provided' do
-              wrapped.to receive(:foo) do |**kwargs|
-                kwargs[:kw]
-              end
-
-              expect(receiver.foo(kw: :arg)).to eq(:arg)
+          it 'allows a `do...end` block implementation with keyword args to be provided' do
+            wrapped.to receive(:foo) do |**kwargs|
+              kwargs[:kw]
             end
 
-            it 'allows a `do...end` block implementation with optional keyword args to be provided' do
-              wrapped.to receive(:foo) do |kw: :arg|
-                kw
-              end
-
-              expect(receiver.foo(kw: 1)).to eq(1)
-            end
-
-            it 'allows a `do...end` block implementation with optional keyword args to be provided' do
-              wrapped.to receive(:foo) do |kw: :arg|
-                kw
-              end
-
-              expect(receiver.foo).to eq(:arg)
-            end
-            RUBY
+            expect(receiver.foo(kw: :arg)).to eq(:arg)
           end
 
-          if RSpec::Support::RubyFeatures.required_kw_args_supported?
-            binding.eval(<<-RUBY, __FILE__, __LINE__)
-            it 'allows a `do...end` block implementation with required keyword args' do
-              wrapped.to receive(:foo) do |kw:|
-                kw
-              end
-
-              expect(receiver.foo(kw: :arg)).to eq(:arg)
+          it 'allows a `do...end` block implementation with optional keyword args to be provided' do
+            wrapped.to receive(:foo) do |kw: :arg|
+              kw
             end
 
-            it "expects to receive keyword args" do
+            expect(receiver.foo(kw: 1)).to eq(1)
+          end
+
+          it 'allows a `do...end` block implementation with optional keyword args to be provided' do
+            wrapped.to receive(:foo) do |kw: :arg|
+              kw
+            end
+
+            expect(receiver.foo).to eq(:arg)
+          end
+
+          it 'allows a `do...end` block implementation with required keyword args' do
+            wrapped.to receive(:foo) do |kw:|
+              kw
+            end
+
+            expect(receiver.foo(kw: :arg)).to eq(:arg)
+          end
+
+          it "expects to receive keyword args" do
+            dbl = instance_double(TestObject)
+            expect(dbl).to receive(:kw_args_method).with(a: 1, b: 2)
+            dbl.kw_args_method(a: 1, b: 2)
+          end
+
+          # rubocop:disable Style/MultilineBlockChain
+          it "fails to expect to receive hash with keyword args" do
+            expect {
               dbl = instance_double(TestObject)
               expect(dbl).to receive(:kw_args_method).with(a: 1, b: 2)
-              dbl.kw_args_method(a: 1, b: 2)
-            end
+              dbl.kw_args_method({ a: 1, b: 2 })
+            }.to fail_with do |failure|
+              reset_all
 
-            if RUBY_VERSION.to_f >= 3.0
-              it "fails to expect to receive hash with keyword args" do
-                expect {
-                  dbl = instance_double(TestObject)
-                  expect(dbl).to receive(:kw_args_method).with(a: 1, b: 2)
-                  dbl.kw_args_method({a: 1, b: 2})
-                }.to fail_with do |failure|
-                  reset_all
-
-                  if RUBY_VERSION.to_f > 3.3
-                    expect(failure.message)
-                      .to include('expected: ({a: 1, b: 2}) (keyword arguments)')
-                      .and include('got: ({a: 1, b: 2}) (options hash)')
-                  else
-                    expect(failure.message)
-                      .to include('expected: ({:a=>1, :b=>2}) (keyword arguments)')
-                      .and include('got: ({:a=>1, :b=>2}) (options hash)')
-                  end
-                end
-              end
-            else
-              it "expects to receive hash with keyword args" do
-                dbl = instance_double(TestObject)
-                expect(dbl).to receive(:kw_args_method).with(a: 1, b: 2)
-                dbl.kw_args_method({a: 1, b: 2})
+              if RUBY_VERSION.to_f > 3.3
+                expect(failure.message).
+                  to include('expected: ({a: 1, b: 2}) (keyword arguments)').
+                  and include('got: ({a: 1, b: 2}) (options hash)')
+              else
+                expect(failure.message).
+                  to include('expected: ({:a=>1, :b=>2}) (keyword arguments)').
+                  and include('got: ({:a=>1, :b=>2}) (options hash)')
               end
             end
+          end
+          # rubocop:enable Style/MultilineBlockChain
 
-            it "expects to receive hash with a hash" do
-              dbl = instance_double(TestObject)
-              expect(dbl).to receive(:kw_args_method).with({a: 1, b: 2})
-              dbl.kw_args_method({a: 1, b: 2})
-            end
+          it "expects to receive hash with a hash" do
+            dbl = instance_double(TestObject)
+            expect(dbl).to receive(:kw_args_method).with({ a: 1, b: 2 })
+            dbl.kw_args_method({ a: 1, b: 2 })
+          end
 
-            it "expects to receive keyword args with a hash" do
-              dbl = instance_double(TestObject)
-              expect(dbl).to receive(:kw_args_method).with({a: 1, b: 2})
-              dbl.kw_args_method(a: 1, b: 2)
-            end
-            RUBY
+          it "expects to receive keyword args with a hash" do
+            dbl = instance_double(TestObject)
+            expect(dbl).to receive(:kw_args_method).with({ a: 1, b: 2 })
+            dbl.kw_args_method(a: 1, b: 2)
           end
         end
 
@@ -777,5 +762,6 @@ module RSpec
         end
       end
     end
+    # rubocop:enable Naming/MethodParameterName
   end
 end

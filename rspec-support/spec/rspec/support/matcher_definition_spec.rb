@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 module RSpec
   module Support
     RSpec.describe "matcher definitions" do

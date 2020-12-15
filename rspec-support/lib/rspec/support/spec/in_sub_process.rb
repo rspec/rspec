@@ -3,7 +3,7 @@
 module RSpec
   module Support
     module InSubProcess
-      if Process.respond_to?(:fork) && !(Ruby.jruby? && RUBY_VERSION == '1.8.7')
+      if Process.respond_to?(:fork)
 
         UnmarshableObject = Struct.new(:error)
 

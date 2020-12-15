@@ -204,7 +204,7 @@ module RSpec::Core
           RSpec.configuration.full_cause_backtrace = true
         end
 
-        it 'prints full cause backtrace', :if => RSpec::Support::RubyFeatures.supports_exception_cause? do
+        it 'prints full cause backtrace' do
           the_presenter = Formatters::ExceptionPresenter.new(the_exception, example)
 
           expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
@@ -229,7 +229,7 @@ module RSpec::Core
         let(:first_exception) { FakeException.new("Real\nculprit", backtrace) }
 
         shared_examples 'expected result for the case when there is no backtrace' do
-          it 'wont fail for the exception with a nil backtrace', :if => RSpec::Support::RubyFeatures.supports_exception_cause? do
+          it 'wont fail for the exception with a nil backtrace' do
             the_presenter = Formatters::ExceptionPresenter.new(the_exception, example)
 
             expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))

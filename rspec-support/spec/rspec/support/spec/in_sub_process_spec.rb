@@ -12,7 +12,7 @@ RSpec.describe 'isolating code to a sub process' do
     expect(defined? NotIsolated).to be_nil
   end
 
-  if Process.respond_to?(:fork) && !(RUBY_PLATFORM == 'java' && RUBY_VERSION == '1.8.7')
+  if Process.respond_to?(:fork)
 
     it 'returns the result of sub process' do
       expect(in_sub_process { :foo }).to eq(:foo)

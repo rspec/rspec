@@ -118,41 +118,39 @@ module RSpec
           end
         end
 
-        if RSpec::Support::RubyFeatures.required_kw_args_supported?
-          context "for a method with keyword args" do
-            it "matches against a hash submitted as keyword arguments and received as positional argument (in both Ruby 2 and Ruby 3)" do
-              expect(dbl).to receive(:kw_args_method).with(1, { :required_arg => 2, :optional_arg => 3 })
-              dbl.kw_args_method(1, :required_arg => 2, :optional_arg => 3)
-            end
+        context "for a method with keyword args" do
+          it "matches against a hash submitted as keyword arguments and received as positional argument (in both Ruby 2 and Ruby 3)" do
+            expect(dbl).to receive(:kw_args_method).with(1, { :required_arg => 2, :optional_arg => 3 })
+            dbl.kw_args_method(1, :required_arg => 2, :optional_arg => 3)
+          end
 
-            if RUBY_VERSION.to_f >= 3.0
-              it "fails to match against a hash submitted as a positional argument and received as keyword arguments in Ruby 3.0 or later", :reset => true do
-                messages =
-                  if RUBY_VERSION.to_f > 3.3
-                    ["expected: (1, {optional_arg: 3, required_arg: 2}) (keyword arguments)", "got: (1, {optional_arg: 3, required_arg: 2}) (options hash)"]
-                  else
-                    ["expected: (1, {:optional_arg=>3, :required_arg=>2}) (keyword arguments)", "got: (1, {:optional_arg=>3, :required_arg=>2}) (options hash)"]
-                  end
+          if RUBY_VERSION.to_f >= 3.0
+            it "fails to match against a hash submitted as a positional argument and received as keyword arguments in Ruby 3.0 or later", :reset => true do
+              messages =
+                if RUBY_VERSION.to_f > 3.3
+                  ["expected: (1, {optional_arg: 3, required_arg: 2}) (keyword arguments)", "got: (1, {optional_arg: 3, required_arg: 2}) (options hash)"]
+                else
+                  ["expected: (1, {:optional_arg=>3, :required_arg=>2}) (keyword arguments)", "got: (1, {:optional_arg=>3, :required_arg=>2}) (options hash)"]
+                end
 
-                expect(dbl).to receive(:kw_args_method).with(1, :required_arg => 2, :optional_arg => 3)
-                expect do
-                  dbl.kw_args_method(1, { :required_arg => 2, :optional_arg => 3 })
-                end.to fail_with(a_string_including(*messages))
-              end
-            else
-              it "matches against a hash submitted as a positional argument and received as keyword arguments in Ruby 2.7 or before" do
-                expect(dbl).to receive(:kw_args_method).with(1, :required_arg => 2, :optional_arg => 3)
+              expect(dbl).to receive(:kw_args_method).with(1, :required_arg => 2, :optional_arg => 3)
+              expect do
                 dbl.kw_args_method(1, { :required_arg => 2, :optional_arg => 3 })
-              end
+              end.to fail_with(a_string_including(*messages))
             end
+          else
+            it "matches against a hash submitted as a positional argument and received as keyword arguments in Ruby 2.7 or before" do
+              expect(dbl).to receive(:kw_args_method).with(1, :required_arg => 2, :optional_arg => 3)
+              dbl.kw_args_method(1, { :required_arg => 2, :optional_arg => 3 })
+            end
+          end
 
-            context "when using `send`" do
-              let(:dbl) { instance_double(Class.new { eval "def m(k:); end" }) }
+          context "when using `send`" do
+            let(:dbl) { instance_double(Class.new { eval "def m(k:); end" }) }
 
-              it "matches against keyword arguments" do
-                expect(dbl).to receive(:m).with(:k => 1)
-                dbl.send(:m, :k => 1)
-              end
+            it "matches against keyword arguments" do
+              expect(dbl).to receive(:m).with(:k => 1)
+              dbl.send(:m, :k => 1)
             end
           end
         end

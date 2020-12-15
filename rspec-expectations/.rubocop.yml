@@ -10,7 +10,7 @@ AllCops:
   NewCops:
     enable
   SuggestExtensions: false
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 3.0
 
 Layout/AccessModifierIndentation:
   Exclude:

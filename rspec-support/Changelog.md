@@ -1,7 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.6...main)
 
-Enchancements
+Breaking Changes:
+
+* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-support#436)
+
+Enhancements
 
 * Improve diff for `anything` matchers by hiding the value "anything" is matched
   against. (Karl Heitmann, rspec/rspec-mocks#599)

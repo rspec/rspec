@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'rspec/support/fuzzy_matcher'
 
 module RSpec
@@ -214,4 +213,3 @@ module RSpec
     end
   end
 end
-

@@ -10,7 +10,7 @@ module RSpec
     # keyword args of a given method.
     #
     # @private
-    class MethodSignature # rubocop:disable Metrics/ClassLength
+    class MethodSignature
       attr_reader :min_non_kw_args, :max_non_kw_args, :optional_kw_args, :required_kw_args
 
       def initialize(method)
@@ -47,141 +47,109 @@ module RSpec
         end
       end
 
-      if RubyFeatures.optional_and_splat_args_supported?
-        def description
-          @description ||= begin
-            parts = []
+      def description
+        @description ||= begin
+          parts = []
 
-            unless non_kw_args_arity_description == "0"
-              parts << "arity of #{non_kw_args_arity_description}"
-            end
-
-            if @optional_kw_args.any?
-              parts << "optional keyword args (#{@optional_kw_args.map(&:inspect).join(", ")})"
-            end
-
-            if @required_kw_args.any?
-              parts << "required keyword args (#{@required_kw_args.map(&:inspect).join(", ")})"
-            end
-
-            parts << "any additional keyword args" if @allows_any_kw_args
-
-            parts.join(" and ")
-          end
-        end
-
-        def missing_kw_args_from(given_kw_args)
-          @required_kw_args - given_kw_args
-        end
-
-        def invalid_kw_args_from(given_kw_args)
-          return [] if @allows_any_kw_args
-          given_kw_args - @allowed_kw_args
-        end
-
-        # Considering the arg types, are there kw_args?
-        if RubyFeatures.kw_arg_separation?
-          def has_kw_args_in?(args)
-            # If the last arg is a hash, depending on the signature it could be kw_args or a positional parameter.
-            return false unless Hash === args.last && could_contain_kw_args?(args)
-
-            # If the position of the hash is beyond the count of required and optional positional
-            # args then it is the kwargs hash
-            return true if args.count > @max_non_kw_args
-
-            # This is the proper way to disambiguate between positional args and keywords hash
-            # but relies on beginning of the call chain annotating the method with
-            # ruby2_keywords, so only use it for positive feedback as without the annotation
-            # this is always false
-            return true if Hash.ruby2_keywords_hash?(args[-1])
-
-            # Otherwise, the hash could be defined kw_args or an optional positional parameter
-            # inspect the keys against known kwargs to determine what it is
-            # Note: the problem with this is that if a user passes only invalid keyword args,
-            #       rspec no longer detects is and will assign this to a positional argument
-            return arbitrary_kw_args? || args.last.keys.all? { |x| @allowed_kw_args.include?(x) }
-          end
-        else
-          def has_kw_args_in?(args)
-            # Version <= Ruby 2.7
-            # If the last argument is Hash, Ruby will treat only symbol keys as keyword arguments
-            # the rest will be grouped in another Hash and passed as positional argument.
-            Hash === args.last &&
-              could_contain_kw_args?(args) &&
-              (args.last.empty? || args.last.keys.any? { |x| x.is_a?(Symbol) })
-          end
-        end
-
-        # Without considering what the last arg is, could it
-        # contain keyword arguments?
-        def could_contain_kw_args?(args)
-          return false if args.count <= min_non_kw_args
-
-          @allows_any_kw_args || @allowed_kw_args.any?
-        end
-
-        def arbitrary_kw_args?
-          @allows_any_kw_args
-        end
-
-        def unlimited_args?
-          @max_non_kw_args == INFINITY
-        end
-
-        def classify_parameters
-          optional_non_kw_args = @min_non_kw_args = 0
-          @allows_any_kw_args = false
-
-          @method.parameters.each do |(type, name)|
-            case type
-            # def foo(a:)
-            when :keyreq  then @required_kw_args << name
-            # def foo(a: 1)
-            when :key     then @optional_kw_args << name
-            # def foo(**kw_args)
-            when :keyrest then @allows_any_kw_args = true
-            # def foo(a)
-            when :req     then @min_non_kw_args += 1
-            # def foo(a = 1)
-            when :opt     then optional_non_kw_args += 1
-            # def foo(*a)
-            when :rest    then optional_non_kw_args = INFINITY
-            end
+          unless non_kw_args_arity_description == "0"
+            parts << "arity of #{non_kw_args_arity_description}"
           end
 
-          @max_non_kw_args = @min_non_kw_args + optional_non_kw_args
-          @allowed_kw_args = @required_kw_args + @optional_kw_args
+          if @optional_kw_args.any?
+            parts << "optional keyword args (#{@optional_kw_args.map(&:inspect).join(", ")})"
+          end
+
+          if @required_kw_args.any?
+            parts << "required keyword args (#{@required_kw_args.map(&:inspect).join(", ")})"
+          end
+
+          parts << "any additional keyword args" if @allows_any_kw_args
+
+          parts.join(" and ")
+        end
+      end
+
+      def missing_kw_args_from(given_kw_args)
+        @required_kw_args - given_kw_args
+      end
+
+      def invalid_kw_args_from(given_kw_args)
+        return [] if @allows_any_kw_args
+        given_kw_args - @allowed_kw_args
+      end
+
+      # Considering the arg types, are there kw_args?
+      if RubyFeatures.kw_arg_separation?
+        def has_kw_args_in?(args)
+          # If the last arg is a hash, depending on the signature it could be kw_args or a positional parameter.
+          return false unless Hash === args.last && could_contain_kw_args?(args)
+
+          # If the position of the hash is beyond the count of required and optional positional
+          # args then it is the kwargs hash
+          return true if args.count > @max_non_kw_args
+
+          # This is the proper way to disambiguate between positional args and keywords hash
+          # but relies on beginning of the call chain annotating the method with
+          # ruby2_keywords, so only use it for positive feedback as without the annotation
+          # this is always false
+          return true if Hash.ruby2_keywords_hash?(args[-1])
+
+          # Otherwise, the hash could be defined kw_args or an optional positional parameter
+          # inspect the keys against known kwargs to determine what it is
+          # Note: the problem with this is that if a user passes only invalid keyword args,
+          #       rspec no longer detects is and will assign this to a positional argument
+          return arbitrary_kw_args? || args.last.keys.all? { |x| @allowed_kw_args.include?(x) }
         end
       else
-        def description
-          "arity of #{non_kw_args_arity_description}"
+        def has_kw_args_in?(args)
+          # Version <= Ruby 2.7
+          # If the last argument is Hash, Ruby will treat only symbol keys as keyword arguments
+          # the rest will be grouped in another Hash and passed as positional argument.
+          Hash === args.last &&
+            could_contain_kw_args?(args) &&
+            (args.last.empty? || args.last.keys.any? { |x| x.is_a?(Symbol) })
+        end
+      end
+
+      # Without considering what the last arg is, could it
+      # contain keyword arguments?
+      def could_contain_kw_args?(args)
+        return false if args.count <= min_non_kw_args
+
+        @allows_any_kw_args || @allowed_kw_args.any?
+      end
+
+      def arbitrary_kw_args?
+        @allows_any_kw_args
+      end
+
+      def unlimited_args?
+        @max_non_kw_args == INFINITY
+      end
+
+      def classify_parameters
+        optional_non_kw_args = @min_non_kw_args = 0
+        @allows_any_kw_args = false
+
+        @method.parameters.each do |(type, name)|
+          case type
+          # def foo(a:)
+          when :keyreq  then @required_kw_args << name
+          # def foo(a: 1)
+          when :key     then @optional_kw_args << name
+          # def foo(**kw_args)
+          when :keyrest then @allows_any_kw_args = true
+          # def foo(a)
+          when :req     then @min_non_kw_args += 1
+          # def foo(a = 1)
+          when :opt     then optional_non_kw_args += 1
+          # def foo(*a)
+          when :rest    then optional_non_kw_args = INFINITY
+          end
         end
 
-        def missing_kw_args_from(_given_kw_args)
-          []
-        end
-
-        def invalid_kw_args_from(_given_kw_args)
-          []
-        end
-
-        def has_kw_args_in?(_args)
-          false
-        end
-
-        def could_contain_kw_args?(*)
-          false
-        end
-
-        def arbitrary_kw_args?
-          false
-        end
-
-        def unlimited_args?
-          false
-        end
-
-        alias_method :classify_parameters, :classify_arity
+        @max_non_kw_args = @min_non_kw_args + optional_non_kw_args
+        @allowed_kw_args = @required_kw_args + @optional_kw_args
       end
 
       INFINITY = 1 / 0.0
@@ -190,8 +158,7 @@ module RSpec
     if RSpec::Support::Ruby.jruby?
       # JRuby has only partial support for UnboundMethod#parameters, so we fall back on using #arity
       # https://github.com/jruby/jruby/issues/2816 and https://github.com/jruby/jruby/issues/2817
-      if RubyFeatures.optional_and_splat_args_supported? &&
-         Java::JavaLang::String.instance_method(:char_at).parameters == []
+      if Java::JavaLang::String.instance_method(:char_at).parameters == []
 
         class MethodSignature < remove_const(:MethodSignature)
         private
@@ -294,11 +261,9 @@ module RSpec
     #
     # @api private
     class BlockSignature < MethodSignature
-      if RubyFeatures.optional_and_splat_args_supported?
-        def classify_parameters
-          super
-          @min_non_kw_args = @max_non_kw_args unless @max_non_kw_args == INFINITY
-        end
+      def classify_parameters
+        super
+        @min_non_kw_args = @max_non_kw_args unless @max_non_kw_args == INFINITY
       end
     end
 
@@ -315,7 +280,7 @@ module RSpec
         @arbitrary_kw_args = @unlimited_args = false
       end
 
-      def with_expectation(expectation) # rubocop:disable Metrics/MethodLength
+      def with_expectation(expectation)
         return self unless MethodSignatureExpectation === expectation
 
         if expectation.empty?
@@ -325,19 +290,9 @@ module RSpec
           @min_non_kw_args = @non_kw_args = expectation.min_count || 0
           @max_non_kw_args                = expectation.max_count || @min_non_kw_args
 
-          if RubyFeatures.optional_and_splat_args_supported?
-            @unlimited_args = expectation.expect_unlimited_arguments
-          else
-            @unlimited_args = false
-          end
-
-          if RubyFeatures.kw_args_supported?
-            @kw_args           = expectation.keywords
-            @arbitrary_kw_args = expectation.expect_arbitrary_keywords
-          else
-            @kw_args           = []
-            @arbitrary_kw_args = false
-          end
+          @unlimited_args = expectation.expect_unlimited_arguments
+          @kw_args = expectation.keywords
+          @arbitrary_kw_args = expectation.expect_arbitrary_keywords
         end
 
         self

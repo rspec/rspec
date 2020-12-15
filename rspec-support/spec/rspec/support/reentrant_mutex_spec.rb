@@ -3,8 +3,15 @@
 require 'rspec/support/reentrant_mutex'
 require 'thread_order'
 
+RSpec.describe RSpec::Support::Mutex do
+  it "allows ::Mutex to be mocked" do
+    expect(Mutex).to receive(:new)
+    ::Mutex.new
+  end
+end
+
 # There are no assertions specifically
-# They are pass if they don't deadlock
+# They pass if they don't deadlock
 RSpec.describe RSpec::Support::ReentrantMutex do
   let!(:mutex) { described_class.new }
   let!(:order) { ThreadOrder.new }

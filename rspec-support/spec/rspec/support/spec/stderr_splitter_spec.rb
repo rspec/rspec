@@ -30,9 +30,6 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
     #     NotImplementedError: pressed?() function is unimplemented on this machine
     stderr_methods = stderr.methods.select { |method| stderr.respond_to?(method) }
 
-    # On 2.2, there's a weird issue where stderr sometimes responds to `birthtime` and sometimes doesn't...
-    stderr_methods -= [:birthtime] if RUBY_VERSION =~ /^2\.2/
-
     # No idea why, but on our AppVeyor windows builds it doesn't respond to these...
     stderr_methods -= [:close_on_exec?, :close_on_exec=] if RSpec::Support::OS.windows? && ENV['CI']
 
