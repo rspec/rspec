@@ -2,7 +2,6 @@ Feature: `--warnings` option (run with warnings enabled)
 
   Use the `--warnings` option to run specs with warnings enabled.
 
-  @unsupported-on-rbx
   Scenario:
     Given a file named "example_spec.rb" with:
       """ruby
@@ -32,7 +31,6 @@ Feature: `--warnings` option (run with warnings enabled)
     When I run `rspec -w example_spec.rb`
     Then the output should contain "warning"
 
-  @unsupported-on-rbx
   Scenario:
     Given a file named "example_spec.rb" with:
       """ruby
