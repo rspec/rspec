@@ -134,7 +134,7 @@ module RSpec
           BasicObject.new
         end
 
-        it { should equal(BasicObject) }
+        it { is_expected.to equal(BasicObject) }
       end
 
       context 'with nil' do
