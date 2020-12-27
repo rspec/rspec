@@ -1,22 +1,47 @@
-### Development (unreleased)
+### Development
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.11.0...4-0-dev)
 
 Breaking Changes:
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, #436)
+
+### 3.11.0 / 2022-02-09
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.10.3...v3.11.0)
+
+No changes. Released to support other RSpec releases.
 
 ### 3.10.3 / 2021-11-03
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.10.2...v3.10.3)
 
 Bug Fixes:
+
 * Use `Mutex#owned?` to allow `RSpec::Support::ReentrantMutex` to work in
-  nested Fibers on Ruby 3.0 and later. (Benoit Daloze, #503)
+  nested Fibers on Ruby 3.0 and later. (Benoit Daloze, #503, #504)
 * Support `end`-less methods in `RSpec::Support::Source::Token`
   so that RSpec won't hang when an `end`-less method raises an error. (Yuji Nakayama, #505)
 
+### 3.10.2 / 2021-01-28
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.10.1...v3.10.2)
+
+Bug Fixes:
+
+* Fix issue with `RSpec::Support.define_optimized_require_for_rspec` on JRuby
+  9.1.17.0 (Jon Rowe, #492)
+
+### 3.10.1 / 2020-12-27
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.10.0...v3.10.1)
+
+Bug Fixes:
+
+* Fix deprecation expectations to fail correctly when
+  asserting on messages. (Phil Pirozhkov, #453)
+
 ### 3.10.0 / 2020-10-30
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.9.4...v3.10.0)
 
 No changes. Released to support other RSpec releases.
 
 ### 3.9.4 / 2020-10-23
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.9.3...v3.9.4)
 
 Bug Fixes:
 
