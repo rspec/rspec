@@ -5,6 +5,7 @@ Breaking Changes:
 
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-expectations#1231)
 * Remove `should` and `should_not` syntax (including one-liners). (Phil Pirozhkov, rspec/rspec-expectations#1245)
+* Turn `strict_predicate_matchers` on by default. (Phil Pirozhkov, rspec/rspec-expectations#1277)
 
 Enhancements:
 

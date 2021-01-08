@@ -35,7 +35,7 @@ module RSpec
       end
 
       def rbx?
-        defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
+        !!defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
       end
 
       def mri?
@@ -43,7 +43,7 @@ module RSpec
       end
 
       def truffleruby?
-        defined?(RUBY_ENGINE) && RUBY_ENGINE == 'truffleruby'
+        !!defined?(RUBY_ENGINE) && RUBY_ENGINE == 'truffleruby'
       end
     end
 

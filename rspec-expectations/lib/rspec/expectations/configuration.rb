@@ -28,7 +28,7 @@ module RSpec
 
       def initialize
         @on_potential_false_positives = :warn
-        @strict_predicate_matchers = false
+        @strict_predicate_matchers = true
       end
 
       # Configures the maximum character length that RSpec will print while
