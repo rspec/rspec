@@ -7,6 +7,8 @@ Breaking Changes:
 * Remove `should` and `should_not` syntax (including one-liners). (Phil Pirozhkov, rspec/rspec-expectations#1245)
 * Turn `strict_predicate_matchers` on by default. (Phil Pirozhkov, rspec/rspec-expectations#1277)
 * Remove support for legacy RSpec matchers (pre 3). (Phil Pirozhkov, rspec/rspec-expectations#1253)
+* Remove `include_chain_clauses_in_custom_matcher_descriptions` option
+  and make it the default. (Phil Pirozhkov, rspec/rspec-expectations#1279)
 
 Enhancements:
 
