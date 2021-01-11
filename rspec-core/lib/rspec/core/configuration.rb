@@ -203,11 +203,10 @@ module RSpec
           @fail_fast = value.to_i
 
           if value.to_i == 0
-            # TODO: in RSpec 4, consider raising an error here.
-            RSpec.warning "Cannot set `RSpec.configuration.fail_fast` " \
-                          "to `#{value.inspect}`. Only `true`, `false`, `nil` and integers " \
-                          "are valid values."
-            @fail_fast = true
+            raise ArgumentError, "Cannot set `RSpec.configuration.fail_fast` " \
+                                 "to `#{value.inspect}`. Only `true`, `" \
+                                 "`false`, `nil` and integers are valid " \
+                                 "values."
           end
         end
       end
@@ -2045,12 +2044,10 @@ module RSpec
         return nil unless scope == :suite
 
         unless meta.empty?
-          # TODO: in RSpec 4, consider raising an error here.
-          # We warn only for backwards compatibility.
-          RSpec.warn_with "WARNING: `:suite` hooks do not support metadata since " \
-                          "they apply to the suite as a whole rather than " \
-                          "any individual example or example group that has metadata. " \
-                          "The metadata you have provided (#{meta.inspect}) will be ignored."
+          raise ArgumentError, "WARNING: `:suite` hooks do not support metadata since " \
+                               "they apply to the suite as a whole rather than " \
+                               "any individual example or example group that has metadata. " \
+                               "The metadata you have provided (#{meta.inspect}) will be ignored."
         end
 
         yield

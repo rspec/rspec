@@ -11,6 +11,10 @@ Breaking Changes:
 * Remove `run_all_when_everything_filtered` configuration option. (Phil Pirozhkov, rspec/rspec-core#2845)
 * Change the default `shared_context_metadata_behavior` to `apply_to_host_groups`
   and remove the configuration option. (Phil Pirozhkov, rspec/rspec-core#2834)
+* Raise on unsupported hook scope usage. (Phil Pirozhkov, rspec/rspec-core#2849)
+* Raise on usage of metadata on suite-level scopes. (Phil Pirozhkov, rspec/rspec-core#2849)
+* Raise an error when `fail_fast` is configured with
+  an unsupported value. (Phil Pirozhkov, rspec/rspec-core#2849)
 
 Enhancements:
 
