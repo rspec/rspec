@@ -106,7 +106,6 @@ module RSpec
       private
 
         def actual_result
-          return "but was not a block" unless Proc === @block
           "got #{caught}"
         end
 
