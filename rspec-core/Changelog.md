@@ -15,6 +15,8 @@ Breaking Changes:
 * Raise on usage of metadata on suite-level scopes. (Phil Pirozhkov, rspec/rspec-core#2849)
 * Raise an error when `fail_fast` is configured with
   an unsupported value. (Phil Pirozhkov, rspec/rspec-core#2849)
+* Remove deprecated access to an example group's metadata through the example.
+  (Phil Pirozhkov, rspec/rspec-core#2851)
 
 Enhancements:
 
