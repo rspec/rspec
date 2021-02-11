@@ -17,6 +17,8 @@ Breaking Changes:
   an unsupported value. (Phil Pirozhkov, rspec/rspec-core#2849)
 * Remove deprecated access to an example group's metadata through the example.
   (Phil Pirozhkov, rspec/rspec-core#2851)
+* Remove deprecated Hash-like behavior from example
+  execution result. (Phil Pirozhkov, rspec/rspec-core#2862)
 
 Enhancements:
 
