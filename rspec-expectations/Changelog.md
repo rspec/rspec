@@ -12,6 +12,8 @@ Breaking Changes:
 * Remove support for present-tense dynamic predicate. (Phil Pirozhkov, rspec/rspec-expectations#1286)
 * Prevent implicit blocks (e.g blocks as values) from being used with block matchers.
   (Phil Pirozhkov, rspec/rspec-expectations#1285)
+* Remove deprecated `match_regex` matcher. (Phil Pirozhkov, rspec/rspec-expectations#1288)
+* Remove deprecated `StartAndEndWith` matcher base class. (Phil Pirozhkov, rspec/rspec-expectations#1288)
 
 Enhancements:
 
