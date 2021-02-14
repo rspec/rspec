@@ -48,7 +48,6 @@ module CommonHelperMethods
 end
 
 RSpec.configure do |config|
-  config.color = true
   config.order = :random
 
   config.include CommonHelperMethods
