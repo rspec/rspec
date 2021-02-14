@@ -59,10 +59,10 @@ RSpec.describe "rspec warnings and deprecations" do
       warning_object.warning 'Message'
     end
 
-    it_should_behave_like 'warning helper', :warning
+    it_behaves_like 'warning helper', :warning
   end
 
   describe "#warn_with message, options" do
-    it_should_behave_like 'warning helper', :warn_with
+    it_behaves_like 'warning helper', :warn_with
   end
 end
