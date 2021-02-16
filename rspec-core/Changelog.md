@@ -19,6 +19,7 @@ Breaking Changes:
   (Phil Pirozhkov, rspec/rspec-core#2851)
 * Remove deprecated Hash-like behavior from example
   execution result. (Phil Pirozhkov, rspec/rspec-core#2862)
+* Skip setting the default pattern from Rake task. (Phil Pirozhkov, rspec/rspec-core#2868)
 
 Enhancements:
 

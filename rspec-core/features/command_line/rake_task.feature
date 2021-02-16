@@ -122,7 +122,7 @@ Feature: Creating a rake task
     Then the exit status should be 0
     Then the output should match:
       """
-      (ruby(\d\.\d(.\d)?)?|rbx) -I\S+ [\/\S]+\/exe\/rspec --pattern spec[\/\\*{,}]+_spec.rb --tag fast
+      (ruby(\d\.\d(.\d)?)?|rbx) -I\S+ [\/\S]+\/exe\/rspec --tag fast
       """
 
   Scenario: Passing rake task arguments to the `rspec` command via `rspec_opts`
@@ -154,5 +154,5 @@ Feature: Creating a rake task
     Then the exit status should be 0
     Then the output should match:
       """
-      (ruby(\d\.\d(.\d)?)?|rbx) -I\S+ [\/\S]+\/exe\/rspec --pattern spec[\/\\*{,}]+_spec.rb --tag fast
+      (ruby(\d\.\d(.\d)?)?|rbx) -I\S+ [\/\S]+\/exe\/rspec --tag fast
       """
