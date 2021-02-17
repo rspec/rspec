@@ -89,7 +89,7 @@ module RSpec::Core::Formatters
       end
     end
 
-    context 'in Ripper supported environment', :if => RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in Ripper supported environment', :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
       context 'when the expression spans multiple lines' do
         let(:source) do
           do_something_fail :foo,
@@ -161,7 +161,7 @@ module RSpec::Core::Formatters
       end
 
       argument_error_points_invoker = RSpec::Support::Ruby.jruby?
-      context 'when the expression is a method definition and ends with "end"-only line', :unless => argument_error_points_invoker do
+      context 'when the expression is a method definition and ends with "end"-only line', :skip => argument_error_points_invoker do
         let(:source) do
           obj = Object.new
 
@@ -181,7 +181,7 @@ module RSpec::Core::Formatters
         end
       end
 
-      context 'when the expression line includes an "end"-less method definition', :if => RUBY_VERSION.to_f >= 3.0 do
+      context 'when the expression line includes an "end"-less method definition' do
         include RSpec::Support::InSubProcess
 
         around(:example) do |example|
@@ -222,7 +222,7 @@ module RSpec::Core::Formatters
         end
       end
 
-      context 'when the expression is a setter method definition', :unless => argument_error_points_invoker do
+      context 'when the expression is a setter method definition', :skip => argument_error_points_invoker do
         let(:source) do
           obj = Object.new
 
@@ -411,7 +411,7 @@ module RSpec::Core::Formatters
       end
     end
 
-    context 'in Ripper unsupported environment', :unless => RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in Ripper unsupported environment', :skip => RSpec::Support::RubyFeatures.ripper_supported? do
       context 'when the expression spans multiple lines' do
         let(:source) do
           do_something_fail :foo,

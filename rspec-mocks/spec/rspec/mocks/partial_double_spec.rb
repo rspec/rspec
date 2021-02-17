@@ -647,7 +647,7 @@ module RSpec
         end
 
         context "on a class with a twice-aliased `new`" do
-          it 'uses the method signature from `#initialize` for arg verification', :if => (RUBY_VERSION.to_i >= 3) do
+          it 'uses the method signature from `#initialize` for arg verification' do
             subclass = Class.new(klass) do
               class << self
                 alias_method :_new, :new

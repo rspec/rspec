@@ -752,7 +752,7 @@ RSpec.describe "#include matcher" do
         expect({ :key => 'value', :other => 'different' }).to include(:key => 'value')
       end
 
-      it "passes if target includes the key/value pair fuzzily matched among others", :if => (RUBY_VERSION.to_f > 1.8) do
+      it "passes if target includes the key/value pair fuzzily matched among others" do
         hsh = { :key => 'value', :other => 'different' }
 
         expect(hsh).to include(match(/KEY/i) => 'value')

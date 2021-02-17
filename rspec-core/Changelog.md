@@ -20,6 +20,7 @@ Breaking Changes:
 * Remove deprecated Hash-like behavior from example
   execution result. (Phil Pirozhkov, rspec/rspec-core#2862)
 * Skip setting the default pattern from Rake task. (Phil Pirozhkov, rspec/rspec-core#2868)
+* Remove special `:if`/`:unless` filtering metadata. (Phil Pirozhkov, rspec/rspec-core#2870)
 
 Enhancements:
 
