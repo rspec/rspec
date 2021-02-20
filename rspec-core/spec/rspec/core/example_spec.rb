@@ -47,15 +47,6 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
     end
   end
 
-  describe "#rerun_argument" do
-    it "returns location_rerun_argument" do
-      # this method is deprecated and will be replaced
-      example = RSpec.describe.example
-      expect(example).to receive(:location_rerun_argument) { :location_rerun_argument }
-      expect(example.rerun_argument).to eq(:location_rerun_argument)
-    end
-  end
-
   describe "#update_inherited_metadata" do
     it "updates the example metadata with the provided hash" do
       example = RSpec.describe.example
@@ -764,7 +755,7 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
         group.run
         expect(example).to fail_with ArgumentError
         expect(example.exception.message).to match(
-          /Passing a block within an example is now deprecated./
+          /Passing a block within an example is not supported./
         )
       end
     end
