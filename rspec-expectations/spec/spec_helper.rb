@@ -73,7 +73,7 @@ module CommonHelperMethods
 end
 
 RSpec.configure do |config|
-  config.color = true
+  config.color_mode = :automatic
   config.order = :random
 
   config.include CommonHelperMethods
@@ -90,7 +90,9 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
-  config.disable_monkey_patching!
+  config.suppress_deprecations do
+    config.disable_monkey_patching!
+  end
 
   # We don't want rspec-core to look in our `lib` for failure snippets.
   # When it does that, it inevitably finds this line:

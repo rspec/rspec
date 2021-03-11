@@ -141,6 +141,10 @@ module RSpec
       # Default: true
       # @return [Boolean]
       def expose_dsl_globally?
+        RSpec.deprecate(
+          "`RSpec::Core::Configuration#expose_dsl_globally?`",
+          :replacement => "None, will be the equivalent of `false` permanently"
+        )
         Core::DSL.exposed_globally?
       end
 
@@ -150,9 +154,14 @@ module RSpec
       # Default: true
       def expose_dsl_globally=(value)
         if value
+          RSpec.deprecate(
+            "`RSpec::Core::Configuration#expose_dsl_globally = true`",
+            :replacement => "Use methods exposed of RSpec or RSpec specs."
+          )
           Core::DSL.expose_globally!
           Core::SharedExampleGroup::TopLevelDSL.expose_globally!
         else
+          RSpec.deprecate("`RSpec::Core::Configuration#expose_dsl_globally = false`", :replacement => "The only option")
           Core::DSL.remove_globally!
           Core::SharedExampleGroup::TopLevelDSL.remove_globally!
         end
@@ -327,7 +336,14 @@ module RSpec
       # (default: `false`).
       # @deprecated Use {#filter_run_when_matching} instead for the specific
       #   filters that you want to be ignored if none match.
-      add_setting :run_all_when_everything_filtered
+      def run_all_when_everything_filtered=(value)
+        RSpec.deprecate(
+          "RSpec::Core::Configuration#run_all_when_everything_filtered",
+          :replacement => "`filter_run_when_matching :focus`"
+        )
+        @run_all_when_everything_filtered = value
+      end
+      add_read_only_setting :run_all_when_everything_filtered
 
       # @macro add_setting
       # Color to use to indicate success.  Defaults to `:green` but can be set
@@ -440,6 +456,14 @@ module RSpec
             "shared_context_metadata_behavior` to `#{value.inspect}`. Only " \
             "`:trigger_inclusion` and `:apply_to_host_groups` are valid values."
         end
+
+        if value == :trigger_inclusion
+          RSpec.deprecate("RSpec::Core::Configuration#shared_context_metadata_behavior=",
+                          :message =>
+                            "RSpec::Core::Configuration#shared_context_metadata_behavior = " \
+                            ":trigger_inclusion is deprecated. `:apply_to_host_groups`" \
+                            "will become the default and only option.")
+        end
       end
 
       # Record the start time of the spec suite to measure load time.
@@ -511,7 +535,29 @@ module RSpec
 
       # @private
       # @deprecated Use {#color_mode} = :on, instead of {#color} with {#tty}
-      add_setting :tty
+      def tty=(value)
+        RSpec.deprecate("RSpec::Core::Configuration#tty=", :replacement => "`color_mode=`")
+        @tty = value
+      end
+
+      # @private
+      def tty
+        RSpec.deprecate("RSpec::Core::Configuration#tty", :replacement => "`color_mode`")
+        @tty
+      end
+
+      # @private
+      def tty?
+        RSpec.deprecate(
+          "RSpec::Core::Configuration#tty?",
+          :message =>
+            "RSpec::Core::Configuration#tty? is deprecated, whilst there is no direct " \
+            "replacement, you can assert on the various `color_mode` options if needed. " \
+            "Called from #{ CallerFilter.first_non_rspec_line }."
+        )
+        !!@tty
+      end
+
       # @private
       attr_writer :files_to_run
       # @private
@@ -545,12 +591,16 @@ module RSpec
         @loaded_spec_files = Set.new
         @color = false
         @color_mode = :automatic
+        @tty = nil
         @pattern = '**{,/*/**}/*_spec.rb'
         @exclude_pattern = ''
         @failure_exit_code = 1
         @error_exit_code = nil # so it can be overridden by failure exit code
         @fail_if_no_examples = false
         @spec_files_loaded = false
+
+        # Temporary config for internal warnings in 3.99
+        @issue_deprecations = true
 
         @backtrace_formatter = BacktraceFormatter.new
 
@@ -920,6 +970,7 @@ module RSpec
       # @see color_enabled?
       # @return [Boolean]
       def color
+        RSpec.deprecate("RSpec::Core::Configuration#color", :replacement => "`color_mode`")
         value_for(:color) { @color }
       end
 
@@ -945,7 +996,9 @@ module RSpec
         when :on then true
         when :off then false
         else # automatic
-          output_to_tty?(output) || (color && tty?)
+          suppress_deprecations do
+            output_to_tty?(output) || (color && tty?)
+          end
         end
       end
 
@@ -956,8 +1009,11 @@ module RSpec
       #
       # @deprecated No longer recommended because of complex behavior. Instead,
       #   rely on the fact that TTYs will display color by default, or set
-      #   {:color_mode} to :on to display color on a non-TTY output.
-      attr_writer :color
+      #   {#color_mode} to :on to display color on a non-TTY output.
+      def color=(value)
+        RSpec.deprecate("RSpec::Core::Configuration#color=", :replacement => "`color_mode=`")
+        @color = value
+      end
 
       # @private
       def libs=(libs)
@@ -1240,7 +1296,13 @@ module RSpec
       def alias_it_behaves_like_to(new_name, report_label='')
         RSpec::Core::ExampleGroup.define_nested_shared_group_method(new_name, report_label)
       end
-      alias_method :alias_it_should_behave_like_to, :alias_it_behaves_like_to
+
+      # Alias for `alias_it_behaves_like_to`.
+      # @deprecated Use {#alias_it_behaves_like_to} instead.
+      def alias_it_should_behave_like_to(new_name, report_label='')
+        RSpec.deprecate("RSpec::Core::Configuration#alias_it_should_behave_like_to", :replacement => "`alias_it_behaves_like_to`")
+        alias_it_behaves_like_to(new_name, report_label)
+      end
 
       # Adds key/value pairs to the `inclusion_filter`. If `args`
       # includes any symbols that are not part of the hash, each symbol
@@ -2136,6 +2198,24 @@ module RSpec
                   "Only `:fork` and `:shell` are supported."
           end
         end
+      end
+
+      # Temporarily suppresses deprecation warnings, this is intended for use
+      # to "acknowledge" deprecations that are going away (like turning off
+      # monkey patching mode) and internals that are being removed.
+      #
+      # Returns the value of the block
+      def suppress_deprecations
+        @issue_deprecations = false
+        yield
+      ensure
+        @issue_deprecations = true
+      end
+
+      # @private
+      # Temporary api used to silence internal deprecations
+      def issue_deprecation?
+        @issue_deprecations
       end
 
     private

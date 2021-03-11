@@ -44,6 +44,8 @@ module RSpec::Core
         return SkippedExampleNotification.new(example) if execution_result.example_skipped?
         return new(example) unless execution_result.status == :pending || execution_result.status == :failed
 
+        # Note these subclasses are deprecated and going away but they're still in use here, let us know
+        # if this caused an issue upgrading.
         klass = if execution_result.pending_fixed?
                   PendingExampleFixedNotification
                 elsif execution_result.status == :pending

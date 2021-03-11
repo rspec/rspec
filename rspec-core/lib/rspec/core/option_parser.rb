@@ -33,6 +33,7 @@ module RSpec::Core
   private
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/BlockLength
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
@@ -141,6 +142,7 @@ module RSpec::Core
 
         parser.on('-c', '--color', '--colour', '') do |_o|
           # flag will be excluded from `--help` output because it is deprecated
+          RSpec.deprecate("--colo(u)r", :replacement => "--force-colo(u)r if needed, but color is automatic.")
           options[:color] = true
           options[:color_mode] = :automatic
         end
@@ -305,6 +307,7 @@ FILTERING
       end
     end
     # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/BlockLength
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
