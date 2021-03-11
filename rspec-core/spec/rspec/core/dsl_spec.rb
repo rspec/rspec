@@ -27,6 +27,24 @@ RSpec.describe "The RSpec DSL" do
           expect(Object.new).not_to respond_to(*method_names)
         end
       end
+
+      it 'emits a deprecation warning' do
+        in_sub_process do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 9, /Globally-exposed DSL \(`describe`\)/)
+          changing_expose_dsl_globally do
+            expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
+            RSpec.configuration.expose_dsl_globally = true
+
+            expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
+            expect(RSpec.configuration.expose_dsl_globally?).to eq true
+
+            Module.new do
+              describe 'monkey' do
+              end
+            end
+          end
+        end
+      end
     end
 
     context "when expose_dsl_globally is disabled" do

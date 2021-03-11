@@ -37,6 +37,7 @@ module RSpec
         begin
           include ::Mocha::API
         rescue NameError
+          RSpec.deprecate("Support for this version of Mocha is deprecated, please install >= 0.13")
           include ::Mocha::Standalone
         end
 

@@ -8,6 +8,8 @@ module RSpec
       #
       # Used internally to print deprecation warnings.
       def deprecate(deprecated, data={})
+        return unless RSpec.configuration.issue_deprecation?
+
         RSpec.configuration.reporter.deprecation(
           {
             :deprecated => deprecated,
