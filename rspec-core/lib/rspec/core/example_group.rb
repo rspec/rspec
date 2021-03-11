@@ -323,6 +323,8 @@ module RSpec
       #   @see SharedExampleGroup
       def self.define_nested_shared_group_method(new_name, report_label="it should behave like")
         idempotently_define_singleton_method(new_name) do |name, *args, &customization_block|
+          yield if block_given? # to print a deprecation warning for it_should_behave_like usage
+
           # Pass :caller so the :location metadata is set properly.
           # Otherwise, it'll be set to the next line because that's
           # the block's source_location.
@@ -339,7 +341,9 @@ module RSpec
       define_nested_shared_group_method :it_behaves_like, "behaves like"
       # Generates a nested example group and includes the shared content
       # mapped to `name` in the nested group.
-      define_nested_shared_group_method :it_should_behave_like
+      define_nested_shared_group_method(:it_should_behave_like) do
+        RSpec.deprecate("`it_should_behave_like`", :replacement => "`it_behaves_like`")
+      end
 
       # Includes shared content mapped to `name` directly in the group in which
       # it is declared, as opposed to `it_behaves_like`, which creates a nested

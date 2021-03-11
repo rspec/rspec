@@ -54,6 +54,12 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
       expect(example).to receive(:location_rerun_argument) { :location_rerun_argument }
       expect(example.rerun_argument).to eq(:location_rerun_argument)
     end
+
+    it "emits a deprecation warning when used" do
+      example = RSpec.describe.example
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /rerun_argument/)
+      example.rerun_argument
+    end
   end
 
   describe "#update_inherited_metadata" do

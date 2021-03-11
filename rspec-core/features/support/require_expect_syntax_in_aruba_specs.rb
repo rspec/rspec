@@ -26,7 +26,9 @@ else
   end
 
   RSpec.configure do |rspec|
-    rspec.disable_monkey_patching!
+    rspec.suppress_deprecations do
+      rspec.disable_monkey_patching!
+    end
     rspec.include DisallowOneLinerShould unless ENV['ALLOW_ONELINER_SHOULD']
   end
 end

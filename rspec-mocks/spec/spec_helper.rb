@@ -78,9 +78,11 @@ end
 require 'rspec/support/spec'
 
 RSpec.configure do |config|
-  config.expose_dsl_globally = false
+  config.suppress_deprecations do
+    config.expose_dsl_globally = false
+  end
   config.mock_with :rspec
-  config.color = true
+  config.color_mode = :automatic
   config.order = :random
 
   config.expect_with :rspec do |expectations|
