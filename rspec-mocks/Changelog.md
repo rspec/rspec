@@ -11,6 +11,7 @@ Breaking Changes:
   to `true`. (Phil Pirozhkov, rspec/rspec-mocks#1409)
 * Remove deprecated `allow_message_expectations_on_nil` example method.
   (Phil Pirozhkov, rspec/rspec-mocks#1410)
+* Fix stubbing of prepended-only methods. (Lin Jen-Shin, rspec/rspec-mocks#1218)
 
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.4...rspec-mocks-v3.13.5)
