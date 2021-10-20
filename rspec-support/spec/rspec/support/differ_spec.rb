@@ -274,10 +274,12 @@ module RSpec
         it 'outputs unified diff message of two string arrays' do
           expected = ['foo', 'bar', 'baz', 'quux']
           actual = ['foo', 'bar', 'corge', 'quux', 'garply']
+
+          added_line_index = ::Diff::LCS::VERSION.to_f < 1.4 ? 7 : 5
           expected_diff = dedent(<<-EOD)
             |
             |
-            |@@ -1,6 +1,5 @@
+            |@@ -1,6 +1,#{added_line_index} @@
             | foo
             | bar
             |-corge
@@ -293,10 +295,12 @@ module RSpec
         it 'outputs unified diff message of nested string arrays' do
           expected = ['foo', ['bar', 'baz'], 'quux']
           actual = ['foo', ['bar', 'corge'], 'quux', 'garply']
+
+          added_line_index = ::Diff::LCS::VERSION.to_f < 1.4 ? 6 : 4
           expected_diff = dedent(<<-EOD)
             |
             |
-            |@@ -1,5 +1,4 @@
+            |@@ -1,5 +1,#{added_line_index} @@
             | foo
             |-["bar", "corge"]
             |+["bar", "baz"]
