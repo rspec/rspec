@@ -1,12 +1,13 @@
 ### Development (unreleased)
 
 Breaking Changes:
-
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, #436)
 
 Bug Fixes:
 * Use `Mutex#owned?` to allow `RSpec::Support::ReentrantMutex` to work in
   nested Fibers on Ruby 3.0 and later. (Benoit Daloze, #503)
+* Support `end`-less methods in `RSpec::Support::Source::Token`
+  so that RSpec won't hang when an `end`-less method raises an error. (Yuji Nakayama, #505)
 
 ### 3.10.0 / 2020-10-30
 

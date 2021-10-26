@@ -54,12 +54,16 @@ module RSpec
           type == :on_kw
         end
 
+        def equals_operator?
+          type == :on_op && string == '='
+        end
+
         def opening?
           opening_delimiter? || opening_keyword?
         end
 
         def closed_by?(other)
-          closed_by_delimiter?(other) || closed_by_keyword?(other)
+          delimiter_closed_by?(other) || keyword_closed_by?(other)
         end
 
       private
@@ -73,13 +77,16 @@ module RSpec
           CLOSING_KEYWORDS_BY_OPENING_KEYWORD.key?(string)
         end
 
-        def closed_by_delimiter?(other)
+        def delimiter_closed_by?(other)
           other.type == CLOSING_TYPES_BY_OPENING_TYPE[type]
         end
 
-        def closed_by_keyword?(other)
-          return false unless other.keyword?
-          other.string == CLOSING_KEYWORDS_BY_OPENING_KEYWORD[string]
+        def keyword_closed_by?(other)
+          return false unless keyword?
+          return true if other.string == CLOSING_KEYWORDS_BY_OPENING_KEYWORD[string]
+
+          # Ruby 3's `end`-less method definition: `def method_name = body`
+          string == 'def' && other.equals_operator? && location.line == other.location.line
         end
       end
     end
