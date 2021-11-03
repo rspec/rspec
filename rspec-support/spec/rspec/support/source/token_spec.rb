@@ -26,6 +26,24 @@ class RSpec::Support::Source
     #   [[1, 6], :on_ident, "foo"]
     # ]
 
+    describe "#closed_by" do
+      context "with a normal ruby multi line method" do
+        let(:source) { "def foo\n  :bar\nend" }
+
+        specify 'the first token is closed by the last' do
+          expect(tokens.first).to be_closed_by(tokens.last)
+        end
+      end
+
+      context "with a ruby one line method definition" do
+        let(:source) { 'def self.foo = "bar"' }
+
+        specify 'the first token is closed by the =' do
+          expect(tokens.first).to be_closed_by(tokens[6])
+        end
+      end
+    end
+
     describe '#location' do
       it 'returns a Location object with line and column numbers' do
         expect(target_token.location).to have_attributes(:line => 1, :column => 0)
