@@ -213,8 +213,8 @@ MESSAGE
       end
     end
 
-    let(:max_runtime) { 2 }
-    let(:actual) { Array.new(10_000) { rand(10) } }
+    let(:max_runtime) { 0.5 }
+    let(:actual) { Array.new(1000) { rand(10) } }
 
     context "with a positive expectation" do
       subject { expect(actual).to contain_exactly(*expected) }
@@ -230,7 +230,7 @@ MESSAGE
       end
 
       context "that is not valid" do
-        let(:expected) { Array.new(10_000) { rand(10) } }
+        let(:expected) { Array.new(1000) { rand(10) } }
 
         include_examples "fails fast", "expected collection contained"
       end
@@ -240,7 +240,7 @@ MESSAGE
       subject { expect(actual).not_to contain_exactly(*expected) }
 
       context "that is valid" do
-        let(:expected) { Array.new(10_000) { rand(10) } }
+        let(:expected) { Array.new(1000) { rand(10) } }
 
         it "does not match" do
           subject
