@@ -10,7 +10,7 @@ module RSpec
         @string = string
       end
 
-      def <=>(other) # rubocop:disable Metrics/AbcSize
+      def <=>(other)
         other = self.class.new(other) unless other.is_a?(self.class)
 
         return 0 if string == other.string

@@ -6,7 +6,7 @@ require 'pp'
 
 module RSpec
   module Support
-    # rubocop:disable ClassLength
+    # rubocop:disable Metrics/ClassLength
     class Differ
       def diff(actual, expected)
         diff = ""
@@ -24,7 +24,7 @@ module RSpec
         diff.to_s
       end
 
-      # rubocop:disable MethodLength
+      # rubocop:disable Metrics/MethodLength
       def diff_as_string(actual, expected)
         encoding = EncodedString.pick_encoding(actual, expected)
 
@@ -52,7 +52,7 @@ module RSpec
       rescue Encoding::CompatibilityError
         handle_encoding_errors(actual, expected)
       end
-      # rubocop:enable MethodLength
+      # rubocop:enable Metrics/MethodLength
 
       def diff_as_object(actual, expected)
         actual_as_string = object_to_string(actual)
@@ -204,6 +204,6 @@ module RSpec
         end
       end
     end
-    # rubocop:enable ClassLength
+    # rubocop:enable Metrics/ClassLength
   end
 end

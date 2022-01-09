@@ -7,7 +7,7 @@ module RSpec
 
         # Useful as a way to isolate a global change to a subprocess.
 
-        def in_sub_process(prevent_warnings=true) # rubocop:disable MethodLength, Metrics/AbcSize
+        def in_sub_process(prevent_warnings=true) # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
           exception_reader, exception_writer = IO.pipe
           result_reader, result_writer = IO.pipe
 

@@ -1,12 +1,16 @@
 inherit_from:
   - .rubocop_rspec_base.yml
+  - .rubocop_todo.yml
 
+# Over time we'd like to get this down, but this is what we're at now.
 Metrics/AbcSize:
   Max: 28
 
+# Over time we'd like to get this down, but this is what we're at now.
 Metrics/BlockLength:
-  Max: 86
+  Max: 834
 
+# Over time we'd like to get this down, but this is what we're at now.
 Metrics/PerceivedComplexity:
   Max: 10
 
@@ -18,16 +22,10 @@ Style/EvalWithLocation:
   Exclude:
     # eval is only used here to check syntax
     - 'lib/rspec/support/ruby_features.rb'
+    - 'benchmarks/skip_frames_for_caller_filter.rb'
+    - 'spec/rspec/support/method_signature_verifier_spec.rb'
 
 Lint/AssignmentInCondition:
   Exclude:
     # The pattern makes sense here
     - 'lib/rspec/support/mutex.rb'
-
-# Over time we'd like to get this down, but this is what we're at now.
-Metrics/AbcSize:
-  Max: 22
-
-# Over time we'd like to get this down, but this is what we're at now.
-Metrics/PerceivedComplexity:
-  Max: 9
