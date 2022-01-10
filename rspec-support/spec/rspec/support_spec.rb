@@ -22,7 +22,8 @@ module RSpec
       http_request_class = Struct.new(:method, :uri)
 
       proxy_class = Struct.new(:original) do
-        undef :=~, :method
+        undef :=~ if respond_to?(:=~)
+        undef :method if respond_to?(:method)
         def method_missing(name, *args, &block)
           original.__send__(name, *args, &block)
         end
@@ -39,12 +40,12 @@ module RSpec
       end
 
       it 'fetches method definitions for proxy objects' do
-        object = proxy_class.new([])
+        object = proxy_class.new('abc')
         expect(Support.method_handle_for(object, :=~)).to be_a Method
       end
 
       it 'fetches method definitions for proxy objects' do
-        object = proxy_class.new([])
+        object = proxy_class.new('abc')
         expect(Support.method_handle_for(object, :=~)).to be_a Method
       end
 
