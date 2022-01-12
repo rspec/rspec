@@ -8,7 +8,9 @@ Metrics/AbcSize:
 
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/BlockLength:
-  Max: 834
+  Max: 86
+  Exclude:
+    - spec/**/*
 
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/PerceivedComplexity:
