@@ -83,7 +83,9 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
     splitter.verify_no_warnings!
   end
 
-  unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
+  unless RSpec::Support::Ruby.rbx? || RSpec::Support::Ruby.truffleruby?
+    # TruffleRuby doesn't support warnings for now
+    # https://github.com/oracle/truffleruby/issues/2595 
     it 'will fail an example which generates a warning' do
       true unless $undefined
       expect { splitter.verify_no_warnings! }.to raise_error(/Warnings were generated:/)

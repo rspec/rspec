@@ -23,7 +23,7 @@ module RSpec
     # when `CallerFilter.first_non_rspec_line` is called from the top level of a required
     # file, but it depends on if rubygems is loaded or not. We don't want to have to deal
     # with this complexity in our `RSpec.deprecate` calls, so we ignore it here.
-    IGNORE_REGEX = Regexp.union(LIB_REGEX, "rubygems/core_ext/kernel_require.rb")
+    IGNORE_REGEX = Regexp.union(LIB_REGEX, "rubygems/core_ext/kernel_require.rb", "<internal:")
 
     # This supports args because it's more efficient when the caller specifies
     # these. It allows us to skip frames the caller knows are part of RSpec,
