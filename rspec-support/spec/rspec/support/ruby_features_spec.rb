@@ -63,6 +63,10 @@ module RSpec
         RubyFeatures.fork_supported?
       end
 
+      specify "distincts_kw_args_from_positional_hash?" do
+        RubyFeatures.distincts_kw_args_from_positional_hash?
+      end
+
       specify "#supports_taint?" do
         RubyFeatures.supports_taint?
       end
