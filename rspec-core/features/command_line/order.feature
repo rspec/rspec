@@ -31,7 +31,7 @@ config file (e.g. `.rspec`) and you want to override it from the command line.
 --order recently-modified
 </code></pre>
 
-Scenario: Default order is `defined`
+Scenario: The default order is psuedo randomised (seed used here to fix the ordering for tests)
   Given a file named "example_spec.rb" with:
     """ruby
     RSpec.describe "something" do
@@ -42,15 +42,15 @@ Scenario: Default order is `defined`
       end
     end
     """
-    When I run `rspec example_spec.rb --format documentation`
+    When I run `rspec example_spec.rb --format documentation --seed 123`
     Then the output should contain:
       """
       something
-        does something
         in order
+        does something
       """
 
-Scenario: Order can be psuedo randomised (seed used here to fix the ordering for tests)
+Scenario: Order can be set to as `defined`
   Given a file named "example_spec.rb" with:
     """ruby
     RSpec.describe "something" do
@@ -61,12 +61,12 @@ Scenario: Order can be psuedo randomised (seed used here to fix the ordering for
       end
     end
     """
-    When I run `rspec example_spec.rb --format documentation --order rand:123`
+    When I run `rspec example_spec.rb --order defined --format documentation`
     Then the output should contain:
       """
       something
-        in order
         does something
+        in order
       """
 
 Scenario: Configure custom ordering

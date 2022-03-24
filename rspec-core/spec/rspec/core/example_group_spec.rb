@@ -823,6 +823,8 @@ module RSpec::Core
       end
 
       it "runs before_all_defined_in_config, before all, before each, example, after each, after all, after_all_defined_in_config in that order" do
+        RSpec.configuration.order = :defined
+
         order = []
 
         RSpec.configure do |c|
@@ -1376,7 +1378,11 @@ module RSpec::Core
       end
 
       context "with fail_fast enabled" do
-        before { RSpec.configuration.fail_fast = true }
+        before do
+          RSpec.configuration.fail_fast = true
+          RSpec.configuration.order = :defined
+        end
+
         let(:group) { RSpec.describe }
         let(:reporter) { Reporter.new(RSpec.configuration) }
 
@@ -1400,7 +1406,11 @@ module RSpec::Core
       end
 
       context "with fail_fast set to 3" do
-        before { RSpec.configuration.fail_fast = 3 }
+        before do
+          RSpec.configuration.fail_fast = 3
+          RSpec.configuration.order = :defined
+        end
+
         let(:group) { RSpec.describe }
         let(:reporter) { Reporter.new(RSpec.configuration) }
 
@@ -1562,6 +1572,8 @@ module RSpec::Core
       end
 
       it "applies new metadata-based config items based on the update" do
+        RSpec.configuration.order = :defined
+
         extension = Module.new do
           def extension_method; 17; end
         end
@@ -1608,6 +1620,8 @@ module RSpec::Core
       end
 
       it "does not cause duplicate hooks to be added when re-configuring the group" do
+        RSpec.configuration.order = :defined
+
         sequence = []
         RSpec.configure do |c|
           c.before(:example, :foo => true) { sequence << :global_before_hook }

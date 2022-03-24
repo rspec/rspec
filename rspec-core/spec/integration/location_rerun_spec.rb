@@ -67,7 +67,7 @@ RSpec.describe 'Failed spec rerun location' do
     around { |ex| with_env_vars('SHELL' => '/usr/local/bin/zsh', &ex) }
 
     it 'prints the example id of the failed assertion' do
-      run_command("#{Dir.pwd}/tmp/aruba/local_shared_examples_spec.rb")
+      run_command("--order defined #{Dir.pwd}/tmp/aruba/local_shared_examples_spec.rb")
 
       expect(last_cmd_stdout).to include unindent(<<-EOS)
           Failed examples:
@@ -81,7 +81,7 @@ RSpec.describe 'Failed spec rerun location' do
 
     context "and the shared examples are defined in a separate file" do
       it 'prints the example id of the failed assertion' do
-        run_command("#{Dir.pwd}/tmp/aruba/non_local_shared_examples_spec.rb")
+        run_command("--order defined #{Dir.pwd}/tmp/aruba/non_local_shared_examples_spec.rb")
 
         expect(last_cmd_stdout).to include unindent(<<-EOS)
           Failed examples:
@@ -103,7 +103,7 @@ RSpec.describe 'Failed spec rerun location' do
     context "when the shared examples are defined in the same file as the spec" do
 
       it 'prints the line number where the assertion failed in the local file' do
-        run_command("#{Dir.pwd}/tmp/aruba/local_shared_examples_spec.rb")
+        run_command("--order defined #{Dir.pwd}/tmp/aruba/local_shared_examples_spec.rb")
 
         expect(last_cmd_stdout).to include unindent(<<-EOS)
           Failed examples:
@@ -118,7 +118,7 @@ RSpec.describe 'Failed spec rerun location' do
 
     context "and the shared examples are defined in a separate file" do
       it 'prints the line number where the `it_behaves_like` was called in the local file' do
-        run_command("#{Dir.pwd}/tmp/aruba/non_local_shared_examples_spec.rb")
+        run_command("--order defined #{Dir.pwd}/tmp/aruba/non_local_shared_examples_spec.rb")
 
         expect(last_cmd_stdout).to include unindent(<<-EOS)
           Failed examples:

@@ -34,6 +34,7 @@ Breaking Changes:
 * Raise on attempt to use a legacy formatter without `rspec-legacy_formatters`.
   (Phil Pirozhkov, rspec/rspec-core#2864)
 * Unify multi-condition filtering to use "all" semantic. (Phil Pirozhkov, rspec/rspec-core#2874)
+* Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
 
 Enhancements:
 
