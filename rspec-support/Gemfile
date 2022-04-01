@@ -19,6 +19,12 @@ gem 'ffi', '~> 1.12.0'
 ### dep for ci/coverage
 gem 'simplecov', '~> 0.8'
 
+if RUBY_VERSION < '2.4.0' && !!(RbConfig::CONFIG['host_os'] =~ /cygwin|mswin|mingw|bccwin|wince|emx/)
+  gem 'ffi', '< 1.15'
+else
+  gem 'ffi', '~> 1.15'
+end
+
 # No need to run rubocop on earlier versions
 if RUBY_VERSION >= '2.4' && RUBY_ENGINE == 'ruby'
   gem "rubocop", "~> 0.52.1"
