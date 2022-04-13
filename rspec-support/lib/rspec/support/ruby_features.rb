@@ -70,7 +70,8 @@ module RSpec
       # or cannot parse source including `:if`.
       # Ripper on JRuby 9.x.x.x < 9.1.17.0 can't handle keyword arguments
       # Neither can JRuby prior to 9.2.1.0
-      if Ruby.rbx? || (Ruby.jruby? && RSpec::Support::Ruby.jruby_version < '9.2.1.0')
+      # TruffleRuby disables ripper due to low performance
+      if Ruby.rbx? || Ruby.truffleruby? || (Ruby.jruby? && RSpec::Support::Ruby.jruby_version < '9.2.1.0')
         def ripper_supported?
           false
         end
