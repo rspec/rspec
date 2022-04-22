@@ -177,9 +177,13 @@ RSpec.describe "#include matcher" do
     let(:range) { (start..finish) }
   end
 
-  shared_context "only runs for modern rubies" do
+  shared_context "runs for modern rubies, raises for old rubies" do
     around(:example) do |example|
-      example.run if RUBY_VERSION >= "2.1.9"
+      if RUBY_VERSION >= "2.1.9"
+        example.run
+      else
+        expect { example.run }.to raise_error(TypeError)
+      end
     end
   end
 
@@ -227,7 +231,7 @@ RSpec.describe "#include matcher" do
     end
 
     context "for a range target" do
-      include_context "only runs for modern rubies"
+      include_context "runs for modern rubies, raises for old rubies"
 
       context "with elements that support iteration" do
         let(:range) { 1..3 }
@@ -590,7 +594,7 @@ RSpec.describe "#include matcher" do
     end
 
     context "for a range target" do
-      include_context "only runs for modern rubies"
+      include_context "runs for modern rubies, raises for old rubies"
 
       context "with elements that support iteration" do
         let(:range) { 1..3 }
@@ -813,7 +817,7 @@ RSpec.describe "#include matcher" do
     end
 
     context "for a range target" do
-      include_context "only runs for modern rubies"
+      include_context "runs for modern rubies, raises for old rubies"
 
       context "with elements that support iteration" do
         let(:range) { 1..3 }
@@ -1061,7 +1065,7 @@ RSpec.describe "#include matcher" do
 
   describe "expect(...).not_to include(with, multiple, args)" do
     context "for a range target" do
-      include_context "only runs for modern rubies"
+      include_context "runs for modern rubies, raises for old rubies"
 
       context "with elements that support iteration" do
         let(:range) { 1..3 }
@@ -1499,7 +1503,7 @@ RSpec.describe "#include matcher" do
     end
 
     describe "expect(range).to include(matcher)" do
-      include_context "only runs for modern rubies"
+      include_context "runs for modern rubies, raises for old rubies"
 
       it "passes when the matcher matches one of the values" do
         expect(10..30).to include( a_value_within(5).of(24) )
