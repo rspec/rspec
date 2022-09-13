@@ -27,6 +27,11 @@ Style/EvalWithLocation:
     - 'benchmarks/skip_frames_for_caller_filter.rb'
     - 'spec/rspec/support/method_signature_verifier_spec.rb'
 
+Style/SlicingWithRange:
+  Exclude:
+    # This cop is not supported on all rubies
+    - 'lib/rspec/support/source/node.rb'
+
 Lint/AssignmentInCondition:
   Exclude:
     # The pattern makes sense here
