@@ -31,7 +31,7 @@ module RSpec
         # Ignore warnings coming from gems, specifically Rails on Ruby 2.5+
         return if line =~ %r{^\S+/gems/\S+:\d+: warning:} # http://rubular.com/r/kqeUIZOfPG
 
-        # Ruby 2.7.0 warnings from keyword argments span multiple lines, extend check above
+        # Ruby 2.7.0 warnings from keyword arguments span multiple lines, extend check above
         # to look for the next line.
         return if @last_line =~ %r{^\S+/gems/\S+:\d+: warning:} &&
                   line =~ %r{warning: The called method .* is defined here}

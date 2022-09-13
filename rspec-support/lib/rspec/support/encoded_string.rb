@@ -64,7 +64,7 @@ module RSpec
       #     vs "\x80".encode('UTF-8','ASCII-8BIT', undef: :replace, replace: '<undef>')
       #     # => '<undef>'
       #   Encoding::CompatibilityError
-      #     when Encoding.compatibile?(str1, str2) is nil
+      #     when Encoding.compatible?(str1, str2) is nil
       #     e.g. utf_16le_emoji_string.split("\n")
       #     e.g. valid_unicode_string.encode(utf8_encoding) << ascii_string
       #   Encoding::InvalidByteSequenceError:
@@ -96,7 +96,7 @@ module RSpec
         string = remove_invalid_bytes(string)
         string.encode(@encoding)
       rescue Encoding::UndefinedConversionError, Encoding::InvalidByteSequenceError
-        # Originally defined as a constant to avoid uneeded allocations, this hash must
+        # Originally defined as a constant to avoid unneeded allocations, this hash must
         # be defined inline (without {}) to avoid warnings on Ruby 2.7
         #
         # 'invalid: :replace' also replaces an invalid byte sequence
@@ -107,7 +107,7 @@ module RSpec
         #
         string.encode(@encoding, :invalid => :replace, :undef => :replace, :replace => REPLACE)
       rescue Encoding::ConverterNotFoundError
-        # Originally defined as a constant to avoid uneeded allocations, this hash must
+        # Originally defined as a constant to avoid unneeded allocations, this hash must
         # be defined inline (without {}) to avoid warnings on Ruby 2.7
         string.dup.force_encoding(@encoding).encode(:invalid => :replace, :replace => REPLACE)
       end

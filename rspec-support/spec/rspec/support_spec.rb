@@ -50,7 +50,7 @@ module RSpec
       end
 
       it 'fails with `NameError` when an undefined method is fetched ' +
-         'from an object that has overriden `method` to raise an Exception' do
+         'from an object that has overridden `method` to raise an Exception' do
         object = double
         allow(object).to receive(:method).and_raise(Exception)
         expect {
@@ -59,7 +59,7 @@ module RSpec
       end
 
       it 'fails with `NameError` when a method is fetched from an object ' +
-         'that has overriden `method` to not return a method' do
+         'that has overridden `method` to not return a method' do
         object = proxy_class.new(double(:method => :baz))
         expect {
           Support.method_handle_for(object, :=~)
@@ -102,7 +102,7 @@ module RSpec
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
         end
 
-        it 'works when `method` has been overriden' do
+        it 'works when `method` has been overridden' do
           object = basic_class_with_method_override.new
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
         end

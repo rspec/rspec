@@ -53,7 +53,7 @@ module RSpec
 
       it 'does not match rubygems lines from `require` statements' do
         with_isolated_stderr do
-          require 'rubygems' # ensure rubygems is laoded
+          require 'rubygems' # ensure rubygems is loaded
         end
 
         in_rspec_support_lib("test_dir") do |dir|
