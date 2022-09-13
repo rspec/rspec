@@ -128,19 +128,16 @@ module RSpec
       INFINITY = 1 / 0.0
     end
 
-    if RSpec::Support::Ruby.jruby?
-      # JRuby has only partial support for UnboundMethod#parameters, so we fall back on using #arity
-      # https://github.com/jruby/jruby/issues/2816 and https://github.com/jruby/jruby/issues/2817
-      if Java::JavaLang::String.instance_method(:char_at).parameters == []
+    # JRuby has only partial support for UnboundMethod#parameters, so we fall back on using #arity
+    # https://github.com/jruby/jruby/issues/2816 and https://github.com/jruby/jruby/issues/2817
+    if RSpec::Support::Ruby.jruby? && Java::JavaLang::String.instance_method(:char_at).parameters == []
+      class MethodSignature < remove_const(:MethodSignature)
+      private
 
-        class MethodSignature < remove_const(:MethodSignature)
-        private
-
-          def classify_parameters
-            super
-            if (arity = @method.arity) != 0 && @method.parameters.empty?
-              classify_arity(arity)
-            end
+        def classify_parameters
+          super
+          if (arity = @method.arity) != 0 && @method.parameters.empty?
+            classify_arity(arity)
           end
         end
       end

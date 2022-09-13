@@ -75,7 +75,7 @@ module RSpec
       private
 
         def raw_args
-          sexp[1..-1] || []
+          sexp[1..] || []
         end
       end
 
