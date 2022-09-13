@@ -35,13 +35,15 @@ module RSpec
         hunks = build_hunks(actual, expected)
 
         hunks.each_cons(2) do |prev_hunk, current_hunk|
-          if current_hunk.overlaps?(prev_hunk)
-            add_old_hunk_to_hunk(current_hunk, prev_hunk)
-          else
-            add_to_output(output, prev_hunk.diff(format_type).to_s)
+          begin
+            if current_hunk.overlaps?(prev_hunk)
+              add_old_hunk_to_hunk(current_hunk, prev_hunk)
+            else
+              add_to_output(output, prev_hunk.diff(format_type).to_s)
+            end
+          ensure
+            add_to_output(output, "\n")
           end
-        ensure
-          add_to_output(output, "\n")
         end
 
         finalize_output(output, hunks.last.diff(format_type).to_s) if hunks.last
