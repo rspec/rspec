@@ -1,9 +1,11 @@
 ### Development
-[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.11.1...4-0-dev)
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.0...4-0-dev)
 
 Breaking Changes:
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, #436)
 
+### 3.12.0 / 2022-10-26
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.11.1...v3.12.0)
 Enhancements:
 
 * Add `RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?`
