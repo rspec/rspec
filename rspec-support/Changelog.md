@@ -5,6 +5,10 @@ Enhancements:
 
 * Add magic comment for freezing string literals. (Josh Nichols, #586)
 
+Bug Fixes:
+
+* Add magic comment for freezing string literals. (Josh Nichols, #586)
+
 ### 3.12.1 / 2023-06-26
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.0...v3.12.1)
 
