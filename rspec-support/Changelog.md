@@ -1,5 +1,12 @@
 ### Development
-[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.2...main)
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.13.0...main)
+
+### 3.13.0 / 2024-02-04
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.2...v3.13.0)
+
+Enchancements
+
+* Add `RubyFeatures#supports_syntax_suggest?`. (Jon Rowe, #571)
 
 ### 3.12.2 / 2024-02-04
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.1...v3.12.2)
