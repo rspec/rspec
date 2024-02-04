@@ -3,6 +3,7 @@
 
 Bug Fixes:
 
+* Properly surface errors from `in_sub_process`. (Jon Rowe, #575)
 * Add magic comment for freezing string literals. (Josh Nichols, #586)
 * Allow string keys for keyword arguments during verification of method
   signatures, (but only on Ruby 3+). (@malcolmohare, #591)
