@@ -4,6 +4,8 @@
 Bug Fixes:
 
 * Add magic comment for freezing string literals. (Josh Nichols, #586)
+* Allow string keys for keyword arguments during verification of method
+  signatures, (but only on Ruby 3+). (@malcolmohare, #591)
 
 ### 3.12.1 / 2023-06-26
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.0...v3.12.1)
