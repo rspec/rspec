@@ -1,5 +1,13 @@
 ### Development
-[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.13.0...main)
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.13.1...main)
+
+### 3.13.1 / 2024-02-23
+[Full Changelog](http://github.com/rspec/rspec-support/compare/v3.13.0...v3.13.1)
+
+Bug Fixes:
+
+* Exclude ruby internal require warnings from `RSpec::Support::CallerFilter#first_non_rspec_line`.
+  (Jon Rowe, #593)
 
 ### 3.13.0 / 2024-02-04
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.2...v3.13.0)
