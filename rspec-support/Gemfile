@@ -9,7 +9,11 @@ branch = File.read(File.expand_path("../maintenance-branch", __FILE__)).chomp
   if File.exist?(library_path) && !ENV['USE_GIT_REPOS']
     gem lib, :path => library_path
   else
-    gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => branch
+    if lib == 'rspec'
+      gem 'rspec', :git => "https://github.com/rspec/rspec-metagem.git", :branch => branch
+    else
+      gem lib, :git => "https://github.com/rspec/#{lib}.git", :branch => branch
+    end
   end
 end
 
@@ -25,6 +29,11 @@ if ENV['DIFF_LCS_VERSION']
   gem 'diff-lcs', ENV['DIFF_LCS_VERSION']
 else
   gem 'diff-lcs', '~> 1.4', '>= 1.4.3'
+end
+
+if RUBY_VERSION >= '3.3.0'
+  # This is being extracted in Ruby 3.4 and issues a warning on 3.3
+  gem 'bigdecimal', :require => false
 end
 
 if RUBY_VERSION < '2.3.0' && !!(RbConfig::CONFIG['host_os'] =~ /cygwin|mswin|mingw|bccwin|wince|emx/)

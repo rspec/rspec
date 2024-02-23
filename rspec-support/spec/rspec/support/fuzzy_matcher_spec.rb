@@ -64,7 +64,7 @@ module RSpec
         end
 
         before(:context) do
-          expect { Color.new(0, 0, 0) == Object.new }.to raise_error(NoMethodError, /undefined method `r'/)
+          expect { Color.new(0, 0, 0) == Object.new }.to raise_error(NoMethodError, /undefined method [`']r'/)
         end
 
         it 'can match against an expected value that matches anything' do
@@ -78,7 +78,7 @@ module RSpec
         it 'surfaces the `NoMethodError` when used as the expected value' do
           expect {
             FuzzyMatcher.values_match?(Color.new(0, 0, 0), Object.new)
-          }.to raise_error(NoMethodError, /undefined method `r'/)
+          }.to raise_error(NoMethodError, /undefined method [`']r'/)
         end
 
         it 'can match against objects of the same type' do
