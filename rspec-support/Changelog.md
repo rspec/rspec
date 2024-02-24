@@ -16,6 +16,11 @@ Enchancements
 
 * Add `RubyFeatures#supports_syntax_suggest?`. (Jon Rowe, #571)
 
+Bug Fixes:
+
+* Allow string keys for keyword arguments during verification of method
+  signatures, (but only on Ruby 3+). (@malcolmohare, #591)
+
 ### 3.12.2 / 2024-02-04
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.1...v3.12.2)
 
@@ -23,8 +28,6 @@ Bug Fixes:
 
 * Properly surface errors from `in_sub_process`. (Jon Rowe, #575)
 * Add magic comment for freezing string literals. (Josh Nichols, #586)
-* Allow string keys for keyword arguments during verification of method
-  signatures, (but only on Ruby 3+). (@malcolmohare, #591)
 
 ### 3.12.1 / 2023-06-26
 [Full Changelog](http://github.com/rspec/rspec-support/compare/v3.12.0...v3.12.1)
