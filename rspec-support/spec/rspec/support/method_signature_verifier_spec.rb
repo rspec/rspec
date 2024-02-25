@@ -3,6 +3,8 @@
 require 'rspec/support'
 require 'rspec/support/method_signature_verifier'
 
+def ruby2_keywords(*); end unless respond_to?(:ruby2_keywords, true)
+
 module RSpec
   module Support
     RSpec.describe 'verifying methods' do
