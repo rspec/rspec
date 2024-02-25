@@ -80,7 +80,7 @@ module RSpec
         end
 
         # Considering the arg types, are there kw_args?
-        def has_kw_args_in?(args)
+        def has_kw_args_in?(args) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           if RubyFeatures.kw_arg_separation?
             # If the last arg is a hash, depending on the signature it could be kw_args or a positional parameter.
             return false unless Hash === args.last && could_contain_kw_args?(args)
