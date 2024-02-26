@@ -3,8 +3,6 @@
 require 'rspec/support'
 require 'rspec/support/method_signature_verifier'
 
-def ruby2_keywords(*); end unless respond_to?(:ruby2_keywords, true)
-
 module RSpec
   module Support
     RSpec.describe 'verifying methods' do
@@ -14,17 +12,19 @@ module RSpec
         described_class.new(signature, [nil] * arity).valid?
       end
 
-      ruby2_keywords def valid?(*args)
+      def valid?(*args)
         described_class.new(signature, args).valid?
       end
+      ruby2_keywords(:valid?) if respond_to?(:ruby2_keywords, true)
 
       def error_description
         described_class.new(signature).error_message[/Expected (.*),/, 1]
       end
 
-      ruby2_keywords def error_for(*args)
+      def error_for(*args)
         described_class.new(signature, args).error_message
       end
+      ruby2_keywords(:error_for) if respond_to?(:ruby2_keywords, true)
 
       def signature_description
         signature.description
