@@ -308,7 +308,7 @@ module RSpec
 
       def initialize(signature, args=[])
         @signature = signature
-        @non_kw_args, @kw_args = split_args(*args)
+        @non_kw_args, @kw_args = split_args(args.clone)
         @min_non_kw_args = @max_non_kw_args = @non_kw_args
         @arbitrary_kw_args = @unlimited_args = false
       end
@@ -388,7 +388,7 @@ module RSpec
         !@unlimited_args || @signature.unlimited_args?
       end
 
-      def split_args(*args)
+      def split_args(args)
         kw_args = if @signature.has_kw_args_in?(args) && !RubyFeatures.kw_arg_separation?
                     last = args.pop
                     non_kw_args = last.reject { |k, _| k.is_a?(Symbol) }
@@ -421,13 +421,13 @@ module RSpec
     class LooseSignatureVerifier < MethodSignatureVerifier
     private
 
-      def split_args(*args)
+      def split_args(args)
         if RSpec::Support.is_a_matcher?(args.last) && @signature.could_contain_kw_args?(args)
           args.pop
           @signature = SignatureWithKeywordArgumentsMatcher.new(@signature)
         end
 
-        super(*args)
+        super(args)
       end
 
       # If a matcher is used in a signature in place of keyword arguments, all
