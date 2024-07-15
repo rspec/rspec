@@ -164,7 +164,7 @@ module RSpec
 
       context 'with an object having a singleton class' do
         let(:object) do
-          object = 'foo'
+          object = String.new('foo')
 
           def object.some_method
           end
