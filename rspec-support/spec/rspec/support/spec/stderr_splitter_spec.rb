@@ -102,26 +102,34 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
 
   # This spec replicates what matchers do when capturing stderr, e.g `to_stderr_from_any_process`
   it 'is able to restore the stream from a cloned StdErrSplitter' do
-    if RSpec::Support::Ruby.jruby?
-      skip """
-      This spec is currently unsupported on JRuby on CI due to tempfiles not being
-      a file, this situtation was discussed here https://github.com/rspec/rspec-support/pull/598#issuecomment-2200779633
-      """
-    end
-
     cloned = splitter.clone
-    expect(splitter.to_io).not_to be_a(File)
+    expect(splitter.to_io).to be_stderr
 
     tempfile = Tempfile.new("foo")
     begin
       splitter.reopen(tempfile)
-      expect(splitter.to_io).to be_a(File)
+      expect(splitter.to_io).to_not be_stderr
     ensure
       splitter.reopen(cloned)
       tempfile.close
       tempfile.unlink
     end
     # This is the important part of the test that would fail without proper cloning hygeine
-    expect(splitter.to_io).not_to be_a(File)
+    expect(splitter.to_io).to be_stderr
+  end
+
+  # Detecting STDERR in a way that doesn't use a reference
+  if STDERR.respond_to?(:path)
+    def be_stderr
+      have_attributes({:path => '<STDERR>'})
+    end
+  elsif STDERR.inspect =~ /STDERR/
+    def be_stderr
+      have_attributes({:inspect => "#<IO:<STDERR>>"})
+    end
+  else
+    def be_stderr
+      raise skip "JRuby < 9.0.0.0 doesn't have a predictable identifier for stdout"
+    end
   end
 end
