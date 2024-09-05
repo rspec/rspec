@@ -35,6 +35,10 @@ Breaking Changes:
   (Phil Pirozhkov, rspec/rspec-core#2864)
 * Unify multi-condition filtering to use "all" semantic. (Phil Pirozhkov, rspec/rspec-core#2874)
 * Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
+* Raise an error when an example group description is neither a string, class or module.
+  (Eisuke Yoshida, rspec/rspec-core#3081)
+* Raise an error when an example description is nor a string.
+  (Eisuke Yoshida, rspec/rspec-core#3081)
 
 Enhancements:
 
