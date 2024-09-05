@@ -274,6 +274,10 @@ module RSpec
             combined_metadata.merge!(args.pop) if args.last.is_a? Hash
             args << combined_metadata
 
+            unless NilClass === description || String === description || Class === description || Module === description
+              raise ArgumentError, "Example groups must be described with a string, got: `#{description.inspect}`"
+            end
+
             subclass(self, description, args, registration_collection, &example_group_block)
           ensure
             thread_data.delete(:in_example_group) if top_level
