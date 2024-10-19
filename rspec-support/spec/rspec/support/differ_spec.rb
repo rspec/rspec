@@ -306,6 +306,8 @@ module RSpec
               |
             EOD
 
+            expected_diff.gsub!('=>',' => ') if RUBY_VERSION.to_f > 3.3
+
             diff = differ.diff(expected,actual)
             expect(diff).to be_diffed_as(expected_diff)
           end
@@ -375,6 +377,7 @@ module RSpec
             |+"c" => {"key_1"=>#{formatted_time}},
             |
           EOD
+          expected_diff.gsub!('"=>','" => ') if RUBY_VERSION.to_f > 3.3
 
           left_side_hash = {'c' => {'key_1' => time}}
           right_side_hash = {'b' => {'key_1' => time}}
@@ -408,6 +411,7 @@ module RSpec
             |+[{"a"=>#{formatted_time}}, "c"]
             |
           EOD
+          expected_diff.gsub!('=>',' => ') if RUBY_VERSION.to_f > 3.3
 
           left_side_array = [{'a' => time}, 'c']
           right_side_array = [{'b' => time}, 'c']

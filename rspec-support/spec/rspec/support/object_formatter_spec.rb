@@ -27,7 +27,7 @@ module RSpec
             # We can't count on the ordering of the hash on 1.8.7...
             expect(formatted).to include(%Q{"key"=>#{formatted_time}}, %Q{#{formatted_time}=>"value"}, %Q{"nested"=>{"key"=>#{formatted_time}}})
           else
-            expect(formatted).to eq(%Q{{"key"=>#{formatted_time}, #{formatted_time}=>"value", "nested"=>{"key"=>#{formatted_time}}}})
+            expect(formatted).to eq_hash_syntax(%Q{{"key"=>#{formatted_time}, #{formatted_time}=>"value", "nested"=>{"key"=>#{formatted_time}}}})
           end
         end
       end
@@ -39,7 +39,7 @@ module RSpec
 
           it 'sorts keys to ensure objects are always displayed the same way' do
             formatted = ObjectFormatter.format(input)
-            expect(formatted).to eq expected
+            expect(formatted).to eq_hash_syntax expected
           end
         end
       end
@@ -269,7 +269,7 @@ module RSpec
         let(:formatted_time) { ObjectFormatter.format(time) }
 
         it 'formats the recursive element as {...} and other elements with custom formatting' do
-          expect(output).to eq("{{...}=>#{formatted_time}}")
+          expect(output).to eq_hash_syntax("{{...}=>#{formatted_time}}")
         end
       end
 
@@ -289,7 +289,7 @@ module RSpec
         let(:formatted_time) { ObjectFormatter.format(time) }
 
         it 'formats the recursive element as {...} and other elements with custom formatting' do
-          expect(output).to eq("{#{formatted_time}=>{...}}")
+          expect(output).to eq_hash_syntax("{#{formatted_time}=>{...}}")
         end
       end
 
@@ -305,7 +305,7 @@ module RSpec
         end
 
         it 'formats the recursive element as [...]' do
-          expect(output).to eq('[{:recursive_array=>[...]}]')
+          expect(output).to eq_hash_syntax('[{:recursive_array=>[...]}]')
         end
       end
 
@@ -321,7 +321,7 @@ module RSpec
         end
 
         it 'formats the recursive element as {...}' do
-          expect(output).to eq('{:array=>[:next_is_recursive_hash, {...}]}')
+          expect(output).to eq_hash_syntax('{:array=>[:next_is_recursive_hash, {...}]}')
         end
       end
 
@@ -336,7 +336,7 @@ module RSpec
         end
 
         it 'does not omit them' do
-          expect(output).to eq('[{:key=>"value"}, {:key=>"value"}]')
+          expect(output).to eq_hash_syntax('[{:key=>"value"}, {:key=>"value"}]')
         end
       end
 
@@ -368,6 +368,16 @@ module RSpec
         it 'does not limit the output length' do
           formatter = ObjectFormatter.new(nil)
           expect(formatter.format('Test String Of A Longer Length')).to eq('"Test String Of A Longer Length"')
+        end
+      end
+
+      if RUBY_VERSION.to_f > 3.3
+        def eq_hash_syntax(string)
+          eq string.gsub('=>', ' => ')
+        end
+      else
+        def eq_hash_syntax(string)
+          eq string
         end
       end
     end
