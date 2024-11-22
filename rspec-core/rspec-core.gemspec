@@ -44,15 +44,4 @@ Gem::Specification.new do |s|
     # rspec-support must otherwise match our major/minor version
     s.add_runtime_dependency "rspec-support", "~> #{RSpec::Core::Version::STRING.split('.')[0..1].concat(['0']).join('.')}"
   end
-
-  s.add_development_dependency "cucumber", ">= 1.3"
-  s.add_development_dependency "minitest", "~> 5.3"
-  s.add_development_dependency "aruba",    "~> 0.14.9"
-
-  s.add_development_dependency "coderay",  "~> 1.1.1"
-
-  s.add_development_dependency "mocha",        "~> 0.13.0"
-  s.add_development_dependency "rr",           "~> 1.0.4"
-  s.add_development_dependency "flexmock",     "~> 0.9.0"
-  s.add_development_dependency "thread_order", "~> 1.1.0"
 end
