@@ -1,0 +1,32 @@
+name: Run Documentation Checks
+on: workflow_call
+
+permissions:
+  contents: read
+
+env:
+  RSPEC_CI: true
+
+jobs:
+  documentation_coverage:
+    name: Check documentation coverage for ${{ matrix.rspec_library }}
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        rspec_library:
+          - 'rspec-core'
+          - 'rspec-expectations'
+          - 'rspec-mocks'
+      fail-fast: false
+    defaults:
+      run:
+        working-directory: ${{ matrix.rspec_library }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+      - run: ../script/update_rubygems_and_install_bundler
+      - run: bundle install --standalone
+      - run: bundle binstubs --all
+      - run: ../script/check_documentation_coverage

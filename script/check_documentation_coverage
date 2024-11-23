@@ -1,0 +1,39 @@
+set -e
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+SCRIPT_DIR="${ROOT_DIR}/script"
+source $SCRIPT_DIR/functions.sh
+
+echo "bin/yard stats --list-undoc"
+
+$ROOT_DIR/bin/yard stats --list-undoc | ruby -e "
+  while line = gets
+    has_warnings ||= line.start_with?('[warn]:')
+    coverage ||= line[/([\d\.]+)% documented/, 1]
+    puts line
+  end
+
+  unless Float(coverage) == 100
+    puts \"\n\nMissing documentation coverage (currently at #{coverage}%)\"
+    exit(1)
+  end
+
+  if has_warnings
+    puts \"\n\nYARD emitted documentation warnings.\"
+    exit(1)
+  end
+"
+
+# Some warnings only show up when generating docs, so do that as well.
+$ROOT_DIR/bin/yard doc --no-cache | ruby -e "
+  while line = gets
+    has_warnings ||= line.start_with?('[warn]:')
+    has_errors   ||= line.start_with?('[error]:')
+    puts line
+  end
+
+  if has_warnings || has_errors
+    puts \"\n\nYARD emitted documentation warnings or errors.\"
+    exit(1)
+  end
+"
