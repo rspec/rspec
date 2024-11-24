@@ -446,7 +446,7 @@ module RSpec::Core
         task.pattern = "spec/*spec.rb"
         FileUtils.mkdir_p(spec_dir)
 
-        files = ["first_spec.rb", "second_\"spec.rb", "third_\'spec.rb", "fourth spec.rb"].map do |file_name|
+        files = ["first_spec.rb", "second_\"spec.rb", "third_'spec.rb", "fourth spec.rb"].map do |file_name|
           File.join("spec", file_name).tap { |f| FileUtils.touch(f) }
         end
 

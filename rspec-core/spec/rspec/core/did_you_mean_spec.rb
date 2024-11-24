@@ -18,7 +18,7 @@ module RSpec
           end
           context 'No suitable suggestions' do
             it 'returns empty string' do
-              name = './' + 'x' * 50
+              name = './' + ('x' * 50)
               expect(DidYouMean.new(name).call).to eq ''
             end
           end

@@ -27,7 +27,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
       opts.configure(configuration)
 
-      expect(configuration).to have_received(:force).with({:deprecation_stream => "path/to/log"}).ordered
+      expect(configuration).to have_received(:force).with({ :deprecation_stream => "path/to/log" }).ordered
       expect(configuration).to have_received(:requires=).ordered
     end
 
@@ -38,8 +38,8 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
       opts.configure(configuration)
 
-      expect(configuration).to have_received(:force).with({:deprecation_stream => "path/to/log"}).ordered
-      expect(filter_manager).to have_received(:include).with({:foo => true}).ordered
+      expect(configuration).to have_received(:force).with({ :deprecation_stream => "path/to/log" }).ordered
+      expect(filter_manager).to have_received(:include).with({ :foo => true }).ordered
     end
 
     it "configures deprecation_stream before configuring formatters" do
@@ -48,14 +48,14 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
       opts.configure(configuration)
 
-      expect(configuration).to have_received(:force).with({:deprecation_stream => "path/to/log"}).ordered
+      expect(configuration).to have_received(:force).with({ :deprecation_stream => "path/to/log" }).ordered
       expect(configuration).to have_received(:add_formatter).ordered
     end
 
     it "sets dry_run before libs and requires" do
       opts = config_options_object(*%w[--dry-run --require a/path -I a/lib])
       configuration = double("config").as_null_object
-      expect(configuration).to receive(:force).with({:dry_run => true}).ordered
+      expect(configuration).to receive(:force).with({ :dry_run => true }).ordered
       expect(configuration).to receive(:libs=).ordered
       expect(configuration).to receive(:requires=).ordered
       opts.configure(configuration)
@@ -87,7 +87,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
     it "sets default_path before loading specs" do
       opts = config_options_object(*%w[--default-path spec])
-      expect(config).to receive(:force).with({:default_path => 'spec'}).ordered
+      expect(config).to receive(:force).with({ :default_path => 'spec' }).ordered
       expect(config).to receive(:get_files_to_run).ordered
       opts.configure(config)
       config.files_to_run
@@ -102,7 +102,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
     it "sets default_path before `files_or_directories_to_run` since it relies on it" do
       opts = config_options_object(*%w[--default-path spec])
-      expect(config).to receive(:force).with({:default_path => 'spec'}).ordered
+      expect(config).to receive(:force).with({ :default_path => 'spec' }).ordered
       expect(config).to receive(:files_or_directories_to_run=).ordered
       opts.configure(config)
     end
@@ -110,7 +110,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
     it 'configures the seed (via `order`) before requires so that required files can use the configured seed' do
       opts = config_options_object(*%w[ --seed 1234 --require spec_helper ])
 
-      expect(config).to receive(:force).with({:order => "rand:1234"}).ordered
+      expect(config).to receive(:force).with({ :order => "rand:1234" }).ordered
       expect(config).to receive(:requires=).ordered
 
       opts.configure(config)
@@ -118,7 +118,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
     it 'configures `only_failures` before `files_or_directories_to_run` since it affects loaded files' do
       opts = config_options_object(*%w[ --only-failures ])
-      expect(config).to receive(:force).with({:only_failures => true}).ordered
+      expect(config).to receive(:force).with({ :only_failures => true }).ordered
       expect(config).to receive(:files_or_directories_to_run=).ordered
       opts.configure(config)
     end
@@ -126,7 +126,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
     { "pattern" => :pattern, "exclude-pattern" => :exclude_pattern }.each do |flag, attr|
       it "sets #{attr} before `requires` so users can check `files_to_run` in a `spec_helper` loaded by `--require`" do
         opts = config_options_object(*%W[--require spec_helper --#{flag} **/*.spec])
-        expect(config).to receive(:force).with({attr => '**/*.spec'}).ordered
+        expect(config).to receive(:force).with({ attr => '**/*.spec' }).ordered
         expect(config).to receive(:requires=).ordered
         opts.configure(config)
       end
@@ -146,20 +146,20 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
 
     it "forces color" do
       opts = config_options_object(*%w[--color])
-      expect(config).to receive(:force).with({:color => true})
-      expect(config).to receive(:force).with({:color_mode => :automatic})
+      expect(config).to receive(:force).with({ :color => true })
+      expect(config).to receive(:force).with({ :color_mode => :automatic })
       opts.configure(config)
     end
 
     it "forces force_color" do
       opts = config_options_object(*%w[--force-color])
-      expect(config).to receive(:force).with({:color_mode => :on})
+      expect(config).to receive(:force).with({ :color_mode => :on })
       opts.configure(config)
     end
 
     it "forces no_color" do
       opts = config_options_object(*%w[--no-color])
-      expect(config).to receive(:force).with({:color_mode => :off})
+      expect(config).to receive(:force).with({ :color_mode => :off })
       opts.configure(config)
     end
 
@@ -404,7 +404,7 @@ RSpec.describe RSpec::Core::ConfigurationOptions, :isolated_directory => true, :
   describe "default_path" do
     it "gets set before files_or_directories_to_run" do
       config = RSpec::Core::Configuration.new
-      expect(config).to receive(:force).with({:default_path => 'foo'}).ordered
+      expect(config).to receive(:force).with({ :default_path => 'foo' }).ordered
       expect(config).to receive(:get_files_to_run).ordered
       opts = config_options_object("--default-path", "foo")
       opts.configure(config)

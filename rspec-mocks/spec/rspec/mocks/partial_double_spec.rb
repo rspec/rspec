@@ -441,7 +441,7 @@ module RSpec
       end
 
       it 'avoids deadlocks when a proxy is accessed from within a `before_verifying_doubles` callback' do
-        msg_klass = Class.new { def message; end; }
+        msg_klass = Class.new { def message; end }
         called_for = []
 
         RSpec.configuration.mock_with(:rspec) do |config|

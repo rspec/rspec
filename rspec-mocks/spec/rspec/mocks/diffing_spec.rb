@@ -170,7 +170,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
     context 'with keyword arguments on partial doubles' do
       include_context "with isolated configuration"
 
-      let(:d) { Class.new { def foo(a, b); end }.new }
+      let(:d) { Class.new { def foo(_arg_a, _arg_b); end }.new }
 
       before(:example) do
         RSpec::Mocks.configuration.verify_partial_doubles = true

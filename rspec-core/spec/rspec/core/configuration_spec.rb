@@ -29,7 +29,10 @@ module RSpec::Core
       end
 
       it 'successfully invokes the block' do
-        RSpec.describe("group") { it "example 1" do; end}
+        RSpec.describe("group") do
+          it "example 1" do
+          end
+        end
         example = RSpec.world.example_groups.first.examples.first
         expect(example.metadata[:new_key]).to eq(:new_value)
       end

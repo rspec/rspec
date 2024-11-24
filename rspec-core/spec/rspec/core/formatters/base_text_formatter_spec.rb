@@ -300,6 +300,6 @@ RSpec.describe RSpec::Core::Formatters::BaseTextFormatter do
   # Ruby 3.4 includes modules names in stack traces but two of our tests are looking for RSpec module names, remove
   # this one as it is considered 'safe'
   def formatter_output_without_formatter_module
-    formatter_output.string.tr('RSpec::ExampleGroups::RSpecCoreFormattersBaseTextFormatter::DumpFailures#','')
+    formatter_output.string.tr('RSpec::ExampleGroups::RSpecCoreFormattersBaseTextFormatter::DumpFailures#', '')
   end
 end

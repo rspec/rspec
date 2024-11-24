@@ -53,7 +53,7 @@ module RSpec
           doc.search("div.backtrace").
             collect {|e| e.at("pre").inner_html}.
             collect {|e| e.split("\n")}.flatten.
-            select  {|e| e =~ /formatter_specs\.rb/}
+            grep(/formatter_specs\.rb/)
         end
 
         describe 'produced HTML', :if => RUBY_VERSION <= '2.0.0' do

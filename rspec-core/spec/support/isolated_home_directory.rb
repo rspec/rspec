@@ -20,13 +20,13 @@ end
 module HomeFixtureHelpers
   def create_fixture_file(file_name, contents)
     path = Pathname.new(file_name).expand_path
-    if !path.exist?
+    if path.exist?
+      # Abort just in case we're about to destroy something important.
+      raise "File at #{path} already exists!"
+    else
       path.dirname.mkpath
       # Pathname#write does not exist in all supported Ruby versions
       File.open(path.to_s, 'w') { |file| file << contents }
-    else
-      # Abort just in case we're about to destroy something important.
-      raise "File at #{path} already exists!"
     end
   end
 end

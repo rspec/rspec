@@ -351,7 +351,7 @@ module RSpec::Matchers::DSL
           end
 
           match_when_negated do |to_match|
-            (to_match <= five) || greater_than_ceiling(to_match) && not_divisible_by_divisor?(to_match)
+            (to_match <= five) || (greater_than_ceiling(to_match) && not_divisible_by_divisor?(to_match))
           end
 
           chain :and_smaller_than do |ceiling|

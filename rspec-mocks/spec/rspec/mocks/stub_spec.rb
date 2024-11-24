@@ -136,7 +136,7 @@ module RSpec
       context "stubbing with prepend", :if => Support::RubyFeatures.module_prepends_supported? do
         module ToBePrepended
           def value
-            "#{super}_prepended".to_sym
+            :"#{super}_prepended"
           end
         end
 
@@ -378,7 +378,7 @@ module RSpec
           context "with a prepended module (ruby 2.0.0+)" do
             module ToBePrepended
               def existing_method
-                "#{super}_prepended".to_sym
+                :"#{super}_prepended"
               end
             end
 

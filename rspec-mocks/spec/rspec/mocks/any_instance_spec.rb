@@ -382,7 +382,7 @@ module RSpec
             expect("".dup.foo).to eq(1)
           end
 
-          it "works with the non-standard constructor \'\'" do
+          it "works with the non-standard constructor ''" do
             allow_any_instance_of(String).to receive(:foo).and_return(1)
             expect(''.dup.foo).to eq(1)
           end

@@ -202,15 +202,15 @@ module RSpec
             print "foo"; $stderr.print("bar")
           }.to output(/baz/).to_stdout.and output(/qux/).to_stderr
         }.to fail_including(
-            'expected block to output /baz/ to stdout, but output "foo"',
-            '...and:',
-            'expected block to output /qux/ to stderr, but output "bar"',
-            'Diff for (output /baz/ to stdout):',
-            '-/baz/',
-            '+"foo"',
-            'Diff for (output /qux/ to stderr):',
-            '-/qux/',
-            '+"bar"'
+          'expected block to output /baz/ to stdout, but output "foo"',
+          '...and:',
+          'expected block to output /qux/ to stderr, but output "bar"',
+          'Diff for (output /baz/ to stdout):',
+          '-/baz/',
+          '+"foo"',
+          'Diff for (output /qux/ to stderr):',
+          '-/qux/',
+          '+"bar"'
           )
       end
     end

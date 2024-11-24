@@ -85,7 +85,7 @@ module RSpec::Core
         childs_process_list = []
         ps_pipe = `ps -o pid=,ppid=,state=,args= | grep #{pid}`
 
-        ps_pipe.split(/\n/).map do |line|
+        ps_pipe.split("\n").map do |line|
           ps_part = line.lstrip.split(/\s+/)
 
           next unless ps_part[1].to_i == pid

@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 require 'spec_helper'
 require 'timeout'
 require 'rspec/support/spec/string_matcher'

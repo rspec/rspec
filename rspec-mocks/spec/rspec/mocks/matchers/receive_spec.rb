@@ -395,6 +395,8 @@ module RSpec
           end
         end
 
+        # This is done to fake out frozen methods
+        # rubocop:disable Lint/StructNewOverride
         context "with fake frozen object" do
           let(:klass)  { Struct.new(:foo, :frozen?, :freeze) }
           let(:object) { klass.new :bar, true }
@@ -406,6 +408,7 @@ module RSpec
             expect { reset object }.to change { object.foo }.from(5).to(:bar)
           end
         end
+        # rubocop:enable Lint/StructNewOverride
       end
 
       describe "allow(...).to receive" do

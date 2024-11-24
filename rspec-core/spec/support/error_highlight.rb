@@ -1,6 +1,6 @@
 if defined?(ErrorHighlight)
   class DummyErrorHighlightFormatter
-    def self.message_for(spot)
+    def self.message_for(_spot)
       ""
     end
   end

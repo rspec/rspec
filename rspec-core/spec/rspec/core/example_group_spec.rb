@@ -2012,12 +2012,10 @@ module RSpec::Core
     end
 
     def group_ids group
-      ids = []
       ['descendant_filtered_examples', 'descendants',
-       'parent_groups', 'declaration_locations', 'before_context_ivars'].each do |method|
-        ids << group.send(method).object_id
+       'parent_groups', 'declaration_locations', 'before_context_ivars'].map do |method|
+        group.send(method).object_id
       end
-      ids
     end
 
     it 'allows adding examples' do

@@ -44,7 +44,7 @@ Before('@kw-arguments') do |scenario|
 end
 
 Before('@distincts_kw_args_from_positional_hash') do |scenario|
-  unless RSpec::Support::RubyFeatures. distincts_kw_args_from_positional_hash?
+  unless RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?
     warn "Skipping scenario due to not applicable to this ruby"
     if Cucumber::VERSION.to_f >= 3.0
       skip_this_scenario
