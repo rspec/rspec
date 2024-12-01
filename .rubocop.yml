@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - bin/*
     - bundle/**/*
+    - rspec/**/*
   NewCops:
     disable
   SuggestExtensions: false
