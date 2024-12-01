@@ -1,0 +1,7 @@
+AllCops:
+  Exclude:
+    - bin/*
+    - bundle/**/*
+  NewCops:
+    disable
+  SuggestExtensions: false
