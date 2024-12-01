@@ -6,18 +6,10 @@ AllCops:
   Exclude:
     # This code was taken from the backports gem. We don't want to mess with it.
     - lib/rspec/core/backport_random.rb
+    - tmp/**/*
 
-# This should go down over time.
-Metrics/ClassLength:
-  Max: 330
-
-# This can be addressed once Ruby 1.8 support is removed.
-Style/Encoding:
+Layout/AccessModifierIndentation:
   Enabled: false
-
-# This should go down over time.
-Metrics/AbcSize:
-  Max: 40
 
 # This should go down over time.
 Layout/LineLength:
@@ -26,16 +18,29 @@ Layout/LineLength:
     - features/**/*
     - spec/**/*
 
-# This should go down over time.
-Metrics/MethodLength:
-  Max: 39
+# This could change depending of the style used
+Layout/MultilineOperationIndentation:
+  Enabled: false
 
-# This should go down over time.
-Metrics/CyclomaticComplexity:
-  Max: 12
+Layout/SpaceAroundOperators:
+  AllowForAlignment: true
 
-Metrics/PerceivedComplexity:
-  Max: 15
+Lint/LiteralInInterpolation:
+  Enabled: false
+
+Lint/IneffectiveAccessModifier:
+  Exclude:
+    - lib/rspec/core/memoized_helpers.rb # Fixing this file was too much of a diff
+
+Lint/NonLocalExitFromIterator:
+  Enabled: false
+
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+Lint/SelfAssignment:
+  Exclude:
+    - spec/rspec/core/configuration_spec.rb
 
 Lint/SuppressedException:
   Exclude:
@@ -44,30 +49,37 @@ Lint/SuppressedException:
     - lib/rspec/core/runner.rb
     - lib/rspec/core/test_unit_assertions_adapter.rb
 
-Lint/LiteralInInterpolation:
-  Enabled: false
+# This should go down over time.
+Metrics/AbcSize:
+  Max: 40
 
-Lint/NonLocalExitFromIterator:
-  Enabled: false
+Metrics/BlockLength:
+  Max: 206
+  Exclude:
+    - spec/**/*.rb
 
-# We don't care about single vs double quotes.
-Style/StringLiteralsInInterpolation:
-  Enabled: false
+# This should go down over time.
+Metrics/ClassLength:
+  Max: 330
 
-Style/SymbolProc:
-  Enabled: false
+# This should go down over time.
+Metrics/CyclomaticComplexity:
+  Max: 12
 
-Layout/SpaceAroundOperators:
-  AllowForAlignment: true
+# This should go down over time.
+Metrics/MethodLength:
+  Max: 39
+  Exclude:
+    - spec/support/formatter_support.rb
 
-Layout/AccessModifierIndentation:
-  Enabled: false
+Metrics/ModuleLength:
+  Exclude:
+    - spec/**/*
 
-Style/RegexpLiteral:
-  Enabled: false
+Metrics/PerceivedComplexity:
+  Max: 15
 
-# This could change depending of the style used
-Layout/MultilineOperationIndentation:
+Style/AccessModifierDeclarations:
   Enabled: false
 
 Style/BarePercentLiterals:
@@ -87,6 +99,14 @@ Style/ClassAndModuleChildren:
     - lib/rspec/core/option_parser.rb
     - lib/rspec/core/reporter.rb
 
+# This can be addressed once Ruby 1.8 support is removed.
+Style/Encoding:
+  Enabled: false
+
+Style/HashEachMethods:
+  Exclude:
+    - lib/rspec/core/metadata_filter.rb
+
 Style/RaiseArgs:
   Exclude:
     - lib/rspec/core/configuration.rb
@@ -95,11 +115,34 @@ Style/RaiseArgs:
     - lib/rspec/core/pending.rb
     - spec/rspec/core/formatters/base_text_formatter_spec.rb
 
-Lint/IneffectiveAccessModifier:
+Style/RedundantBegin:
   Exclude:
-    - lib/rspec/core/memoized_helpers.rb # Fixing this file was too much of a diff
+    - lib/rspec/core/configuration.rb
+    - lib/rspec/core/example_group.rb
 
-Metrics/BlockLength:
-  Max: 206
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/StringConcatenation:
   Exclude:
-    - spec/**/*.rb
+    - features/step_definitions/additional_cli_steps.rb
+    - features/step_definitions/core_standalone_steps.rb
+    - lib/rspec/core/bisect/utilities.rb
+    - lib/rspec/core/did_you_mean.rb
+    - lib/rspec/core/example_group.rb
+    - lib/rspec/core/notifications.rb
+    - lib/rspec/core/option_parser.rb
+    - spec/rspec/core/configuration_spec.rb
+    - spec/rspec/core/did_you_mean_spec.rb
+    - spec/rspec/core/formatters/base_text_formatter_spec.rb
+    - spec/rspec/core/memoized_helpers_spec.rb
+    - spec/rspec/core/option_parser_spec.rb
+    - spec/support/formatter_support.rb
+    - spec/support/spec_files.rb
+
+# We don't care about single vs double quotes.
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false

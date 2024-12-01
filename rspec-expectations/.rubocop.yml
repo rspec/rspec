@@ -3,86 +3,11 @@ inherit_from:
   - .rubocop_rspec_base.yml
 
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 3.3
   DisplayCopNames: true
   Exclude:
     - bin/*
     - tmp/**/*
-
-# Over time we'd like to get this down, but this is what we're at now.
-Layout/LineLength:
-  Max: 186
-
-# Offense count: 1
-Style/BlockComments:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Exclude:
-    - spec/**/*
-
-Style/EvalWithLocation:
-  Exclude:
-    - spec/rspec/matchers/built_in/respond_to_spec.rb
-
-Style/MultilineBlockChain:
-  Exclude:
-    - spec/**/*
-
-Style/RescueModifier:
-  Exclude:
-    - spec/**/*
-    - benchmarks/**/*
-
-Style/Semicolon:
-  Enabled: false
-
-Style/SingleLineMethods:
-  Exclude:
-    - spec/**/*
-    - benchmarks/**/*
-
-# We have some situations where we need to use `raise ExceptionClass.new(argument)`.
-Style/RaiseArgs:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
-  Exclude:
-    - REPORT_TEMPLATE.md
-
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    default: []
-    '%r':   '||'
-
-Style/WordArray:
-  Enabled: false
-
-Security/Eval:
-  Exclude:
-    - Gemfile
-
-Metrics/AbcSize:
-  Max: 27
-
-# Offense count: 2
-# Configuration parameters: CountComments, ExcludedMethods.
-Metrics/BlockLength:
-  Max: 96
-  Exclude:
-    - spec/**/*
-
-# Offense count: 1
-# Configuration parameters: CountComments.
-Metrics/ModuleLength:
-  Max: 239
-  Exclude:
-    - spec/**/*
-
-# Offense count: 4
-Metrics/PerceivedComplexity:
-  Max: 14
 
 Layout/AccessModifierIndentation:
   Exclude:
@@ -108,9 +33,9 @@ Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/*'
 
-Lint/SuppressedException:
+Lint/ConstantDefinitionInBlock:
   Exclude:
-    - benchmarks/**/*
+    - spec/**/*
 
 # Offense count: 3
 Lint/IneffectiveAccessModifier:
@@ -122,8 +47,109 @@ Lint/InheritException:
   Exclude:
     - 'lib/rspec/expectations.rb'
 
-Bundler/DuplicatedGem:
+Lint/RedundantRequireStatement:
+  Exclude:
+    - spec/rspec/matchers/built_in/change_spec.rb
+    - spec/rspec/matchers/built_in/contain_exactly_spec.rb
+    - spec/rspec/matchers/built_in/eq_spec.rb
+
+Lint/SuppressedException:
+  Exclude:
+    - benchmarks/**/*
+
+Lint/Void:
+  Exclude:
+    - spec/rspec/matchers/built_in/yield_spec.rb
+
+# Over time we'd like to get this down, but this is what we're at now.
+Layout/LineLength:
+  Max: 186
+
+Metrics/AbcSize:
+  Max: 27
+
+# Offense count: 2
+# Configuration parameters: CountComments, ExcludedMethods.
+Metrics/BlockLength:
+  Max: 96
+  Exclude:
+    - spec/**/*
+
+# Offense count: 1
+# Configuration parameters: CountComments.
+Metrics/ModuleLength:
+  Max: 239
+  Exclude:
+    - spec/**/*
+
+# Offense count: 4
+Metrics/PerceivedComplexity:
+  Max: 14
+
+Security/Eval:
+  Exclude:
+    - Gemfile
+
+Style/AccessModifierDeclarations:
+  Exclude:
+    - lib/rspec/matchers/composable.rb
+    - lib/rspec/matchers/built_in/base_matcher.rb
+
+# Offense count: 1
+Style/BlockComments:
   Enabled: false
 
-Bundler/OrderedGems:
+Style/ClassAndModuleChildren:
+  Exclude:
+    - spec/**/*
+
+Style/EvalWithLocation:
+  Exclude:
+    - spec/rspec/matchers/built_in/respond_to_spec.rb
+
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+  Exclude:
+    - REPORT_TEMPLATE.md
+
+Style/HashEachMethods:
+  Exclude:
+    - lib/rspec/matchers/built_in/have_attributes.rb
+
+Style/MultilineBlockChain:
+  Exclude:
+    - spec/**/*
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: []
+    '%r':   '||'
+
+# We have some situations where we need to use `raise ExceptionClass.new(argument)`.
+Style/RaiseArgs:
+  Enabled: false
+
+Style/RedundantBegin:
+  Exclude:
+    - lib/rspec/expectations/failure_aggregator.rb
+    - lib/rspec/matchers/dsl.rb
+    - spec/rspec/expectations/extensions/kernel_spec.rb
+    - spec/rspec/matchers/built_in/raise_error_spec.rb
+    - spec/rspec/matchers/composable_spec.rb
+    - spec/rspec/matchers/dsl_spec.rb
+
+Style/RescueModifier:
+  Exclude:
+    - spec/**/*
+    - benchmarks/**/*
+
+Style/Semicolon:
+  Enabled: false
+
+Style/SingleLineMethods:
+  Exclude:
+    - spec/**/*
+    - benchmarks/**/*
+
+Style/WordArray:
   Enabled: false

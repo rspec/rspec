@@ -3,6 +3,46 @@ AllCops:
     - bin/*
     - bundle/**/*
     - rspec/**/*
+    - Gemfile
+    - '**/tmp/**/*'
+    - '**/benchmarks/**/*'
   NewCops:
     disable
   SuggestExtensions: false
+
+Layout/EmptyLineAfterMagicComment:
+  Exclude:
+    - rspec-support/spec/rspec/support/encoded_string_spec.rb
+    - rspec-support/rspec-support.gemspec
+    - rspec-support/spec/rspec/support/differ_spec.rb
+
+Layout/FirstArgumentIndentation:
+  Exclude:
+    - rspec-expectations/spec/rspec/matchers/multi_matcher_diff_spec.rb
+
+Layout/SpaceAroundMethodCallOperator:
+  Exclude:
+    - rspec-mocks/features/support/env.rb
+
+Layout/SpaceInsideHashLiteralBraces:
+  Exclude:
+    - rspec-core/spec/rspec/core/configuration_options_spec.rb
+    - rspec-mocks/spec/rspec/mocks/verifying_doubles/expected_arg_verification_spec.rb
+
+Lint/StructNewOverride:
+  Exclude:
+    - rspec-mocks/spec/rspec/mocks/matchers/receive_spec.rb
+
+Naming/MethodParameterName:
+  Exclude:
+    - rspec-mocks/spec/rspec/mocks/diffing_spec.rb
+
+Style/AccessModifierDeclarations:
+  Exclude:
+    - rspec-mocks/lib/rspec/mocks/message_expectation.rb
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false

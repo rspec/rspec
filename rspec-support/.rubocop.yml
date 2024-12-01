@@ -2,6 +2,20 @@ inherit_from:
   - .rubocop_rspec_base.yml
   - .rubocop_todo.yml
 
+AllCops:
+  Exclude:
+    - benchmarks/**/*
+    - tmp/**/*
+
+Lint/AssignmentInCondition:
+  Exclude:
+    # The pattern makes sense here
+    - 'lib/rspec/support/mutex.rb'
+
+Lint/Void:
+  Exclude:
+    - spec/rspec/support/spec/stderr_splitter_spec.rb
+
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/AbcSize:
   Max: 28
@@ -11,6 +25,10 @@ Metrics/BlockLength:
   Max: 86
   Exclude:
     - spec/**/*
+
+Metrics/ModuleLength:
+  Exclude:
+    - spec/rspec/support/method_signature_verifier_spec.rb
 
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/PerceivedComplexity:
@@ -27,13 +45,6 @@ Style/EvalWithLocation:
     - 'benchmarks/skip_frames_for_caller_filter.rb'
     - 'spec/rspec/support/method_signature_verifier_spec.rb'
 
-Lint/AssignmentInCondition:
-  Exclude:
-    # The pattern makes sense here
-    - 'lib/rspec/support/mutex.rb'
-
 Style/FrozenStringLiteralComment:
   Include:
     - lib/**/*.rb
-Layout/EmptyLineAfterMagicComment:
-  Enabled: true

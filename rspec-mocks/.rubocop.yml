@@ -4,20 +4,11 @@ inherit_from:
 
 # All these metrics should go down over time.
 
-Metrics/ClassLength:
-  Max: 279
-
-Metrics/CyclomaticComplexity:
-  Max: 18
-
 Layout/LineLength:
   Max: 193
   Exclude:
     - features/**/*
     - spec/**/*
-
-Metrics/MethodLength:
-  Max: 49
 
 Metrics/AbcSize:
   Max: 47
@@ -27,6 +18,15 @@ Metrics/BlockLength:
   Exclude:
     - spec/**/*
 
+Metrics/ClassLength:
+  Max: 279
+
+Metrics/CyclomaticComplexity:
+  Max: 18
+
+Metrics/MethodLength:
+  Max: 49
+
 Metrics/ModuleLength:
   Max: 220
   Exclude:
@@ -34,3 +34,9 @@ Metrics/ModuleLength:
 
 Metrics/PerceivedComplexity:
   Max: 19
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/ExpandPathArguments:
+  Enabled: false
