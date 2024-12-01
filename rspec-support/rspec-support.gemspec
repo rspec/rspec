@@ -14,11 +14,12 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.metadata = {
-    'bug_tracker_uri'   => 'https://github.com/rspec/rspec/issues',
-    'changelog_uri'     => "https://github.com/rspec/rspec/blob/rspec-support-v#{spec.version}/rspec-support/Changelog.md",
+    'bug_tracker_uri' => 'https://github.com/rspec/rspec/issues',
+    'changelog_uri' => "https://github.com/rspec/rspec/blob/rspec-support-v#{spec.version}/rspec-support/Changelog.md",
     'documentation_uri' => 'https://rspec.info/documentation/',
-    'mailing_list_uri'  => 'https://groups.google.com/forum/#!forum/rspec',
-    'source_code_uri'   => "https://github.com/rspec/rspec/blob/rspec-support-v#{spec.version}/rspec-support",
+    'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/rspec',
+    'rubygems_mfa_required' => 'true',
+    'source_code_uri' => "https://github.com/rspec/rspec/blob/rspec-support-v#{spec.version}/rspec-support",
   }
 
   spec.files         = `git ls-files -- lib/*`.split("\n")
