@@ -1,0 +1,46 @@
+name: RSpec CI
+
+on:
+  push:
+    branches:
+      - 'dev'
+      - 'main'
+      - '*-maintenance'
+      - 'setup-3-13-build'
+  pull_request:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    uses: rspec/rspec/.github/workflows/documentation_coverage.yml@dev
+
+  rubocop:
+    uses: rspec/rspec/.github/workflows/rubocop.yml@dev
+
+  core:
+    uses: rspec/rspec/.github/workflows/rspec.yml@setup-3-13-build
+    with:
+      library: 'rspec-core'
+      rspec_version: '~> 3.13.0'
+
+  mocks:
+    uses: rspec/rspec/.github/workflows/rspec.yml@setup-3-13-build
+    with:
+      library: 'rspec-mocks'
+      rspec_version: '~> 3.13.0'
+
+  expectations:
+    uses: rspec/rspec/.github/workflows/rspec.yml@setup-3-13-build
+    with:
+      library: 'rspec-expectations'
+      rspec_version: '~> 3.13.0'
+
+  support:
+    uses: rspec/rspec/.github/workflows/rspec.yml@setup-3-13-build
+    with:
+      library: 'rspec-support'
+      rspec_version: '~> 3.13.0'
