@@ -79,6 +79,10 @@ RSpec.describe RSpec do
       before(:example) do
         skip "Not reliably working on #{RUBY_DESCRIPTION}"
       end
+    elsif RUBY_VERSION.start_with?('2.4')
+      before(:example, :description => /spec files/) do
+        skip "Ruby 2.4.0 is producing a warning due to aruba"
+      end
     elsif RSpec::Support::Ruby.jruby? && JRUBY_VERSION =~ /9\.1\.17\.0/
       before(:example, :description => /spec files/) do
         skip "JRuby 9.1.17.0 generates unrelated warnings"
