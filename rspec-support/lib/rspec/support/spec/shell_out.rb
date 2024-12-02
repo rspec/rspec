@@ -61,7 +61,9 @@ module RSpec
           %r{bundler/source/rubygems},
           # Ignore bundler + rubygems warning.
           %r{site_ruby/\d\.\d\.\d/rubygems},
+          %r{site_ruby/\d\.\d\.\d/bundler},
           %r{jruby-\d\.\d\.\d+\.\d/lib/ruby/stdlib/rubygems},
+          %r{lib/rubygems/custom_require},
           # This is required for windows for some reason
           %r{lib/bundler/rubygems},
           # This is a JRuby file that generates warnings on 9.0.3.0
