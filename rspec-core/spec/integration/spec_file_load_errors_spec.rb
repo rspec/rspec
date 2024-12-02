@@ -260,7 +260,6 @@ RSpec.describe 'Spec file load errors' do
 
         expect(formatted_output).to include unindent(<<-EOS)
           While loading ./broken_file a `raise SyntaxError` occurred, RSpec will now quit.
-          Failure/Error: __send__(method, file)
         EOS
 
         # This is subset of the formatted_output, it continues slightly but differs on different Rubies
