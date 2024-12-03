@@ -198,13 +198,44 @@ module RSpec
       end
 
       if defined?(Fiber) && RUBY_VERSION.to_f >= 2.0
-        it "shares data across fibres" do
+        broken_on_jruby =
+          if RSpec::Support::Ruby.jruby?
+            "As Fiber.new creates a new thread on JRuby this is currently " \
+            "broken. There are alternative implementations that do work but " \
+            "they cause issues for mocks, so given this is a minor edge case " \
+            "and thread data is already broken, its acceptable. Pending " \
+            "because future JRuby may fix this. see: "\
+            "https://github.com/jruby/jruby/issues/1806 and " \
+            "https://github.com/rspec/rspec-support/pull/610"
+          else
+            false
+          end
+
+        it "shares data across fibers", :pending => broken_on_jruby do
           RSpec::Support.thread_local_data[:__for_test] = :oh_hai
 
           Fiber.new do
             expect(RSpec::Support.thread_local_data[:__for_test]).to eq(:oh_hai)
           end.resume
         end
+      end
+
+      it "works when Thread.current is mocked" do
+        expect(Thread).to_not receive(:current)
+
+        RSpec::Support.thread_local_data[:__for_test] = :oh_hai
+        expect(RSpec::Support.thread_local_data[:__for_test]).to eq :oh_hai
+      end
+
+      it "works when Thread#thread_variable_get and Thread#thread_variable_set are mocked" do
+        expect(Thread.current).to receive(:thread_variable_set).with(:test, true).once.and_return(true)
+        expect(Thread.current).to receive(:thread_variable_get).with(:test).once.and_return(true)
+
+        Thread.current.thread_variable_set(:test, true)
+        expect(Thread.current.thread_variable_get(:test)).to eq true
+
+        RSpec::Support.thread_local_data[:__for_test] = :oh_hai
+        expect(RSpec::Support.thread_local_data[:__for_test]).to eq :oh_hai
       end
     end
 

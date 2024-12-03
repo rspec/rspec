@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+class Thread
+  attr_accessor :__rspec_local_data
+
+  class << self
+    alias __rspec_current_thread current
+  end
+end
+
 module RSpec
   module Support
     # @api private
@@ -91,9 +99,9 @@ module RSpec
     end
 
     # A single thread local variable so we don't excessively pollute that namespace.
-    if RUBY_VERSION.to_f >= 2
+    if RUBY_VERSION.to_f !=  1.9
       def self.thread_local_data
-        Thread.current.thread_variable_get(:__rspec) || Thread.current.thread_variable_set(:__rspec, {})
+        Thread.__rspec_current_thread.__rspec_local_data ||= {}
       end
     else
       def self.thread_local_data
