@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](http://github.com/rspec/rspec/compare/rspec-mocks-v3.13.2...3-13-maintennace)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.2...3-13-maintenance)
 
 Bug Fixes:
 
@@ -8,7 +8,6 @@ Bug Fixes:
   (Jon Rowe, rspec/rspec-mocks#1596)
 * Prevent recursive calls to stubbed methods during stub invocation.
   (James Dabbs, rspec/rspec#116)
-
 
 ### 3.13.2 / 2024-10-02
 [Full Changelog](http://github.com/rspec/rspec-mocks/compare/v3.13.1...v3.13.2)
