@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+RSpec.shared_examples "an RSpec value-only matcher" do |options|
+  include_examples "an RSpec value matcher", options
+
+  it 'fails when given a block' do
+    expect {
+      expect { 2 + 2 }.to matcher
+    }.to fail_with(/must pass an argument rather than a block/)
+
+    unless options[:disallows_negation]
+      expect {
+        expect { 2 + 2 }.not_to matcher
+      }.to fail_with(/must pass an argument rather than a block/)
+    end
+  end
+end
+
 RSpec.shared_examples "an RSpec value matcher" do |options|
   let(:valid_value)   { options.fetch(:valid_value) }
   let(:invalid_value) { options.fetch(:invalid_value) }
@@ -52,17 +68,5 @@ RSpec.shared_examples "an RSpec value matcher" do |options|
     # Undo our stub so it doesn't affect the `include` matcher below.
     allow(RSpec::Support::ObjectFormatter).to receive(:format).and_call_original
     expect(message).to include("detailed inspect")
-  end
-
-  it 'fails when given a block' do
-    expect {
-      expect { 2 + 2 }.to matcher
-    }.to fail_with(/must pass an argument rather than a block/)
-
-    unless options[:disallows_negation]
-      expect {
-        expect { 2 + 2 }.not_to matcher
-      }.to fail_with(/must pass an argument rather than a block/)
-    end
   end
 end
