@@ -2,10 +2,10 @@
 
 This is the detailed readme for `rspec-mocks`, see also:
 
-* [The combined readme][../README.md]
-* [rspec-core][../rspec-core/README.md]
-* [rspec-expectations][../rspec-expectations/README.md]
-* [rspec-support][../rspec-support/README.md]
+* [The combined readme](../README.md)
+* [rspec-core](../rspec-core/README.md)
+* [rspec-expectations](../rspec-expectations/README.md)
+* [rspec-support](../rspec-support/README.md)
 
 ## Test Doubles
 

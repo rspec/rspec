@@ -2,10 +2,10 @@
 
 This is the detailed readme for `rspec-expectations`, see also:
 
-* [The combined readme][../README.md]
-* [rspec-core][../rspec-core/README.md]
-* [rspec-mocks][../rspec-mocks/README.md]
-* [rspec-support][../rspec-support/README.md]
+* [The combined readme](../README.md)
+* [rspec-core](../rspec-core/README.md)
+* [rspec-mocks](../rspec-mocks/README.md)
+* [rspec-support](../rspec-support/README.md)
 
 ## Basic usage
 
