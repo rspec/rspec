@@ -381,7 +381,7 @@ your code.
 ## Stubbing and Hiding Constants
 
 See the [mutating constants
-README](https://github.com/rspec/rspec/tree/rspec-metagem-v3.13.0/rspec-mocks/features/mutating_constants#readme)
+README](https://github.com/rspec/rspec/tree/main/rspec-mocks/features/mutating_constants)
 for info on this feature.
 
 ## Use `before(:example)`, not `before(:context)`
