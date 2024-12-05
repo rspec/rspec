@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
   s.authors     = ["Steven Baker", "David Chelimsky", "Myron Marston"]
   s.email       = "rspec@googlegroups.com"
-  s.homepage    = "https://github.com/rspec/rspec"
+  s.homepage    = "https://rspec.info"
   s.summary     = "rspec-#{RSpec::Version::STRING}"
   s.description = "BDD for Ruby"
 
