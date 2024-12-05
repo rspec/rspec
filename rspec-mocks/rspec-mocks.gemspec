@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/rspec/rspec/issues',
-    'changelog_uri' => "https://github.com/rspec/rspec/blob/rspec-mocks-v#{s.version}/rspec-mocks/Changelog.md",
+    'changelog_uri' => "https://github.com/rspec/rspec/tree/rspec-mocks-v#{s.version}/rspec-mocks/Changelog.md",
     'documentation_uri' => 'https://rspec.info/documentation/',
     'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/rspec',
-    'source_code_uri' => "https://github.com/rspec/rspec/blob/rspec-mocks-v#{s.version}/rspec-mocks",
+    'source_code_uri' => "https://github.com/rspec/rspec/tree/rspec-mocks-v#{s.version}/rspec-mocks",
     'rubygems_mfa_required' => 'true',
   }
 

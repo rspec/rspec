@@ -29,7 +29,7 @@ book = instance_double("Book", :pages => 250)
 Verifying doubles have some clever tricks to enable you to both test in
 isolation without your dependencies loaded while still being able to validate
 them against real objects. More detail is available in [their
-documentation](https://github.com/rspec/rspec-mocks/blob/main/features/verifying_doubles).
+documentation](https://github.com/rspec/rspec/tree/main/rspec-mocks/features/verifying_doubles#readme).
 
 Verifying doubles can also accept custom identifiers, just like double(), e.g.:
 
@@ -381,7 +381,7 @@ your code.
 ## Stubbing and Hiding Constants
 
 See the [mutating constants
-README](https://github.com/rspec/rspec-mocks/blob/main/features/mutating_constants/README.md)
+README](https://github.com/rspec/rspec/tree/rspec-metagem-v3.13.0/rspec-mocks/features/mutating_constants#readme)
 for info on this feature.
 
 ## Use `before(:example)`, not `before(:context)`
