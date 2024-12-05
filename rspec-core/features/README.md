@@ -14,4 +14,4 @@ end
 
 ## Issues
 
-This documentation is [open source](https://github.com/rspec/rspec-core/tree/main/features), and a work in progress.  If you find it incomplete or confusing, please [submit an issue](http://github.com/rspec/rspec-core/issues), or, better yet, [a pull request](http://github.com/rspec/rspec-core).
+This documentation is [open source](https://github.com/rspec/rspec/tree/main/rspec-core/features), and a work in progress.  If you find it incomplete or confusing, please [submit an issue](http://github.com/rspec/rspec/issues), or, better yet, [a pull request](http://github.com/rspec/rspec).

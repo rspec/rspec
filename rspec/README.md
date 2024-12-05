@@ -9,9 +9,9 @@ for a new mono-repo approach to RSpec dev to unify issue tracking and PR managem
 ## Description
 
 rspec is a meta-gem, which depends on the
-[rspec-core](https://github.com/rspec/rspec-core),
-[rspec-expectations](https://github.com/rspec/rspec-expectations)
-and [rspec-mocks](https://github.com/rspec/rspec-mocks) gems. Each of these
+[rspec-core](https://github.com/rspec/rspec/tree/main/rspec-core),
+[rspec-expectations](https://github.com/rspec/rspec/tree/main/rspec-expectations)
+and [rspec-mocks](https://github.com/rspec/rspec/tree/main/rspec-mocks) gems. Each of these
 can be installed separately and loaded in isolation using `require`. Among
 other benefits, this allows you to use rspec-expectations, for example, in
 Test::Unit::TestCase if you happen to prefer that style.
