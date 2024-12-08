@@ -15,6 +15,7 @@ module RSpec
       def valid?(*args)
         described_class.new(signature, args).valid?
       end
+      ruby2_keywords(:valid?) if respond_to?(:ruby2_keywords, true)
 
       def error_description
         described_class.new(signature).error_message[/Expected (.*),/, 1]
@@ -23,6 +24,7 @@ module RSpec
       def error_for(*args)
         described_class.new(signature, args).error_message
       end
+      ruby2_keywords(:error_for) if respond_to?(:ruby2_keywords, true)
 
       def signature_description
         signature.description
