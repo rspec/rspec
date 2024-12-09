@@ -443,6 +443,10 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
 
     context 'memory leaks, see GH-321, GH-1921' do
       def self.reliable_gc
+        # JRuby doesn't support this spec (and possible doesn't let us control GC at all?
+        # https://github.com/jruby/jruby/issues/4619
+        return false if RSpec::Support::Ruby.jruby?
+
         # older Rubies don't give us options to ensure a full GC
         # TruffleRuby GC.start arity matches but GC.disable and GC.enable are mock implementations
         0 != GC.method(:start).arity && !(defined?(RUBY_ENGINE) && RUBY_ENGINE == "truffleruby")

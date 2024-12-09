@@ -77,7 +77,7 @@ module RSpec::Core
         FakeBisectRunner.new(
           %w[ 1.rb[1] 2.rb[1] 3.rb[1] 4.rb[1] 5.rb[1] 6.rb[1] 7.rb[1] 8.rb[1] 9.rb[1] ],
           [],
-          "9.rb[1]" => %w[ 1.rb[1] 2.rb[1] 3.rb[1] 4.rb[1] 5.rb[1] 6.rb[1] 7.rb[1] 8.rb[1] ]
+          { "9.rb[1]" => %w[ 1.rb[1] 2.rb[1] 3.rb[1] 4.rb[1] 5.rb[1] 6.rb[1] 7.rb[1] 8.rb[1] ] }
         )
       end
       let(:counting_minimizer) do
