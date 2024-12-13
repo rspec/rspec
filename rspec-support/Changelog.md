@@ -5,6 +5,8 @@ Bug Fixes:
 
 * Always return a boolean from `RSpec::Support::Ruby.rbx?` and
  `RSpec::Support::Ruby.truffleruby?` (Phil Pirozhkov, rspec/rspec-support#486)
+* Switch current thread data to alias/accessors to avoid issues with mocked systems.
+  (Samuel Williams, Jon Rowe, rspec/rspec#99)
 
 ### 3.13.7 / 2026-01-28
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.6...rspec-support-v3.13.7)
