@@ -44,6 +44,10 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
+  # This settings enables Ruby deprecations warnings. It's highly recommended,
+  # and much less noisy than `config.warnings`
+  config.deprecation_warnings = true
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
