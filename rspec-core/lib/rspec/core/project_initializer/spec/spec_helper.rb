@@ -37,6 +37,11 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  # This setting enables Ruby deprecation warnings. It's recommended, but in some cases may
+  # be too noisy due to issues in dependencies. It can be set to `:all` or `:none`
+  # to either display all warnings or none of them.
+  config.warnings = :deprecations_only
+
   # This option will default to `:apply_to_host_groups` in RSpec 4 (and will
   # have no way to turn it off -- the option exists only for backwards
   # compatibility in RSpec 3). It causes shared context metadata to be
@@ -63,10 +68,6 @@ RSpec.configure do |config|
   config.suppress_deprecations do
     config.disable_monkey_patching!
   end
-
-  # This setting enables warnings. It's recommended, but in some cases may
-  # be too noisy due to issues in dependencies.
-  config.warnings = true
 
   # Many RSpec users commonly either run the entire suite or an individual
   # file, and it's useful to allow more verbose output when running an

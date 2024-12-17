@@ -10,6 +10,7 @@ class RSpec::Core::Configuration
       # We detect ruby warnings via $stderr,
       # so direct our deprecations to $stdout instead.
       config.deprecation_stream = $stdout
+      config.warnings = :all
     end
   end
 end
