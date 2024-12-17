@@ -489,6 +489,15 @@ module RSpec
         @world = World::Null
         @pending_failure_output = :full
         @force_line_number_for_spec_rerun = false
+        @warnings = nil
+
+        if warnings?
+          # Turn on all warnings if warnings already configured
+          self.warnings = :all
+        else
+          # Turn on Ruby deprecations by default
+          self.warnings = :deprecations_only
+        end
 
         define_built_in_hooks
       end
@@ -1633,10 +1642,36 @@ module RSpec
       # @private
       delegate_to_ordering_manager :seed_used?, :ordering_registry
 
-      # Set Ruby warnings on or off.
+      # Set Ruby warnings. `:deprecations_only` is recommended, but may be too
+      # noisy due to dependencies.
+      # Can be set to `:all` or `:none` to show all warnings or none of them.
       def warnings=(value)
-        $VERBOSE = !!value
+        case value
+        when :none
+          @warnings = :none
+          $VERBOSE = false
+          ::Warning[:deprecated] = false
+        when :all
+          @warnings = :all
+          $VERBOSE = true
+          ::Warning[:deprecated] = true
+        when :deprecations_only
+          @warnings = :deprecations_only
+          $VERBOSE = false
+          ::Warning[:deprecated] = true
+        else
+          raise "Unsupported value for `warnings` (#{value.inspect}). " \
+                "Only `:none`, `:all` and `:deprecations_only` are supported."
+        end
       end
+
+      # @return [Boolean] Whether or not ruby deprecations are enabled.
+      def deprecation_warnings?
+        ::Warning[:deprecated]
+      end
+
+      # @return [Symbol] The configured warning level
+      attr_reader :warnings
 
       # @return [Boolean] Whether or not ruby warnings are enabled.
       def warnings?

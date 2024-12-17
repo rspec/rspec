@@ -2501,27 +2501,63 @@ module RSpec::Core
 
     describe '#warnings' do
       around do |example|
+        original_deprecated = ::Warning[:deprecated]
         original_setting = $VERBOSE
         example.run
         $VERBOSE = original_setting
+        ::Warning[:deprecated] = original_deprecated
       end
 
-      it "sets verbose to true when true" do
-        config.warnings = true
+      it "is configured to deprecations_only by default" do
+        $VERBOSE = false
+        blank_config = Configuration.new
+        expect(blank_config.warnings).to eq :deprecations_only
+      end
+
+      it "preserves outside warning settings" do
+        $VERBOSE = true
+        blank_config = Configuration.new
+        expect(blank_config.warnings).to eq :all
+      end
+
+      it "sets $VERBOSE and Warning[:deprecated] to true when :all" do
+        config.warnings = :all
         expect($VERBOSE).to eq true
+        expect(::Warning[:deprecated]).to eq true
       end
 
-      it "sets verbose to false when true" do
-        config.warnings = false
+      it "sets $VERBOSE and Warning[:deprecated] to false when :none" do
+        config.warnings = :none
         expect($VERBOSE).to eq false
+        expect(::Warning[:deprecated]).to eq false
       end
 
-      it 'returns the verbosity setting' do
-        config.warnings = true
-        expect(config.warnings?).to eq true
+      it "sets $VERBOSE to false but Warning[:deprecated] to true when :deprecations_only" do
+        config.warnings = :deprecations_only
+        expect($VERBOSE).to eq false
+        expect(::Warning[:deprecated]).to eq true
+      end
 
-        config.warnings = false
+      it "raises on unsupported warnings value" do
+        [:unknown, true, false].each do |unacceptable|
+          expect {
+            config.warnings = unacceptable
+          }.to raise_error(a_string_including("Unsupported value for `warnings` (#{unacceptable.inspect})"))
+        end
+      end
+
+      it 'returns the verbosity settings' do
+        config.warnings = :all
+        expect(config.warnings?).to eq true
+        expect(config.deprecation_warnings?).to eq true
+
+        config.warnings = :deprecations_only
         expect(config.warnings?).to eq false
+        expect(config.deprecation_warnings?).to eq true
+
+        config.warnings = :none
+        expect(config.warnings?).to eq false
+        expect(config.deprecation_warnings?).to eq false
       end
 
       it 'is loaded from config by #force' do
