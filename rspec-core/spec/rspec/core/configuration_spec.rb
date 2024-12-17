@@ -2755,7 +2755,7 @@ module RSpec::Core
         expect($VERBOSE).to eq true
       end
 
-      it "sets verbose to false when true" do
+      it "sets verbose to false when false" do
         config.warnings = false
         expect($VERBOSE).to eq false
       end
@@ -2771,6 +2771,33 @@ module RSpec::Core
       it 'is loaded from config by #force' do
         config.force :warnings => true
         expect($VERBOSE).to eq true
+      end
+    end
+
+    describe '#deprecation_warnings' do
+      around do |example|
+        original_setting = ::Warning[:deprecated]
+        example.run
+        ::Warning[:deprecated] = original_setting
+      end
+
+      if defined?(::Warning) && ::Warning.respond_to?(:[]=)
+        it "sets Warning[:deprecated] to true when true" do
+          config.deprecation_warnings = true
+          expect(Warning[:deprecated]).to eq true
+          expect(config.deprecation_warnings?).to eq true
+        end
+
+        it "sets Warning[:deprecated] to false when false" do
+          config.deprecation_warnings = false
+          expect(Warning[:deprecated]).to eq false
+          expect(config.deprecation_warnings?).to eq false
+        end
+
+        it "sets #deprecation_warnings_set?" do
+          config.deprecation_warnings = false
+          expect(config.deprecation_warnings_set?).to eq true
+        end
       end
     end
 

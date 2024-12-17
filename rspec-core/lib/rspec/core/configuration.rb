@@ -620,6 +620,7 @@ module RSpec
         @default_color = :white
         @fixed_color = :blue
         @detail_color = :cyan
+        @deprecation_warnings_set = false
         @profile_examples = false
         @requires = []
         @libs = []
@@ -1836,6 +1837,40 @@ module RSpec
       # @return [Boolean] Whether or not ruby warnings are enabled.
       def warnings?
         $VERBOSE
+      end
+
+      if defined?(::Warning) && ::Warning.respond_to?(:[]=)
+        # Set Ruby deprecation warnings on or off.
+        def deprecation_warnings=(value)
+          @deprecation_warnings_set = true
+          ::Warning[:deprecated] = value
+        end
+
+        # @return [Boolean] Whether or not ruby warnings are enabled.
+        def deprecation_warnings?
+          ::Warning[:deprecated]
+        end
+
+        # @private
+        def deprecation_warnings_set?
+          @deprecation_warnings_set || ::Warning[:deprecated]
+        end
+      else # Rubies older than 2.7
+        # :nocov:
+        # Set Ruby deprecation warnings on or off.
+        def deprecation_warnings=(_value)
+        end
+
+        # @return [Boolean] Whether or not ruby warnings are enabled.
+        def deprecation_warnings?
+          false
+        end
+
+        # @private
+        def deprecation_warnings_set?
+          true
+        end
+        # :nocov:
       end
 
       # @private

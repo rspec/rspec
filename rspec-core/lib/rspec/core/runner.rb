@@ -132,6 +132,12 @@ module RSpec
         @configuration.error_stream = err
         @configuration.output_stream = out if @configuration.output_stream == $stdout
         @options.configure(@configuration)
+
+        unless @configuration.deprecation_warnings_set?
+          RSpec.warning "config.deprecation_warnings isn't set. Please set it to either `true` or `false` " \
+                        "to either display Ruby deprecation warnings or to hide them. Displaying them is highly" \
+                        "recommended to receive advance notice of breaking changes."
+        end
       end
 
       # @private
