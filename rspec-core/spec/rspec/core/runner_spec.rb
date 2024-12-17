@@ -369,8 +369,8 @@ module RSpec::Core
         allow(config).to receive(:load_spec_files)
         allow(config).to receive(:reporter).and_return(double.as_null_object)
 
-        expect(config).to receive(:deprecation_warnings_set?).and_return(false)
-        expect(RSpec).to receive(:warning).with(/deprecation_warnings/)
+        expect(config).to receive(:warnings_set?).and_return(false)
+        expect(RSpec).to receive(:warning).with(/config\.warnings isn't set/, :call_site => nil)
 
         runner = build_runner
         runner.setup err, stdout

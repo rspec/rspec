@@ -576,7 +576,7 @@ module RSpec
         @default_color = :white
         @fixed_color = :blue
         @detail_color = :cyan
-        @deprecation_warnings_set = false
+        @warnings_set = false
         @profile_examples = false
         @requires = []
         @libs = []
@@ -1766,7 +1766,32 @@ module RSpec
 
       # Set Ruby warnings on or off.
       def warnings=(value)
-        $VERBOSE = !!value
+        @warnings_set = true
+
+        case value
+        when true, false
+          RSpec.deprecate(
+            "RSpec::Core::Configuration#warnings=",
+            :message =>  "config.warnings = #{value} is deprecated, please set warnings to one of: " \
+                         "`:none`, `:all` or `:deprecations_only.`"
+          )
+          value = value ? :all : :none
+        end
+
+        case value
+        when :none
+          $VERBOSE = false
+          self.deprecation_warnings = false
+        when :all
+          $VERBOSE = true
+          self.deprecation_warnings = true
+        when :deprecations_only
+          $VERBOSE = false
+          self.deprecation_warnings = true
+        else
+          raise "Unsupported value for `warnings` (#{value.inspect}). " \
+                "Only `:none`, `:all` and `:deprecations_only` are supported."
+        end
       end
 
       # @return [Boolean] Whether or not ruby warnings are enabled.
@@ -1774,36 +1799,20 @@ module RSpec
         $VERBOSE
       end
 
+      # @private
+      def warnings_set?
+        @warnings_set
+      end
+
       if defined?(::Warning) && ::Warning.respond_to?(:[]=)
-        # Set Ruby deprecation warnings on or off.
+        # @private
         def deprecation_warnings=(value)
-          @deprecation_warnings_set = true
           ::Warning[:deprecated] = value
         end
-
-        # @return [Boolean] Whether or not ruby warnings are enabled.
-        def deprecation_warnings?
-          ::Warning[:deprecated]
-        end
-
-        # @private
-        def deprecation_warnings_set?
-          @deprecation_warnings_set || ::Warning[:deprecated]
-        end
-      else # Rubies older than 2.7
+      else
         # :nocov:
         # Set Ruby deprecation warnings on or off.
         def deprecation_warnings=(_value)
-        end
-
-        # @return [Boolean] Whether or not ruby warnings are enabled.
-        def deprecation_warnings?
-          false
-        end
-
-        # @private
-        def deprecation_warnings_set?
-          true
         end
         # :nocov:
       end
