@@ -44,9 +44,10 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  # This settings enables Ruby deprecations warnings. It's highly recommended,
-  # and much less noisy than `config.warnings`
-  config.deprecation_warnings = true
+  # This setting enables Ruby deprecation warnings. It's recommended, but in some cases may
+  # be too noisy due to issues in dependencies. It can be set to `:all` or `:none`
+  # to either display all warnings or none of them.
+  config.warnings = :deprecations_only
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
@@ -67,10 +68,6 @@ RSpec.configure do |config|
   # recommended. For more details, see:
   # https://rspec.info/features/3-12/rspec-core/configuration/zero-monkey-patching-mode/
   config.disable_monkey_patching!
-
-  # This setting enables warnings. It's recommended, but in some cases may
-  # be too noisy due to issues in dependencies.
-  config.warnings = true
 
   # Many RSpec users commonly either run the entire suite or an individual
   # file, and it's useful to allow more verbose output when running an
