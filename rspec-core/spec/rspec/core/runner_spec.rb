@@ -363,6 +363,19 @@ module RSpec::Core
         expect(runner.instance_exec { @options }).to be(config_options)
       end
 
+      it "emits a warning if config.deprecation_warnings isn't set" do
+        allow(RSpec).to receive(:deprecate)  # remove this and should_receive when ordered
+        stdout = StringIO.new
+        allow(config).to receive(:load_spec_files)
+        allow(config).to receive(:reporter).and_return(double.as_null_object)
+
+        expect(config).to receive(:deprecation_warnings_set?).and_return(false)
+        expect(RSpec).to receive(:warning).with(/deprecation_warnings/)
+
+        runner = build_runner
+        runner.setup err, stdout
+      end
+
       describe "#run" do
         it 'supports a test-queue like subclass that can perform setup once and run different sets of example groups multiple times' do
           order = []
