@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe "expect(...).to start_with" do
-  it_behaves_like "an RSpec value matcher", :valid_value => "ab", :invalid_value => "bc" do
+  it_behaves_like "an RSpec value-only matcher", :valid_value => "ab", :invalid_value => "bc" do
     let(:matcher) { start_with("a") }
   end
 
@@ -209,7 +209,7 @@ RSpec.describe "expect(...).not_to start_with" do
 end
 
 RSpec.describe "expect(...).to end_with" do
-  it_behaves_like "an RSpec value matcher", :valid_value => "ab", :invalid_value => "bc" do
+  it_behaves_like "an RSpec value-only matcher", :valid_value => "ab", :invalid_value => "bc" do
     let(:matcher) { end_with("b") }
   end
 

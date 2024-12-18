@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe "expect(...).to respond_to(:sym)" do
-  it_behaves_like "an RSpec value matcher", :valid_value => "s", :invalid_value => 5 do
+  it_behaves_like "an RSpec value-only matcher", :valid_value => "s", :invalid_value => 5 do
     let(:matcher) { respond_to(:upcase) }
   end
 
