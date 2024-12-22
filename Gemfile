@@ -119,4 +119,8 @@ else
   gem 'thor', '> 1.0.0'
 end
 
+if RUBY_VERSION.to_f > 3.3
+  gem 'mutex_m', '~> 0.1.0'
+end
+
 eval File.read('Gemfile-custom') if File.exist?('Gemfile-custom')
