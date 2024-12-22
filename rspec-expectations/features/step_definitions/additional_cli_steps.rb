@@ -19,6 +19,16 @@ Then(/^the output should contain all of these:$/) do |table|
   end
 end
 
+Then(/^the output should contain hash inspection "(.*)"$/) do |expected_message|
+  expected_output = if RUBY_VERSION.to_f >= 3.4
+                      expected_message.gsub('=>', ' => ')
+                    else
+                      expected_message
+                    end
+
+  expect(all_output).to include_output_string(expected_output)
+end
+
 Then(/^the example(?:s)? should(?: all)? pass$/) do
   step 'the output should contain "0 failures"'
   step 'the exit status should be 0'
