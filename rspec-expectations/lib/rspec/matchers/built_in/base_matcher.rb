@@ -140,12 +140,8 @@ module RSpec
           # On Ruby 3.4 and later, it also adds spaces around the hash rocket
           # and converts `a: 1` to `:a => 1` for consistency.
           def improve_hash_formatting(inspect_string)
-            if RUBY_VERSION.to_f >= 3.4
-              if inspect_string.match?(/(\w+):/)
-                inspect_string.gsub(/(\w+):/, ':\1 =>')
-              else
-                inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
-              end
+            if RUBY_VERSION.to_f >= 3.4 && inspect_string.match?(/(\w+):/)
+              inspect_string.gsub(/(\w+):/, ':\1 =>')
             else
               inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
             end
