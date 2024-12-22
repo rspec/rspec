@@ -1,0 +1,165 @@
+# This file was generated on 2024-09-03T15:05:50+01:00 from the rspec-dev repo.
+# DO NOT modify it by hand as your changes will get lost the next time it is generated.
+
+name: RSpec CI
+on:
+  push:
+    branches:
+      - 'main'
+      - '*-maintenance'
+      - '*-dev'
+  pull_request:
+    branches:
+      - '*'
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  RSPEC_CI: true
+  # This tells rspec-rails what branch to run in ci
+  RSPEC_VERSION: '= 3.14.0.pre'
+jobs:
+  rubocop:
+    name: Rubocop
+    runs-on: 'ubuntu-20.04'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+      - run: script/update_rubygems_and_install_bundler
+      - run: script/clone_all_rspec_repos
+      - run: bundle install --standalone
+      - run: bundle binstubs --all
+      - run: script/run_rubocop
+
+  test:
+    name: Ruby ${{ matrix.ruby }} ${{ matrix.name_extra || '' }}
+    runs-on: ${{ matrix.os || 'ubuntu-20.04' }}
+    strategy:
+      matrix:
+        ruby:
+          - '3.4.0-rc1'
+          - '3.3'
+          - '3.2'
+          - '3.1'
+          - '3.0'
+          - 2.7
+          - 2.6
+          - 2.5
+          - 2.4
+          - 2.3
+          - 2.2
+        env:
+          -
+            DIFF_LCS_VERSION: "> 1.4.3"
+        include:
+          - ruby: ruby-head
+            env:
+              RUBY_HEAD: true
+          - ruby: jruby-9.2.13.0
+            env:
+              JRUBY_OPTS: "--dev"
+          - ruby: 2.7
+            name_extra: "with diff-lcs 1.3"
+            env:
+              DIFF_LCS_VERSION: "~> 1.3.0"
+          - ruby: 2.7
+            name_extra: "with diff-lcs 1.4.3"
+            env:
+              DIFF_LCS_VERSION: "1.4.3"
+      fail-fast: false
+    continue-on-error: ${{ matrix.allow_failure || endsWith(matrix.ruby, 'head') }}
+    env: ${{ matrix.env }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler: ${{ matrix.bundler || '2.2.22' }}
+          ruby-version: ${{ matrix.ruby }}
+      - run: script/update_rubygems_and_install_bundler
+      - run: script/clone_all_rspec_repos
+      - run: bundle install --standalone
+      - run: bundle binstubs --all
+      - run: script/run_build
+      - name: Store coverage output for reference
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: coverage-report-${{ matrix.ruby }}
+          path: coverage/index.html
+          retention-days: 14
+
+  legacy:
+    name: Legacy Ruby Builds (${{ matrix.container.version }})
+    runs-on: ubuntu-20.04
+    container:
+      image: ${{ matrix.container.tag }}
+      options: ${{ matrix.container.options || '--add-host github-complains-if-this-is-empty.com:127.0.0.1' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        container:
+          - version: "2.1.9"
+            tag: ghcr.io/rspec/docker-ci:2.1.9
+            post: git config --global --add safe.directory `pwd`
+          - version: "2.0"
+            tag: ghcr.io/rspec/docker-ci:2.0.0
+          - version: "1.9.3"
+            tag: ghcr.io/rspec/docker-ci:1.9.3
+          - version: "1.9.2"
+            tag: ghcr.io/rspec/docker-ci:1.9.2
+            options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+          - version: "1.8.7"
+            tag: ghcr.io/rspec/docker-ci:1.8.7
+            options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+          - version: "REE"
+            tag: ghcr.io/rspec/docker-ci:ree
+            options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+          - version: "JRuby 1.7"
+            tag: ghcr.io/rspec/docker-ci:jruby-1.7
+          - version: "JRuby 1.7 1.8 mode"
+            tag: ghcr.io/rspec/docker-ci:jruby-1.7
+            jruby_opts: '--dev --1.8'
+            pre: gem uninstall jruby-openssl
+            options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+          - version: "JRuby 9.1.17.0"
+            tag: ghcr.io/rspec/docker-ci:jruby-9.1.17.0
+            options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+      LEGACY_CI: true
+      JRUBY_OPTS: ${{ matrix.container.jruby_opts || '--dev' }}
+      NO_COVERAGE: true
+    steps:
+      - uses: actions/checkout@v3
+      - run: ${{ matrix.container.pre }}
+      - run: script/legacy_setup.sh
+      - run: ${{ matrix.container.post }}
+      - run: bundle exec bin/rspec
+      - run: bundle exec script/cucumber.sh
+
+  windows:
+    name: Ruby ${{ matrix.ruby }} (Windows)
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        ruby:
+          - 2.7
+          - 2.6
+          - 2.5
+          - 2.4
+          - 2.3
+          - 2.2
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler: '2.2.22'
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: choco install ansicon
+      - run: bundle exec rspec --backtrace

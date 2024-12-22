@@ -58,8 +58,8 @@ jobs:
     strategy:
       matrix:
         ruby:
+          - '3.4.0-rc1'
           - '3.3'
-          - 2.7
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
