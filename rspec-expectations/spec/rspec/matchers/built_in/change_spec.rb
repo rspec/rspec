@@ -182,7 +182,7 @@ RSpec.describe "expect { ... }.to change ..." do
     end
 
     def regexp_inspect(object)
-      Regexp.escape(object.inspect)
+      Regexp.escape(hash_inspect(object))
     end
   end
 
@@ -478,7 +478,7 @@ RSpec.describe "expect { ... }.not_to change { block }" do
     end
 
     def regexp_inspect(object)
-      Regexp.escape(object.inspect)
+      Regexp.escape(hash_inspect(object))
     end
   end
 end
