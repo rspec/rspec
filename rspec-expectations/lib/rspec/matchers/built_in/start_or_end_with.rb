@@ -29,7 +29,7 @@ module RSpec
         def description
           return super unless Hash === expected
           english_name = EnglishPhrasing.split_words(self.class.matcher_name)
-          description_of_expected = RSpec::Matchers::BuiltIn::BaseMatcher::HashFormatting.improve_hash_formatting(surface_descriptions_in(expected).inspect)
+          description_of_expected = HashFormatting.improve_hash_formatting(surface_descriptions_in(expected).inspect)
           "#{english_name} #{description_of_expected}"
         end
 
