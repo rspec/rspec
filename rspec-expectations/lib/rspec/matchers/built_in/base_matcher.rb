@@ -137,9 +137,15 @@ module RSpec
           #     {:a => 5, :b => 2}
           #
           # This is idempotent and safe to run on a string multiple times.
+          # On Ruby 3.4 and later, it also adds spaces around the hash rocket
+          # and converts `a: 1` to `:a => 1` for consistency.
           def improve_hash_formatting(inspect_string)
-            if RUBY_VERSION >= '3.4'
-              inspect_string.gsub(/(\w+):/, ':\1 =>')
+            if RUBY_VERSION.to_f >= 3.4
+              if inspect_string.match?(/(\w+):/)
+                inspect_string.gsub(/(\w+):/, ':\1 =>')
+              else
+                inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
+              end
             else
               inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
             end
