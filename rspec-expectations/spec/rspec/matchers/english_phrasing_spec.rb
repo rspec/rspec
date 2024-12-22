@@ -35,9 +35,15 @@ module RSpec
         context "given a Hash" do
           it "returns value from inspect, and a leading space" do
             banana = { :flavor => 'Banana' }
-            expect(
-              described_class.list(banana)
-            ).to eq(" #{hash_inspect(banana)}")
+            if RUBY_VERSION.to_f >= 3.4
+              expect(
+                described_class.list(banana)
+              ).to eq(" #{hash_inspect(banana)}")
+            else
+              expect(
+                described_class.list(banana)
+              ).to eq(" #{banana.inspect}")
+            end
           end
         end
 

@@ -182,7 +182,11 @@ RSpec.describe "expect { ... }.to change ..." do
     end
 
     def regexp_inspect(object)
-      Regexp.escape(hash_inspect(object))
+      if RUBY_VERSION.to_f >= 3.4
+        Regexp.escape(hash_inspect(object))
+      else
+        Regexp.escape(object.inspect)
+      end
     end
   end
 
@@ -478,7 +482,11 @@ RSpec.describe "expect { ... }.not_to change { block }" do
     end
 
     def regexp_inspect(object)
-      Regexp.escape(hash_inspect(object))
+      if RUBY_VERSION.to_f >= 3.4
+        Regexp.escape(hash_inspect(object))
+      else
+        Regexp.escape(object.inspect)
+      end
     end
   end
 end

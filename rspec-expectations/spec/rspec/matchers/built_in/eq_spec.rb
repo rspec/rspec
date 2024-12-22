@@ -110,6 +110,12 @@ module RSpec
         # Ruby 1.8.7 produces a less precise output
         expected_seconds = Time.method_defined?(:nsec) ? '000000000' : '000000'
 
+        if RUBY_VERSION.to_f >= 3.4
+          expected_string = 'eq {:foo => :bar}'
+        else
+          expected_string = 'eq {:foo=>:bar}'
+        end
+
         [
             [nil, 'eq nil'],
             [true, 'eq true'],
@@ -120,7 +126,7 @@ module RSpec
             ['foo', 'eq "foo"'],
             [/regex/, 'eq /regex/'],
             [['foo'], 'eq ["foo"]'],
-            [{ :foo => :bar }, "eq #{BuiltIn::BaseMatcher::HashFormatting.improve_hash_formatting('{:foo=>:bar}')}"],
+            [{ :foo => :bar }, expected_string],
             [Class, 'eq Class'],
             [RSpec, 'eq RSpec'],
             [Time.utc(2014, 1, 1), "eq 2014-01-01 00:00:00.#{expected_seconds} +0000"],

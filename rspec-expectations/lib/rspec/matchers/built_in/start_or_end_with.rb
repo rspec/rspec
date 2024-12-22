@@ -26,11 +26,20 @@ module RSpec
 
         # @api private
         # @return [String]
-        def description
-          return super unless Hash === expected
-          english_name = EnglishPhrasing.split_words(self.class.matcher_name)
-          description_of_expected = HashFormatting.improve_hash_formatting(surface_descriptions_in(expected).inspect)
-          "#{english_name} #{description_of_expected}"
+        if RUBY_VERSION.to_f >= 3.4
+          def description
+            return super unless Hash === expected
+            english_name = EnglishPhrasing.split_words(self.class.matcher_name)
+            description_of_expected = HashFormatting.improve_hash_formatting(surface_descriptions_in(expected).inspect)
+            "#{english_name} #{description_of_expected}"
+          end
+        else
+          def description
+            return super unless Hash === expected
+            english_name = EnglishPhrasing.split_words(self.class.matcher_name)
+            description_of_expected = surface_descriptions_in(expected).inspect
+            "#{english_name} #{description_of_expected}"
+          end
         end
 
       private
