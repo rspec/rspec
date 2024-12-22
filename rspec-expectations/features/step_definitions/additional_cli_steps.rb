@@ -21,7 +21,7 @@ end
 
 Then(/^the output should contain hash inspection "(.*)"$/) do |expected_message|
   expected_output = if RUBY_VERSION.to_f >= 3.4
-                      expected_message.gsub('=>', ' => ')
+                      expected_message.gsub(/(\S)=>(\S)/, '\1 => \2')
                     else
                       expected_message
                     end
