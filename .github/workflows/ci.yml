@@ -14,31 +14,31 @@ permissions:
 
 jobs:
   docs:
-    uses: benoittgt/rspec-1/.github/workflows/documentation_coverage.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/documentation_coverage.yml@ruby-3-4
 
   rubocop:
-    uses: benoittgt/rspec-1/.github/workflows/rubocop.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/rubocop.yml@ruby-3-4
 
   core:
-    uses: benoittgt/rspec-1/.github/workflows/rspec.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/rspec.yml@ruby-3-4
     with:
       library: 'rspec-core'
       rspec_version: '= 3.14.0.pre'
 
   mocks:
-    uses: benoittgt/rspec-1/.github/workflows/rspec.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/rspec.yml@ruby-3-4
     with:
       library: 'rspec-mocks'
       rspec_version: '= 3.14.0.pre'
 
   expectations:
-    uses: benoittgt/rspec-1/.github/workflows/rspec.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/rspec.yml@ruby-3-4
     with:
       library: 'rspec-expectations'
       rspec_version: '= 3.14.0.pre'
 
   support:
-    uses: benoittgt/rspec-1/.github/workflows/rspec.yml@ruby-3-4
+    uses: benoittgt/rspec/.github/workflows/rspec.yml@ruby-3-4
     with:
       library: 'rspec-support'
       rspec_version: '= 3.14.0.pre'
