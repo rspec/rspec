@@ -470,22 +470,41 @@ RSpec.describe "#include matcher" do
       it 'correctly diffs lists of hashes' do
         allow(RSpec::Matchers.configuration).to receive(:color?).and_return(false)
 
-        expect {
-          expect([
-            { :number => 1 },
-            { :number => 2 },
-            { :number => 3 }
-          ]).to include(
-            { :number => 1 },
-            { :number => 0 },
-            { :number => 3 }
-          )
-        }.to fail_including(dedent(<<-END))
-          |Diff:
-          |@@ #{one_line_header} @@
-          |-[{:number=>1}, {:number=>0}, {:number=>3}]
-          |+[{:number=>1}, {:number=>2}, {:number=>3}]
-        END
+        if RUBY_VERSION.to_f >= 3.4
+          expect {
+            expect([
+              { :number => 1 },
+              { :number => 2 },
+              { :number => 3 }
+            ]).to include(
+              { :number => 1 },
+              { :number => 0 },
+              { :number => 3 }
+            )
+          }.to fail_including(dedent(<<-END))
+            |Diff:
+            |@@ #{one_line_header} @@
+            |-[{:number => 1}, {:number => 0}, {:number => 3}]
+            |+[{:number => 1}, {:number => 2}, {:number => 3}]
+          END
+        else
+          expect {
+            expect([
+              { :number => 1 },
+              { :number => 2 },
+              { :number => 3 }
+            ]).to include(
+              { :number => 1 },
+              { :number => 0 },
+              { :number => 3 }
+            )
+          }.to fail_including(dedent(<<-END))
+            |Diff:
+            |@@ #{one_line_header} @@
+            |-[{:number=>1}, {:number=>0}, {:number=>3}]
+            |+[{:number=>1}, {:number=>2}, {:number=>3}]
+          END
+        end
       end
     end
 
