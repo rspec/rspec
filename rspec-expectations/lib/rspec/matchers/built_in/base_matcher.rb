@@ -138,7 +138,11 @@ module RSpec
           #
           # This is idempotent and safe to run on a string multiple times.
           def improve_hash_formatting(inspect_string)
-            inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
+            if RUBY_VERSION >= '3.4'
+              inspect_string.gsub(/(\w+):/, ':\1 =>')
+            else
+              inspect_string.gsub(/(\S)=>(\S)/, '\1 => \2')
+            end
           end
           module_function :improve_hash_formatting
         end
