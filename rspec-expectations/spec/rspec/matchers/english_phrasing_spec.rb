@@ -38,7 +38,7 @@ module RSpec
             expect(
               described_class.list(banana)
             ).to eq(" #{hash_inspect(banana)}")
-        end
+          end
         end
 
         context "given an Enumerable other than a Hash" do

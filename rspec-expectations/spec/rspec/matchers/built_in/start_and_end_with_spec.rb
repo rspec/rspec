@@ -337,7 +337,7 @@ RSpec.describe "expect(...).to end_with" do
       else
         expect {
           expect(actual).to end_with(expected)
-        }.to fail_with(/\Aexpected #{hash_inspect(actual)} to end with #{hash_inspect(expected)}, but it does not have ordered elements\z/)
+        }.to fail_with(/\Aexpected #{hash_inspect(actual).gsub(" => ", "=>")} to end with #{hash_inspect(expected).gsub(" => ", "=>")}, but it does not have ordered elements\z/)
       end
     end
   end
