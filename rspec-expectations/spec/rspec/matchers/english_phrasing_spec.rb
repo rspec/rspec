@@ -37,8 +37,8 @@ module RSpec
             banana = { :flavor => 'Banana' }
             expect(
               described_class.list(banana)
-            ).to eq(" #{banana.inspect}")
-          end
+            ).to eq(" #{hash_inspect(banana)}")
+        end
         end
 
         context "given an Enumerable other than a Hash" do
