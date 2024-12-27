@@ -528,7 +528,7 @@ module RSpec
         it 'fails when calling yielding method with invalid kw args' do
           message =
             if RUBY_VERSION.to_f > 3.3
-              '#<Double "test double"> yielded |{:x => 1, :y => 2}| to block with optional keyword args (:x)'
+              '#<Double "test double"> yielded |{x: 1, y: 2}| to block with optional keyword args (:x)'
             else
               '#<Double "test double"> yielded |{:x=>1, :y=>2}| to block with optional keyword args (:x)'
             end

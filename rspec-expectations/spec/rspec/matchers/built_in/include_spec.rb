@@ -67,8 +67,12 @@ RSpec.describe "#include matcher" do
       false
     end
 
-    def convert_key(key)
-      use_string_keys_in_failure_message? ? "\"#{key}\"" : ":#{key}"
+    def converted_key_hash_inspect(key, value)
+      if use_string_keys_in_failure_message?
+        hash_inspect({ key.to_s => value })
+      else
+        hash_inspect({ key => value })
+      end
     end
 
     it 'passes if target has the expected as a key' do
@@ -80,7 +84,8 @@ RSpec.describe "#include matcher" do
     end
 
     it "fails if target does not include expected" do
-      failure_string = %(expected {#{convert_key(:key)} => "value"} to include :other)
+      failure_string = %(expected #{converted_key_hash_inspect(:key, "value")} to include :other)
+
       expect {
         expect(build_target(:key => 'value')).to include(:other)
       }.to fail_matching(failure_string)
@@ -89,7 +94,7 @@ RSpec.describe "#include matcher" do
     it "fails if target doesn't have a key and we expect nil" do
       expect {
         expect(build_target({})).to include(:something => nil)
-      }.to fail_matching("expected {} to include {:something => nil}")
+      }.to fail_matching("expected {} to include #{hash_inspect({ :something => nil })}")
     end
 
     it 'works even when an entry in the hash overrides #send' do
@@ -478,12 +483,23 @@ RSpec.describe "#include matcher" do
             { :number => 0 },
             { :number => 3 }
           )
-        }.to fail_including(dedent(<<-END))
-          |Diff:
-          |@@ #{one_line_header} @@
-          |-[{:number=>1}, {:number=>0}, {:number=>3}]
-          |+[{:number=>1}, {:number=>2}, {:number=>3}]
-        END
+        }.to fail_including(
+          if RUBY_VERSION.to_f > 3.3
+            dedent(<<-END)
+              |Diff:
+              |@@ #{one_line_header} @@
+              |-[{number: 1}, {number: 0}, {number: 3}]
+              |+[{number: 1}, {number: 2}, {number: 3}]
+            END
+          else
+            dedent(<<-END)
+              |Diff:
+              |@@ #{one_line_header} @@
+              |-[{:number=>1}, {:number=>0}, {:number=>3}]
+              |+[{:number=>1}, {:number=>2}, {:number=>3}]
+            END
+          end
+        )
       end
     end
 
@@ -630,7 +646,7 @@ RSpec.describe "#include matcher" do
       it "fails if target includes expected key" do
         expect {
           expect({ :key => 'value' }).not_to include(:key)
-        }.to fail_matching('expected {:key => "value"} not to include :key')
+        }.to fail_matching("expected #{hash_inspect({ :key => "value" })} not to include :key")
       end
     end
 
@@ -749,13 +765,13 @@ RSpec.describe "#include matcher" do
       it "fails if target has a different value for key" do
         expect {
           expect({ :key => 'different' }).to include(:key => 'value')
-        }.to fail_matching('expected {:key => "different"} to include {:key => "value"}')
+        }.to fail_matching("expected #{hash_inspect({ :key => "different" })} to include #{hash_inspect({ :key => "value" })}")
       end
 
       it "fails if target has a different key" do
         expect {
           expect({ :other => 'value' }).to include(:key => 'value')
-        }.to fail_matching('expected {:other => "value"} to include {:key => "value"}')
+        }.to fail_matching("expected #{hash_inspect({ :other => "value" })} to include #{hash_inspect({ :key => "value" })}")
       end
     end
 
@@ -763,7 +779,7 @@ RSpec.describe "#include matcher" do
       it "fails if the target does not contain the given hash" do
         expect {
           expect(['a', 'b']).to include(:key => 'value')
-        }.to fail_matching('expected ["a", "b"] to include {:key => "value"}')
+        }.to fail_matching("expected [\"a\", \"b\"] to include #{hash_inspect({ :key => "value" })}")
       end
 
       it "passes if the target contains the given hash" do
@@ -777,13 +793,13 @@ RSpec.describe "#include matcher" do
       it "fails if target includes the key/value pair" do
         expect {
           expect({ :key => 'value' }).not_to include(:key => 'value')
-        }.to fail_matching('expected {:key => "value"} not to include {:key => "value"}')
+        }.to fail_matching("expected #{hash_inspect({ :key => "value" })} not to include #{hash_inspect({ :key => "value" })}")
       end
 
       it "fails if target includes the key/value pair among others" do
         expect {
           expect({ :key => 'value', :other => 'different' }).not_to include(:key => 'value')
-        }.to fail_with(%r|expected #{hash_inspect :key => "value", :other => "different"} not to include \{:key => "value"\}|)
+        }.to fail_with(%r|expected #{hash_inspect(:key => "value", :other => "different")} not to include #{hash_inspect({ :key => "value" })}|)
       end
 
       it "passes if target has a different value for key" do
@@ -803,7 +819,7 @@ RSpec.describe "#include matcher" do
       it "fails if the target contains the given hash" do
         expect {
           expect(['a', { :key => 'value' }]).not_to include(:key => 'value')
-        }.to fail_matching('expected ["a", {:key => "value"}] not to include {:key => "value"}')
+        }.to fail_matching("expected [\"a\", #{hash_inspect({ :key => "value" })}] not to include #{hash_inspect({ :key => "value" })}")
       end
     end
   end
@@ -980,13 +996,25 @@ RSpec.describe "#include matcher" do
 
       it 'provides a description' do
         description = include(:a => a_value_within(3).of(10)).description
-        expect(description).to eq("include {:a => (a value within 3 of 10)}")
+        expect(description).to eq(
+          if RUBY_VERSION.to_f > 3.3
+            "include {a: (a value within 3 of 10)}"
+          else
+            "include {:a => (a value within 3 of 10)}"
+          end
+        )
       end
 
       it "fails with a clear message when the matcher does not match" do
         expect {
           expect(:a => 15).to include(:a => a_value_within(3).of(10))
-        }.to fail_matching("expected {:a => 15} to include {:a => (a value within 3 of 10)}")
+        }.to fail_matching(
+          if RUBY_VERSION.to_f > 3.3
+            "expected {a: 15} to include {a: (a value within 3 of 10)}"
+          else
+            "expected {:a => 15} to include {:a => (a value within 3 of 10)}"
+          end
+        )
       end
     end
 
@@ -1003,7 +1031,7 @@ RSpec.describe "#include matcher" do
       it 'fails with a clear message when the matcher does not match', :if => (RUBY_VERSION.to_f > 1.8) do
         expect {
           expect(:drink => "water", :food => "bread").to include(match(/bar/))
-        }.to fail_matching('expected {:drink => "water", :food => "bread"} to include (match /bar/)')
+        }.to fail_matching("expected #{hash_inspect({ :drink => "water", :food => "bread" })} to include (match /bar/)")
       end
     end
 
@@ -1032,19 +1060,19 @@ RSpec.describe "#include matcher" do
       it 'fails with a clear message when the value does not match', :if => (RUBY_VERSION.to_f > 1.8) do
         expect {
           expect(:drink => "water", :food => "bread").to include(match(/foo/) => "meat")
-        }.to fail_matching('expected {:drink => "water", :food => "bread"} to include {(match /foo/) => "meat"}')
+        }.to fail_matching("expected #{hash_inspect({ :drink => "water", :food => "bread" })} to include {(match /foo/) => \"meat\"}")
       end
 
       it 'fails with a clear message when the matcher does not match', :if => (RUBY_VERSION.to_f > 1.8) do
         expect {
           expect(:drink => "water", :food => "bread").to include(match(/bar/) => "bread")
-        }.to fail_matching('expected {:drink => "water", :food => "bread"} to include {(match /bar/) => "bread"}')
+        }.to fail_matching("expected #{hash_inspect({ :drink => "water", :food => "bread" })} to include {(match /bar/) => \"bread\"}")
       end
 
       it 'fails with a clear message when several matchers do not match', :if => (RUBY_VERSION.to_f > 1.8) do
         expect {
           expect(:drink => "water", :food => "bread").to include(match(/bar/) => "bread", match(/baz/) => "water")
-        }.to fail_matching('expected {:drink => "water", :food => "bread"} to include {(match /bar/) => "bread", (match /baz/) => "water"}')
+        }.to fail_matching("expected #{hash_inspect({ :drink => "water", :food => "bread" })} to include {(match /bar/) => \"bread\", (match /baz/) => \"water\"}")
       end
     end
 

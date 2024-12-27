@@ -105,7 +105,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
               "  expected: ({:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
               "       got: ({:baz=>:quz, :foo=>:bar}) (options hash)"
 
-            message = message.gsub('=>', ' => ') if RUBY_VERSION.to_f > 3.3
+            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
             with_unfulfilled_double do |d|
               expect(d).to receive(:foo).with(**expected_hash)
@@ -126,7 +126,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
                 "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
                 "       got: (:positional, {:keyword=>1}) (options hash)"
 
-              message = message.gsub('=>',' => ') if RUBY_VERSION.to_f > 3.3
+              message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
               expect {
                 options = { keyword: 1 }
@@ -155,7 +155,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
                 "-[#{expected_input.inspect}, {:one=>1}]\n" \
                 "+[#{actual_input.inspect}, {:one=>1}]\n"
 
-              message = message.gsub('=>',' => ') if RUBY_VERSION.to_f > 3.3
+              message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
               expect {
                 options = { one: 1 }
@@ -187,7 +187,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
               "  expected: (:positional, {:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
               "       got: (:positional, {:baz=>:quz, :foo=>:bar}) (options hash)"
 
-            message.gsub!('=>',' => ') if RUBY_VERSION.to_f > 3.3
+            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
             expect(d).to receive(:foo).with(:positional, **expected_hash)
             expect {
@@ -203,7 +203,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
               "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
               "       got: (:positional, {:keyword=>1}) (options hash)"
 
-            message.gsub!('=>',' => ') if RUBY_VERSION.to_f > 3.3
+            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
             expect(d).to receive(:foo).with(:positional, keyword: 1)
             expect {
@@ -231,7 +231,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
               "-[#{expected_input.inspect}, {:one=>1}]\n" \
               "+[#{actual_input.inspect}, {:one=>1}]\n"
 
-            message = message.gsub('=>', ' => ') if RUBY_VERSION.to_f > 3.3
+            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
             expect {
               options = { one: 1 }
@@ -250,11 +250,6 @@ RSpec.describe "Diffs printed when arguments don't match" do
       # calls to the same hash. This regex allows us to work around that.
       def hash_regex_inspect(hash)
         "\\{(#{hash.map { |key, value| "#{key.inspect}=>#{value.inspect}.*" }.join "|"}){#{hash.size}}\\}"
-      end
-    elsif RUBY_VERSION.to_f > 3.3
-      # Ruby head / 3.4 is changing the hash syntax inspect, but we use PP when diffing which just spaces out hashrockets
-      def hash_regex_inspect(hash)
-        Regexp.escape("{#{hash.map { |key, value| "#{key.inspect} => #{value.inspect}"}.join(", ")}}")
       end
     else
       def hash_regex_inspect(hash)

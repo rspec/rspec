@@ -26,3 +26,29 @@ Then(/^the example should fail$/) do
   step 'the output should contain "1 failure"'
   step 'the exit status should not be 0'
 end
+
+Then(/^the output should contain, ignoring hash syntax, "(.*)"$/) do |output|
+  if RUBY_VERSION.to_f > 3.3
+    expect(all_output).to include(output.gsub(/:(\w+)=>/, '\1: '))
+  else
+    expect(all_output).to include(output)
+  end
+end
+
+RSpec::Matchers.define :match_table do |lines|
+  match do |all_output|
+    lines.all? { |line| all_output.include?(line) }
+  end
+
+  diffable
+end
+
+Then "the output should contain all of these, ignoring hash syntax:" do |table|
+  lines = table.raw.flatten.reject(&:empty?)
+
+  if RUBY_VERSION.to_f > 3.3
+    lines = lines.map { |line| line.gsub(/:(\w+)\s+=>\s+/, '\1: ') }
+  end
+
+  expect(all_output).to match_table(lines)
+end

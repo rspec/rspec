@@ -139,7 +139,7 @@ Feature: `include` matcher
       end
       """
     When I run `rspec hash_include_matcher_spec.rb`
-    Then the output should contain all of these:
+    Then the output should contain all of these, ignoring hash syntax:
       | 22 examples, 13 failures                                      |
       | expected {:a => 7, :b => 5} not to include :a                 |
       | expected {:a => 7, :b => 5} not to include :b and :a          |
@@ -176,7 +176,7 @@ Feature: `include` matcher
         end
       """
     When I run `rspec include_matcher_with_counts_spec.rb`
-    Then the output should contain all of these:
+    Then the output should contain all of these, ignoring hash syntax:
       | 12 examples, 4 failures                                                                                                 |
       | expected [{:c => 7}, {:a => 1}, {:b => 2}, {:c => 1}, {:a => 3}, {:c => 7}] not to include (have key :b) once           |
       | expected [{:c => 7}, {:a => 1}, {:b => 2}, {:c => 1}, {:a => 3}, {:c => 7}] not to include (have key :a) twice          |

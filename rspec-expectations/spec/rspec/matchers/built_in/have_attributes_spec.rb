@@ -106,13 +106,25 @@ RSpec.describe "#have_attributes matcher" do
 
       it 'provides a description' do
         description = have_attributes(:age => (a_value > 30)).description
-        expect(description).to eq("have attributes {:age => (a value > 30)}")
+        expect(description).to eq(
+          if RUBY_VERSION.to_f > 3.3
+            "have attributes {age: (a value > 30)}"
+          else
+            "have attributes {:age => (a value > 30)}"
+          end
+        )
       end
 
       it "fails with a clear message when the matcher does not match" do
         expect {
           expect(person).to have_attributes(:age => (a_value < 10))
-        }.to fail_including("expected #{object_inspect person} to have attributes {:age => (a value < 10)}")
+        }.to fail_including(
+          if RUBY_VERSION.to_f > 3.3
+            "expected #{object_inspect person} to have attributes {age: (a value < 10)}"
+          else
+            "expected #{object_inspect person} to have attributes {:age => (a value < 10)}"
+          end
+        )
       end
     end
   end

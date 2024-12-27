@@ -141,8 +141,8 @@ module RSpec
 
                   if RUBY_VERSION.to_f > 3.3
                     expect(failure.message)
-                      .to include('expected: ({:a => 1, :b => 2}) (keyword arguments)')
-                      .and include('got: ({:a => 1, :b => 2}) (options hash)')
+                      .to include('expected: ({a: 1, b: 2}) (keyword arguments)')
+                      .and include('got: ({a: 1, b: 2}) (options hash)')
                   else
                     expect(failure.message)
                       .to include('expected: ({:a=>1, :b=>2}) (keyword arguments)')

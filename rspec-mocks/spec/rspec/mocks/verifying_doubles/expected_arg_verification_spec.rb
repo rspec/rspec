@@ -134,7 +134,7 @@ module RSpec
               it "fails to match against a hash submitted as a positional argument and received as keyword arguments in Ruby 3.0 or later", :reset => true do
                 messages =
                   if RUBY_VERSION.to_f > 3.3
-                    ["expected: (1, {:optional_arg => 3, :required_arg => 2}) (keyword arguments)", "got: (1, {:optional_arg => 3, :required_arg => 2}) (options hash)"]
+                    ["expected: (1, {optional_arg: 3, required_arg: 2}) (keyword arguments)", "got: (1, {optional_arg: 3, required_arg: 2}) (options hash)"]
                   else
                     ["expected: (1, {:optional_arg=>3, :required_arg=>2}) (keyword arguments)", "got: (1, {:optional_arg=>3, :required_arg=>2}) (options hash)"]
                   end

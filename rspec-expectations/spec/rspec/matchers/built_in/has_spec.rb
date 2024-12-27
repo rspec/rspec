@@ -29,7 +29,7 @@ RSpec.describe "expect(...).to have_sym(*args)" do
   it "fails if #has_sym?(*args) returns false" do
     expect {
       expect({ :b => "B" }).to have_key(:a)
-    }.to fail_with('expected `{:b=>"B"}.has_key?(:a)` to return true, got false')
+    }.to fail_with("expected `#{{ :b=>"B" }.inspect}.has_key?(:a)` to return true, got false")
   end
 
   obj_with_block_method = Object.new
@@ -178,7 +178,7 @@ RSpec.describe "expect(...).not_to have_sym(*args)" do
   it "fails if #has_sym?(*args) returns true" do
     expect {
       expect({ :a => "A" }).not_to have_key(:a)
-    }.to fail_with('expected `{:a=>"A"}.has_key?(:a)` to return false, got true')
+    }.to fail_with("expected `#{{ :a=>"A" }.inspect}.has_key?(:a)` to return false, got true")
   end
 
   it "fails if target does not respond to #has_sym?" do

@@ -217,7 +217,7 @@ module RSpec
           an_object_having_attributes(:age => 32)
       ).to be_aliased_to(
           have_attributes(:age => 32)
-      ).with_description("an object having attributes {:age => 32}")
+      ).with_description("an object having attributes #{hash_inspect({ :age => 32 })}")
     end
 
     specify do
@@ -225,7 +225,7 @@ module RSpec
         having_attributes(:age => 32)
       ).to be_aliased_to(
         have_attributes(:age => 32)
-      ).with_description("having attributes {:age => 32}")
+      ).with_description("having attributes #{hash_inspect({ :age => 32 })}")
     end
 
     specify do
@@ -249,7 +249,7 @@ module RSpec
         a_hash_including(:a => 5)
       ).to be_aliased_to(
         include(:a => 5)
-      ).with_description('a hash including {:a => 5}')
+      ).with_description("a hash including #{hash_inspect({ :a => 5 })}")
     end
 
     specify do
