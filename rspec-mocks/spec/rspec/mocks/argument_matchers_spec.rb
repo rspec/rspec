@@ -431,7 +431,13 @@ module RSpec
             expect(a_double).to receive(:random_call).with(:a => "a", :b => "b")
             expect do
               a_double.random_call(opts)
-            end.to fail_with(/expected: \(\{(:a\s*=>\s*\"a\", :b\s*=>\s*\"b\"|:b\s*=>\s*\"b\", :a\s*=>\s*\"a\")\}\)/)
+            end.to fail_with(
+              if RUBY_VERSION.to_f > 3.3
+                /expected: \(\{a: \"a\", b: \"b\"\}\)/
+              else
+                /expected: \(\{(:a\s*=>\s*\"a\", :b\s*=>\s*\"b\"|:b\s*=>\s*\"b\", :a\s*=>\s*\"a\")\}\)/
+              end
+            )
           end
         else
           it "matches against a hash submitted as a positional argument and received as keyword arguments in Ruby 2.7 or before" do
@@ -445,14 +451,26 @@ module RSpec
           expect(a_double).to receive(:random_call).with(:a => "b", :c => "d")
           expect do
             a_double.random_call(:a => "b", :c => "e")
-          end.to fail_with(/expected: \(\{(:a\s*=>\s*\"b\", :c\s*=>\s*\"d\"|:c\s*=>\s*\"d\", :a\s*=>\s*\"b\")\}\)/)
+          end.to fail_with(
+            if RUBY_VERSION.to_f > 3.3
+              /expected: \(\{a: \"b\", c: \"d\"\}\)/
+            else
+              /expected: \(\{(:a\s*=>\s*\"b\", :c\s*=>\s*\"d\"|:c\s*=>\s*\"d\", :a\s*=>\s*\"b\")\}\)/
+            end
+          )
         end
 
         it "fails for a hash w/ wrong keys", :reset => true do
           expect(a_double).to receive(:random_call).with(:a => "b", :c => "d")
           expect do
             a_double.random_call("a" => "b", "c" => "d")
-          end.to fail_with(/expected: \(\{(:a\s*=>\s*\"b\", :c\s*=>\s*\"d\"|:c\s*=>\s*\"d\", :a\s*=>\s*\"b\")\}\)/)
+          end.to fail_with(
+            if RUBY_VERSION.to_f > 3.3
+              /expected: \(\{a: \"b\", c: \"d\"\}\)/
+            else
+              /expected: \(\{(:a\s*=>\s*\"b\", :c\s*=>\s*\"d\"|:c\s*=>\s*\"d\", :a\s*=>\s*\"b\")\}\)/
+            end
+          )
         end
 
         it "matches a class against itself" do

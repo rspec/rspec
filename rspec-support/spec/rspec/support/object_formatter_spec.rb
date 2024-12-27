@@ -15,6 +15,19 @@ module RSpec
         end
       end
 
+      context "with an array containing a hash", :aggregate_failures do
+        it "formats the output the same as if it was inspected" do
+          formatted = ObjectFormatter.format([{ :a => :b }])
+          expect(formatted).to eq(
+            if RUBY_VERSION.to_f > 3.3
+              "[{a: :b}]"
+            else
+              "[{:a=>:b}]"
+            end
+          )
+        end
+      end
+
       context "with a hash object containing other objects for which we have custom formatting" do
         let(:time)  { Time.utc(1969, 12, 31, 19, 01, 40, 101) }
         let(:formatted_time) { ObjectFormatter.format(time) }
@@ -35,7 +48,12 @@ module RSpec
       unless RUBY_VERSION == '1.8.7' # We can't count on the ordering of the hash on 1.8.7...
         context 'with a hash object' do
           let(:input) { { :c => "ccc", :a => "aaa", "b" => 'bbb' } }
-          let(:expected) { '{:a=>"aaa", "b"=>"bbb", :c=>"ccc"}' }
+
+          if RUBY_VERSION.to_f > 3.3
+            let(:expected) { '{a: "aaa", "b"=>"bbb", c: "ccc"}' }
+          else
+            let(:expected) { '{:a=>"aaa", "b"=>"bbb", :c=>"ccc"}' }
+          end
 
           it 'sorts keys to ensure objects are always displayed the same way' do
             formatted = ObjectFormatter.format(input)
@@ -373,7 +391,7 @@ module RSpec
 
       if RUBY_VERSION.to_f > 3.3
         def eq_hash_syntax(string)
-          eq string.gsub('=>', ' => ')
+          eq string.gsub(/:(\w+)=>/, '\1: ').gsub('=>', ' => ')
         end
       else
         def eq_hash_syntax(string)

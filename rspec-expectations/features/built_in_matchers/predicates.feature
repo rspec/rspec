@@ -88,7 +88,7 @@ Feature: Predicate matchers
       """
     When I run `rspec should_have_key_spec.rb`
     Then the output should contain "2 examples, 1 failure"
-     And the output should contain "expected `{:foo=>7}.has_key?(:bar)` to be truthy, got false"
+     And the output should contain, ignoring hash syntax, "expected `{:foo=>7}.has_key?(:bar)` to be truthy, got false"
 
    Scenario: Expecting `subject` to have all decimals (based on custom `has_decimals?` method)
      Given a file named "should_not_have_all_string_keys_spec.rb" with:

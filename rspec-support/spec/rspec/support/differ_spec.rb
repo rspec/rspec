@@ -307,7 +307,7 @@ module RSpec
               |
             EOD
 
-            expected_diff.gsub!('=>',' => ') if RUBY_VERSION.to_f > 3.3
+            expected_diff.gsub!(/:(\w+)=>/,'\1: ') if RUBY_VERSION.to_f > 3.3
 
             diff = differ.diff(expected,actual)
             expect(diff).to be_diffed_as(expected_diff)

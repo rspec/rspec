@@ -61,6 +61,8 @@ module RSpec
           prepare_array(object)
         when Hash
           prepare_hash(object)
+        when Symbol
+          object
         else
           inspector_class = INSPECTOR_CLASSES.find { |inspector| inspector.can_inspect?(object) }
           inspector_class.new(object, self)

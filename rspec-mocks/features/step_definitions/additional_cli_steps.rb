@@ -27,7 +27,7 @@ Then /^it should fail with the following output(, ignoring hash syntax)?:$/ do |
   lines = table.raw.flatten.reject(&:empty?)
 
   if ignore_hash_syntax && RUBY_VERSION.to_f > 3.3
-    lines = lines.map { |line| line.gsub(/([^\s])=>/, '\1 => ') }
+    lines = lines.map { |line| line.gsub(/:(\w+)=>/, '\1: ') }
   end
 
   expect(all_output).to match_table(lines)
