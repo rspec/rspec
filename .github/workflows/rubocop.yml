@@ -1,6 +1,5 @@
 name: Run RuboCop
-on:
-  workflow_call:
+on: workflow_call
 
 permissions:
   contents: read
