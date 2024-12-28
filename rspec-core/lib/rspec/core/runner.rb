@@ -134,7 +134,8 @@ module RSpec
         unless @configuration.warnings_set?
           RSpec.warning "config.warnings isn't set. Please set it to either `:all`, `:deprecations_only`, or " \
                         "`:none`. Setting it to at least `:deprecations_only` is highly" \
-                        "recommended to receive advance notice of future Ruby breaking changes."
+                        "recommended to receive advance notice of future Ruby breaking changes.",
+                        :call_site => nil
         end
       end
 
