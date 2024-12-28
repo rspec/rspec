@@ -5,8 +5,6 @@ RSpec.describe 'Failed spec rerun location' do
   include_context "aruba support"
 
   before do
-    setup_aruba
-
     # Setup some shared examples and call them in a separate file
     # from where they are called to demonstrate how nested example ids work
     write_file_formatted "some_examples.rb", "

@@ -35,6 +35,8 @@ RSpec.shared_context "aruba support" do
   let(:stderr) { StringIO.new }
   let(:stdout) { StringIO.new }
 
+  before { setup_aruba }
+
   attr_reader :last_cmd_stdout, :last_cmd_stderr, :last_cmd_exit_status
 
   def run_command(cmd)
