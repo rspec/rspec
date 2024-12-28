@@ -1,4 +1,4 @@
-name: Run Rubocop
+name: Run RuboCop
 on:
   workflow_call:
 
@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   rubocop:
-    name: Rubocop
+    name: RuboCop
     runs-on: 'ubuntu-20.04'
     steps:
       - uses: actions/checkout@v4
