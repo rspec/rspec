@@ -2,7 +2,6 @@ require 'support/aruba_support'
 
 RSpec.describe 'Filtering' do
   include_context "aruba support"
-  before { setup_aruba }
 
   it 'prints a rerun command for shared examples in external files that works to rerun' do
     write_file "spec/support/shared_examples.rb", "

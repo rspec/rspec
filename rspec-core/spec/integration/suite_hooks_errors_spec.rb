@@ -21,8 +21,6 @@ RSpec.describe 'Suite hook errors' do
   end
 
   before do
-    setup_aruba
-
     RSpec.configure do |c|
       c.filter_gems_from_backtrace "gems/aruba"
       c.filter_gems_from_backtrace "gems/bundler"

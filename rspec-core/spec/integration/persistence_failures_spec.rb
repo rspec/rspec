@@ -2,7 +2,6 @@ require 'support/aruba_support'
 
 RSpec.describe 'Persistence failures' do
   include_context "aruba support"
-  before { setup_aruba }
 
   context "when `config.example_status_persistence_file_path` is configured" do
     context "to an invalid file path (e.g. spec/spec_helper.rb/examples.txt)" do
