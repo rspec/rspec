@@ -62,7 +62,12 @@ module RSpec
         when Hash
           prepare_hash(object)
         when Symbol
-          object
+          if RUBY_VERSION == '1.8.7'
+            inspector_class = INSPECTOR_CLASSES.find { |inspector| inspector.can_inspect?(object) }
+            inspector_class.new(object, self)
+          else
+            object
+          end
         else
           inspector_class = INSPECTOR_CLASSES.find { |inspector| inspector.can_inspect?(object) }
           inspector_class.new(object, self)
