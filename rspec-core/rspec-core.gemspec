@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.files           += %w[README.md LICENSE.md Changelog.md .yardopts .document]
   s.test_files       = []
   s.bindir           = 'exe'
-  s.executables      = `git ls-files -- exe/*`.split("\n").map{ |f| File.basename(f) }
+  s.executables      = ['rspec']
   s.rdoc_options     = ["--charset=UTF-8"]
   s.require_path     = "lib"
 
