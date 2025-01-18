@@ -202,8 +202,8 @@ module RSpec
 
       def split_file_scoped_rules
         rules_dup = @rules.dup
-        locations = rules_dup.delete(:locations) { Hash.new([]) }
-        ids       = rules_dup.delete(:ids)       { Hash.new([]) }
+        locations = rules_dup.delete(:locations) { Hash.new { [] } }
+        ids       = rules_dup.delete(:ids)       { Hash.new { [] } }
 
         return locations, ids, self.class.new(rules_dup)
       end
