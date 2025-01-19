@@ -52,10 +52,22 @@ module CommonHelperMethods
         "\\{(#{hash.map { |key, value| "#{key.inspect} => #{value.inspect}.*" }.join "|"}){#{hash.size}}\\}"
       end
     end
+
+    def hash_inspect_for_regex(hash)
+      if hash.keys.length == 1
+        Regexp.escape hash_inspect(hash)
+      else
+        hash_inspect(hash)
+      end
+    end
   else
     def hash_inspect(hash)
       RSpec::Matchers::BuiltIn::BaseMatcher::HashFormatting.
         improve_hash_formatting hash.inspect
+    end
+
+    def hash_inspect_for_regex(hash)
+      Regexp.escape hash_inspect(hash)
     end
   end
 end
