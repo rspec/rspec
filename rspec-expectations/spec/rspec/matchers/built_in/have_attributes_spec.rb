@@ -52,7 +52,7 @@ RSpec.describe "#have_attributes matcher" do
     it "fails if target does not have any of the expected attributes" do
       expect {
         expect(person).to have_attributes(:name => wrong_name)
-      }.to fail_with(%r|expected #{object_inspect person} to have attributes #{hash_inspect :name => wrong_name} but had attributes #{hash_inspect :name => correct_name }|)
+      }.to fail_including("expected #{object_inspect person} to have attributes #{hash_inspect :name => wrong_name} but had attributes #{hash_inspect :name => correct_name }")
     end
 
     it "fails with correct message if object manipulates its data" do
@@ -64,7 +64,7 @@ RSpec.describe "#have_attributes matcher" do
       end.new
       expect {
         expect(counter).to have_attributes(:count => 1)
-      }.to fail_with(%r|to have attributes #{hash_inspect :count => 1} but had attributes #{hash_inspect :count => 2 }|)
+      }.to fail_including("to have attributes #{hash_inspect :count => 1} but had attributes #{hash_inspect :count => 2 }")
     end
 
     it 'diffs the attributes received with those expected' do
@@ -137,7 +137,7 @@ RSpec.describe "#have_attributes matcher" do
     it "fails if target has all of the expected attributes" do
       expect {
         expect(person).to_not have_attributes(:age => correct_age)
-      }.to fail_with(%r|expected #{object_inspect person} not to have attributes #{hash_inspect :age => correct_age}|)
+      }.to fail_including("expected #{object_inspect person} not to have attributes #{hash_inspect :age => correct_age}")
     end
 
     it "doesn't produce a diff" do
