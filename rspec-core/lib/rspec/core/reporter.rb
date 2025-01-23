@@ -172,10 +172,11 @@ module RSpec::Core
     # @private
     def finish
       close_after do
-        stop
+        examples_notification = Notifications::ExamplesNotification.new(self)
+        stop(examples_notification)
         notify :start_dump,    Notifications::NullNotification
-        notify :dump_pending,  Notifications::ExamplesNotification.new(self)
-        notify :dump_failures, Notifications::ExamplesNotification.new(self)
+        notify :dump_pending,  examples_notification
+        notify :dump_failures, examples_notification
         notify :deprecation_summary, Notifications::NullNotification
         unless mute_profile_output?
           notify :dump_profile, Notifications::ProfileNotification.new(@duration, @examples,
@@ -197,9 +198,9 @@ module RSpec::Core
     end
 
     # @private
-    def stop
+    def stop(notification)
       @duration = (RSpec::Core::Time.now - @start).to_f if @start
-      notify :stop, Notifications::ExamplesNotification.new(self)
+      notify :stop, notification
     end
 
     # @private
