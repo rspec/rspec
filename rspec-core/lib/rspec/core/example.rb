@@ -98,7 +98,7 @@ module RSpec
           loaded_spec_files = RSpec.configuration.loaded_spec_files
 
           Metadata.ascending(metadata) do |meta|
-            return meta[:location] if loaded_spec_files.include?(meta[:absolute_file_path])
+            break meta[:location] if loaded_spec_files.include?(meta[:absolute_file_path])
           end
         end
       end
