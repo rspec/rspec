@@ -6,7 +6,6 @@ require 'rspec/core/bisect/fork_runner'
 module RSpec::Core
   RSpec.shared_examples_for "a bisect runner" do
     include_context "aruba support"
-    before { setup_aruba }
 
     let(:shell_command) { Bisect::ShellCommand.new([]) }
 

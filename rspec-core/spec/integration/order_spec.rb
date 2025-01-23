@@ -1,7 +1,9 @@
 require 'support/aruba_support'
 
-RSpec.describe 'command line', :ui do
+RSpec.describe 'command line' do
   include_context "aruba support"
+
+  before(:all) { setup_aruba }
 
   before :all do
     write_file 'spec/simple_spec.rb', "
