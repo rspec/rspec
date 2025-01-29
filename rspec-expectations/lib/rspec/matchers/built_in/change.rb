@@ -286,7 +286,7 @@ module RSpec
         # @private
         def does_not_match?(event_proc)
           if @description_suffix
-            raise NotImplementedError, "Using `expect { }.not_to change { }` " \
+            raise NotImplementedError, "Using `expect { }.not_to change { }.from()` " \
                                        "with the `to()` matcher is not supported."
           end
 
