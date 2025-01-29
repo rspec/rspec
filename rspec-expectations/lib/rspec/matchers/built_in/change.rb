@@ -150,8 +150,8 @@ module RSpec
 
         # @private
         def does_not_match?(_event_proc)
-          raise NotImplementedError, "`expect { }.not_to change " \
-                                     "{ }.#{@relativity}()` is not supported"
+          raise NotImplementedError, "Using `expect { }.not_to change { }` " \
+                                     "with the `#{@relativity}()` matcher is not supported."
         end
 
         # @private
@@ -286,8 +286,8 @@ module RSpec
         # @private
         def does_not_match?(event_proc)
           if @description_suffix
-            raise NotImplementedError, "`expect { }.not_to change { }.to()` " \
-                                       "is not supported"
+            raise NotImplementedError, "Using `expect { }.not_to change { } ` " \
+                                       "with the `to()` matcher is not supported."
           end
 
           perform_change(event_proc) && !@change_details.changed? && @matches_before
@@ -326,8 +326,8 @@ module RSpec
 
         # @private
         def does_not_match?(_event_proc)
-          raise NotImplementedError, "`expect { }.not_to change { }.to()` " \
-                                     "is not supported"
+          raise NotImplementedError, "Using `expect { }.not_to change { }` " \
+                                     "with the `to()` matcher is not supported."
         end
 
       private
