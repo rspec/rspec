@@ -34,13 +34,13 @@ module RSpec
         # @api public
         # Specifies the new value you expect.
         def to(value)
-          ChangeToValue.new(change_details, value)
+          ChangeFromTo.new(change_details, ChangeFromTo::MATCH_ANYTHING, value)
         end
 
         # @api public
         # Specifies the original value.
         def from(value)
-          ChangeFromValue.new(change_details, value)
+          ChangeFromTo.new(change_details, value, ChangeFromTo::MATCH_ANYTHING)
         end
 
         # @private
@@ -180,7 +180,7 @@ module RSpec
 
       # @api private
       # Base class for specifying a change from and/or to specific values.
-      class SpecificValuesChange < BaseMatcher
+      class ChangeFromTo < BaseMatcher
         # @private
         MATCH_ANYTHING = ::Object.ancestors.last
 
@@ -190,9 +190,35 @@ module RSpec
           @expected_after  = to
         end
 
+        # @api public
+        # Specifies the new value you expect.
+        def to(to)
+          raise "Can't set `to()` more than once" unless @expected_after == MATCH_ANYTHING
+          @expected_after = to
+          self
+        end
+
+        # @api public
+        # Specifies the original value.
+        def from(from)
+          raise "Can't set `from()` more than once" unless @expected_before == MATCH_ANYTHING
+          @expected_before = from
+          self
+        end
+
         # @private
         def matches?(event_proc)
           perform_change(event_proc) && @change_details.changed? && @matches_before && matches_after?
+        end
+
+        # @private
+        def does_not_match?(event_proc)
+          if @expected_after != MATCH_ANYTHING
+            raise NotImplementedError, "`expect { }.not_to change { }.to()` " \
+                                       "is not supported"
+          end
+
+          perform_change(event_proc) && !@change_details.changed? && @matches_before
         end
 
         # @private
@@ -209,6 +235,13 @@ module RSpec
         end
 
         # @private
+        def failure_message_when_negated
+          return not_given_a_block_failure unless Proc === @event_proc
+          return before_value_failure unless @matches_before
+          did_change_failure
+        end
+
+        # @private
         def supports_block_expectations?
           true
         end
@@ -219,6 +252,18 @@ module RSpec
         end
 
       private
+
+        def change_description
+          [from_description, to_description].compact.join(" ")
+        end
+
+        def from_description
+          "from #{description_of @expected_before}" if @expected_before != MATCH_ANYTHING
+        end
+
+        def to_description
+          "to #{description_of @expected_after}" if @expected_after != MATCH_ANYTHING
+        end
 
         def perform_change(event_proc)
           @event_proc = event_proc
@@ -263,77 +308,6 @@ module RSpec
         def not_given_a_block_failure
           "expected #{@change_details.value_representation} to have changed " \
             "#{change_description}, but was not given a block"
-        end
-      end
-
-      # @api private
-      # Used to specify a change from a specific value
-      # (and, optionally, to a specific value).
-      class ChangeFromValue < SpecificValuesChange
-        def initialize(change_details, expected_before)
-          @description_suffix = nil
-          super(change_details, expected_before, MATCH_ANYTHING)
-        end
-
-        # @api public
-        # Specifies the new value you expect.
-        def to(value)
-          @expected_after     = value
-          @description_suffix = " to #{description_of value}"
-          self
-        end
-
-        # @private
-        def does_not_match?(event_proc)
-          if @description_suffix
-            raise NotImplementedError, "`expect { }.not_to change { }.to()` " \
-                                       "is not supported"
-          end
-
-          perform_change(event_proc) && !@change_details.changed? && @matches_before
-        end
-
-        # @private
-        def failure_message_when_negated
-          return not_given_a_block_failure unless Proc === @event_proc
-          return before_value_failure unless @matches_before
-          did_change_failure
-        end
-
-      private
-
-        def change_description
-          "from #{description_of @expected_before}#{@description_suffix}"
-        end
-      end
-
-      # @api private
-      # Used to specify a change to a specific value
-      # (and, optionally, from a specific value).
-      class ChangeToValue < SpecificValuesChange
-        def initialize(change_details, expected_after)
-          @description_suffix = nil
-          super(change_details, MATCH_ANYTHING, expected_after)
-        end
-
-        # @api public
-        # Specifies the original value.
-        def from(value)
-          @expected_before    = value
-          @description_suffix = " from #{description_of value}"
-          self
-        end
-
-        # @private
-        def does_not_match?(_event_proc)
-          raise NotImplementedError, "`expect { }.not_to change { }.to()` " \
-                                     "is not supported"
-        end
-
-      private
-
-        def change_description
-          "to #{description_of @expected_after}#{@description_suffix}"
         end
       end
 

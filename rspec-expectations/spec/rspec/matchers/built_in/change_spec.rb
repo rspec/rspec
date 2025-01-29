@@ -527,6 +527,12 @@ RSpec.describe "expect { ... }.not_to change { }.to" do
       expect {}.not_to change {}.from(nil).to(3)
     }.to raise_error(NotImplementedError)
   end
+
+  it 'is not supported when it comes before `from`' do
+    expect {
+      expect {}.not_to change {}.to(3).from(nil)
+    }.to raise_error(NotImplementedError)
+  end
 end
 
 RSpec.describe "expect { ... }.not_to change { }.by" do
@@ -916,7 +922,7 @@ RSpec.describe "expect { ... }.to change { block }.from(old).to(new)" do
     end
 
     it "provides a #description" do
-      expect(change {}.to(1).from(3).description).to eq "change result to 1 from 3"
+      expect(change {}.to(1).from(3).description).to eq "change result from 3 to 1"
     end
   end
 
@@ -997,7 +1003,7 @@ RSpec.describe "Composing a matcher with `change`" do
         expect(change(nil, :foo).
           to( a_value_within(0.1).of(0.5) ).
           from( a_value_within(0.1).of(1.5) ).description
-        ).to eq("change `NilClass#foo` to a value within 0.1 of 0.5 from a value within 0.1 of 1.5")
+        ).to eq("change `NilClass#foo` from a value within 0.1 of 1.5 to a value within 0.1 of 0.5")
       end
     end
 
@@ -1072,7 +1078,7 @@ RSpec.describe RSpec::Matchers::BuiltIn::ChangeRelatively do
   end
 end
 
-RSpec.describe RSpec::Matchers::BuiltIn::ChangeFromValue do
+RSpec.describe RSpec::Matchers::BuiltIn::ChangeFromTo do
   it_behaves_like "an RSpec block-only matcher" do
     let(:matcher) { change { @k }.from(0) }
     before { @k = 0 }
@@ -1082,9 +1088,7 @@ RSpec.describe RSpec::Matchers::BuiltIn::ChangeFromValue do
     def invalid_block
     end
   end
-end
 
-RSpec.describe RSpec::Matchers::BuiltIn::ChangeToValue do
   it_behaves_like "an RSpec block-only matcher", :disallows_negation => true do
     let(:matcher) { change { @k }.to(2) }
     before { @k = 0 }
