@@ -152,7 +152,6 @@ module RSpec
         def does_not_match?(_event_proc)
           raise NotImplementedError, "Using a negated form of the `change` matcher " \
                                      "with `#{@relativity}()` is not supported."
-
         end
 
         # @private
