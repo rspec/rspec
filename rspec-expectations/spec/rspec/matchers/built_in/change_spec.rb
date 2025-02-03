@@ -519,21 +519,29 @@ RSpec.describe "expect { ... }.not_to change { }.to" do
   it 'is not supported' do
     expect {
       expect {}.not_to change {}.to(3)
-    }.to raise_error(NotImplementedError)
+     }.to raise_error(
+      NotImplementedError,
+      "Using a negated form of the `change` matcher with `to()` is not supported."
+    )
   end
 
   it 'is not supported when it comes after `from`' do
     expect {
       expect {}.not_to change {}.from(nil).to(3)
-    }.to raise_error(NotImplementedError)
-  end
+ }.to raise_error(
+      NotImplementedError,
+      "Using a negated form of the `change` matcher with `to()` is not supported."
+    )  end
 end
 
 RSpec.describe "expect { ... }.not_to change { }.by" do
   it 'is not supported' do
     expect {
       expect {}.not_to change {}.by(3)
-    }.to raise_error(NotImplementedError)
+    }.to raise_error(
+      NotImplementedError,
+      "Using a negated form of the `change` matcher with `by()` is not supported."
+    )
   end
 end
 
@@ -541,7 +549,10 @@ RSpec.describe "expect { ... }.not_to change { }.by_at_least" do
   it 'is not supported' do
     expect {
       expect {}.not_to change {}.by_at_least(3)
-    }.to raise_error(NotImplementedError)
+    }.to raise_error(
+      NotImplementedError,
+      "Using a negated form of the `change` matcher with `by_at_least()` is not supported."
+    )
   end
 end
 
@@ -549,7 +560,10 @@ RSpec.describe "expect { ... }.not_to change { }.by_at_most" do
   it 'is not supported' do
     expect {
       expect {}.not_to change {}.by_at_most(3)
-    }.to raise_error(NotImplementedError)
+    }.to raise_error(
+      NotImplementedError,
+      "Using a negated form of the `change` matcher with `by_at_most()` is not supported."
+    )
   end
 end
 
