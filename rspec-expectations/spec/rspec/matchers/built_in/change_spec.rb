@@ -519,7 +519,7 @@ RSpec.describe "expect { ... }.not_to change { }.to" do
   it 'is not supported' do
     expect {
       expect {}.not_to change {}.to(3)
-     }.to raise_error(
+    }.to raise_error(
       NotImplementedError,
       "Using a negated form of the `change` matcher with `to()` is not supported."
     )
@@ -528,10 +528,11 @@ RSpec.describe "expect { ... }.not_to change { }.to" do
   it 'is not supported when it comes after `from`' do
     expect {
       expect {}.not_to change {}.from(nil).to(3)
- }.to raise_error(
+    }.to raise_error(
       NotImplementedError,
       "Using a negated form of the `change` matcher with `to()` is not supported."
-    )  end
+    )
+  end
 end
 
 RSpec.describe "expect { ... }.not_to change { }.by" do
