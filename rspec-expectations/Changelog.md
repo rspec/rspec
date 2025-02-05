@@ -7,7 +7,7 @@
 Bug Fixes:
 
 * Fix passing a regular expression to the `include` matcher without a count constraint.
-  (Jon Rowe, #1485)
+  (Jon Rowe, rspec/rspec-expectations#1485)
 
 ### 3.13.2 / 2024-08-20
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.13.1...v3.13.2)
@@ -15,10 +15,10 @@ Bug Fixes:
 Bug Fixes:
 
 * When using null object doubles, prevent typos triggering dynamic matchers.
-  (Eric Mueller, #1455)
-* Use `RSpec.warning` for an expectation warning rather than `Kernel.warn`. (Jon Rowe, #1472)
-* Prevent mismatched use of block and value matchers in compound expectations. (Phil Pirozhkov, #1476)
-* Raise an error when passing no arguments to the `include` matcher. (Eric Mueller, #1479)
+  (Eric Mueller, rspec/rspec-expectations#1455)
+* Use `RSpec.warning` for an expectation warning rather than `Kernel.warn`. (Jon Rowe, rspec/rspec-expectations#1472)
+* Prevent mismatched use of block and value matchers in compound expectations. (Phil Pirozhkov, rspec/rspec-expectations#1476)
+* Raise an error when passing no arguments to the `include` matcher. (Eric Mueller, rspec/rspec-expectations#1479)
 
 ### 3.13.1 / 2024-06-13
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.13.0...v3.13.1)
@@ -26,7 +26,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Fix the "false positive" warning message when using a negated `raise_error` matcher
-  with a `RegExp` instance. (Eric Mueller, #1456)
+  with a `RegExp` instance. (Eric Mueller, rspec/rspec-expectations#1456)
 
 ### 3.13.0 / 2024-02-04
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.12.4...v3.13.0)
@@ -34,7 +34,7 @@ Bug Fixes:
 Enhancements:
 
 * Update `eq` and `eql` matchers to better highlight difference in string encoding.
-  (Alan Foster, #1425)
+  (Alan Foster, rspec/rspec-expectations#1425)
 
 ### 3.12.4 / 2024-02-04
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.12.3...v3.12.4)
@@ -42,7 +42,7 @@ Enhancements:
 Bug Fixes:
 
 * Fix the diff for redefined `actual` and reassigned `@actual` in compound
-  expectations failure messages. (Phil Pirozhkov, #1440)
+  expectations failure messages. (Phil Pirozhkov, rspec/rspec-expectations#1440)
 
 ### 3.12.3 / 2023-04-20
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.12.2...v3.12.3)
@@ -51,7 +51,7 @@ Bug Fixes:
 
 * Fix `include` matcher when fuzzy matching on keys with a hash-like actual which
   has a non standard `key?` method which may raise.
-  (Jon Rowe, #1416)
+  (Jon Rowe, rspec/rspec-expectations#1416)
 
 ### 3.12.2 / 2023-01-07
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.12.1...v3.12.2)
@@ -59,16 +59,16 @@ Bug Fixes:
 Bug Fixes:
 
 * Prevent deprecation warning when using the `exist` matcher with `Dir`.
-  (Steve Dierker, #1398)
+  (Steve Dierker, rspec/rspec-expectations#1398)
 
 ### 3.12.1 / 2022-12-16
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.12.0...v3.12.1)
 
 Bug Fixes:
 
-* Pass keyword arguments through to aliased (and thus negated) matchers. (Jon Rowe, #1394)
+* Pass keyword arguments through to aliased (and thus negated) matchers. (Jon Rowe, rspec/rspec-expectations#1394)
 * When handling failures in an aggregated_failures block (or example) prevent
-  the failure list leaking out. (Maciek Rząsa, #1392)
+  the failure list leaking out. (Maciek Rząsa, rspec/rspec-expectations#1392)
 
 ### 3.12.0 / 2022-10-26
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.11.1...v3.12.0)
@@ -76,7 +76,7 @@ Bug Fixes:
 Enhancements:
 
 * Add `an_array_matching` alias for `match_array` to improve readability as an argument
-  matcher. (Mark Schneider, #1361)
+  matcher. (Mark Schneider, rspec/rspec-expectations#1361)
 
 ### 3.11.1 / 2022-09-12
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.11.0...v3.11.1)
@@ -84,33 +84,33 @@ Enhancements:
 Bug Fixes:
 
 * Allow the `contain_exactly` matcher to be reused by resetting its
-  internals on `matches?` (@bclayman-sq, #1326)
+  internals on `matches?` (@bclayman-sq, rspec/rspec-expectations#1326)
 * Using the exist matcher on `FileTest` no longer produces a deprecation warning.
-  (Ryo Nakamura, #1383)
+  (Ryo Nakamura, rspec/rspec-expectations#1383)
 
 ### 3.11.0 / 2022-02-09
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.10.2...v3.11.0)
 
 Enhancements:
 
-* Return `true` from `aggregate_failures` when no exception occurs. (Jon Rowe, #1225)
+* Return `true` from `aggregate_failures` when no exception occurs. (Jon Rowe, rspec/rspec-expectations#1225)
 
 Deprecations:
 
 * Print a deprecation message when using the implicit block expectation syntax.
-  (Phil Pirozhkov, #1139)
+  (Phil Pirozhkov, rspec/rspec-expectations#1139)
 
 ### 3.10.2 / 2022-01-14
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.10.1...v3.10.2)
 
 Bug Fixes:
 
-* Fix support for dynamic matchers for expectation target checks (Phil Pirozhkov, #1294)
+* Fix support for dynamic matchers for expectation target checks (Phil Pirozhkov, rspec/rspec-expectations#1294)
 * Fix `expect(array).to include(hash).times`, previously this would fail due to
   matching the entire array as a single hash, rather than a member of the hash.
-  (Slava Kardakov, #1322)
+  (Slava Kardakov, rspec/rspec-expectations#1322)
 * Ensure `raise_error` matches works with the `error_highlight` option from Ruby 3.1.
-  (Peter Goldstein, #1339)
+  (Peter Goldstein, rspec/rspec-expectations#1339)
 
 ### 3.10.1 / 2020-12-27
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.10.0...v3.10.1)
@@ -118,7 +118,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Allow JRuby 9.2.x.x to generate backtraces normally rather than via our
-  backfill workaround. (#1230, Jon Rowe)
+  backfill workaround. (rspec/rspec-expectations#1230, Jon Rowe)
 
 ### 3.10.0 / 2020-10-30
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.9.3...v3.10.0)
@@ -126,19 +126,19 @@ Bug Fixes:
 Enhancements:
 
 * Allow `include` matcher to be chained with `once`, `at_least`, etc. for simple cases.
-  (Marc-André Lafortune, #1168)
-* Add an explicit warning when `nil` is passed to `raise_error`. (Phil Pirozhkov, #1143)
-* Improve `include` matcher's composability. (Phil Pirozhkov, #1155)
+  (Marc-André Lafortune, rspec/rspec-expectations#1168)
+* Add an explicit warning when `nil` is passed to `raise_error`. (Phil Pirozhkov, rspec/rspec-expectations#1143)
+* Improve `include` matcher's composability. (Phil Pirozhkov, rspec/rspec-expectations#1155)
 * Mocks expectations can now set a custom failure message.
-  (Benoit Tigeot and Nicolas Zermati, #1156)
-* `aggregate_failures` now shows the backtrace line for each failure. (Fabricio Bedin, #1163)
+  (Benoit Tigeot and Nicolas Zermati, rspec/rspec-expectations#1156)
+* `aggregate_failures` now shows the backtrace line for each failure. (Fabricio Bedin, rspec/rspec-expectations#1163)
 * Support multiple combinations of `yield_control` modifiers like `at_least`, `at_most`.
-  (Jon Rowe, #1169)
+  (Jon Rowe, rspec/rspec-expectations#1169)
 * Dynamic `have_<n>` matchers now have output consistent with other dynamic matchers.
-  (Marc-André Lafortune, #1195)
+  (Marc-André Lafortune, rspec/rspec-expectations#1195)
 * New config option `strict_predicate_matchers` allows predicate matcher to be strict
   (i.e. match for `true` or `false`) instead of the default (match truthy vs `false` or `nil`).
-  (Marc-André Lafortune, #1196)
+  (Marc-André Lafortune, rspec/rspec-expectations#1196)
 
 ### 3.9.4 / 2020-10-29
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.9.3...v3.9.4)
@@ -146,7 +146,7 @@ Enhancements:
 Bug Fixes:
 
 * Fix regression with `be_` and `have_` matchers and arguments implementing `to_hash`
-  were they would act like keywords and be cast to a hash. (Jon Rowe, #1222)
+  were they would act like keywords and be cast to a hash. (Jon Rowe, rspec/rspec-expectations#1222)
 
 ### 3.9.3 / 2020-10-23
 
@@ -154,14 +154,14 @@ Bug Fixes:
 
 * Swap the comparison of the delta vs the expected for the `be_within` matcher allowing
   more complicated oobjects to be compared providing they provide `abs` and other
-  comparison methods. (Kelly Stannard, #1182)
-* Properly format expected in the description of the `be_within` matcher. (Jon Rowe, #1185)
+  comparison methods. (Kelly Stannard, rspec/rspec-expectations#1182)
+* Properly format expected in the description of the `be_within` matcher. (Jon Rowe, rspec/rspec-expectations#1185)
 * Remove warning when using keyword arguments with `be_` and `have_` matchers on 2.7.x
-  (Jon Rowe, #1187)
+  (Jon Rowe, rspec/rspec-expectations#1187)
 * Prevent formatting a single hash as a list of key value pairs in default failure messages
-  for custom matches (fixes formatting in `EnglishPhrasing#list`). (Robert Eshleman, #1193)
+  for custom matches (fixes formatting in `EnglishPhrasing#list`). (Robert Eshleman, rspec/rspec-expectations#1193)
 * Prevent errors from causing false positives when using `be <operator>` comparison, e.g.
-  `expect(1).not_to be < 'a'` will now correctly fail rather than pass. (Jon Rowe, #1208)
+  `expect(1).not_to be < 'a'` will now correctly fail rather than pass. (Jon Rowe, rspec/rspec-expectations#1208)
 
 
 ### 3.9.2 / 2020-05-08
@@ -170,9 +170,9 @@ Bug Fixes:
 Bug Fixes:
 
 * Issue a proper `ArgumentError` when invalid arguments are given to `yield_control`
-  modifiers such as `at_least` et al. (Marc-André Lafortune, #1167)
+  modifiers such as `at_least` et al. (Marc-André Lafortune, rspec/rspec-expectations#1167)
 * Prevent Ruby 2.7 keyword arguments warning from being issued by custom
-  matcher definitions. (Jon Rowe, #1176)
+  matcher definitions. (Jon Rowe, rspec/rspec-expectations#1176)
 
 ### 3.9.1 / 2020-03-13
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.9.0...v3.9.1)
@@ -180,7 +180,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Issue an improved warning when using `respond_to(...).with(n).arguments` and ignore
-  the warning when using with `have_attributes(...)`. (Jon Rowe, #1164)
+  the warning when using with `have_attributes(...)`. (Jon Rowe, rspec/rspec-expectations#1164)
 
 ### 3.9.0 / 2019-10-08
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.8.6...v3.9.0)
@@ -188,19 +188,19 @@ Bug Fixes:
 Enhancements:
 
 * The `respond_to` matcher now uses the signature from `initialize` to validate checks
-  for `new` (unless `new` is non standard). (Jon Rowe, #1072)
+  for `new` (unless `new` is non standard). (Jon Rowe, rspec/rspec-expectations#1072)
 * Generated descriptions for matchers now use `is expected to` rather than `should` in
-  line with our preferred DSL. (Pete Johns, #1080, rspec/rspec-core#2572)
+  line with our preferred DSL. (Pete Johns, rspec/rspec-expectations#1080, rspec/rspec-corerspec/rspec-expectations#2572)
 * Add the ability to re-raise expectation errors when matching
-  with `match_when_negated` blocks. (Jon Rowe, #1130)
+  with `match_when_negated` blocks. (Jon Rowe, rspec/rspec-expectations#1130)
 * Add a warning when an empty diff is produce due to identical inspect output.
-  (Benoit Tigeot, #1126)
+  (Benoit Tigeot, rspec/rspec-expectations#1126)
 
 ### 3.8.6 / 2019-10-07
 
 Bug Fixes:
 
-* Revert #1125 due to the change being incompatible with our semantic versioning
+* Revert rspec/rspec-expectations#1125 due to the change being incompatible with our semantic versioning
   policy.
 
 ### 3.8.5 / 2019-10-02
@@ -209,7 +209,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Prevent unsupported implicit block expectation syntax from being used.
-  (Phil Pirozhkov, #1125)
+  (Phil Pirozhkov, rspec/rspec-expectations#1125)
 
 ### 3.8.4 / 2019-06-10
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.8.3...v3.8.4)
@@ -217,7 +217,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Prevent false negatives when checking objects for the methods required to run the
-  the `be_an_instance_of` and `be_kind_of` matchers. (Nazar Matus, #1112)
+  the `be_an_instance_of` and `be_kind_of` matchers. (Nazar Matus, rspec/rspec-expectations#1112)
 
 ### 3.8.3 / 2019-04-20
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.8.2...v3.8.3)
@@ -225,12 +225,12 @@ Bug Fixes:
 Bug Fixes:
 
 * Prevent composed `all` matchers from leaking into their siblings leading to duplicate
-  failures. (Jamie English, #1086)
+  failures. (Jamie English, rspec/rspec-expectations#1086)
 * Prevent objects which change their hash on comparison from failing change checks.
-  (Phil Pirozhkov, #1100)
+  (Phil Pirozhkov, rspec/rspec-expectations#1100)
 * Issue an `ArgumentError` rather than a `NoMethodError` when `be_an_instance_of` and
   `be_kind_of` matchers encounter objects not supporting those methods.
-  (Taichi Ishitani, #1107)
+  (Taichi Ishitani, rspec/rspec-expectations#1107)
 
 ### 3.8.2 / 2018-10-09
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.8.1...v3.8.2)
@@ -238,9 +238,9 @@ Bug Fixes:
 Bug Fixes:
 
 * Change `include` matcher to rely on a `respond_to?(:include?)` check rather than a direct
-  Hash comparison before calling `to_hash` to convert to a hash. (Jordan Owens, #1073)
+  Hash comparison before calling `to_hash` to convert to a hash. (Jordan Owens, rspec/rspec-expectations#1073)
 * Prevent unexpected call stack jumps from causing an obscure error (`IndexError`), and
-  replace that error with a proper informative message. (Jon Rowe, #1076)
+  replace that error with a proper informative message. (Jon Rowe, rspec/rspec-expectations#1076)
 
 ### 3.8.1 / 2018-08-06
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.8.0...v3.8.1)
@@ -249,7 +249,7 @@ Bug Fixes:
 
 * Fix regression in `include` matcher so stopped
   `expect(hash.with_indifferent_access).to include(:symbol_key)`
-  from working. (Eito Katagiri, #1069)
+  from working. (Eito Katagiri, rspec/rspec-expectations#1069)
 
 ### 3.8.0 / 2018-08-04
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.7.0...v3.8.0)
@@ -257,20 +257,20 @@ Bug Fixes:
 Enhancements:
 
 * Improve failure message of `change(receiver, :message)` by including the
-  receiver as `SomeClass#some_message`. (Tomohiro Hashidate, #1005)
+  receiver as `SomeClass#some_message`. (Tomohiro Hashidate, rspec/rspec-expectations#1005)
 * Improve `change` matcher so that it can correctly detect changes in
   deeply nested mutable objects (such as arrays-of-hashes-of-arrays).
   The improved logic uses the before/after `hash` value to see if the
   object has been mutated, rather than shallow duping the object.
-  (Myron Marston, #1034)
+  (Myron Marston, rspec/rspec-expectations#1034)
 * Improve `include` matcher so that pseudo-hash objects (e.g. objects
   that decorate a hash using a `SimpleDelegator` or similar) are treated
-  as a hash, as long as they implement `to_hash`. (Pablo Brasero, #1012)
+  as a hash, as long as they implement `to_hash`. (Pablo Brasero, rspec/rspec-expectations#1012)
 * Add `max_formatted_output_length=` to configuration, allowing changing
   the length at which we truncate large output strings.
-  (Sam Phippen #951, Benoit Tigeot #1056)
+  (Sam Phippen rspec/rspec-expectations#951, Benoit Tigeot rspec/rspec-expectations#1056)
 * Improve error message when passing a matcher that doesn't support block
-  expectations to a block based `expect`. (@nicktime, #1066)
+  expectations to a block based `expect`. (@nicktime, rspec/rspec-expectations#1066)
 
 ### 3.7.0 / 2017-10-17
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.6.0...v3.7.0)
@@ -278,27 +278,27 @@ Enhancements:
 Enhancements:
 
 * Improve compatibility with `--enable-frozen-string-literal` option
-  on Ruby 2.3+. (Pat Allan, #997)
+  on Ruby 2.3+. (Pat Allan, rspec/rspec-expectations#997)
 
 ### 3.6.0 / 2017-05-04
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.6.0.beta2...v3.6.0)
 
 Enhancements:
 
-* Treat NoMethodError as a failure for comparison matchers. (Jon Rowe, #972)
+* Treat NoMethodError as a failure for comparison matchers. (Jon Rowe, rspec/rspec-expectations#972)
 * Allow for scoped aliased and negated matchers--just call
   `alias_matcher` or `define_negated_matcher` from within an example
-  group. (Markus Reiter, #974)
+  group. (Markus Reiter, rspec/rspec-expectations#974)
 * Improve failure message of `change` matcher with block and `satisfy` matcher
   by including the block snippet instead of just describing it as `result` or
-  `block` when Ripper is available. (Yuji Nakayama, #987)
+  `block` when Ripper is available. (Yuji Nakayama, rspec/rspec-expectations#987)
 
 Bug Fixes:
 
 * Fix `yield_with_args` and `yield_successive_args` matchers so that
   they compare expected to actual args at the time the args are yielded
   instead of at the end, in case the method that is yielding mutates the
-  arguments after yielding. (Alyssa Ross, #965)
+  arguments after yielding. (Alyssa Ross, rspec/rspec-expectations#965)
 
 ### 3.6.0.beta2 / 2016-12-12
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.6.0.beta1...v3.6.0.beta2)
@@ -306,29 +306,29 @@ Bug Fixes:
 Bug Fixes:
 
 * Using the exist matcher on `File` no longer produces a deprecation warning.
-  (Jon Rowe, #954)
+  (Jon Rowe, rspec/rspec-expectations#954)
 
 ### 3.6.0.beta1 / 2016-10-09
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.5.0...v3.6.0.beta1)
 
 Bug Fixes:
 
-* Fix `contain_exactly` to work correctly with ranges. (Myron Marston, #940)
-* Fix `change` to work correctly with sets. (Marcin Gajewski, #939)
+* Fix `contain_exactly` to work correctly with ranges. (Myron Marston, rspec/rspec-expectations#940)
+* Fix `change` to work correctly with sets. (Marcin Gajewski, rspec/rspec-expectations#939)
 
 ### 3.5.0 / 2016-07-01
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.5.0.beta4...v3.5.0)
 
 Enhancements:
 
-* Add support for keyword arguments to the `respond_to` matcher. (Rob Smith, #915).
+* Add support for keyword arguments to the `respond_to` matcher. (Rob Smith, rspec/rspec-expectations#915).
 
 ### 3.5.0.beta4 / 2016-06-05
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.5.0.beta3...v3.5.0.beta4)
 
 Bug Fixes:
 
-* Fix `include` matcher so that it provides a valid diff for hashes. (Yuji Nakayama, #916)
+* Fix `include` matcher so that it provides a valid diff for hashes. (Yuji Nakayama, rspec/rspec-expectations#916)
 
 ### 3.5.0.beta3 / 2016-04-02
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.5.0.beta2...v3.5.0.beta3)
@@ -336,11 +336,11 @@ Bug Fixes:
 Enhancements:
 
 * Make `rspec/expectations/minitest_integration` work on Minitest::Spec
-  5.6+. (Myron Marston, #904)
+  5.6+. (Myron Marston, rspec/rspec-expectations#904)
 * Add an alias `having_attributes` for `have_attributes` matcher.
-  (Yuji Nakayama, #905)
+  (Yuji Nakayama, rspec/rspec-expectations#905)
 * Improve `change` matcher error message when block is mis-used.
-  (Alex Altair, #908)
+  (Alex Altair, rspec/rspec-expectations#908)
 
 ### 3.5.0.beta2 / 2016-03-10
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.5.0.beta1...v3.5.0.beta2)
@@ -348,15 +348,15 @@ Enhancements:
 Enhancements:
 
 * Add the ability to raise an error on encountering false positives via
-  `RSpec::Configuration#on_potential_false_positives = :raise`. (Jon Rowe, #900)
+  `RSpec::Configuration#on_potential_false_positives = :raise`. (Jon Rowe, rspec/rspec-expectations#900)
 * When using the custom matcher DSL, support new
   `notify_expectation_failures: true` option for the `match` method to
   allow expectation failures to be raised as normal instead of being
-  converted into a `false` return value for `matches?`. (Jon Rowe, #892)
+  converted into a `false` return value for `matches?`. (Jon Rowe, rspec/rspec-expectations#892)
 
 Bug Fixes:
 
-* Allow `should` deprecation check to work on `BasicObject`s. (James Coleman, #898)
+* Allow `should` deprecation check to work on `BasicObject`s. (James Coleman, rspec/rspec-expectations#898)
 
 ### 3.5.0.beta1 / 2016-02-06
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.4.0...v3.5.0.beta1)
@@ -364,14 +364,14 @@ Bug Fixes:
 Enhancements:
 
 * Make `match_when_negated` in custom matcher DSL support use of
-  expectations within the match logic. (Chris Arcand, #789)
+  expectations within the match logic. (Chris Arcand, rspec/rspec-expectations#789)
 
 Bug Fixes:
 
 * Return `true` as expected from passing negated expectations
   (such as `expect("foo").not_to eq "bar"`), so they work
   properly when used within a `match` or `match_when_negated`
-  block. (Chris Arcand, #789)
+  block. (Chris Arcand, rspec/rspec-expectations#789)
 
 ### 3.4.0 / 2015-11-11
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.3.1...v3.4.0)
@@ -380,22 +380,22 @@ Enhancements:
 
 * Warn when `RSpec::Matchers` is included in a superclass after it has
   already been included in a subclass on MRI 1.9, since that situation
-  can cause uses of `super` to trigger infinite recursion. (Myron Marston, #816)
+  can cause uses of `super` to trigger infinite recursion. (Myron Marston, rspec/rspec-expectations#816)
 * Stop rescuing `NoMemoryError`, `SignalExcepetion`, `Interrupt` and
-  `SystemExit`. It is dangerous to interfere with these. (Myron Marston, #845)
+  `SystemExit`. It is dangerous to interfere with these. (Myron Marston, rspec/rspec-expectations#845)
 * Add `#with_captures` to the match matcher which allows a user to specify expected
-  captures when matching a regex against a string. (Sam Phippen, #848)
+  captures when matching a regex against a string. (Sam Phippen, rspec/rspec-expectations#848)
 * Always print compound failure messages in the multi-line form. Trying
-  to print it all on a single line didn't read very well. (Myron Marston, #859)
+  to print it all on a single line didn't read very well. (Myron Marston, rspec/rspec-expectations#859)
 
 Bug Fixes:
 
 * Fix failure message from dynamic predicate matchers when the object
   does not respond to the predicate so that it is inspected rather
   than relying upon its `to_s` -- that way for `nil`, `"nil"` is
-  printed rather than an empty string. (Myron Marston, #841)
+  printed rather than an empty string. (Myron Marston, rspec/rspec-expectations#841)
 * Fix SystemStackError raised when diffing an Enumerable object
-  whose `#each` includes the object itself. (Yuji Nakayama, #857)
+  whose `#each` includes the object itself. (Yuji Nakayama, rspec/rspec-expectations#857)
 
 ### 3.3.1 / 2015-07-15
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.3.0...v3.3.1)
@@ -405,9 +405,9 @@ Bug Fixes:
 * Fix `be >`, `be <`, etc so that it fails rather than allowing an
   argument error to be raised when compared against an object of the
   wrong type. This allows it to be used in composed matcher expressions
-  against heterogeneous objects. (Dennis Günnewig, #809)
+  against heterogeneous objects. (Dennis Günnewig, rspec/rspec-expectations#809)
 * Fix `respond_to` to work properly on target objects
-  that redefine the `method` method. (unmanbearpig, #821)
+  that redefine the `method` method. (unmanbearpig, rspec/rspec-expectations#821)
 
 ### 3.3.0 / 2015-06-12
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.2.1...v3.3.0)
@@ -415,50 +415,50 @@ Bug Fixes:
 Enhancements:
 
 * Expose `RSpec::Matchers::EnglishPhrasing` to make it easier to write
-  nice failure messages in custom matchers. (Jared Beck, #736)
+  nice failure messages in custom matchers. (Jared Beck, rspec/rspec-expectations#736)
 * Add `RSpec::Matchers::FailMatchers`, a mixin which provides
   `fail`, `fail_with` and `fail_including` matchers for use in
   specifying that an expectation fails for use by
-  extension/plugin authors. (Charlie Rudolph, #729)
+  extension/plugin authors. (Charlie Rudolph, rspec/rspec-expectations#729)
 * Avoid loading `tempfile` (and its dependencies) unless
-  it is absolutely needed. (Myron Marston, #735)
+  it is absolutely needed. (Myron Marston, rspec/rspec-expectations#735)
 * Improve failure output when attempting to use `be_true` or `be_false`.
-  (Tim Wade, #744)
+  (Tim Wade, rspec/rspec-expectations#744)
 * Define `RSpec::Matchers#respond_to_missing?` so that
   `RSpec::Matchers#respond_to?` and `RSpec::Matchers#method` handle
-  dynamic predicate matchers. (Andrei Botalov, #751)
+  dynamic predicate matchers. (Andrei Botalov, rspec/rspec-expectations#751)
 * Use custom Time/DateTime/BigDecimal formatting for all matchers
   so they are consistently represented in failure messages.
-  (Gavin Miller, #740)
+  (Gavin Miller, rspec/rspec-expectations#740)
 * Add configuration to turn off warnings about matcher combinations that
-  may cause false positives. (Jon Rowe, #768)
+  may cause false positives. (Jon Rowe, rspec/rspec-expectations#768)
 * Warn when using a bare `raise_error` matcher that you may be subject to
-  false positives. (Jon Rowe, #768)
+  false positives. (Jon Rowe, rspec/rspec-expectations#768)
 * Warn rather than raise when using the`raise_error` matcher in negative
-  expectations that may be subject to false positives. (Jon Rowe, #775)
+  expectations that may be subject to false positives. (Jon Rowe, rspec/rspec-expectations#775)
 * Improve failure message for `include(a, b, c)` so that if `a` and `b`
-  are included the failure message only mentions `c`. (Chris Arcand, #780)
+  are included the failure message only mentions `c`. (Chris Arcand, rspec/rspec-expectations#780)
 * Allow `satisfy` matcher to take an optional description argument
   that will be used in the `description`, `failure_message` and
   `failure_message_when_negated` in place of the undescriptive
-  "sastify block". (Chris Arcand, #783)
+  "sastify block". (Chris Arcand, rspec/rspec-expectations#783)
 * Add new `aggregate_failures` API that allows multiple independent
   expectations to all fail and be listed in the failure output, rather
-  than the example aborting on the first failure. (Myron Marston, #776)
+  than the example aborting on the first failure. (Myron Marston, rspec/rspec-expectations#776)
 * Improve `raise_error` matcher so that it can accept a matcher as a single argument
-  that matches the message. (Time Wade, #782)
+  that matches the message. (Time Wade, rspec/rspec-expectations#782)
 
 Bug Fixes:
 
 * Make `contain_exactly` / `match_array` work with strict test doubles
-  that have not defined `<=>`. (Myron Marston, #758)
+  that have not defined `<=>`. (Myron Marston, rspec/rspec-expectations#758)
 * Fix `include` matcher so that it omits the diff when it would
   confusingly highlight items that are actually included but are not
-  an exact match in a line-by-line diff. (Tim Wade, #763)
+  an exact match in a line-by-line diff. (Tim Wade, rspec/rspec-expectations#763)
 * Fix `match` matcher so that it does not blow up when matching a string
   or regex against another matcher (rather than a string or regex).
-  (Myron Marston, #772)
-* Silence whitespace-only diffs. (Myron Marston, #801)
+  (Myron Marston, rspec/rspec-expectations#772)
+* Silence whitespace-only diffs. (Myron Marston, rspec/rspec-expectations#801)
 
 ### 3.2.1 / 2015-04-06
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.2.0...v3.2.1)
@@ -466,9 +466,9 @@ Bug Fixes:
 Bug Fixes:
 
 * Prevent `Range`s from being enumerated when generating matcher
-  descriptions. (Jon Rowe, #755)
+  descriptions. (Jon Rowe, rspec/rspec-expectations#755)
 * Ensure exception messages are compared as strings in the `raise_error`
-  matcher. (Jon Rowe, #755)
+  matcher. (Jon Rowe, rspec/rspec-expectations#755)
 
 ### 3.2.0 / 2015-02-03
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.1.2...v3.2.0)
@@ -477,25 +477,25 @@ Enhancements:
 
 * Add `block_arg` method to custom matcher API, which allows you to
   access the block passed to a custom matcher, if there is one.
-  (Mike Dalton, #645)
+  (Mike Dalton, rspec/rspec-expectations#645)
 * Provide more detail in failure message of `yield_control` matcher.
-  (Jon Rowe, #650)
+  (Jon Rowe, rspec/rspec-expectations#650)
 * Add a shorthand syntax for `chain` in the matcher DSL which assigns values
   for use elsewhere, for example `chain :and_smaller_than, :small_value`
-  creates an `attr_reader` for `small_value` (Tom Stuart, #644)
+  creates an `attr_reader` for `small_value` (Tom Stuart, rspec/rspec-expectations#644)
 * Provide a more helpful deprecation message when using the `should` syntax.
-  (Elia Schito, #663)
+  (Elia Schito, rspec/rspec-expectations#663)
 * Provide more detail in the `have_attributes` matcher failure message.
-  (Jon Rowe,  #668)
+  (Jon Rowe,  rspec/rspec-expectations#668)
 * Make the `have_attributes` matcher diffable.
-  (Jon Rowe, Alexey Fedorov, #668)
+  (Jon Rowe, Alexey Fedorov, rspec/rspec-expectations#668)
 * Add `output(...).to_std(out|err)_from_any_process` as alternatives
   to `output(...).to_std(out|err)`. The latter doesn't work when a sub
   process writes to the named stream but is much faster.
-  (Alex Genco, #700)
+  (Alex Genco, rspec/rspec-expectations#700)
 * Improve compound matchers (created by `and` and `or`) so that diffs
   are included in failures when one or more of their matchers
-  are diffable. (Alexey Fedorov, #713)
+  are diffable. (Alexey Fedorov, rspec/rspec-expectations#713)
 
 Bug Fixes:
 
@@ -503,17 +503,17 @@ Bug Fixes:
   the target object if the object publicly responds to the predicate
   method. This avoids a possible error that can occur if the object
   raises errors from `private_methods` (which can happen with celluloid
-  objects). (@chapmajs, #670)
+  objects). (@chapmajs, rspec/rspec-expectations#670)
 * Make `yield_control` (with no modifier) default to
   `at_least(:once)` rather than raising a confusing error
   when multiple yields are encountered.
-  (Myron Marston, #675)
+  (Myron Marston, rspec/rspec-expectations#675)
 * Fix "instance variable @color not initialized" warning when using
-  rspec-expectations outside of an rspec-core context. (Myron Marston, #689)
+  rspec-expectations outside of an rspec-core context. (Myron Marston, rspec/rspec-expectations#689)
 * Fix `start_with` and `end_with` to work properly when checking a
-  string against an array of strings. (Myron Marston, #690)
+  string against an array of strings. (Myron Marston, rspec/rspec-expectations#690)
 * Don't use internally delegated matchers when generating descriptions
-  for examples without doc strings. (Myron Marston, #692)
+  for examples without doc strings. (Myron Marston, rspec/rspec-expectations#692)
 
 ### 3.1.2 / 2014-09-26
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.1.1...v3.1.2)
@@ -522,9 +522,9 @@ Bug Fixes:
 
 * Fix `define_negated_matcher` so that matchers that support fluent
   interfaces continue to be negated after you use the chained method.
-  (Myron Marston, #656)
+  (Myron Marston, rspec/rspec-expectations#656)
 * Fix `define_negated_matcher` so that the matchers fail with an
-  appropriate failure message. (Myron Marston, #659)
+  appropriate failure message. (Myron Marston, rspec/rspec-expectations#659)
 
 ### 3.1.1 / 2014-09-15
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.1.0...v3.1.1)
@@ -533,7 +533,7 @@ Bug Fixes:
 
 * Fix regression in `all` matcher in 3.1.0 that prevented it from
   working on objects that are not `Enumerable` but do implement
-  `each_with_index` (such as an ActiveRecord proxy). (Jori Hardman, #647)
+  `each_with_index` (such as an ActiveRecord proxy). (Jori Hardman, rspec/rspec-expectations#647)
 
 ### 3.1.0 / 2014-09-04
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.4...v3.1.0)
@@ -545,26 +545,26 @@ Enhancements:
   `Person = Struct.new(:name, :age)`
   `person = Person.new("Bob", 32)`
   `expect(person).to have_attributes(:name => "Bob", :age => 32)`.
-  (Adam Farhi, #571)
+  (Adam Farhi, rspec/rspec-expectations#571)
 * Extended compound matcher support to block matchers, for cases like:
   `expect { ... }.to change { x }.to(3).and change { y }.to(4)`. (Myron
-  Marston, #567)
+  Marston, rspec/rspec-expectations#567)
 * Include chained methods in custom matcher description and failure message
   when new `include_chain_clauses_in_custom_matcher_descriptions` config
-  option is enabled. (Dan Oved, #600)
+  option is enabled. (Dan Oved, rspec/rspec-expectations#600)
 * Add `thrice` modifier to `yield_control` matcher as a synonym for
-  `exactly(3).times`. (Dennis Taylor, #615)
+  `exactly(3).times`. (Dennis Taylor, rspec/rspec-expectations#615)
 * Add `RSpec::Matchers.define_negated_matcher`, which defines a negated
-  version of the named matcher. (Adam Farhi, Myron Marston, #618)
+  version of the named matcher. (Adam Farhi, Myron Marston, rspec/rspec-expectations#618)
 * Document and support negation of `contain_exactly`/`match_array`.
-  (Jon Rowe, #626).
+  (Jon Rowe, rspec/rspec-expectations#626).
 
 Bug Fixes:
 
 * Rename private `LegacyMacherAdapter` constant to `LegacyMatcherAdapter`
-  to fix typo. (Abdelkader Boudih, #563)
+  to fix typo. (Abdelkader Boudih, rspec/rspec-expectations#563)
 * Fix `all` matcher so that it fails properly (rather than raising a
-  `NoMethodError`) when matched against a non-enumerable. (Hao Su, #622)
+  `NoMethodError`) when matched against a non-enumerable. (Hao Su, rspec/rspec-expectations#622)
 
 ### 3.0.4 / 2014-08-14
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.3...v3.0.4)
@@ -572,12 +572,12 @@ Bug Fixes:
 Bug Fixes:
 
 * Fix `start_with` and `end_with` so that they work properly with
-  structs. (Myron Marston, #620)
+  structs. (Myron Marston, rspec/rspec-expectations#620)
 * Fix failure message generation so that structs are printed properly
   in failures. Previously failure messages would represent them as
-  an array. (Myron Marston, #620)
+  an array. (Myron Marston, rspec/rspec-expectations#620)
 * Fix composable matcher support so that it does not wrongly treat
-  structs as arrays. (Myron Marston, #620)
+  structs as arrays. (Myron Marston, rspec/rspec-expectations#620)
 
 ### 3.0.3 / 2014-07-21
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.2...v3.0.3)
@@ -585,10 +585,10 @@ Bug Fixes:
 Bug Fixes:
 
 * Fix issue with detection of generic operator matchers so they work
-  correctly when undefined. (Myron Marston, #597)
-* Don't inadvertently define `BasicObject` in 1.8.7. (Chris Griego, #603)
+  correctly when undefined. (Myron Marston, rspec/rspec-expectations#597)
+* Don't inadvertently define `BasicObject` in 1.8.7. (Chris Griego, rspec/rspec-expectations#603)
 * Fix `include` matcher so that it fails gracefully when matched against
-  an object that does not respond to `include?`. (Myron Marston, #607)
+  an object that does not respond to `include?`. (Myron Marston, rspec/rspec-expectations#607)
 
 ### 3.0.2 / 2014-06-19
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.1...v3.0.2)
@@ -596,12 +596,12 @@ Bug Fixes:
 Bug Fixes:
 
 * Fix regression in `contain_exactly` (AKA `match_array`) that caused it
-  to wrongly pass when the expected array was empty. (Myron Marston, #581)
+  to wrongly pass when the expected array was empty. (Myron Marston, rspec/rspec-expectations#581)
 * Provide a better error message when you use the `change(obj, :msg)`
   form of the change matcher but forget the message argument. (Alex
-  Sunderland, #585)
+  Sunderland, rspec/rspec-expectations#585)
 * Make the `contain_exactly` matcher work with arrays that contain hashes in
-  arbitrary ordering. (Sam Phippen, #578)
+  arbitrary ordering. (Sam Phippen, rspec/rspec-expectations#578)
 
 ### 3.0.1 / 2014-06-12
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.0...v3.0.1)
@@ -610,8 +610,8 @@ Bug Fixes:
 
 * Add a missing `require` that would cause the `respond_to` matcher to
   fail when used in a project where the rest of RSpec (e.g. core and
-  expecatations) weren't being used. (Myron Marston, #566)
-* Structs are no longer treated as arrays when diffed. (Jon Rowe, #576)
+  expecatations) weren't being used. (Myron Marston, rspec/rspec-expectations#566)
+* Structs are no longer treated as arrays when diffed. (Jon Rowe, rspec/rspec-expectations#576)
 
 ### 3.0.0 / 2014-06-01
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.0.0.rc1...v3.0.0)
@@ -829,9 +829,9 @@ Bug Fixes:
 
 * Fix regression in `Expectations#method_handle_for` where proxy objects
   with method delegated would wrongly not return a method handle.
-  (Jon Rowe, #594)
+  (Jon Rowe, rspec/rspec-expectations#594)
 * Fix issue with detection of generic operator matchers so they work
-  correctly when undefined. (Myron Marston, #597)
+  correctly when undefined. (Myron Marston, rspec/rspec-expectations#597)
 
 ### 2.99.1 / 2014-06-19
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v2.99.0...v2.99.1)
@@ -839,7 +839,7 @@ Bug Fixes:
 Bug Fixes:
 
 * Fix typo in custom matcher `expected` deprecation warning -- it's
-  `expected_as_array`, not `expected_array`. (Frederick Cheung, #562)
+  `expected_as_array`, not `expected_array`. (Frederick Cheung, rspec/rspec-expectations#562)
 
 ### 2.99.0 / 2014-06-01
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v2.99.0.rc1...v2.99.0)
