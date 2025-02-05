@@ -32,11 +32,27 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
     end
   end
 
+  describe "#location_rerun_argument" do
+    let(:example) { RSpec.describe.example }
+
+    it "returns the location-based location_rerun argument" do
+      allow(RSpec.configuration).to receive(:loaded_spec_files) { [__FILE__] }
+      expect(example.location_rerun_argument).to eq("#{RSpec::Core::Metadata.relative_path(__FILE__)}:#{__LINE__ - 4}")
+    end
+
+    it "memoizes the result" do
+      expect(RSpec.configuration).to receive(:loaded_spec_files).once.and_return([__FILE__])
+      example.location_rerun_argument
+      example.location_rerun_argument
+    end
+  end
+
   describe "#rerun_argument" do
-    it "returns the location-based rerun argument" do
-      allow(RSpec.configuration).to receive_messages(:loaded_spec_files => [__FILE__])
+    it "returns location_rerun_argument" do
+      # this method is deprecated and will be replaced
       example = RSpec.describe.example
-      expect(example.rerun_argument).to eq("#{RSpec::Core::Metadata.relative_path(__FILE__)}:#{__LINE__ - 1}")
+      expect(example).to receive(:location_rerun_argument) { :location_rerun_argument }
+      expect(example.rerun_argument).to eq(:location_rerun_argument)
     end
   end
 

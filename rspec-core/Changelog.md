@@ -1,6 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.2...3-13-maintenance)
 
+Bug fixes:
+
+* Fix memorisation of `RSpec::Core::Example#location_rerun_argument`.
+  (Maxime Lapointe, rspec/rspec#173)
+
 ### 3.13.2 / 2024-10-18
 [Full Changelog](http://github.com/rspec/rspec-core/compare/v3.13.1...v3.13.2)
 
