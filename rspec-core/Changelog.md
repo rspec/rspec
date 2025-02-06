@@ -3,6 +3,8 @@
 
 Bug fixes:
 
+* Fix reporter memorisation of `ExamplesNotification` used in `RSpec::Core::Reporter#finish`
+  by reusing an instance across notifcations. (Maxime Lapointe, rspec/rspec#172)
 * Fix memorisation of `RSpec::Core::Example#location_rerun_argument`.
   (Maxime Lapointe, rspec/rspec#173)
 
