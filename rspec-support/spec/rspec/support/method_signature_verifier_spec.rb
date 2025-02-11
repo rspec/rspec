@@ -381,9 +381,9 @@ module RSpec
               expect(valid?(nil, nil)).to eq(true)
             end
 
-            it 'does not allow an invalid keyword arguments' do
-              expect(valid?(nil, nil, :a => 1)).to eq(false)
-              expect(valid?(nil, :a => 1)).to eq(false)
+            it 'treats the final positional argument as a hash' do
+              expect(valid?(1, { :z => 42 })).to eq(true)
+              expect(valid?(1, { :foo => 'bar', :baz => 'eggs'})).to eq(true)
             end
 
             if RubyFeatures.kw_arg_separation?
@@ -405,6 +405,46 @@ module RSpec
                 end
               end
             else
+              it 'treats symbols as keyword arguments and the rest as optional argument' do
+                expect(valid?(nil, 'a' => 1)).to eq(true)
+                expect(valid?(nil, 'a' => 1, :z => 3)).to eq(true)
+                expect(valid?(nil, 'a' => 1, :b => 3)).to eq(false)
+                expect(valid?(nil, 'a' => 1, :b => 2, :z => 3)).to eq(false)
+              end
+
+              it 'mentions the invalid keyword args in the error', :pending => RSpec::Support::Ruby.jruby? && !RSpec::Support::Ruby.jruby_9000? do
+                expect(error_for(1, 2, :a => 0)).to eq("Invalid keyword arguments provided: a")
+                expect(error_for(1, :a => 0)).to eq("Invalid keyword arguments provided: a")
+                expect(error_for(1, 'a' => 0, :b => 0)).to eq("Invalid keyword arguments provided: b")
+              end
+            end
+
+            if RubyFeatures.distincts_kw_args_from_positional_hash?
+              it 'does not allow an invalid keyword arguments' do
+                expect(valid?(nil, nil, :a => 1)).to eq(false)
+              end
+
+              it 'always treats non matching hashes as positional' do
+                # Basically on Ruby 3 this will always be a hash.
+                expect(valid?(nil, 'a' => 1)).to eq(true)
+                expect(valid?(nil, 'a' => 1, :z => 3)).to eq(true)
+                expect(valid?(nil, 'a' => 1, :b => 3)).to eq(true)
+                expect(valid?(nil, 'a' => 1, :b => 2, :z => 3)).to eq(true)
+              end
+
+              it 'mentions the invalid keyword args in the error', :pending => RSpec::Support::Ruby.jruby? && !RSpec::Support::Ruby.jruby_9000? do
+                expect(error_for(1, 2, :a => 0)).to eq("Invalid keyword arguments provided: a")
+
+                # Ruby 3 will treat this as a positional hash, so they are valid.
+                expect(error_for(1, :a => 0)).to eq(nil)
+                expect(error_for(1, 'a' => 0, :b => 0)).to eq(nil)
+              end
+            else
+              it 'does not allow an invalid keyword arguments' do
+                expect(valid?(nil, nil, :a => 1)).to eq(false)
+                expect(valid?(nil, :a => 1)).to eq(false)
+              end
+
               it 'treats symbols as keyword arguments and the rest as optional argument' do
                 expect(valid?(nil, 'a' => 1)).to eq(true)
                 expect(valid?(nil, 'a' => 1, :z => 3)).to eq(true)
