@@ -3,7 +3,7 @@
 module RSpec
   module Support
     module Version
-      STRING = '3.14.0.pre'
+      STRING = '4.0.0.pre'
     end
   end
 end
