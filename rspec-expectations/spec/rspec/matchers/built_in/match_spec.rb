@@ -95,6 +95,12 @@ RSpec.describe "expect(...).to match(expected)" do
       expect(description).to eq("match [(a string matching /foo/), (a value within 0.2 of 1)]")
     end
   end
+
+  it "fails when target type (String) does not match expected (Array)" do
+    expect {
+      expect("string").to match(["c", "a", "b"])
+    }.to fail_with('expected a collection that can be converted to an array with `#to_ary` or `#to_a`, but got "string"')
+  end
 end
 
 RSpec.describe "expect(...).not_to match(expected)" do
@@ -134,5 +140,9 @@ RSpec.describe "expect(...).not_to match(expected)" do
         expect(["fod", 1.1]).not_to match([a_string_matching(/fod/), a_value_within(0.2).of(1)])
       }.to fail_with('expected ["fod", 1.1] not to match [(a string matching /fod/), (a value within 0.2 of 1)]')
     end
+  end
+
+  it "passes when target type (String) does not match expected (Array)" do
+    expect("string").not_to match(["c", "a", "b"])
   end
 end

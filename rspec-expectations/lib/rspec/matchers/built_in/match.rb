@@ -35,11 +35,23 @@ module RSpec
           self
         end
 
+        # @api private
+        # @return [String]
+        def failure_message
+          if Array === expected && !(actual.respond_to?(:to_a) || actual.respond_to?(:to_ary))
+            return "expected a collection that can be converted to an array with " \
+                   "`#to_ary` or `#to_a`, but got #{actual_formatted}"
+          end
+
+          super
+        end
+
       private
 
         def match(expected, actual)
           return match_captures(expected, actual) if @expected_captures
           return true if values_match?(expected, actual)
+          return false if Array === expected
           return false unless can_safely_call_match?(expected, actual)
           actual.match(expected)
         end
