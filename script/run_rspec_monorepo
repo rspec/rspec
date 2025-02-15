@@ -1,0 +1,18 @@
+set -e
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+SCRIPT_DIR="${ROOT_DIR}/script"
+source $SCRIPT_DIR/functions.sh
+
+function run_repos_one_by_one {
+  echo "Running each repo file, one-by-one..."
+
+  for folder in `ls -d rspec-*`; do
+    echo "Running $folder"
+    pushd $folder
+      $ROOT_DIR/bin/rspec --format progress
+    popd
+  done
+}
+
+run_repos_one_by_one

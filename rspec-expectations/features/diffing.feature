@@ -2,6 +2,7 @@ Feature: Diffing
 
   When appropriate, failure messages will automatically include a diff.
 
+  @skip-when-diff-lcs-1.3 @skip-when-diff-lcs-1.4
   Scenario: Diff for a multiline string
     Given a file named "example_spec.rb" with:
       """ruby
@@ -25,14 +26,14 @@ Feature: Diffing
     Then the output should contain:
       """
              Diff:
-             @@ -1,4 +1,4 @@
+             @@ -1,3 +1,3 @@
               this is the
              -  expected
              +  actual
                   string
       """
 
-  @skip-when-diff-lcs-1.3
+  @skip-when-diff-lcs-1.3 @skip-when-diff-lcs-1.6
   Scenario: Diff for a multiline string and a regexp on diff-lcs 1.4
     Given a file named "example_spec.rb" with:
       """ruby
@@ -59,7 +60,7 @@ Feature: Diffing
              +    string
       """
 
-  @skip-when-diff-lcs-1.4
+  @skip-when-diff-lcs-1.4 @skip-when-diff-lcs-1.6
   Scenario: Diff for a multiline string and a regexp on diff-lcs 1.3
     Given a file named "example_spec.rb" with:
       """ruby
