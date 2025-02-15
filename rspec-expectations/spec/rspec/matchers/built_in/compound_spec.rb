@@ -1,5 +1,6 @@
 module RSpec::Matchers::BuiltIn
   RSpec.describe Compound do
+    include RSpec::Support::Spec::DiffHelpers
 
     let(:matcher_without_diffable) { include("foo") }
 
@@ -426,7 +427,7 @@ module RSpec::Matchers::BuiltIn
             it 'fails with a message containing a diff for first matcher' do
               expected_failure = dedent(<<-EOS)
                 |Diff for (include "foo"):
-                |@@ -1,2 +1,3 @@
+                |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
                 |-foo
                 |+baz
                 |+bar
@@ -469,7 +470,7 @@ module RSpec::Matchers::BuiltIn
                 |   (compared using ==)
                 |
                 |Diff for (include "foo"):
-                |@@ -1,2 +1,3 @@
+                |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2" : "-1,2 +1,3"} @@
                 |-foo
                 |+baz
                 |+bar
@@ -519,7 +520,7 @@ module RSpec::Matchers::BuiltIn
               |
               |   expected "baz\\nbar" to include "foo"
               |Diff for (include "foo"):
-              |@@ -1,2 +1,3 @@
+              |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2" : "-1,2 +1,3"} @@
               |-foo
               |+baz
               |+bar
@@ -549,13 +550,13 @@ module RSpec::Matchers::BuiltIn
               |
               |   expected "baz\\nbug" to include "foo"
               |Diff for (include "bar"):
-              |@@ -1,2 +1,3 @@
+              |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
               |-bar
               |+baz
               |+bug
               |
               |Diff for (include "foo"):
-              |@@ -1,2 +1,3 @@
+              |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
               |-foo
               |+baz
               |+bug
@@ -595,14 +596,14 @@ module RSpec::Matchers::BuiltIn
                     |
                     |   expected "HELLO\\nWORLD" to eq downcase "hola\\nmon"
                     |Diff for (eq downcase "bonjour\\nmonde"):
-                    |@@ -1,3 +1,3 @@
+                    |@@ #{one_line_header(3)} @@
                     |-bonjour
                     |-monde
                     |+hello
                     |+world
                     |
                     |Diff for (eq downcase "hola\\nmon"):
-                    |@@ -1,3 +1,3 @@
+                    |@@ #{one_line_header(3)} @@
                     |-hola
                     |-mon
                     |+hello
@@ -638,14 +639,14 @@ module RSpec::Matchers::BuiltIn
                     |
                     |   expected "hello\\nworld" to eq downcase "hola\\nmon"
                     |Diff for (eq downcase "bonjour\\nmonde"):
-                    |@@ -1,3 +1,3 @@
+                    |@@ #{one_line_header(3)} @@
                     |-bonjour
                     |-monde
                     |+hello
                     |+world
                     |
                     |Diff for (eq downcase "hola\\nmon"):
-                    |@@ -1,3 +1,3 @@
+                    |@@ #{one_line_header(3)} @@
                     |-hola
                     |-mon
                     |+hello
@@ -817,7 +818,7 @@ module RSpec::Matchers::BuiltIn
             |   (compared using ==)
             |
             |Diff for (include "foo"):
-            |@@ -1,2 +1,3 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
             |-foo
             |+baz
             |+bug
@@ -850,7 +851,7 @@ module RSpec::Matchers::BuiltIn
             |
             |   expected "baz\\nbug" to include "foo"
             |Diff for (include "foo"):
-            |@@ -1,2 +1,3 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
             |-foo
             |+baz
             |+bug
@@ -880,13 +881,13 @@ module RSpec::Matchers::BuiltIn
             |
             |   expected "baz\\nbug" to include "buzz"
             |Diff for (include "foo"):
-            |@@ -1,2 +1,3 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
             |-foo
             |+baz
             |+bug
             |
             |Diff for (include "buzz"):
-            |@@ -1,2 +1,3 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-1 +1,2": "-1,2 +1,3"} @@
             |-buzz
             |+baz
             |+bug
@@ -926,34 +927,66 @@ module RSpec::Matchers::BuiltIn
       it 'fails with complete diffs if its matchers are diffable' do
         matcher = include("bar").and include("buzz").or include("foo")
 
-        expected_failure = dedent(<<-EOS)
-          |   expected "bug\\nsquash" to include "bar"
-          |
-          |...and:
-          |
-          |      expected "bug\\nsquash" to include "buzz"
-          |
-          |   ...or:
-          |
-          |      expected "bug\\nsquash" to include "foo"
-          |Diff for (include "bar"):
-          |@@ -1,2 +1,3 @@
-          |-bar
-          |+bug
-          |+squash
-          |
-          |Diff for (include "buzz"):
-          |@@ -1,2 +1,3 @@
-          |-buzz
-          |+bug
-          |+squash
-          |
-          |Diff for (include "foo"):
-          |@@ -1,2 +1,3 @@
-          |-foo
-          |+bug
-          |+squash
-        EOS
+        expected_failure =
+          if ::Diff::LCS::VERSION.to_f > 1.5
+            dedent(<<-EOS)
+              |   expected "bug\\nsquash" to include "bar"
+              |
+              |...and:
+              |
+              |      expected "bug\\nsquash" to include "buzz"
+              |
+              |   ...or:
+              |
+              |      expected "bug\\nsquash" to include "foo"
+              |Diff for (include "bar"):
+              |@@ -1 +1,2 @@
+              |-bar
+              |+bug
+              |+squash
+              |
+              |Diff for (include "buzz"):
+              |@@ -1 +1,2 @@
+              |-buzz
+              |+bug
+              |+squash
+              |
+              |Diff for (include "foo"):
+              |@@ -1 +1,2 @@
+              |-foo
+              |+bug
+              |+squash
+            EOS
+          else
+            dedent(<<-EOS)
+              |   expected "bug\\nsquash" to include "bar"
+              |
+              |...and:
+              |
+              |      expected "bug\\nsquash" to include "buzz"
+              |
+              |   ...or:
+              |
+              |      expected "bug\\nsquash" to include "foo"
+              |Diff for (include "bar"):
+              |@@ -1,2 +1,3 @@
+              |-bar
+              |+bug
+              |+squash
+              |
+              |Diff for (include "buzz"):
+              |@@ -1,2 +1,3 @@
+              |-buzz
+              |+bug
+              |+squash
+              |
+              |Diff for (include "foo"):
+              |@@ -1,2 +1,3 @@
+              |-foo
+              |+bug
+              |+squash
+            EOS
+          end
 
         expect {
           expect(dedent(<<-EOS)).to matcher

@@ -109,7 +109,7 @@ RSpec.describe "#include matcher" do
       failure_string = if use_string_keys_in_failure_message?
                          dedent(<<-END)
                            |Diff:
-                           |@@ -1,3 +1,3 @@
+                           |@@ #{one_line_header(3)} @@
                            |-:bar => 3,
                            |-:foo => 1,
                            |+"bar" => 2,
@@ -137,7 +137,7 @@ RSpec.describe "#include matcher" do
       failure_string = if use_string_keys_in_failure_message?
                          dedent(<<-END)
                            |Diff:
-                           |@@ -1,3 +1,3 @@
+                           |@@ #{one_line_header(3)} @@
                            |-(match /FOO/i) => 1,
                            |-:bar => 3,
                            |+"bar" => 2,
@@ -146,7 +146,7 @@ RSpec.describe "#include matcher" do
                        else
                          dedent(<<-END)
                            |Diff:
-                           |@@ -1,3 +1,3 @@
+                           |@@ #{one_line_header(3)} @@
                            |-(match /FOO/i) => 1,
                            |-:bar => 3,
                            |+:bar => 2,
