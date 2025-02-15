@@ -51,13 +51,13 @@ module RSpec
         def match(expected, actual)
           return match_captures(expected, actual) if @expected_captures
           return true if values_match?(expected, actual)
-          return false if Array === expected
           return false unless can_safely_call_match?(expected, actual)
           actual.match(expected)
         end
 
         def can_safely_call_match?(expected, actual)
           return false unless actual.respond_to?(:match)
+          return false if Array === expected
 
           !(RSpec::Matchers.is_a_matcher?(expected) &&
             (String === actual || Regexp === actual))
