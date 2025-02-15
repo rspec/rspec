@@ -50,7 +50,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
           d.foo("this other string")
         }.to fail_with("#<Double \"double\"> received :foo with unexpected arguments\n  " \
                        "expected: (\"some string\\nline2\")\n       got: (\"this other string\")\n" \
-                       "Diff:\n@@ -1,3 +1,2 @@\n-some string\n-line2\n+this other string\n")
+                       "Diff:\n@@ -1,2 +1 @@\n-some string\n-line2\n+this other string\n")
       end
     end
 
@@ -61,7 +61,7 @@ RSpec.describe "Diffs printed when arguments don't match" do
           d.foo("this other string")
         }.to fail_with("#<Double \"double\"> received :foo with unexpected arguments\n  " \
                        "expected: (\"some string\\nline2\", \"some other string\")\n       " \
-                       "got: (\"this other string\")\nDiff:\n@@ -1,3 +1,2 @@\n-some string\\nline2\n-some other string\n+this other string\n")
+                       "got: (\"this other string\")\nDiff:\n@@ -1,2 +1 @@\n-some string\\nline2\n-some other string\n+this other string\n")
       end
     end
 
