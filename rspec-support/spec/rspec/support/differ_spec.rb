@@ -1,10 +1,13 @@
 require 'ostruct'
 require 'timeout'
 require 'rspec/support/spec/string_matcher'
+require 'rspec/support/spec/diff_helpers'
 
 module RSpec
   module Support
     RSpec.describe Differ do
+      include RSpec::Support::Spec::DiffHelpers
+
       describe '#diff' do
         let(:differ) { RSpec::Support::Differ.new }
 
@@ -12,7 +15,7 @@ module RSpec
           expected = "foo\nzap\nbar\nthis\nis\nsoo\nvery\nvery\nequal\ninsert\na\nanother\nline\n"
           actual   = "foo\nbar\nzap\nthis\nis\nsoo\nvery\nvery\nequal\ninsert\na\nline\n"
 
-          expected_diff = dedent(<<-'EOD')
+          expected_diff = dedent(<<-"EOD")
             |
             |
             |@@ -1,6 +1,6 @@
@@ -23,7 +26,7 @@ module RSpec
             | this
             | is
             | soo
-            |@@ -9,5 +9,4 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-9,5 +9,4" : "-9,6 +9,5"} @@
             | equal
             | insert
             | a
@@ -40,7 +43,7 @@ module RSpec
           expected = "foo\nzap\nbar\nthis\nis\nsoo\nvery\nvery\nequal\ninsert\na\nanother\nline\n"
           actual   = "foo\nbar\nzap\nthis\nis\nsoo\nvery\nvery\nequal\ninsert\na\nline\n"
 
-          expected_diff = dedent(<<-'EOS')
+          expected_diff = dedent(<<-"EOS")
             |
             |
             |@@ -1,6 +1,6 @@
@@ -51,7 +54,7 @@ module RSpec
             | this
             | is
             | soo
-            |@@ -9,5 +9,4 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-9,5 +9,4" : "-9,6 +9,5"} @@
             | equal
             | insert
             | a
@@ -150,9 +153,9 @@ module RSpec
           expected = animal_class.new "bob", "giraffe"
           actual   = animal_class.new "bob", "tortoise"
 
-          expected_diff = dedent(<<-'EOD')
+          expected_diff = dedent(<<-"EOD")
             |
-            |@@ -1,4 +1,4 @@
+            |@@ #{one_line_header(5)} @@
             | <Animal
             |   name=bob,
             |-  species=tortoise
@@ -169,10 +172,10 @@ module RSpec
           expected = [ :foo, 'bar', :baz, 'quux', :metasyntactic, 'variable', :delta, 'charlie', :width, 'quite wide' ]
           actual   = [ :foo, 'bar', :baz, 'quux', :metasyntactic, 'variable', :delta, 'tango'  , :width, 'very wide'  ]
 
-          expected_diff = dedent(<<-'EOD')
+          expected_diff = dedent(<<-"EOD")
             |
             |
-            |@@ -5,6 +5,6 @@
+            |@@ #{::Diff::LCS::VERSION.to_f > 1.5 ? "-5,6 +5,6" : "-5,7 +5,7"} @@
             |  :metasyntactic,
             |  "variable",
             |  :delta,
@@ -371,9 +374,9 @@ module RSpec
           expected = "this is:\n  one string"
           actual   = "this is:\n  another string"
 
-          expected_diff = dedent(<<-'EOD')
+          expected_diff = dedent(<<-"EOD")
             |
-            |@@ -1,2 +1,2 @@
+            |@@ #{one_line_header(3)} @@
             | this is:
             |-  another string
             |+  one string
@@ -503,6 +506,39 @@ module RSpec
           it 'generates a diff' do
             expect(differ.diff(true, false)).to_not be_empty
             expect(differ.diff(false, true)).to_not be_empty
+          end
+        end
+
+        describe "fuzzy matcher anything" do
+          let(:anything) do
+            Object.new.tap do |o|
+              def o.===(*); true; end
+            end
+          end
+
+          it "outputs all key value pairs that are different, including anything object vs string" do
+            actual = { :fixed => "fixed", :trigger => "trigger", :anything_key => "bcdd0399-1cfe-4de1-a481-ca6b17d41ed8" }
+            expected = { :fixed => "fixed", :trigger => "wrong", :anything_key => anything }
+            diff = differ.diff(actual, expected)
+            expected_diff = dedent(<<-"EOD")
+              |
+              |
+              |@@ #{one_line_header(4)} @@
+              |-:anything_key => #{anything.inspect},
+              |+:anything_key => "bcdd0399-1cfe-4de1-a481-ca6b17d41ed8",
+              | :fixed => "fixed",
+              |-:trigger => "wrong",
+              |+:trigger => "trigger",
+              |
+            EOD
+            expect(diff).to be_diffed_as(expected_diff)
+          end
+
+          it "checks the 'expected' var continues having the 'anything' fuzzy matcher, it has not mutated" do
+            actual = { :fixed => "fixed", :trigger => "trigger", :anything_key => "bcdd0399-1cfe-4de1-a481-ca6b17d41ed8" }
+            expected = { :fixed => "fixed", :trigger => "wrong", :anything_key => anything }
+            differ.diff(actual, expected)
+            expect(expected).to eq({ :fixed => "fixed", :trigger => "wrong", :anything_key => anything })
           end
         end
       end

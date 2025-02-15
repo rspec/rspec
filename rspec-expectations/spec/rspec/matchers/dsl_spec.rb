@@ -386,7 +386,14 @@ module RSpec::Matchers::DSL
         diff = e.message.sub(/\A.*Diff:/m, "Diff:").gsub(/^\s*/, '')
       end
 
-      expect(diff).to eq "Diff:\n@@ -1 +1 @@\n-line1\n+LINE1\n"
+      # Since diff-lcs 1.4.4+ is required, simplify version handling
+      if Diff::LCS::VERSION.to_f < 1.6
+        expected_diff = "Diff:\n@@ -1 +1 @@\n-line1\n+LINE1\n"
+      else
+        expected_diff = "Diff:\n@@ -1,2 +1,2 @@\n-line1\n+LINE1\nline2\n"
+      end
+
+      expect(diff).to eq expected_diff
     end
 
     it 'does not confuse the diffability of different matchers' do

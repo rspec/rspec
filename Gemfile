@@ -28,7 +28,7 @@ gem "thread_order", "~> 1.1.0"
 gem "childprocess", ">= 3.0.0"
 gem "thor", "> 1.0.0"
 
-gem 'diff-lcs', '>= 1.4.3'
+gem 'diff-lcs', '>= 1.4.4', '< 2.0'
 
 gem 'ffi', '~> 1.17.0'
 
