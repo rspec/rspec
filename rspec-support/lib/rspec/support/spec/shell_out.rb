@@ -85,6 +85,8 @@ module RSpec
           %r{jruby/\d\.\d(\.\d)?/gems/aruba},
           %r{jruby/\d\.\d(\.\d)?/gems/ffi},
           %r{warning: encoding options not supported in 1\.8},
+          # Ignore errors from asdf
+          %r{\.asdf/installs},
         ]
 
       def strip_known_warnings(input)
