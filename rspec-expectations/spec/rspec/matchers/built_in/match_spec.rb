@@ -94,6 +94,62 @@ RSpec.describe "expect(...).to match(expected)" do
       description = match([a_string_matching(/foo/), a_value_within(0.2).of(1)]).description
       expect(description).to eq("match [(a string matching /foo/), (a value within 0.2 of 1)]")
     end
+
+    context 'with an extra element in the actual data' do
+      let(:expected) { ["a", "b"] }
+      let(:actual) { ["a", "b", "c"] }
+      let(:failure_message) do
+        <<~MESSAGE
+          expected collection was:        ["a", "b"]
+          actual collection was:          ["a", "b", "c"]
+          the extra elements were:        ["c"]
+        MESSAGE
+      end
+
+      it { expect { expect(actual).to match(expected) }.to fail_with(failure_message) }
+    end
+
+    context 'with a missing element in the actual data' do
+      let(:expected) { ["a", "b"] }
+      let(:actual) { ["a"] }
+      let(:failure_message) do
+        <<~MESSAGE
+          expected collection was:        ["a", "b"]
+          actual collection was:          ["a"]
+          the missing elements were:      ["b"]
+        MESSAGE
+      end
+
+      it { expect { expect(actual).to match(expected) }.to fail_with(failure_message) }
+    end
+
+    context 'with a missing element and an extra element in the actual data' do
+      let(:expected) { ["a", "b"] }
+      let(:actual) { ["a", "c"] }
+      let(:failure_message) do
+        <<~MESSAGE
+          expected collection was:        ["a", "b"]
+          actual collection was:          ["a", "c"]
+          the missing elements were:      ["b"]
+          the extra elements were:        ["c"]
+        MESSAGE
+      end
+
+      it { expect { expect(actual).to match(expected) }.to fail_with(failure_message) }
+    end
+
+    context 'with a actual data containing the correct elements in the wrong order' do
+      let(:expected) { ["a", "b"] }
+      let(:actual) { ["b", "a"] }
+      let(:failure_message) do
+        <<~MESSAGE
+          expected collection was:        ["a", "b"]
+          actual collection was:          ["b", "a"]
+        MESSAGE
+      end
+
+      it { expect { expect(actual).to match(expected) }.to fail_with(failure_message) }
+    end
   end
 
   it "fails when target type (String) does not match expected (Array)" do
