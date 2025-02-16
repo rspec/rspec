@@ -84,10 +84,19 @@ RSpec.describe "expect(...).to match(expected)" do
       expect(["food", 1.1]).to match([a_string_matching(/foo/), a_value_within(0.2).of(1)])
     end
 
-    it 'fails when the matchers do not match' do
-      expect {
-        expect(["fod", 1.1]).to match([a_string_matching(/foo/), a_value_within(0.2).of(1)])
-      }.to fail_with('expected ["fod", 1.1] to match [(a string matching /foo/), (a value within 0.2 of 1)]')
+    context 'when the matchers do not match' do
+      let(:expected) { [a_string_matching(/foo/), a_value_within(0.2).of(1)] }
+      let(:actual) { ["fod", 1.1] }
+      let(:failure_message) do
+        <<~MESSAGE
+          expected collection was:        [(a string matching /foo/), (a value within 0.2 of 1)]
+          actual collection was:          ["fod", 1.1]
+          the missing elements were:      [(a string matching /foo/)]
+          the extra elements were:        ["fod"]
+        MESSAGE
+      end
+
+      it { expect { expect(actual).to match(expected) }.to fail_with(failure_message) }
     end
 
     it 'provides a description' do
