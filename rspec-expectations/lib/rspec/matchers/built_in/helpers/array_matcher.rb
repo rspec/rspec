@@ -4,6 +4,10 @@ module RSpec
   module Matchers
     module BuiltIn
       module Helpers
+        # @api private
+        # Provide common array matching functionality that is used by
+        # `ContainExactly` and `Match` matchers so that `contain_exactly`,
+        # `match_array` and `match` (with arrays) have consistent output.
         class ArrayMatcher
           include RSpec::Matchers::Composable
 
@@ -14,6 +18,8 @@ module RSpec
             @messages = messages
           end
 
+          # @api private
+          # @return [Array]
           def actual
             @actual ||= if @_actual.respond_to?(:to_ary)
                           @_actual.to_ary
@@ -24,10 +30,14 @@ module RSpec
                         end
           end
 
+          # @api private
+          # @return [Array]
           def expected
             @expected ||= @_expected
           end
 
+          # @api private
+          # @return [String]
           def failure_message
             message = expected_collection_line
             message += actual_collection_line
@@ -36,6 +46,8 @@ module RSpec
             message
           end
 
+          # @api private
+          # @return [Boolean]
           def elements_match?
             extra_items.empty? && missing_items.empty?
           end
