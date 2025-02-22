@@ -5,7 +5,6 @@ require 'rspec/matchers/built_in/helpers/array_matcher'
 module RSpec
   module Matchers
     module BuiltIn
-      # rubocop:disable Metrics/ClassLength
       # @api private
       # Provides the implementation for `contain_exactly` and `match_array`.
       # Not intended to be instantiated directly.
@@ -44,15 +43,15 @@ module RSpec
 
         def array_matcher
           @array_matcher ||= RSpec::Matchers::BuiltIn::Helpers::ArrayMatcher.new(
-            expected: @expected,
-            actual: @actual,
-            messages: {
-              expected: 'expected collection contained',
-              actual: 'actual collection contained',
-              missing: 'the missing elements were',
-              extra: 'the extra elements were'
+            :expected => @expected,
+            :actual => @actual,
+            :messages => {
+              :expected => 'expected collection contained',
+              :actual => 'actual collection contained',
+              :missing => 'the missing elements were',
+              :extra => 'the extra elements were'
             },
-            display_array: ->(array) { safe_sort(array) }
+            :display_array => ->(array) { safe_sort(array) }
           )
         end
 
@@ -83,7 +82,6 @@ module RSpec
           array
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end

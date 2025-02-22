@@ -41,11 +41,11 @@ module RSpec
         # @return [String]
         def failure_message
           if Array === expected
-            if !(actual.respond_to?(:to_a) || actual.respond_to?(:to_ary))
+            if actual.respond_to?(:to_a) || actual.respond_to?(:to_ary)
+              return array_matcher.failure_message
+            else
               return "expected a collection that can be converted to an array with " \
                      "`#to_ary` or `#to_a`, but got #{actual_formatted}"
-            else
-              return array_matcher.failure_message
             end
           end
 
@@ -88,13 +88,13 @@ module RSpec
 
         def array_matcher
           @array_matcher ||= RSpec::Matchers::BuiltIn::Helpers::ArrayMatcher.new(
-            expected: @expected,
-            actual: @actual,
-            messages: {
-              expected: 'expected collection was',
-              actual: 'actual collection was',
-              missing: 'the missing elements were',
-              extra: 'the extra elements were'
+            :expected => @expected,
+            :actual => @actual,
+            :messages => {
+              :expected => 'expected collection was',
+              :actual => 'actual collection was',
+              :missing => 'the missing elements were',
+              :extra => 'the extra elements were'
             }
           )
         end
