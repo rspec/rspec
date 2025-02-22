@@ -16,12 +16,12 @@ module RSpec
 
           def actual
             @actual ||= if @_actual.respond_to?(:to_ary)
-              @_actual.to_ary
-            elsif @_actual.respond_to?(:to_a) && !to_a_disallowed?(@_actual)
-              @_actual.to_a
-            else
-              false
-            end
+                          @_actual.to_ary
+                        elsif @_actual.respond_to?(:to_a) && !to_a_disallowed?(@_actual)
+                          @_actual.to_a
+                        else
+                          false
+                        end
           end
 
           def expected
@@ -197,7 +197,7 @@ module RSpec
                 categorize_indexes(actual_to_expected_matched_indexes, expected_to_actual_matched_indexes)
 
               @solution = Solution.new(unmatched_expected_indexes,     unmatched_actual_indexes,
-                                      indeterminate_expected_indexes, indeterminate_actual_indexes)
+                                       indeterminate_expected_indexes, indeterminate_actual_indexes)
             end
 
             def find_best_solution
