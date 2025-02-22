@@ -211,3 +211,29 @@ RSpec.describe "expect(...).not_to match(expected)" do
     expect("string").not_to match(["c", "a", "b"])
   end
 end
+
+RSpec.describe "Reusing a match matcher that memoizes state" do
+  require "rspec/matchers/fail_matchers"
+
+  it "works properly in spite of the memoization" do
+    matcher = match([eq(1)])
+
+    expect {
+      expect([2]).to matcher
+    }.to fail_including(<<-MESSAGE)
+expected collection was:        [(eq 1)]
+actual collection was:          [2]
+the missing elements were:      [(eq 1)]
+the extra elements were:        [2]
+    MESSAGE
+
+    expect {
+      expect([3]).to matcher
+    }.to fail_including(<<-MESSAGE)
+expected collection was:        [(eq 1)]
+actual collection was:          [3]
+the missing elements were:      [(eq 1)]
+the extra elements were:        [3]
+    MESSAGE
+  end
+end

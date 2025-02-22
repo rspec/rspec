@@ -52,6 +52,11 @@ module RSpec
           super
         end
 
+        def matches?(actual)
+          @array_matcher = nil
+          super(actual)
+        end
+
       private
 
         def match(expected, actual)
