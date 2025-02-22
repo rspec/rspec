@@ -42,6 +42,10 @@ module RSpec
       private
 
         def array_matcher
+          # Avoid warnings in Ruby 2.7
+          @expected ||= nil
+          @actual ||= nil
+
           @array_matcher ||= RSpec::Matchers::BuiltIn::Helpers::ArrayMatcher.new(
             :expected => @expected,
             :actual => @actual,
