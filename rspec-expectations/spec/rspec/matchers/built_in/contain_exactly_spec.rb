@@ -475,7 +475,7 @@ RSpec.describe "Composing `contain_exactly` with other matchers" do
   end
 end
 
-RSpec.describe "Reusing a matcher that memoizes state" do
+RSpec.describe "Reusing a contain_exactly matcher that memoizes state" do
   require "rspec/matchers/fail_matchers"
 
   it "works properly in spite of the memoization" do
