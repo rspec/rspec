@@ -63,6 +63,8 @@ RSpec.describe 'Failed spec rerun location' do
   end
 
   context "when config.force_line_number_for_spec_rerun is set to false" do
+    around { |ex| with_env_vars('SHELL' => '/usr/local/bin/zsh', &ex) }
+ 
     it 'prints the example id of the failed assertion' do
       run_command("#{Dir.pwd}/tmp/aruba/local_shared_examples_spec.rb")
 
