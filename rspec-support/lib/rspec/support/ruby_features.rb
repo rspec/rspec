@@ -96,6 +96,16 @@ module RSpec
         end
       end
 
+      if Exception.method_defined?(:detailed_message)
+        def supports_exception_detailed_message?
+          true
+        end
+      else
+        def supports_exception_detailed_message?
+          false
+        end
+      end
+
       if RUBY_VERSION.to_f >= 3.2
         def supports_syntax_suggest?
           true

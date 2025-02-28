@@ -12,7 +12,11 @@ RSpec.describe "FailedExampleNotification" do
 
   let(:example) { new_example(:status => :failed) }
   exception_line = __LINE__ + 1
-  let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception') }
+  if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+    let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception', :detailed_message => 'Test exception') }
+  else
+    let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception') }
+  end
   let(:notification) { ::RSpec::Core::Notifications::ExampleNotification.for(example) }
 
   before do
@@ -277,7 +281,6 @@ RSpec.describe "FailedExampleNotification" do
         end
       end
     end
-
     context "when the exception is a MultipleExceptionError" do
       let(:sub_failure_1)  { StandardError.new("foo").tap { |e| e.set_backtrace([]) } }
       let(:sub_failure_2)  { StandardError.new("bar").tap { |e| e.set_backtrace([]) } }
@@ -326,8 +329,10 @@ RSpec.describe "FailedExampleNotification" do
       it "returns failures_lines with invalid bytes replace by '?'" do
         message_with_invalid_byte_sequence =
           "\xEF \255 \xAD I have bad bytes".dup.force_encoding(Encoding::UTF_8)
-        allow(exception).to receive(:message).
-          and_return(message_with_invalid_byte_sequence)
+        allow(exception).to receive(:message).and_return(message_with_invalid_byte_sequence)
+        if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+          allow(exception).to receive(:detailed_message).and_return(message_with_invalid_byte_sequence)
+        end
 
         lines = notification.message_lines
         expect(lines[0]).to match %r{\AFailure\/Error}
