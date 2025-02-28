@@ -69,6 +69,11 @@ module RSpec
     # code by a bare `rescue`.
     # @api public
     class ExpectationNotMetError < Exception
+      if Exception.method_defined?(:detailed_message)
+        def detailed_message(**_options)
+          message
+        end
+      end
     end
     # rubocop:enable Lint/InheritException
 
@@ -79,6 +84,11 @@ module RSpec
     #   not need to waste time defining that functionality unless
     #   `aggregate_failures` is used.
     class MultipleExpectationsNotMetError < ExpectationNotMetError
+      if Exception.method_defined?(:detailed_message)
+        def detailed_message(**_options)
+          message
+        end
+      end
     end
 
     autoload :BlockSnippetExtractor, "rspec/expectations/block_snippet_extractor"
