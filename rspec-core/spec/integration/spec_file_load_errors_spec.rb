@@ -57,7 +57,7 @@ RSpec.describe 'Spec file load errors' do
       Failure/Error: raise 'boom'
 
       RuntimeError:
-        boom
+        boom#{exception_class_suffix(RuntimeError)}
       # ./helper_with_error.rb:1#{spec_line_suffix}
       No examples found.
 
@@ -86,7 +86,7 @@ RSpec.describe 'Spec file load errors' do
       Failure/Error: raise 'boom'
 
       RuntimeError:
-        boom
+        boom#{exception_class_suffix(RuntimeError)}
       # ./helper_with_error.rb:1#{spec_line_suffix}
       No examples found.
 
@@ -114,7 +114,7 @@ RSpec.describe 'Spec file load errors' do
         Failure/Error: Unable to find org/jruby/RubyKernel.java to read failed line
 
         SystemExit:
-          exit
+          exit#{exception_class_suffix(SystemExit)}
         # ./helper_with_exit.rb:1#{spec_line_suffix}
       EOS
     else
@@ -124,7 +124,7 @@ RSpec.describe 'Spec file load errors' do
         Failure/Error: exit 999
 
         SystemExit:
-          exit
+          exit#{exception_class_suffix(SystemExit)}
       EOS
       string += "# ./helper_with_exit.rb:1:in 'Kernel#exit'\n" if RUBY_VERSION.to_f > 3.3
       string += "# ./helper_with_exit.rb:1#{spec_line_suffix}\n"
@@ -178,14 +178,14 @@ RSpec.describe 'Spec file load errors' do
       Failure/Error: boom
 
       NameError:
-        undefined local variable or method #{quoted('boom')} for main#{object_suffix}
+        undefined local variable or method #{quoted('boom')} for main#{object_suffix}#{exception_class_suffix(NameError)}
       # ./1_spec.rb:1#{spec_line_suffix}
 
       An error occurred while loading ./3_spec.rb.
       Failure/Error: boom
 
       NameError:
-        undefined local variable or method #{quoted('boom')} for main#{object_suffix}
+        undefined local variable or method #{quoted('boom')} for main#{object_suffix}#{exception_class_suffix(NameError)}
       # ./3_spec.rb:1#{spec_line_suffix}
 
 

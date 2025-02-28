@@ -69,6 +69,12 @@ module RSpec
     # code by a bare `rescue`.
     # @api public
     class ExpectationNotMetError < Exception
+      if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+        # :nodoc:
+        def detailed_message(**_options)
+          message
+        end
+      end
     end
     # rubocop:enable Lint/InheritException
 

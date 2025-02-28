@@ -31,6 +31,16 @@ module RSpecHelpers
     end
   end
 
+  if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+    def exception_class_suffix(exception_class)
+      " (#{exception_class})"
+    end
+  else
+    def exception_class_suffix(_exception_class)
+      ''
+    end
+  end
+
   # In Ruby 2.7 taint was removed and has no effect, whilst SAFE warns that it
   # has no effect and will become a normal variable in 3.0. Other engines do not
   # implement SAFE.

@@ -318,7 +318,7 @@ module RSpec::Core
           |Failure/Error: exception = 1 / 0 rescue $!
           |
           |ZeroDivisionError:
-          |  divided by 0
+          |  divided by 0#{exception_class_suffix(ZeroDivisionError)}
           |# #{Metadata.relative_path(__FILE__)}:#{line}
         EOS
       end
