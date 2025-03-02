@@ -49,7 +49,9 @@ module RSpec
 
       # @private
       def respond_to?(message, incl_private=false)
-        __mock_proxy.null_object? ? true : super
+        return true if __mock_proxy.null_object?
+
+        super
       end
 
       # @private

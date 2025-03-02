@@ -6,6 +6,7 @@ AllCops:
     - Gemfile
     - '**/tmp/**/*'
     - '**/benchmarks/**/*'
+    - rspec-support/lib/rspec/support/mutex.rb
   NewCops:
     disable
   SuggestExtensions: false
