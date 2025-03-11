@@ -6,7 +6,6 @@
   - all.feature
   - be.feature
   - be_within.feature
-  - exist.feature
   - change.feature
   - contain_exactly.feature
   - cover.feature
