@@ -181,11 +181,20 @@ module RSpec
           # no-op, handler is something else
         end
       end
-      #
-      # Configures what RSpec will do about matcher use which will
-      # potentially cause false positives in tests.
-      #
-      # @param [Symbol] behavior can be set to :warn, :raise or :nothing
+
+      # Configuration for RSpec behaviour with matcher use that might result in false positives.
+      # @overload on_potential_false_positives
+      #   Indicates how RSpec handles potential false positives in tests (default: `:warn`;
+      #   options: `:warn`, `:raise`, `:nothing`)
+      #   @return [Symbol] the behavior setting
+      # @overload on_potential_false_positives=(value)
+      #   Configures what RSpec will do about matcher use which would potentially
+      #   cause false positives in tests. Defaults to `:warn` since this is generally
+      #   the desired behavior.
+      #   @param [Symbol] behavior can be set to `:warn`, `:raise` or `:nothing`
+      #   @return [Symbol] the behavior setting
+      attr_reader :on_potential_false_positives
+
       def on_potential_false_positives=(behavior)
         unless FALSE_POSITIVE_BEHAVIOURS.key?(behavior)
           raise ArgumentError, "Supported values are: #{FALSE_POSITIVE_BEHAVIOURS.keys}"
@@ -206,11 +215,6 @@ module RSpec
       def strict_predicate_matchers?
         @strict_predicate_matchers
       end
-
-      # Indicates what RSpec will do about matcher use which will
-      # potentially cause false positives in tests, generally you want to
-      # avoid such scenarios so this defaults to `true`.
-      attr_reader :on_potential_false_positives
 
       # Indicates whether RSpec will warn about matcher use which will
       # potentially cause false positives in tests, generally you want to
