@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rspec/matchers/built_in/helpers/array_matcher'
+
 module RSpec
   module Matchers
     module BuiltIn
@@ -35,6 +37,26 @@ module RSpec
           self
         end
 
+        # @api private
+        # @return [String]
+        def failure_message
+          if Array === expected
+            if actual.respond_to?(:to_a) || actual.respond_to?(:to_ary)
+              return array_matcher.failure_message
+            else
+              return "expected a collection that can be converted to an array with " \
+                     "`#to_ary` or `#to_a`, but got #{actual_formatted}"
+            end
+          end
+
+          super
+        end
+
+        def matches?(actual)
+          @array_matcher = nil
+          super(actual)
+        end
+
       private
 
         def match(expected, actual)
@@ -46,6 +68,7 @@ module RSpec
 
         def can_safely_call_match?(expected, actual)
           return false unless actual.respond_to?(:match)
+          return false if Array === expected
 
           !(RSpec::Matchers.is_a_matcher?(expected) &&
             (String === actual || Regexp === actual))
@@ -66,6 +89,19 @@ module RSpec
           else
             false
           end
+        end
+
+        def array_matcher
+          @array_matcher ||= RSpec::Matchers::BuiltIn::Helpers::ArrayMatcher.new(
+            :expected => @expected,
+            :actual => @actual,
+            :messages => {
+              :expected => 'expected collection was',
+              :actual => 'actual collection was',
+              :missing => 'the missing elements were',
+              :extra => 'the extra elements were'
+            }
+          )
         end
       end
 
