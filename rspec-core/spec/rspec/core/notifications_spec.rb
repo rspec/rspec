@@ -12,7 +12,7 @@ RSpec.describe "FailedExampleNotification" do
 
   let(:example) { new_example(:status => :failed) }
   exception_line = __LINE__ + 1
-  let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception') }
+  let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception', :detailed_message => 'Test exception') }
   let(:notification) { ::RSpec::Core::Notifications::ExampleNotification.for(example) }
 
   before do

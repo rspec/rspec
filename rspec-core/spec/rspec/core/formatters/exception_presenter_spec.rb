@@ -570,6 +570,39 @@ module RSpec::Core
           end
         end
       end
+
+      context "with detailed_message support", :if => RSpec::Support::RubyFeatures.supports_exception_detailed_message? do
+        class ExceptionWithDetailedMessage < StandardError
+          def detailed_message(options = {})
+            "Detailed error message#{options[:highlight] ? ' (highlighted)' : ''} (#{self.class})"
+          end
+
+          def message
+            "Regular message"
+          end
+        end
+
+        let(:detailed_exception) { ExceptionWithDetailedMessage.new }
+        let(:detailed_presenter) { RSpec::Core::Formatters::ExceptionPresenter.new(detailed_exception, example) }
+
+        it "uses detailed_message when available" do
+          formatted_output = detailed_presenter.fully_formatted(1)
+          expect(formatted_output).to include("Detailed error message")
+          expect(formatted_output).not_to include("Regular message")
+        end
+
+        it "passes highlight: false to detailed_message" do
+          allow(detailed_exception).to receive(:detailed_message).and_call_original
+          detailed_presenter.fully_formatted(1)
+          expect(detailed_exception).to have_received(:detailed_message).with(:highlight => false)
+        end
+
+        it "falls back to message.to_s when detailed_message raises an exception" do
+          allow(detailed_exception).to receive(:detailed_message).and_raise(RuntimeError.new("Error in detailed_message"))
+          formatted_output = detailed_presenter.fully_formatted(1)
+          expect(formatted_output).to include("A RSpec::Core::ExceptionWithDetailedMessage for which `exception.message.to_s` raises RuntimeError.")
+        end
+      end
     end
 
     describe "#read_failed_lines" do
