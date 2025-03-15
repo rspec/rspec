@@ -199,7 +199,12 @@ module RSpec
       # potentially cause false positives in tests.
       #
       # @param [Boolean] boolean
+      # @deprecated Use {#on_potential_false_positives=} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives=(boolean)
+        RSpec.deprecate(
+          "warn_about_potential_false_positives=",
+          :replacement => "`on_potential_false_positives=` which supports :warn, :raise, and :nothing behaviors"
+        )
         if boolean
           self.on_potential_false_positives = :warn
         elsif warn_about_potential_false_positives?
@@ -251,7 +256,12 @@ module RSpec
       # Indicates whether RSpec will warn about matcher use which will
       # potentially cause false positives in tests, generally you want to
       # avoid such scenarios so this defaults to `true`.
+      # @deprecated Use {#on_potential_false_positives} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives?
+        RSpec.deprecate(
+          "warn_about_potential_false_positives?",
+          :replacement => "`on_potential_false_positives` which supports :warn, :raise, and :nothing behaviors"
+        )
         on_potential_false_positives == :warn
       end
 
