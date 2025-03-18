@@ -16,7 +16,7 @@ RSpec.describe "FailedExampleNotification" do
     let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception', :detailed_message => 'Test exception') }
   else
     let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception') }
-  end  
+  end
   let(:notification) { ::RSpec::Core::Notifications::ExampleNotification.for(example) }
 
   before do
