@@ -11,10 +11,11 @@ RSpec.describe "FailedExampleNotification" do
   include FormatterSupport
 
   let(:example) { new_example(:status => :failed) }
-  exception_line = __LINE__ + 1
   if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+    exception_line = __LINE__ + 1
     let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception', :detailed_message => 'Test exception') }
   else
+    exception_line = __LINE__ + 1
     let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{exception_line}"], :message => 'Test exception') }
   end
   let(:notification) { ::RSpec::Core::Notifications::ExampleNotification.for(example) }
@@ -330,8 +331,10 @@ RSpec.describe "FailedExampleNotification" do
       it "returns failures_lines with invalid bytes replace by '?'" do
         message_with_invalid_byte_sequence =
           "\xEF \255 \xAD I have bad bytes".dup.force_encoding(Encoding::UTF_8)
-        allow(exception).to receive(:message).
-          and_return(message_with_invalid_byte_sequence)
+        allow(exception).to receive(:message).and_return(message_with_invalid_byte_sequence)
+        if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+          allow(exception).to receive(:detailed_message).and_return(message_with_invalid_byte_sequence)
+        end
 
         lines = notification.message_lines
         expect(lines[0]).to match %r{\AFailure\/Error}
