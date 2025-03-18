@@ -340,11 +340,17 @@ module RSpec::Core
 
         the_presenter = Formatters::ExceptionPresenter.new(incorrect_message_exception, example)
 
+        statement =
+          RSpec::Support::RubyFeatures.supports_exception_detailed_message? ?
+            'exception.detailed_message.to_s'
+          :
+            'exception.message.to_s'
+
         expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
           |
           |  1) Example
           |     Failure/Error: Unable to find matching line from backtrace
-          |       A #{FakeException} for which `exception.message.to_s` raises #{expected_error}.
+          |       A #{FakeException} for which `#{statement}` raises #{expected_error}.
         EOS
       end
 
