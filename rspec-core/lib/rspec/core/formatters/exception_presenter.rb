@@ -189,7 +189,7 @@ module RSpec
             puts "exception.class: #{exception.class}"
             exception.detailed_message(:highlight => false).sub(/\s\(#{Regexp.escape(exception.class.to_s)}\)$/, '')
           rescue Exception => other
-            "A #{exception.class} for which `exception.message.to_s` raises #{other.class}."
+            "A #{exception.class} for which `exception.detailed_message.to_s` raises #{other.class} #{other.message}."
           end
         else
           def exception_message_string(exception)
