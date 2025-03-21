@@ -95,9 +95,15 @@ RSpec.describe "expect(...).to match(expected)" do
   end
 
   it "fails when target type (String) does not match expected (Array)" do
-    expect {
-      expect("string").to match(["c", "a", "b"])
-    }.to fail_with('expected a collection that can be converted to an array with `#to_ary` or `#to_a`, but got "string"')
+    if RUBY_VERSION == "1.8.7"
+      expect {
+        expect("string").to match(["c", "a", "b"])
+      }.to fail
+    else
+      expect {
+        expect("string").to match(["c", "a", "b"])
+      }.to fail_with('expected a collection that can be converted to an array with `#to_ary` or `#to_a`, but got "string"')
+    end
   end
 end
 
