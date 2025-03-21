@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.3...3-13-maintenance)
 
+Bug Fixes:
+
+* Prevent `match` from trying to compare strings and arrays using `Array#match`. (Joseph Haig, rspec/rspec#183)
+
 ### 3.13.3 / 2024-09-07
 [Full Changelog](http://github.com/rspec/rspec-expectations/compare/v3.13.2...v3.13.3)
 
