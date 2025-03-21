@@ -340,11 +340,11 @@ module RSpec::Core
 
         the_presenter = Formatters::ExceptionPresenter.new(incorrect_message_exception, example)
 
-        statement =
-          RSpec::Support::RubyFeatures.supports_exception_detailed_message? ?
-            'exception.detailed_message.to_s'
-          :
-            'exception.message.to_s'
+        statement = if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+                      'exception.detailed_message.to_s'
+                    else
+                      'exception.message.to_s'
+                    end
 
         expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
           |
@@ -606,7 +606,7 @@ module RSpec::Core
         it "falls back to message.to_s when detailed_message raises an exception" do
           allow(detailed_exception).to receive(:detailed_message).and_raise(RuntimeError.new("Error in detailed_message"))
           formatted_output = detailed_presenter.fully_formatted(1)
-          expect(formatted_output).to include("A RSpec::Core::ExceptionWithDetailedMessage for which `exception.message.to_s` raises RuntimeError.")
+          expect(formatted_output).to include("Regular message")
         end
       end
     end

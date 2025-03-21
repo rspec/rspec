@@ -186,9 +186,13 @@ module RSpec
         # :nocov:
         if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
           def exception_message_string(exception)
-            exception.detailed_message(:highlight => false)
+            exception.detailed_message(:highlight => false).sub(/\s\(#{Regexp.escape(exception.class.to_s)}\)$/, '')
           rescue Exception => other
-            "A #{exception.class} for which `exception.detailed_message.to_s` raises #{other.class}."
+            begin
+              exception.message.to_s
+            rescue Exception
+              "A #{exception.class} for which `exception.detailed_message.to_s` raises #{other.class}."
+            end
           end
         else
           def exception_message_string(exception)
