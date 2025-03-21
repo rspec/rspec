@@ -19,6 +19,8 @@ RSpec.configure do |c|
   c.include RSpec::Support::FormattingSupport
   c.include RSpec::Support::InSubProcess
 
+  c.warnings = :all
+
   unless defined?(Debugger) # debugger causes warnings when used
     c.before do
       warning_preventer.reset!
