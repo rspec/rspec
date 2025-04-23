@@ -135,6 +135,19 @@ module RSpec::Core
         expect(BacktraceFormatter.new.format_backtrace(bundler_trace)).to eq ["/some/other/file.rb:13"]
       end
 
+      it "excludes lines from GEM_HOME by default" do
+        trace = [
+          "/usr/local/bundle/gems/activerecord-8.0.2/lib/active_record/validations.rb",
+          "/some/other/file.rb:13",
+          "/usr/local/bundle/gems/activerecord-8.0.2/lib/active_record/validations.rb"
+        ]
+        # GEM_HOME is defined by the base docker image for Ruby. See:
+        # https://github.com/docker-library/ruby/blob/235b3ffb2060c837137b32ea55f75816f2f4e4c4/3.4/bookworm/Dockerfile#L100C14-L100C31
+        with_env_vars 'GEM_HOME' => "/usr/local/bundle" do
+          expect(BacktraceFormatter.new.format_backtrace(trace)).to eq ["/some/other/file.rb:13"]
+        end
+      end
+
       context "when every line is filtered out" do
         let(:backtrace) do
           [

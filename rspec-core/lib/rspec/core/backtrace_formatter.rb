@@ -10,6 +10,7 @@ module RSpec
 
         patterns = %w[ /lib\d*/ruby/ bin/ exe/rspec /lib/bundler/ /exe/bundle: ]
         patterns << "org/jruby/" if RUBY_PLATFORM == 'java'
+        patterns << ENV["GEM_HOME"] if ENV.key?("GEM_HOME")
         patterns.map! { |s| Regexp.new(s.gsub("/", File::SEPARATOR)) }
 
         @exclusion_patterns = [Regexp.union(RSpec::CallerFilter::IGNORE_REGEX, *patterns)]
