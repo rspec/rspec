@@ -7,6 +7,7 @@ $VERBOSE = true
 # that we run `rspec`.
 $0 = "rspec"
 
+<<<<<<< HEAD
 # This is necessary for when `--standalone` is being used.
 $:.unshift File.expand_path '../../bundle', __FILE__
 
@@ -31,6 +32,30 @@ begin
       add_filter "bundle/"
       add_filter "tmp/"
       add_filter "spec/"
+||||||| parent of 3a16d90f5 (Use script to run rspec for rspec-core)
+=======
+# For the monorepo build the bundle directory is at the top level
+$:.unshift File.expand_path '../../../bundle', __FILE__
+
+require 'bundler/setup'
+
+# To use simplecov while running rspec-core's test suite, we must
+# load simplecov _before_ loading any of rspec-core's files.
+# So, this executable exists purely as a wrapper script that
+# first loads simplecov, and then loads rspec.
+begin
+  # Simplecov emits some ruby warnings when loaded, so silence them.
+  old_verbose, $VERBOSE = $VERBOSE, false
+
+  unless ENV['NO_COVERAGE'] || RUBY_VERSION.to_f < 2.1
+    require 'simplecov'
+
+    SimpleCov.start do
+      root File.expand_path("../..", __FILE__)
+      add_filter %r{/bundle/}
+      add_filter %r{/tmp/}
+      add_filter %r{/spec/}
+>>>>>>> 3a16d90f5 (Use script to run rspec for rspec-core)
       minimum_coverage(100)
     end
   end
