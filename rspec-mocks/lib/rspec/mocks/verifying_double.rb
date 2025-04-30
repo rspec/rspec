@@ -36,12 +36,14 @@ module RSpec
 
       # Redefining `__send__` causes ruby to issue a warning.
       old, $VERBOSE = $VERBOSE, nil
+      # rubocop:disable Naming/MethodName
       def __send__(name, *args, &block)
         @__sending_message = name
         super
       ensure
         @__sending_message = nil
       end
+      # rubocop:enable Naming/MethodName
       ruby2_keywords :__send__ if respond_to?(:ruby2_keywords, true)
       $VERBOSE = old
 
