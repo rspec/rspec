@@ -1,6 +1,7 @@
 require "bundler"
 Bundler.setup
 Bundler::GemHelper.install_tasks
+Bundler::GemHelper.tag_prefix = 'rspec-core-'
 
 require "rake"
 require "yaml"

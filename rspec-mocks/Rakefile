@@ -1,6 +1,7 @@
 require 'bundler'
 Bundler.setup
 Bundler::GemHelper.install_tasks
+Bundler::GemHelper.tag_prefix = 'rspec-mocks-'
 
 require 'rake'
 require 'rspec/core/rake_task'
