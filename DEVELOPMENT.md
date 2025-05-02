@@ -18,9 +18,15 @@ $ bundle install
 
 ## Working on an individual library
 
-For most contributors, setting up the project individually will be simpler.
+Each rspec-* library is a standalone gem, with a standalone build. We recommend you
+treat each as such and run development tools from their individual directories.
 
-Unless you have a specific reason to use rspec-dev, we recommend using this approach.
+For convience though, you can also run `script/run_rspec` from the root directory
+to run all the specs, as well as `bin/rubocop` to check all files for recommendations
+at once.
+
+# Bundler setup
+
 To minimize boot time and to ensure we don't depend upon any extra dependencies
 loaded by Bundler, our CI builds avoid loading Bundler at runtime
 by using Bundler's [`--standalone option`](https://myronmars.to/n/dev-blog/2012/03/faster-test-boot-times-with-bundler-standalone).
@@ -29,6 +35,7 @@ While not strictly necessary (many/most of our contributors do not do this!),
 if you want to exactly reproduce our CI builds you'll want to do the same:
 
 ```
+$ rm Gemfile.lock
 $ bundle install --standalone --path <current_lib>/bundle
 $ bundle binstubs --path <current_lib>/bundle/bin
 ```
@@ -36,7 +43,9 @@ $ bundle binstubs --path <current_lib>/bundle/bin
 The `binstubs` option creates the `bin/rspec` file that, like `bundle exec rspec`, will load
 all the versions specified in `Gemfile.lock` without loading bundler at runtime!
 
-You can also run `bundle install` as normal with the GEMFILE environment variable set to the parent directory.
+Note that as a set of gems we don't check in `Gemfile.lock`, so to replicate a CI build on branch
+changes / after a period of time you will need to delete your local `Gemfile.lock` file to install
+the same gems as CI.
 
 ## Extra Gems
 
@@ -48,10 +57,12 @@ gem declarations. The `Gemfile` evaluates that file if it exists, and it is git-
 
 The [CI build](https://github.com/rspec/rspec/actions)
 runs many verification steps to prevent regressions and
-ensure high-quality code. To run the build locally, for an individual libraryrun:
+ensure high-quality code. To run the build locally, for an individual library run:
 
 ```
-$ script/run_build
+$ ../script/run_rspec
+$ ../script/run_rspec_one_by_one
+$ ../script/run_cucumber
 ```
 
 See [build detail](BUILD_DETAIL.md) for more detail.

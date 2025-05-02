@@ -13,8 +13,23 @@ function run_specs {
     rspec_bin=script/rspec_with_simplecov
   fi;
 
-  echo "${PWD}/bin/rspec"
-  $rspec_bin spec --backtrace --format progress --profile --format progress
+  if [ $PWD -ef $ROOT_DIR ]; then
+    echo "In root directory... running all specs..."
+
+    for dir in "$ROOT_DIR"/*/ ; do
+      dir=${dir%/}
+
+      if [ -d "$dir/spec" ]; then
+        echo "${PWD}/bin/rspec spec in ${dir}"
+        pushd $dir
+        $rspec_bin spec --backtrace --format progress --profile --format progress
+        popd
+      fi
+    done
+  else
+    echo "${PWD}/bin/rspec spec"
+    $rspec_bin spec --backtrace --format progress --profile --format progress
+  fi;
 }
 
 run_specs

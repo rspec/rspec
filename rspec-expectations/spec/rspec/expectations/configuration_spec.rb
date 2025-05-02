@@ -112,19 +112,46 @@ module RSpec
       end
 
       describe "#warn_about_potential_false_positives?" do
-        it "is true by default" do
+        it "is deprecated" do
+          expect(RSpec).to receive(:deprecate).with(
+            "warn_about_potential_false_positives?",
+            :replacement => "`on_potential_false_positives` which supports :warn, :raise, and :nothing behaviors"
+          )
+          config.warn_about_potential_false_positives?
+        end
+
+        it "returns true when on_potential_false_positives is :warn" do
+          config.on_potential_false_positives = :warn
+          expect(RSpec).to receive(:deprecate)
           expect(config.warn_about_potential_false_positives?).to be true
         end
 
-        it "can be set to false" do
-          config.warn_about_potential_false_positives = false
+        it "returns false when on_potential_false_positives is not :warn" do
+          config.on_potential_false_positives = :nothing
+          expect(RSpec).to receive(:deprecate)
           expect(config.warn_about_potential_false_positives?).to be false
         end
+      end
 
-        it "can be set back to true" do
-          config.warn_about_potential_false_positives = false
+      describe "#warn_about_potential_false_positives=" do
+        it "is deprecated" do
+          expect(RSpec).to receive(:deprecate).with(
+            "warn_about_potential_false_positives=",
+            :replacement => "`on_potential_false_positives=` which supports :warn, :raise, and :nothing behaviors"
+          ).at_least(:once)
           config.warn_about_potential_false_positives = true
-          expect(config.warn_about_potential_false_positives?).to be true
+        end
+
+        it "sets on_potential_false_positives to :warn when true" do
+          allow(RSpec).to receive(:deprecate)
+          config.warn_about_potential_false_positives = true
+          expect(config.on_potential_false_positives).to eq(:warn)
+        end
+
+        it "sets on_potential_false_positives to :nothing when false" do
+          allow(RSpec).to receive(:deprecate)
+          config.warn_about_potential_false_positives = false
+          expect(config.on_potential_false_positives).to eq(:nothing)
         end
       end
 

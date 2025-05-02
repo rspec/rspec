@@ -11,6 +11,13 @@ Bug Fixes:
 * Switch current thread data to alias/accessors to avoid issues with mocked systems.
   (Jon Rowe, #610)
 
+### 3.13.3 / 2025-04-30
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.2...rspec-support-v3.13.3)
+
+Bug Fixes:
+
+* Support for changes in diff-lcs and Ruby 3.4 in spec helpers. (Jon Rowe, #164 etc)
+
 ### 3.13.2 / 2024-12-02
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.1...rspec-support-v3.13.2)
 

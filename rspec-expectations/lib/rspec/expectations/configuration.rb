@@ -4,6 +4,8 @@ RSpec::Support.require_rspec_expectations "syntax"
 
 module RSpec
   module Expectations
+    # rubocop:disable Metrics/ClassLength
+
     # Provides configuration options for rspec-expectations.
     # If you are using rspec-core, you can access this via a
     # block passed to `RSpec::Core::Configuration#expect_with`.
@@ -172,7 +174,12 @@ module RSpec
       # potentially cause false positives in tests.
       #
       # @param [Boolean] boolean
+      # @deprecated Use {#on_potential_false_positives=} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives=(boolean)
+        RSpec.deprecate(
+          "warn_about_potential_false_positives=",
+          :replacement => "`on_potential_false_positives=` which supports :warn, :raise, and :nothing behaviors"
+        )
         if boolean
           self.on_potential_false_positives = :warn
         elsif warn_about_potential_false_positives?
@@ -181,11 +188,18 @@ module RSpec
           # no-op, handler is something else
         end
       end
+
+      # Configures what RSpec will do about matcher use which would potentially cause
+      # false positives in tests. Defaults to `:warn` since this is generally the desired behavior,
+      # but can also be set to `:raise` or `:nothing`.
       #
-      # Configures what RSpec will do about matcher use which will
-      # potentially cause false positives in tests.
-      #
-      # @param [Symbol] behavior can be set to :warn, :raise or :nothing
+      # @overload on_potential_false_positives
+      #   @return [Symbol] the behavior setting
+      # @overload on_potential_false_positives=(value)
+      #   @param [Symbol] behavior can be set to `:warn`, `:raise` or `:nothing`
+      #   @return [Symbol] the behavior setting
+      attr_reader :on_potential_false_positives
+
       def on_potential_false_positives=(behavior)
         unless FALSE_POSITIVE_BEHAVIOURS.key?(behavior)
           raise ArgumentError, "Supported values are: #{FALSE_POSITIVE_BEHAVIOURS.keys}"
@@ -196,26 +210,33 @@ module RSpec
       # Configures RSpec to check predicate matchers to `be(true)` / `be(false)` (strict),
       # or `be_truthy` / `be_falsey` (not strict).
       # Historically, the default was `false`, but `true` is recommended.
-      def strict_predicate_matchers=(flag)
-        raise ArgumentError, "Pass `true` or `false`" unless flag == true || flag == false
-        @strict_predicate_matchers = flag
-      end
-
+      #
+      # @overload strict_predicate_matchers
+      #   @return [Boolean]
+      # @overload strict_predicate_matchers?
+      #   @return [Boolean]
+      # @overload strict_predicate_matchers=(value)
+      #   @param [Boolean] value
       attr_reader :strict_predicate_matchers
+
+      def strict_predicate_matchers=(value)
+        raise ArgumentError, "Pass `true` or `false`" unless value == true || value == false
+        @strict_predicate_matchers = value
+      end
 
       def strict_predicate_matchers?
         @strict_predicate_matchers
       end
 
-      # Indicates what RSpec will do about matcher use which will
-      # potentially cause false positives in tests, generally you want to
-      # avoid such scenarios so this defaults to `true`.
-      attr_reader :on_potential_false_positives
-
       # Indicates whether RSpec will warn about matcher use which will
       # potentially cause false positives in tests, generally you want to
       # avoid such scenarios so this defaults to `true`.
+      # @deprecated Use {#on_potential_false_positives} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives?
+        RSpec.deprecate(
+          "warn_about_potential_false_positives?",
+          :replacement => "`on_potential_false_positives` which supports :warn, :raise, and :nothing behaviors"
+        )
         on_potential_false_positives == :warn
       end
 
@@ -233,5 +254,7 @@ module RSpec
 
     # set default syntax
     configuration.reset_syntaxes_to_default
+
+    # rubocop:enable Metrics/ClassLength
   end
 end
