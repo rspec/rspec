@@ -1,5 +1,15 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.3...3-13-maintenance)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.4...3-13-maintenance)
+
+### 3.13.4 / 2025-05-05
+[Full Changelog](http://github.com/rspec/rspec-mocks/compare/v3.13.3...v3.13.4)
+
+Bug Fixes:
+
+* Fix regression where nested stubbed method calls would inadvertently not be counted.
+  (Jon Rowe, rspec/rspec#214)
+* Fix regression where keyword arguments would not be passed through to nested stubbed
+  method calls. (Jon Rowe, rspec/rspec#214)
 
 ### 3.13.3 / 2025-05-01
 [Full Changelog](http://github.com/rspec/rspec-mocks/compare/v3.13.2...v3.13.3)
