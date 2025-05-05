@@ -61,6 +61,19 @@ module RSpec
         an_object.call :my_method
       end
 
+      # This is a regresion test for rspec/rspec#212 / rspec/rspec#213
+      it "supports nesting" do
+        nested = false
+        expect(object).to receive(:nested).twice do
+          unless nested
+            nested = true
+            object.nested
+          end
+        end
+
+        object.nested
+      end
+
       it "can disallow messages from being received" do
         expect(object).not_to receive(:fuhbar)
         expect_fast_failure_from(
