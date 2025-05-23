@@ -620,7 +620,14 @@ module RSpec
         end
 
         def invoking_internals=(value)
-          RSpec::Support.thread_local_data[:"__rspec_#{object_id}_invoking_internals"] = value
+          # We clear the key for this rather than setting to false because otherwise the amount of
+          # thread local data will keep growing over the lifetime of the thread (which is a long
+          # time on a single threaded spec run e.g standard MRI)
+          if value
+            RSpec::Support.thread_local_data[:"__rspec_#{object_id}_invoking_internals"] = true
+          else
+            RSpec::Support.thread_local_data.delete(:"__rspec_#{object_id}_invoking_internals")
+          end
         end
 
         def invoke_incrementing_actual_calls_by(increment, allowed_to_fail, parent_stub, *args, &block)
