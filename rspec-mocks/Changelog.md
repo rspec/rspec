@@ -1,5 +1,13 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.4...3-13-maintenance)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.5...3-13-maintenance)
+
+### 3.13.5 / 2025-05-23
+[Full Changelog](http://github.com/rspec/rspec-mocks/compare/v3.13.4...v3.13.5)
+
+Bug Fixes:
+
+* Fix regression where a previous fix (rspec/rspec#214) would leave behind thread data
+  between tests. (Jon Rowe, rspec/rspec#219)
 
 ### 3.13.4 / 2025-05-05
 [Full Changelog](http://github.com/rspec/rspec-mocks/compare/v3.13.3...v3.13.4)
