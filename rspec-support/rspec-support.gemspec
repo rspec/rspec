@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = RSpec::Support::Version::STRING
   spec.authors       = ["David Chelimsky","Myron Marson","Jon Rowe","Sam Phippen","Xaviery Shay","Bradley Schaefer"]
   spec.email         = "rspec-users@rubyforge.org"
-  spec.homepage      = "https://github.com/rspec/rspec"
+  spec.homepage      = "https://rspec.info"
   spec.summary       = "rspec-support-#{RSpec::Support::Version::STRING}"
   spec.description   = "Support utilities for RSpec gems"
   spec.license       = "MIT"
