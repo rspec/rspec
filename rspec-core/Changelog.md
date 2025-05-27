@@ -1,8 +1,15 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.3...3-13-maintenance)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.4...3-13-maintenance)
+
+### 3.13.4 / 2025-05-27
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.3...rspec-core-v3.13.4)
+
+Bug Fixes:
+
+* Fix links in gemspec to point to the monorepo / homepage.
 
 ### 3.13.3 / 2025-02-06
-[Full Changelog](http://github.com/rspec/rspec-core/compare/v3.13.2...v3.13.3)
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.4...rspec-core-v3.13.3)
 
 Bug fixes:
 

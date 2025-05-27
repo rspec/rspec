@@ -1,7 +1,15 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...3-13-maintenance)
 
+### 3.13.5 / 2025-05-27
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
+
+Bug Fixes:
+
+* Fix links in gemspec to point to the monorepo / homepage.
+
 ### 3.13.4 / 2025-05-01
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.3...rspec-expectations-v3.13.4)
 
 Bug Fixes:
 
