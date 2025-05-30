@@ -1,7 +1,7 @@
 require 'bundler'
 Bundler.setup
 Bundler::GemHelper.install_tasks
-Bundler::GemHelper.tag_prefix = 'rspec-expecations-'
+Bundler::GemHelper.tag_prefix = 'rspec-expectations-'
 
 require 'rake'
 require 'rspec/core/rake_task'

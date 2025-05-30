@@ -134,10 +134,10 @@ Feature: Matching arguments
       | got: ([1, 3])                                                 |
 
   @ripper
-  Scenario: Using satisfy for complex custom expecations
+  Scenario: Using satisfy for complex custom expectations
     Given a file named "rspec_satisfy_spec.rb" with:
       """ruby
-      RSpec.describe "Using satisfy for complex custom expecations" do
+      RSpec.describe "Using satisfy for complex custom expectations" do
         let(:dbl) { double }
 
         def a_b_c_equals_5
