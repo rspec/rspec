@@ -213,7 +213,7 @@ module FormatterSupport
         |     Failure/Error: ERB.new("<%= raise 'foo' %>").result
         |
         |     RuntimeError:
-        |       foo
+        |       foo#{exception_class_suffix(RuntimeError)}
         |     # (erb):1:in #{quoted('<main>')}
         |     # ./spec/rspec/core/resources/formatter_specs.rb:52:in #{quoted('block (2 levels) in <top (required)>')}
         |     # ./spec/support/formatter_support.rb:#{RUN_LINE}:in #{quoted("#{maybe_module}run_rspec_with_formatter")}
@@ -225,14 +225,14 @@ module FormatterSupport
         |     Failure/Error: Unable to find /foo.html.erb to read failed line
         |
         |     Exception:
-        |       Exception
+        |       Exception#{exception_class_suffix(Exception)}
         |     # /foo.html.erb:1:in `<main>': foo (RuntimeError)
         |
         |  6) a failing spec with odd backtraces with a `nil` backtrace raises
         |     Failure/Error: Unable to find matching line from backtrace
         |
         |     RuntimeError:
-        |       boom
+        |       boom#{exception_class_suffix(RuntimeError)}
         |
         |Finished in n.nnnn seconds (files took n.nnnn seconds to load)
         |10 examples, 6 failures, 2 pending

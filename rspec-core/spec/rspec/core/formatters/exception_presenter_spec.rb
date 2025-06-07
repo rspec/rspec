@@ -48,7 +48,7 @@ module RSpec::Core
           |  1) Example
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -60,7 +60,7 @@ module RSpec::Core
           |  100) Example
           |       Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |         Boom
+          |         Boom#{exception_class_suffix(FakeException)}
           |         Bam
           |       # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -72,7 +72,7 @@ module RSpec::Core
           |  Example
           |  Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |    Boom
+          |    Boom#{exception_class_suffix(FakeException)}
           |    Bam
           |  # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -86,7 +86,7 @@ module RSpec::Core
           |    1) Example
           |       Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |         Boom
+          |         Boom#{exception_class_suffix(FakeException)}
           |         Bam
           |       # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -103,7 +103,7 @@ module RSpec::Core
           |       Some Detail
           |       Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |         Boom
+          |         Boom#{exception_class_suffix(FakeException)}
           |         Bam
           |       # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -119,7 +119,7 @@ module RSpec::Core
           |  1) ジ
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
           EOS
@@ -136,7 +136,7 @@ module RSpec::Core
           |  1) Detail!
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -149,7 +149,7 @@ module RSpec::Core
           |
           |  1) Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -167,7 +167,7 @@ module RSpec::Core
           |  2) Example
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
           |     extra detail for failure: 2
@@ -191,12 +191,12 @@ module RSpec::Core
           |  1) Example
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
           |     # ------------------
           |     # --- Caused by: ---
-          |     #   Real
+          |     #   Real#{exception_class_suffix(FakeException)}
           |     #   culprit
           |     #   ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{caused_by_line_num}
         EOS
@@ -215,12 +215,12 @@ module RSpec::Core
             |  1) Example
             |     Failure/Error: # The failure happened here!#{ encoding_check }
             |
-            |       Boom
+            |       Boom#{exception_class_suffix(FakeException)}
             |       Bam
             |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
             |     # ------------------
             |     # --- Caused by: ---
-            |     #   Real
+            |     #   Real#{exception_class_suffix(FakeException)}
             |     #   culprit
             |     #   ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{caused_by_line_num}
             |     #   ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{caused_by_line_num}
@@ -240,12 +240,12 @@ module RSpec::Core
               |  1) Example
               |     Failure/Error: # The failure happened here!#{ encoding_check }
               |
-              |       Boom
+              |       Boom#{exception_class_suffix(FakeException)}
               |       Bam
               |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
               |     # ------------------
               |     # --- Caused by: ---
-              |     #   Real
+              |     #   Real#{exception_class_suffix(FakeException)}
               |     #   culprit
             EOS
           end
@@ -273,12 +273,12 @@ module RSpec::Core
           |  1) Example
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
           |     # ------------------
           |     # --- Caused by: ---
-          |     #   Boom
+          |     #   Boom#{exception_class_suffix(FakeException)}
           |     #   Bam
           |     #   ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
@@ -296,12 +296,12 @@ module RSpec::Core
           |  1) Example
           |     Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |       Boom
+          |       Boom#{exception_class_suffix(FakeException)}
           |       Bam
           |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
           |     # ------------------
           |     # --- Caused by: ---
-          |     #   A loop
+          |     #   A loop#{exception_class_suffix(FakeException)}
           |     #   ./spec/rspec/core/formatters/exception_presenter_spec.rb:#{line_num}
         EOS
       end
@@ -315,10 +315,10 @@ module RSpec::Core
           |
           |  1) Example
           |     Failure/Error: Unable to find matching line from backtrace
-          |       A badly implemented exception
+          |       A badly implemented exception#{exception_class_suffix(FakeException)}
           |     # ------------------
           |     # --- Caused by: ---
-          |     #   A badly implemented exception
+          |     #   A badly implemented exception#{exception_class_suffix(FakeException)}
         EOS
       end
 
@@ -340,11 +340,17 @@ module RSpec::Core
 
         the_presenter = Formatters::ExceptionPresenter.new(incorrect_message_exception, example)
 
+        statement = if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+                      'exception.detailed_message.to_s'
+                    else
+                      'exception.message.to_s'
+                    end
+
         expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
           |
           |  1) Example
           |     Failure/Error: Unable to find matching line from backtrace
-          |       A #{FakeException} for which `exception.message.to_s` raises #{expected_error}.
+          |       A #{FakeException} for which `#{statement}` raises #{expected_error}.
         EOS
       end
 
@@ -358,7 +364,7 @@ module RSpec::Core
           |    1) Example
           |       Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |         Boom
+          |         Boom#{exception_class_suffix(FakeException)}
           |         Bam
           |
           |       #{failure_line}
@@ -377,7 +383,7 @@ module RSpec::Core
           |    1) Example
           |       Failure/Error: # The failure happened here!#{ encoding_check }
           |
-          |         Boom
+          |         Boom#{exception_class_suffix(FakeException)}
           |         Bam
           |
           |       #{failure_line}
@@ -543,7 +549,7 @@ module RSpec::Core
               |     Failure/Error: expect { fail 'Something is wrong!' }.to change { RSpec }
               |
               |     RuntimeError:
-              |       Something is wrong!
+              |       Something is wrong!#{exception_class_suffix(RuntimeError)}
               |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:
             EOS
           end
@@ -564,10 +570,31 @@ module RSpec::Core
               |         to change { RSpec }
               |
               |     RuntimeError:
-              |       Something is wrong!
+              |       Something is wrong!#{exception_class_suffix(RuntimeError)}
               |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:
             EOS
           end
+        end
+      end
+
+      context "with detailed_message support", :if => RSpec::Support::RubyFeatures.supports_exception_detailed_message? do
+        class ExceptionWithDetailedMessage < StandardError
+          def detailed_message(_options = {})
+            "Detailed error message (#{self.class})"
+          end
+
+          def message
+            "Regular message"
+          end
+        end
+
+        let(:detailed_exception) { ExceptionWithDetailedMessage.new }
+        let(:detailed_presenter) { RSpec::Core::Formatters::ExceptionPresenter.new(detailed_exception, example) }
+
+        it "uses detailed_message when available" do
+          formatted_output = detailed_presenter.fully_formatted(1)
+          expect(formatted_output).to include("Detailed error message")
+          expect(formatted_output).not_to include("Regular message")
         end
       end
     end
