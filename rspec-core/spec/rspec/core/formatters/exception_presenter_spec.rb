@@ -679,6 +679,14 @@ module RSpec::Core
         end
       end
 
+      context "when the stacktrace is frozen" do
+        let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{__LINE__}"].tap(&:freeze)) }
+
+        it 'still finds the backtrace line' do
+          expect(read_failed_lines.first).to include("instance_double(Exception, :backtrace => [ \"\#{__FILE__}:\#{__LINE__}\"")
+        end
+      end
+
       context "when String alias to_int to_i" do
         before do
           String.class_exec do
