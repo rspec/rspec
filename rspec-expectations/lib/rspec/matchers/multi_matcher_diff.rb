@@ -61,7 +61,7 @@ module RSpec
 
         def truncated(description)
           return description if description.length <= DESCRIPTION_MAX_LENGTH
-          description[0...DESCRIPTION_MAX_LENGTH - 3] << "..."
+          description[0...(DESCRIPTION_MAX_LENGTH - 3)] << "..."
         end
       end
 

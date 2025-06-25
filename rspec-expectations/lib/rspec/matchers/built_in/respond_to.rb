@@ -137,7 +137,7 @@ module RSpec
         end
 
         def with_arity_string
-          "#{@expected_arity} argument#{@expected_arity == 1 ? '' : 's'}"
+          "#{@expected_arity} argument#{'s' unless @expected_arity == 1}"
         end
 
         def with_keywords_string
@@ -150,7 +150,7 @@ module RSpec
                      "#{@expected_keywords[0...-1].map(&:inspect).join(', ')}, and #{@expected_keywords.last.inspect}"
                    end
 
-          "keyword#{@expected_keywords.count == 1 ? '' : 's'} #{kw_str}"
+          "keyword#{'s' unless @expected_keywords.count == 1} #{kw_str}"
         end
 
         def pp_names

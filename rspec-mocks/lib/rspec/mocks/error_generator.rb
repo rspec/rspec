@@ -370,7 +370,7 @@ module RSpec
       end
 
       def times(count)
-        "#{count} time#{count == 1 ? '' : 's'}"
+        "#{count} time#{'s' unless count == 1}"
       end
 
       def grouped_args(args)

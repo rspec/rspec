@@ -113,13 +113,13 @@ class << self; alias_method :inc, :include; remove_method :include; end
 Benchmark.ips do |x|
   x.report("Old `to include` successes") do
     array_sizes.each do |n|
-      expect([*1..n]).to old_include(*n/2..n)
+      expect([*1..n]).to old_include(*(n/2)..n)
     end
   end
 
   x.report("New `to include` successes") do
     array_sizes.each do |n|
-      expect([*1..n]).to include(*n/2..n)
+      expect([*1..n]).to include(*(n/2)..n)
     end
   end
 
@@ -130,7 +130,7 @@ Benchmark.ips do |x|
   x.report("Old `to include` failures") do
     array_sizes.each do |n|
       begin
-        expect([*1..n]).to old_include(*n+1..n*1.5)
+        expect([*1..n]).to old_include(*(n+1)..(n*1.5))
       rescue RSpec::Expectations::ExpectationNotMetError
       end
     end
@@ -139,7 +139,7 @@ Benchmark.ips do |x|
   x.report("New `to include` failures") do
     array_sizes.each do |n|
       begin
-        expect([*1..n]).to include(*n+1..n*1.5)
+        expect([*1..n]).to include(*(n+1)..(n*1.5))
       rescue RSpec::Expectations::ExpectationNotMetError
       end
     end
@@ -151,13 +151,13 @@ end
 Benchmark.ips do |x|
   x.report("Old `to not include` successes") do
     array_sizes.each do |n|
-      expect([*1..n]).to_not old_include(*n+1..n*1.5)
+      expect([*1..n]).to_not old_include(*(n+1)..(n*1.5))
     end
   end
 
   x.report("New `to not include` successes") do
     array_sizes.each do |n|
-      expect([*1..n]).to_not include(*n+1..n*1.5)
+      expect([*1..n]).to_not include(*(n+1)..(n*1.5))
     end
   end
 
@@ -168,7 +168,7 @@ Benchmark.ips do |x|
   x.report("Old `to not include` failures") do
     array_sizes.each do |n|
       begin
-        expect([*1..n]).to_not old_include(*n/2..n)
+        expect([*1..n]).to_not old_include(*(n/2)..n)
       rescue RSpec::Expectations::ExpectationNotMetError
       end
     end
@@ -177,7 +177,7 @@ Benchmark.ips do |x|
   x.report("New `to not include` failures") do
     array_sizes.each do |n|
       begin
-        expect([*1..n]).to_not include(*n/2..n)
+        expect([*1..n]).to_not include(*(n/2)..n)
       rescue RSpec::Expectations::ExpectationNotMetError
       end
     end
