@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.4...3-13-maintenance)
 
+Bug Fixes:
+
+* Fix finding failed lines from frozen backtrace arrays. (Jon Rowe, #225)
+
 ### 3.13.4 / 2025-05-27
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.3...rspec-core-v3.13.4)
 
