@@ -105,6 +105,10 @@ module RSpec
         expect(RubyFeatures.supports_syntax_suggest?).to eq(RUBY_VERSION.to_f >= 3.2)
       end
 
+      specify "#supports_exception_detailed_message?" do
+        expect(RubyFeatures.supports_exception_detailed_message?).to eq(Exception.method_defined?(:detailed_message))
+      end
+
       specify "#supports_taint?" do
         RubyFeatures.supports_taint?
       end
