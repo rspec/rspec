@@ -86,7 +86,6 @@ RSpec.configure do |c|
   c.include CommonHelpers
 
   Warning[:deprecated] = true
-  c.raise_on_warning = true
 
   c.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

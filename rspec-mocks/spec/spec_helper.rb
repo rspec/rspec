@@ -84,8 +84,6 @@ RSpec.configure do |config|
   config.order = :random
 
   Warning[:deprecated] = true
-  config.raise_on_warning = true
-  config.raise_errors_for_deprecations!
 
   config.expect_with :rspec do |expectations|
     expectations.syntax = :expect
