@@ -77,6 +77,10 @@ RSpec.configure do |config|
 
   config.disable_monkey_patching!
 
+  Warning[:deprecated] = true
+  config.raise_on_warning = true
+  config.raise_errors_for_deprecations!
+
   # We don't want rspec-core to look in our `lib` for failure snippets.
   # When it does that, it inevitably finds this line:
   # `RSpec::Support.notify_failure(RSpec::Expectations::ExpectationNotMetError.new message)`
