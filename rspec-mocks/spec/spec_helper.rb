@@ -83,6 +83,8 @@ RSpec.configure do |config|
   config.color = true
   config.order = :random
 
+  Warning[:deprecated] = true
+
   config.expect_with :rspec do |expectations|
     expectations.syntax = :expect
   end
