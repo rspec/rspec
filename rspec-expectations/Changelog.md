@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...3-13-maintenance)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...3-99-maintenance)
 
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
