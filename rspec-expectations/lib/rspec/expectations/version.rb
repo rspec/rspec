@@ -2,7 +2,7 @@ module RSpec
   module Expectations
     # @private
     module Version
-      STRING = '3.13.5'
+      STRING = '3.99.0'
     end
   end
 end

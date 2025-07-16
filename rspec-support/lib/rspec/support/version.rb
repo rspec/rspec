@@ -3,7 +3,7 @@
 module RSpec
   module Support
     module Version
-      STRING = '3.13.6'
+      STRING = '3.99.0'
     end
   end
 end
