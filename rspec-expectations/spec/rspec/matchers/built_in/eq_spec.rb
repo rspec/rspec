@@ -20,9 +20,11 @@ module RSpec
       it "compares by sending == to actual (not expected)" do
         called = false
         actual = Class.new do
+          # rubocop:disable Naming/MethodName
           define_method :== do |_other|
             called = true
           end
+          # rubocop:enable Naming/MethodName
         end.new
 
         expect(actual).to eq :anything # to trigger the matches? method
