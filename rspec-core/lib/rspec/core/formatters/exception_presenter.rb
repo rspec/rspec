@@ -184,7 +184,13 @@ module RSpec
 
         # rubocop:disable Lint/RescueException
         # :nocov:
-        if SyntaxError.instance_methods.include?(:detailed_message)
+        if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+          def exception_message_string(exception)
+            exception.detailed_message(:highlight => false).sub(" (#{exception.class})", '')
+          rescue Exception => other
+            "A #{exception.class} for which `exception.detailed_message.to_s` raises #{other.class}."
+          end
+        elsif SyntaxError.instance_methods.include?(:detailed_message)
           def exception_message_string(exception)
             case exception
             when SyntaxError then exception.detailed_message.to_s
@@ -286,7 +292,7 @@ module RSpec
           end
         end
 
-        if  String.method_defined?(:encoding)
+        if String.method_defined?(:encoding)
           def encoded_description(description)
             return if description.nil?
             encoded_string(description)
