@@ -80,8 +80,8 @@ module RSpec
         end
 
         # Considering the arg types, are there kw_args?
-        def has_kw_args_in?(args) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-          if RubyFeatures.kw_arg_separation?
+        if RubyFeatures.kw_arg_separation?
+          def has_kw_args_in?(args)
             # If the last arg is a hash, depending on the signature it could be kw_args or a positional parameter.
             return false unless Hash === args.last && could_contain_kw_args?(args)
 
@@ -100,7 +100,9 @@ module RSpec
             # Note: the problem with this is that if a user passes only invalid keyword args,
             #       rspec no longer detects is and will assign this to a positional argument
             return arbitrary_kw_args? || args.last.keys.all? { |x| @allowed_kw_args.include?(x) }
-          else
+          end
+        else
+          def has_kw_args_in?(args)
             # Version <= Ruby 2.7
             # If the last argument is Hash, Ruby will treat only symbol keys as keyword arguments
             # the rest will be grouped in another Hash and passed as positional argument.
