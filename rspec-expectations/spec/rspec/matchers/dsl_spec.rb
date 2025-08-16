@@ -60,6 +60,14 @@ RSpec.describe "a matcher defined using the matcher DSL" do
       expect(1).to match_optional_kw(bar: 1)
     end
 
+    # This is a regression test for rspec/rspec#145
+    it 'supports the use of optional keyword arguments in definition block when passed a hash' do
+      RSpec::Matchers.define(:match_optional_kw_hash) do |hash, bar: nil|
+        match { expect(hash["1"]).to eq 1 }
+      end
+      expect(1).to match_optional_kw_hash({"1" => 1})
+    end
+
     def optional_kw(a: nil)
       a
     end
