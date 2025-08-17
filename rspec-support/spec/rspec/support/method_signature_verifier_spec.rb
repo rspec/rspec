@@ -30,6 +30,12 @@ module RSpec
         signature.description
       end
 
+      def validate(target, *args)
+        target_signature = MethodSignature.new(target)
+        described_class.new(target_signature, args).valid?
+      end
+      ruby2_keywords(:validate) if respond_to?(:ruby2_keywords, true)
+
       def validate_expectation(*args)
         obj = MethodSignatureExpectation.new
 
@@ -43,6 +49,7 @@ module RSpec
 
         described_class.new(signature).with_expectation(obj).valid?
       end
+      ruby2_keywords(:validate_expectation) if respond_to?(:ruby2_keywords, true)
 
       shared_context 'a method verifier' do
         describe 'with a method with arguments' do
@@ -290,6 +297,10 @@ module RSpec
 
             it 'does not allow an invalid keyword arguments' do
               expect(valid?(nil, :a => 1)).to eq(false)
+            end
+
+            it 'does not treat a last-arg hash as kw args' do
+              expect(valid?({ "1" => 1 })).to eq(true)
             end
 
             it 'mentions the invalid keyword args in the error', :pending => RSpec::Support::Ruby.jruby? && !RSpec::Support::Ruby.jruby_9000? do
@@ -902,6 +913,61 @@ module RSpec
 
             it 'fails validation against 2 arguments' do
               expect(valid_non_kw_args?(2)).to eq false
+            end
+          end
+        end
+
+        describe 'a proc' do
+          it 'will match partial args' do
+            a_proc = proc { |_a, _b| }
+            expect(validate a_proc, 1).to be(true)
+            expect(validate a_proc, 2, 2).to be(true)
+            expect(validate a_proc, 3, 3, 3).to be(false)
+          end
+
+          if RubyFeatures.kw_args_supported?
+            it 'will not match keyword args when not defined' do
+              eval <<-RUBY
+              a_proc = proc { |_a| }
+              expect(validate a_proc, :arg, opts: []).to eq(false)
+              RUBY
+            end
+
+            it 'will match keyword args' do
+              eval <<-RUBY
+              a_proc = proc { |_a, opts: []| }
+              expect(validate a_proc, :arg, opts: [:value]).to eq(true)
+              RUBY
+            end
+
+            it 'allows a hash to be distinct from optional keyword arguments' do
+              eval <<-RUBY
+              a_proc = proc { |_a, opts: []| }
+              expect(validate a_proc, {1 => "not_opts"}).to eq(true)
+              RUBY
+            end
+          end
+
+          if RubyFeatures.required_kw_args_supported?
+            it 'will not match required keyword args when not defined' do
+              eval <<-RUBY
+              a_proc = proc { |_a| }
+              expect(validate a_proc, :arg, required: true).to eq(false)
+              RUBY
+            end
+
+            it 'will match required keyword args' do
+              eval <<-RUBY
+              a_proc = proc { |_a, required:| }
+              expect(validate a_proc, :arg, required: true).to eq(true)
+              RUBY
+            end
+
+            it 'allows a hash to be distinct from required keyword arguments' do
+              eval <<-RUBY
+              a_proc = proc { |_a, required:| }
+              expect(validate a_proc, {1 => "not_opts"}, required: true).to eq(true)
+              RUBY
             end
           end
         end
