@@ -340,11 +340,17 @@ module RSpec::Core
 
         the_presenter = Formatters::ExceptionPresenter.new(incorrect_message_exception, example)
 
+        statement = if RSpec::Support::RubyFeatures.supports_exception_detailed_message?
+                      'exception.detailed_message.to_s'
+                    else
+                      'exception.message.to_s'
+                    end
+
         expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
           |
           |  1) Example
           |     Failure/Error: Unable to find matching line from backtrace
-          |       A #{FakeException} for which `exception.message.to_s` raises #{expected_error}.
+          |       A #{FakeException} for which `#{statement}` raises #{expected_error}.
         EOS
       end
 
@@ -568,6 +574,27 @@ module RSpec::Core
               |     # ./spec/rspec/core/formatters/exception_presenter_spec.rb:
             EOS
           end
+        end
+      end
+
+      context "with detailed_message support", :if => RSpec::Support::RubyFeatures.supports_exception_detailed_message? do
+        class ExceptionWithDetailedMessage < StandardError
+          def detailed_message(_options = {})
+            "Detailed error message (#{self.class})"
+          end
+
+          def message
+            "Regular message"
+          end
+        end
+
+        let(:detailed_exception) { ExceptionWithDetailedMessage.new }
+        let(:detailed_presenter) { RSpec::Core::Formatters::ExceptionPresenter.new(detailed_exception, example) }
+
+        it "uses detailed_message when available" do
+          formatted_output = detailed_presenter.fully_formatted(1)
+          expect(formatted_output).to include("Detailed error message")
+          expect(formatted_output).not_to include("Regular message")
         end
       end
     end
