@@ -11,6 +11,12 @@ Bug Fixes:
 * Switch current thread data to alias/accessors to avoid issues with mocked systems.
   (Jon Rowe, #610)
 
+Bug Fixes:
+
+* Fix regression in `RSpec::Support::MethodSignature` where positional argument arity confused
+  a check for keyword arguments, meaning a hash would be wrongly detected as keyword arguments
+  when it should have been a positional argument. (Malcolm O'Hare, rspec/rspec#121)
+
 ### 3.13.4
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.3...rspec-support-v3.13.4)
 
