@@ -25,7 +25,7 @@ module RSpec
         def create_message_expectation_on(instance)
           proxy = ::RSpec::Mocks.space.proxy_for(instance)
           method_name, opts = @expectation_args
-          opts = (opts || {}).merge(:expected_form => IGNORED_BACKTRACE_LINE)
+          opts ||= {}
 
           me = proxy.add_message_expectation(method_name, opts, &@expectation_block)
           if RSpec::Mocks.configuration.yield_receiver_to_any_instance_implementation_blocks?

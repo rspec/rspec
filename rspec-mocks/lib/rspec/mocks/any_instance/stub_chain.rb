@@ -13,7 +13,7 @@ module RSpec
         def create_message_expectation_on(instance)
           proxy = ::RSpec::Mocks.space.proxy_for(instance)
           method_name, opts = @expectation_args
-          opts = (opts || {}).merge(:expected_form => IGNORED_BACKTRACE_LINE)
+          opts ||= {}
 
           stub = proxy.add_stub(method_name, opts, &@expectation_block)
           @recorder.stubs[stub.message] << stub
