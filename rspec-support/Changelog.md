@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.2...main)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.5...main)
 
 Enchancements
 
@@ -10,6 +10,9 @@ Bug Fixes:
 
 * Switch current thread data to alias/accessors to avoid issues with mocked systems.
   (Jon Rowe, #610)
+
+### 3.13.5
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.4...rspec-support-v3.13.5)
 
 Bug Fixes:
 
