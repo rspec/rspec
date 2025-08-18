@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec/support'
 require 'rspec/support/method_signature_verifier'
 
@@ -916,11 +918,13 @@ module RSpec
         end
 
         describe 'a proc' do
-          it 'will match partial args' do
-            a_proc = proc { |_a, _b| }
-            expect(validate a_proc, 1).to be(true)
-            expect(validate a_proc, 2, 2).to be(true)
-            expect(validate a_proc, 3, 3, 3).to be(false)
+          if RUBY_VERSION.to_f > 1.8
+            it 'will match partial args' do
+              a_proc = proc { |_a, _b| }
+              expect(validate a_proc, 1).to be(true)
+              expect(validate a_proc, 2, 2).to be(true)
+              expect(validate a_proc, 3, 3, 3).to be(false)
+            end
           end
 
           if RubyFeatures.kw_args_supported?
