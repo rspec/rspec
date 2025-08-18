@@ -79,12 +79,37 @@ module RSpec
           given_kw_args - @allowed_kw_args
         end
 
-        # If the last argument is Hash, Ruby will treat only symbol keys as keyword arguments
-        # the rest will be grouped in another Hash and passed as positional argument.
-        def has_kw_args_in?(args)
-          Hash === args.last &&
-            could_contain_kw_args?(args) &&
-            (RubyFeatures.kw_arg_separation? || args.last.empty? || args.last.keys.any? { |x| x.is_a?(Symbol) })
+        # Considering the arg types, are there kw_args?
+        if RubyFeatures.kw_arg_separation?
+          def has_kw_args_in?(args)
+            # If the last arg is a hash, depending on the signature it could be kw_args or a positional parameter.
+            return false unless Hash === args.last && could_contain_kw_args?(args)
+
+            # If the position of the hash is beyond the count of required and optional positional
+            # args then it is the kwargs hash
+            return true if args.count > @max_non_kw_args
+
+            # This is the proper way to disambiguate between positional args and keywords hash
+            # but relies on beginning of the call chain annotating the method with
+            # ruby2_keywords, so only use it for positive feedback as without the annotation
+            # this is always false
+            return true if Hash.ruby2_keywords_hash?(args[-1])
+
+            # Otherwise, the hash could be defined kw_args or an optional positional parameter
+            # inspect the keys against known kwargs to determine what it is
+            # Note: the problem with this is that if a user passes only invalid keyword args,
+            #       rspec no longer detects is and will assign this to a positional argument
+            return arbitrary_kw_args? || args.last.keys.all? { |x| @allowed_kw_args.include?(x) }
+          end
+        else
+          def has_kw_args_in?(args)
+            # Version <= Ruby 2.7
+            # If the last argument is Hash, Ruby will treat only symbol keys as keyword arguments
+            # the rest will be grouped in another Hash and passed as positional argument.
+            Hash === args.last &&
+              could_contain_kw_args?(args) &&
+              (args.last.empty? || args.last.keys.any? { |x| x.is_a?(Symbol) })
+          end
         end
 
         # Without considering what the last arg is, could it
@@ -285,7 +310,7 @@ module RSpec
 
       def initialize(signature, args=[])
         @signature = signature
-        @non_kw_args, @kw_args = split_args(*args)
+        @non_kw_args, @kw_args = split_args(args.clone)
         @min_non_kw_args = @max_non_kw_args = @non_kw_args
         @arbitrary_kw_args = @unlimited_args = false
       end
@@ -365,7 +390,7 @@ module RSpec
         !@unlimited_args || @signature.unlimited_args?
       end
 
-      def split_args(*args)
+      def split_args(args)
         kw_args = if @signature.has_kw_args_in?(args) && !RubyFeatures.kw_arg_separation?
                     last = args.pop
                     non_kw_args = last.reject { |k, _| k.is_a?(Symbol) }
@@ -398,13 +423,13 @@ module RSpec
     class LooseSignatureVerifier < MethodSignatureVerifier
     private
 
-      def split_args(*args)
+      def split_args(args)
         if RSpec::Support.is_a_matcher?(args.last) && @signature.could_contain_kw_args?(args)
           args.pop
           @signature = SignatureWithKeywordArgumentsMatcher.new(@signature)
         end
 
-        super(*args)
+        super(args)
       end
 
       # If a matcher is used in a signature in place of keyword arguments, all
