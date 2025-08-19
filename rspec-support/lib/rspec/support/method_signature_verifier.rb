@@ -112,12 +112,58 @@ module RSpec
           end
         end
 
-        # Without considering what the last arg is, could it
-        # contain keyword arguments?
         def could_contain_kw_args?(args)
+          # If the arg count is less than the required positional args there are no keyword args
           return false if args.count <= min_non_kw_args
 
-          @allows_any_kw_args || @allowed_kw_args.any?
+          # If there is no keyword splat or allowed keywords there are no keyword args
+          return false unless @allows_any_kw_args || @allowed_kw_args.any?
+
+          # If the args captured are more than the positional arguments then there are keywords
+          return true if args.count > max_non_kw_args
+
+          # Otherwise we need to check wether the last argument is a positional non default hash,
+          # e.g. that this:
+          #
+          # def capture(_, last = {}, keyword: 2)
+          #
+          # Is valid with both:
+          #
+          # [1, {:some => :hash}]
+          # [1, {:keyword => :value}]
+          #
+          # but for different reasons.
+
+          # If the keyword splat is allowed, and there are no specified
+          # keywords args then we will either have returned true on L100
+          # or this is invalid.
+          return false if @allowed_kw_args.empty? && @allows_any_kw_args
+
+          if Hash === args.last
+            last_arg_matches_any_keywords = !(args.last.keys & @allowed_kw_args).empty?
+            has_extra_keys = !(args.last.keys - @allowed_kw_args).empty?
+
+            # If we allow the keyword splat, and the last hash contains
+            # a specified keyword, then this hash contains keywords
+            return true if @allows_any_kw_args && last_arg_matches_any_keywords
+
+            # If we don't allow the keyword splat, and the last hash contains extra keys
+            # then it is a positional hash.
+            return false if !@allows_any_kw_args && has_extra_keys
+
+            # Otherwise assume we have keywords
+            return true
+          else
+            # If the last argument is a matcher nd we're on Ruby 3 which won't mix keyword args
+            # and a normal hash...
+            if RubyFeatures.distincts_kw_args_from_positional_hash?
+              # we've either returned true above on L100 or this is a positional arg matcher
+              return false
+            else
+              # However on older rubies this could contain keyword arguments
+              return true
+            end
+          end
         end
 
         def arbitrary_kw_args?
