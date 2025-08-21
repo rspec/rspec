@@ -7,6 +7,11 @@ Enhancements:
   allways print a line number rather than an example id when the line number is ambiguous.
   (Baden Ashford, rspec/rspec-core#3085)
 
+Bug Fixes:
+
+* Add explicit block parameter to `RSpec::World::Null.traverse_example_group_trees_until` to
+  prevent warning. (@viralpraxis, rspec/rspec#240)
+
 ### 3.13.4 / 2025-05-27
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.3...rspec-core-v3.13.4)
 
