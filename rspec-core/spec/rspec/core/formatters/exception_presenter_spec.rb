@@ -831,7 +831,7 @@ module RSpec::Core
     end
   end
 
-  RSpec.shared_examples_for "a class satisfying the common multiple exception error interface" do
+  RSpec.shared_context "exception helpers" do
     def new_failure(*a)
       RSpec::Expectations::ExpectationNotMetError.new(*a)
     end
@@ -839,6 +839,10 @@ module RSpec::Core
     def new_error(*a)
       StandardError.new(*a)
     end
+  end
+
+  RSpec.shared_examples_for "a class satisfying the common multiple exception error interface" do
+    include_context "exception helpers"
 
     it 'allows you to keep track of failures and other errors in order' do
       mee = new_multiple_exception_error
@@ -887,6 +891,8 @@ module RSpec::Core
   end
 
   RSpec.describe MultipleExceptionError do
+    include_context "exception helpers"
+
     it_behaves_like "a class satisfying the common multiple exception error interface" do
       def new_multiple_exception_error
         MultipleExceptionError.new
