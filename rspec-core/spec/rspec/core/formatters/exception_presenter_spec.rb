@@ -878,7 +878,7 @@ module RSpec::Core
   end
 
   RSpec.describe RSpec::Expectations::ExpectationNotMetError do
-    include_examples "a class satisfying the common multiple exception error interface" do
+    it_behaves_like "a class satisfying the common multiple exception error interface" do
       def new_multiple_exception_error
         failure_aggregator = RSpec::Expectations::FailureAggregator.new(nil, {})
         RSpec::Expectations::MultipleExpectationsNotMetError.new(failure_aggregator)
@@ -887,7 +887,7 @@ module RSpec::Core
   end
 
   RSpec.describe MultipleExceptionError do
-    include_examples "a class satisfying the common multiple exception error interface" do
+    it_behaves_like "a class satisfying the common multiple exception error interface" do
       def new_multiple_exception_error
         MultipleExceptionError.new
       end
