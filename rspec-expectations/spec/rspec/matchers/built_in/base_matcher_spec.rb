@@ -106,23 +106,23 @@ module RSpec::Matchers::BuiltIn
       end
 
       context "for a DSL-defined custom matcher" do
-        include_examples "detecting default failure message" do
-          def build_matcher(&block)
-            definition = Proc.new do
-              match {}
-              module_exec(&block) if block
-            end
+        include_examples "detecting default failure message"
 
-            RSpec::Matchers::DSL::Matcher.new(:matcher_name, definition, self)
+        def build_matcher(&block)
+          definition = Proc.new do
+            match {}
+            module_exec(&block) if block
           end
+
+          RSpec::Matchers::DSL::Matcher.new(:matcher_name, definition, self)
         end
       end
 
       context "for a matcher that subclasses `BaseMatcher`" do
-        include_examples "detecting default failure message" do
-          def build_matcher(&block)
-            Class.new(RSpec::Matchers::BuiltIn::BaseMatcher, &block).new
-          end
+        include_examples "detecting default failure message"
+
+        def build_matcher(&block)
+          Class.new(RSpec::Matchers::BuiltIn::BaseMatcher, &block).new
         end
       end
 

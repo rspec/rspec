@@ -56,9 +56,7 @@ Feature: Using shared examples
   end
   ```
 
-  To prevent this kind of subtle error a warning is emitted if you declare multiple
-  methods with the same name in the same context. Should you get this warning
-  the simplest solution is to replace `include_examples` with `it_behaves_like`, in this
+  The simplest solution is to replace `include_examples` with `it_behaves_like`, in this
   way method overriding is avoided because of the nested context created by `it_behaves_like`
 
   Conventions:

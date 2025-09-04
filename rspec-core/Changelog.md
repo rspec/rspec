@@ -36,6 +36,7 @@ Breaking Changes:
 * Unify multi-condition filtering to use "all" semantic. (Phil Pirozhkov, rspec/rspec-core#2874)
 * Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
 * Default warning level is now `:deprecations_only`. (Jon Rowe, rspec/rspec#161)
+* Raise an error when a block is passed to `include_examples`. (Phil Pirozhkov, rspec/rspec#259)
 
 Enhancements:
 
