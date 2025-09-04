@@ -362,6 +362,10 @@ module RSpec
       #
       # @see SharedExampleGroup
       def self.include_examples(name, *args, &block)
+        if block
+          RSpec.deprecate("Passing a block to `include_examples`",
+                          :replacement => "Use `it_behaves_like` instead")
+        end
         find_and_eval_shared("examples", name, caller.first, *args, &block)
       end
 
