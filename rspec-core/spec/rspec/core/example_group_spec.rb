@@ -1679,9 +1679,10 @@ module RSpec::Core
 
         it "leaves RSpec's thread metadata unchanged, even when an error occurs during evaluation" do
           expect {
-            self.group.send(name, "named this") do
+            self.group.shared_examples "explosive" do
               raise "boom"
             end
+            self.group.send(name, "explosive")
           }.to raise_error("boom").and avoid_changing(RSpec::Support, :thread_local_data)
         end
 
@@ -1719,20 +1720,33 @@ module RSpec::Core
           expect(eval_count).to eq(1)
         end
 
-        it "evals the block when given" do
-          key = "#{__FILE__}:#{__LINE__}"
-          group = RSpec.describe do
-            shared_examples(key) do
-              it("does something") do
-                expect(foo).to eq("bar")
+        context "when passed a block" do
+          it "raises an error" do
+            group = RSpec.describe("host group") do
+              shared_examples "some behavior" do
+                example "shared example"
               end
             end
 
-            send name, key do
-              def foo; "bar"; end
-            end
+            expect {
+              group.public_send(name, "some behavior") do
+                let(:leak) { "boom" }
+              end
+            }.to raise_error(
+              "Don't pass a block to `#{name}`. Use `it_behaves_like` instead, or place the block content after the statement.")
           end
-          expect(group.run).to be(true)
+        end
+
+        context "when not passed a block" do
+          it "does not raise" do
+            group = RSpec.describe("host group") do
+              shared_examples "some behavior" do
+                example "shared example"
+              end
+            end
+
+            group.public_send(name, "some behavior")
+          end
         end
       end
     end

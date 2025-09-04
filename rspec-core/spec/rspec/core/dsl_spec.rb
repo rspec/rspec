@@ -20,19 +20,17 @@ RSpec.describe "The RSpec DSL" do
   end
 
   describe "built in DSL methods" do
-    include_examples "dsl methods", :describe, :context, :shared_examples, :shared_examples_for, :shared_context do
-      def setup
-      end
+    def setup
     end
+    include_examples "dsl methods", :describe, :context, :shared_examples, :shared_examples_for, :shared_context
   end
 
   describe "custom example group aliases" do
     context "when adding aliases before exposing the DSL globally" do
-      include_examples "dsl methods", :detail do
-        def setup
-          RSpec.configuration.alias_example_group_to(:detail)
-        end
+      def setup
+        RSpec.configuration.alias_example_group_to(:detail)
       end
+      include_examples "dsl methods", :detail
     end
 
     context "when adding duplicate aliases" do
