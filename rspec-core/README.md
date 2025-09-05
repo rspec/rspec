@@ -77,7 +77,7 @@ You can declare examples within a group using any of `it`, `specify`, or
 ## Shared Examples and Contexts
 
 Declare a shared example group using `shared_examples`, and then include it
-in any group using `include_examples`.
+in any group using `it_behaves_like`.
 
 ```ruby
 RSpec.shared_examples "collections" do |collection_class|
@@ -87,11 +87,11 @@ RSpec.shared_examples "collections" do |collection_class|
 end
 
 RSpec.describe Array do
-  include_examples "collections", Array
+  it_behaves_like "collections", Array
 end
 
 RSpec.describe Hash do
-  include_examples "collections", Hash
+  it_behaves_like "collections", Hash
 end
 ```
 
@@ -100,7 +100,7 @@ within a shared example group. This includes `before`, `after`, and `around`
 hooks, `let` declarations, and nested groups/contexts.
 
 You can also use the names `shared_context` and `include_context`. These are
-pretty much the same as `shared_examples` and `include_examples`, providing
+pretty much the same as `shared_examples` and `it_behaves_like`, providing
 more accurate naming when you share hooks, `let` declarations, helper methods,
 etc, but no examples.
 
@@ -152,11 +152,11 @@ RSpec.shared_examples "collections" do
 end
 
 RSpec.describe Array do
-  include_examples "collections"
+  it_behaves_like "collections"
 end
 
 RSpec.describe Hash do
-  include_examples "collections"
+  it_behaves_like "collections"
 end
 ```
 

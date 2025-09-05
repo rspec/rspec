@@ -54,7 +54,7 @@ RSpec.describe "The RSpec DSL" do
   end
 
   describe "built in DSL methods" do
-    include_examples "dsl methods", :describe, :context, :shared_examples, :shared_examples_for, :shared_context do
+    it_behaves_like "dsl methods", :describe, :context, :shared_examples, :shared_examples_for, :shared_context do
       def changing_expose_dsl_globally
         yield
       end
@@ -63,7 +63,7 @@ RSpec.describe "The RSpec DSL" do
 
   describe "custom example group aliases" do
     context "when adding aliases before exposing the DSL globally" do
-      include_examples "dsl methods", :detail do
+      it_behaves_like "dsl methods", :detail do
         def changing_expose_dsl_globally
           RSpec.configuration.alias_example_group_to(:detail)
           yield
@@ -72,7 +72,7 @@ RSpec.describe "The RSpec DSL" do
     end
 
     context "when adding aliases after exposing the DSL globally" do
-      include_examples "dsl methods", :detail do
+      it_behaves_like "dsl methods", :detail do
         def changing_expose_dsl_globally
           yield
           RSpec.configuration.alias_example_group_to(:detail)
