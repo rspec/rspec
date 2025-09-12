@@ -37,11 +37,8 @@ See http://rspec.info/documentation/ for links to documentation for all gems.
 
 ## Contribute
 
-* [http://github.com/rspec/rspec-dev](http://github.com/rspec/rspec-dev)
+* [http://github.com/rspec/rspec](http://github.com/rspec/rspec)
 
 ## Also see
 
-* [https://github.com/rspec/rspec-core](https://github.com/rspec/rspec-core)
-* [https://github.com/rspec/rspec-expectations](https://github.com/rspec/rspec-expectations)
-* [https://github.com/rspec/rspec-mocks](https://github.com/rspec/rspec-mocks)
 * [https://github.com/rspec/rspec-rails](https://github.com/rspec/rspec-rails)
