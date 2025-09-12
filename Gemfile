@@ -107,7 +107,7 @@ gem "rr", "~> 1.0.4"
 
 # No need to run rubocop on earlier versions
 if RUBY_VERSION >= '3.3' && RUBY_ENGINE == 'ruby'
-  gem "rubocop", "~> 1.69"
+  gem "rubocop", "~> 1.80"
 end
 
 gem 'test-unit', '~> 3.0' if RUBY_VERSION.to_f >= 2.2
