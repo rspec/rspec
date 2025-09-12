@@ -6,15 +6,16 @@ source "https://rubygems.org"
 end
 
 # Development dependencies for testing and CI
-gem "rake", ">= 12.3.3"
+gem 'rake', '>= 13.0.0'
 
 # Test framework dependencies
-gem "minitest", "~> 5.2"
+gem "minitest", "~> 5.12"
 gem "test-unit", "~> 3.0"
 
 # Cucumber for feature testing
-gem 'cucumber', '>= 3.2', '!= 4.0.0', '< 8.0.0'
-gem 'aruba', '~> 0.14.9'
+gem "aruba", "0.14.14"
+# FIXME: aruba 1.x and 2.x depend on rspec-expectations ~> 3.4, and this breaks
+# gem "aruba", ">= 1.1.0", "< 3.0.0"
 
 # Mock framework support
 gem "mocha", "~> 0.13.0"
@@ -27,37 +28,36 @@ gem "thread_order", "~> 1.1.0"
 gem "childprocess", ">= 3.0.0"
 gem "thor", "> 1.0.0"
 
-# Platform-specific dependencies
-if RUBY_VERSION < '2.4.0' && !!(RbConfig::CONFIG['host_os'] =~ /cygwin|mswin|mingw|bccwin|wince|emx/)
-  gem 'ffi', '< 1.15'
-else
-  gem 'ffi', '~> 1.15'
-end
+gem 'diff-lcs', '>= 1.4.3'
+
+gem 'ffi', '~> 1.17.0'
 
 gem "jruby-openssl", platforms: [:jruby]
-
-# Version 5.12 of minitest requires Ruby 2.4
-if RUBY_VERSION < '2.4.0'
-  gem 'minitest', '< 5.12.0'
-end
-
-# Documentation dependencies
-gem 'yard', '~> 0.9.24', require: false
 
 group :documentation do
   gem 'redcarpet', platform: :mri
   gem 'github-markup', platform: :mri
+  # Webrick extracted from Ruby 3.0.0, required by Yard
+  gem 'webrick', '~> 1.9.1', :require => false if RUBY_VERSION >= '3.0.0'
+  gem 'yard', '~> 0.9.24', :require => false
 end
 
 # Coverage dependencies
 group :coverage do
-  gem 'simplecov', '~> 0.8'
+  gem 'simplecov'
 end
 
-# Linting (only on supported Ruby versions)
-if RUBY_VERSION >= '2.4' && RUBY_ENGINE == 'ruby'
-  gem "rubocop", "~> 1.80"
+# Linting
+gem "rubocop", "~> 1.80", platform: :mri
+
+# Those are bundled gems starting from Ruby 3.4, see https://stdgems.org
+if RUBY_VERSION >= "3.4"
+  gem 'bigdecimal', :require => false
+  gem 'drb'
+  gem 'mutex_m', '~> 0.1.0'
 end
+
+gem 'json', '> 2.3.0'
 
 # Load custom Gemfile if it exists
 eval_gemfile 'Gemfile-custom' if File.exist?('Gemfile-custom')
