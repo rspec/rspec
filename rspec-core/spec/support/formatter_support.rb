@@ -10,10 +10,6 @@ module FormatterSupport
       # remove the direct caller as that line is different for the summary output backtraces
       line.include?(caller_line) ||
 
-      # ignore scirpt/rspec_with_simplecov because we don't usually have it locally but
-      # do have it on travis
-      line.include?("script/rspec_with_simplecov") ||
-
       # this line varies a bit depending on how you run the specs (via `rake` vs `rspec`)
       line.include?('/exe/rspec:')
     end.join
