@@ -17,7 +17,6 @@ permissions:
   contents: read
 
 env:
-  DIFF_LCS_VERSION: "> 1.4.3"
   RSPEC_CI: true
   RSPEC_VERSION: ${{ inputs.rspec_version }}
 
