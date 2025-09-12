@@ -252,7 +252,7 @@ module RSpec::Core
         "/Users/myron/code/some-gem/bundle/ruby/2.1.0/bundler/gems/%s-8d2e4e570994/lib"
 
       it_configures_rspec_load_path "bundler :path dependencies",
-        "/Users/myron/code/rspec/repos/%s/lib"
+        "/Users/myron/code/rspec/%s/lib"
 
       it_configures_rspec_load_path "a rubygem",
         "/Users/myron/.gem/ruby/1.9.3/gems/%s-3.1.0.beta1/lib"
