@@ -56,7 +56,7 @@ end
 
 # Linting (only on supported Ruby versions)
 if RUBY_VERSION >= '2.4' && RUBY_ENGINE == 'ruby'
-  gem "rubocop", "~> 1.0", "< 1.12"
+  gem "rubocop", "~> 1.80"
 end
 
 # Load custom Gemfile if it exists
