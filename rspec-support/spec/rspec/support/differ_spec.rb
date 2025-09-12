@@ -23,7 +23,7 @@ module RSpec
             | this
             | is
             | soo
-            |@@ -9,6 +9,5 @@
+            |@@ -9,5 +9,4 @@
             | equal
             | insert
             | a
@@ -51,7 +51,7 @@ module RSpec
             | this
             | is
             | soo
-            |@@ -9,6 +9,5 @@
+            |@@ -9,5 +9,4 @@
             | equal
             | insert
             | a
@@ -152,7 +152,7 @@ module RSpec
 
           expected_diff = dedent(<<-'EOD')
             |
-            |@@ -1,5 +1,5 @@
+            |@@ -1,4 +1,4 @@
             | <Animal
             |   name=bob,
             |-  species=tortoise
@@ -172,7 +172,7 @@ module RSpec
           expected_diff = dedent(<<-'EOD')
             |
             |
-            |@@ -5,7 +5,7 @@
+            |@@ -5,6 +5,6 @@
             |  :metasyntactic,
             |  "variable",
             |  :delta,
@@ -373,7 +373,7 @@ module RSpec
 
           expected_diff = dedent(<<-'EOD')
             |
-            |@@ -1,3 +1,3 @@
+            |@@ -1,2 +1,2 @@
             | this is:
             |-  another string
             |+  one string
@@ -387,7 +387,7 @@ module RSpec
         it "splits items with newlines" do
           expected_diff = dedent(<<-"EOD")
             |
-            |@@ -1,3 +1 @@
+            |@@ -1,2 +0,0 @@
             |-a\\nb
             |-c\\nd
             |
@@ -400,7 +400,7 @@ module RSpec
         it "shows inner arrays on a single line" do
           expected_diff = dedent(<<-"EOD")
             |
-            |@@ -1,3 +1 @@
+            |@@ -1,2 +0,0 @@
             |-a\\nb
             |-["c\\nd"]
             |
