@@ -1,23 +1,14 @@
 inherit_from:
-  - .rubocop_rspec_base.yml
+  - ../common_rubocop_config.yml
   - .rubocop_todo.yml
 
 AllCops:
   Exclude:
     # This code was taken from the backports gem. We don't want to mess with it.
     - lib/rspec/core/backport_random.rb
-
-# This should go down over time.
-Metrics/ClassLength:
-  Max: 330
-
-# This can be addressed once Ruby 1.8 support is removed.
-Style/Encoding:
-  Enabled: false
-
-# This should go down over time.
-Metrics/AbcSize:
-  Max: 40
+  NewCops:
+    enable
+  SuggestExtensions: false
 
 # This should go down over time.
 Layout/LineLength:
@@ -26,16 +17,29 @@ Layout/LineLength:
     - features/**/*
     - spec/**/*
 
-# This should go down over time.
-Metrics/MethodLength:
-  Max: 39
+Lint/EmptyClass:
+  Exclude:
+    - benchmarks/*
+    - lib/rspec/core/formatters/protocol.rb
+    - lib/rspec/core/notifications.rb
+    - spec/rspec/core/world_spec.rb
+    - spec/support/fake_libs/rake/tasklib.rb
 
-# This should go down over time.
-Metrics/CyclomaticComplexity:
-  Max: 12
+Lint/IneffectiveAccessModifier:
+  Exclude:
+    - lib/rspec/core/memoized_helpers.rb # Fixing this file was too much of a diff
 
-Metrics/PerceivedComplexity:
-  Max: 15
+Lint/LiteralInInterpolation:
+  Enabled: false
+
+Lint/NonLocalExitFromIterator:
+  Enabled: false
+
+Lint/NoReturnInBeginEndBlocks:
+  Exclude:
+    - lib/rspec/core/example.rb
+    - lib/rspec/core/formatters/syntax_highlighter.rb
+    - lib/rspec/core/runner.rb
 
 Lint/SuppressedException:
   Exclude:
@@ -44,31 +48,36 @@ Lint/SuppressedException:
     - lib/rspec/core/runner.rb
     - lib/rspec/core/test_unit_assertions_adapter.rb
 
-Lint/LiteralInInterpolation:
-  Enabled: false
+# This should go down over time.
+Metrics/AbcSize:
+  Max: 40
 
-Lint/NonLocalExitFromIterator:
-  Enabled: false
+Metrics/BlockLength:
+  Max: 206
+  Exclude:
+    - spec/**/*.rb
 
-# We don't care about single vs double qoutes.
-Style/StringLiteralsInInterpolation:
-  Enabled: false
+# This should go down over time.
+Metrics/ClassLength:
+  Max: 330
 
-Style/SymbolProc:
-  Enabled: false
+# This should go down over time.
+Metrics/CyclomaticComplexity:
+  Max: 12
 
-Layout/SpaceAroundOperators:
-  AllowForAlignment: true
+# This should go down over time.
+Metrics/MethodLength:
+  Max: 39
+  Exclude:
+    # This defines fixtures as methods
+    - spec/support/formatter_support.rb
 
-Layout/AccessModifierIndentation:
-  Enabled: false
+Metrics/ModuleLength:
+  Exclude:
+    - spec/rspec/core/configuration_spec.rb
 
-Style/RegexpLiteral:
-  Enabled: false
-
-# This could change depending of the style used
-Layout/MultilineOperationIndentation:
-  Enabled: false
+Metrics/PerceivedComplexity:
+  Max: 15
 
 Style/BarePercentLiterals:
   Enabled: false
@@ -95,11 +104,11 @@ Style/RaiseArgs:
     - lib/rspec/core/pending.rb
     - spec/rspec/core/formatters/base_text_formatter_spec.rb
 
-Lint/IneffectiveAccessModifier:
+Style/RedundantArgument:
   Exclude:
-    - lib/rspec/core/memoized_helpers.rb # Fixing this file was too much of a diff
+    - lib/rspec/core/notifications.rb
 
-Metrics/BlockLength:
-  Max: 206
+Style/RedundantBegin:
   Exclude:
-    - spec/**/*.rb
+    - lib/rspec/core/configuration.rb
+    - lib/rspec/core/example_group.rb

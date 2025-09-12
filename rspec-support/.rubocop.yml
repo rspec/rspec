@@ -1,6 +1,24 @@
 inherit_from:
-  - .rubocop_rspec_base.yml
+  - ../common_rubocop_config.yml
   - .rubocop_todo.yml
+
+AllCops:
+  NewCops:
+    enable
+  SuggestExtensions: false
+  TargetRubyVersion: 2.4
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: true
+
+Lint/AssignmentInCondition:
+  Exclude:
+    # The pattern makes sense here
+    - 'lib/rspec/support/mutex.rb'
+
+# Revisit in RSpec 4
+Lint/TripleQuotes:
+  Enabled: false
 
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/AbcSize:
@@ -11,6 +29,10 @@ Metrics/BlockLength:
   Max: 86
   Exclude:
     - spec/**/*
+
+Metrics/ModuleLength:
+  Exclude:
+    - spec/rspec/support/method_signature_verifier_spec.rb
 
 # Over time we'd like to get this down, but this is what we're at now.
 Metrics/PerceivedComplexity:
@@ -27,12 +49,6 @@ Style/EvalWithLocation:
     - 'benchmarks/skip_frames_for_caller_filter.rb'
     - 'spec/rspec/support/method_signature_verifier_spec.rb'
 
-Style/SlicingWithRange:
-  Exclude:
-    # This cop is not supported on all rubies
-    - 'lib/rspec/support/source/node.rb'
-
-Lint/AssignmentInCondition:
-  Exclude:
-    # The pattern makes sense here
-    - 'lib/rspec/support/mutex.rb'
+# Revisit in RSpec 4
+Style/RedundantStringEscape:
+  Enabled: false

@@ -1,0 +1,421 @@
+# This file contains defaults for RSpec projects. The individual projects
+# override settings to their needs.
+
+# Revisit in RSpec 4
+Gemspec/AddRuntimeDependency:
+  Enabled: false
+
+# Revisit in RSpec 4
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: false
+
+# RSpec 4 will specify this
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Layout/AccessModifierIndentation:
+  Enabled: false
+
+Layout/AssignmentIndentation:
+  Enabled: false
+
+Layout/ClosingParenthesisIndentation:
+  Enabled: false
+
+# We still support 1.8.7 which requires trailing dots
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: false
+
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: false
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+Layout/FirstParameterIndentation:
+  Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
+
+# This is our default line length limit
+Layout/LineLength:
+  Exclude:
+    - bin/bundle
+  Max: 120
+
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+# This could change depending of the style used
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_first_parameter
+
+Layout/SpaceAroundBlockParameters:
+  Enabled: false
+
+# We've tended to use no space, so it's less of a change to stick with that.
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+Layout/SpaceAroundOperators:
+  AllowForAlignment: true
+  Enabled: false
+
+Layout/SpaceBeforeComma:
+  Enabled: false
+
+Layout/SpaceInsideBlockBraces:
+  Enabled: false
+
+Layout/SpaceInsideParens:
+  Enabled: false
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Enabled: false
+
+Layout/SpaceInsideStringInterpolation:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+  Exclude:
+    - '**/benchmarks/**/*'
+
+Lint/EmptyBlock:
+  Exclude:
+    - '**/benchmarks/**/*'
+    - '**/spec/**/*_spec.rb'
+
+Lint/ImplicitStringConcatenation:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Lint/NestedMethodDefinition:
+  Enabled: false
+
+# Exceptions should be rescued with `Support::AllExceptionsExceptOnesWeMustNotRescue`
+Lint/RescueException:
+  Enabled: true
+
+# A new cop introduced but not yet fixed... please fix me.
+Lint/UselessConstantScoping:
+  Enabled: false
+
+# Warns when the class is excessively long.
+Metrics/ClassLength:
+  Max: 100
+
+# Over time we'd like to get this down, but this is what we're at now.
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+# Over time we'd like to get this down, but this is what we're at now.
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - bin/bundle
+
+# Who cares what we call the argument for binary operator methods?
+Naming/BinaryOperatorParameterName:
+  Enabled: false
+
+Naming/ConstantName:
+  Enabled: false
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+# We return booleans from commands which are not predicates
+Naming/PredicateMethod:
+  Enabled: false
+
+# We have too many special cases where we allow generator methods or prefer a
+# prefixed predicate due to it's improved readability.
+Naming/PredicatePrefix:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+# We allow evaling an uncommited Gemfile extension to allow personal debugging tools
+Security/Eval:
+  Exclude:
+    - 'Gemfile'
+
+# "Use alias_method instead of alias"
+# We're fine with `alias`.
+Style/Alias:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+# "Avoid the use of the case equality operator ==="
+# We prefer using `Class#===` over `Object#is_a?` because `Class#===`
+# is less likely to be monkey patched than `is_a?` on a user object.
+Style/CaseEquality:
+  Enabled: false
+
+Style/ClassCheck:
+  Enabled: false
+
+Style/CollectionMethods:
+  PreferredMethods:
+    reduce: 'inject'
+
+# Revisit in RSpec 4
+Style/CollectionQuerying:
+  Enabled: false
+
+# Revisit in RSpec 4, we generally don't push
+Style/ConcatArrayLiterals:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+# We use YARD to enforce documentation. It works better than rubocop's
+# enforcement...rubocop complains about the places we re-open
+# `RSpec::Expectations` and `RSpec::Matchers` w/o having doc commments.
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+# each_with_object is unavailable on 1.8.7 so we have to disable this one.
+Style/EachWithObject:
+  Enabled: false
+
+# Legacy encoding magic comment permitted until RSpec 4
+Style/Encoding:
+  Enabled: false
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/EmptyElse:
+  Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+
+# Change when we can use __dir__ in RSpec 4
+Style/ExpandPathArguments:
+  Enabled: false
+
+# Can be revisited, but we use [..] a lot
+Style/FetchEnvVar:
+  Enabled: false
+
+# Revisit in RSpec 4
+Style/FileRead:
+  Enabled: false
+
+# Revisit in RSpec 4
+Style/FileWrite:
+  Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+# We traditionallty prefered using Hash[...] over to_h to reduce monkeypatching
+Style/HashConversion:
+  Enabled: false
+
+# Revisit in RSpec 4?
+Style/HashEachMethods:
+  Enabled: false
+
+# As long as we support ruby 1.8.7 we have to use hash rockets.
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/IdenticalConditionalBranches:
+  Enabled: false
+
+Style/IfInsideElse:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/IfUnlessModifierOfIfUnless:
+  Enabled: false
+
+# We can't use the new lambda syntax, since we still support 1.8.7.
+Style/Lambda:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Style/MixinUsage:
+  Enabled: false
+
+Style/MultilineIfModifier:
+  Enabled: false
+
+Style/MultipleComparison:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/NestedModifier:
+  Enabled: false
+
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/ParenthesesAroundCondition:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%':  ()      # double-quoted string
+    '%i': '[]'    # array of symbols
+    '%q': ()      # single-quoted string
+    '%Q': ()      # double-quoted string
+    '%r': '{}'    # regular expression pattern
+    '%s': ()      # a symbol
+    '%w': '[]'    # array of single-quoted strings
+    '%W': '[]'    # array of double-quoted strings
+    '%x': ()      # a shell command as a string
+
+# On 1.8 `proc` is `lambda`, so we use `Proc.new` to ensure we get real procs on all supported versions.
+# http://batsov.com/articles/2014/02/04/the-elements-of-style-in-ruby-number-12-proc-vs-proc-dot-new/
+Style/Proc:
+  Enabled: false
+
+# We don't care about single vs double quotes
+Style/QuotedSymbols:
+  Enabled: false
+
+# We use this a lot in specs for referencing reasons
+Style/RedundantConstantBase:
+  Exclude:
+    - '**/lib/rspec/expectations/minitest_integration.rb'
+    - '**/features/**/*rb'
+    - '**/spec/**/*.rb'
+
+# We use this a lot in specs
+Style/RedundantInitialize:
+  Exclude:
+    - '**/spec/**/*_spec.rb'
+
+# Revisit in RSpec 4
+Style/RedundantHeredocDelimiterQuotes:
+  Exclude:
+    - '**/spec/**/*_spec.rb'
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/RescueStandardError:
+  Enabled: false
+
+# Revisit in RSpec 4
+Style/SelectByRegexp:
+  Enabled: false
+
+# We haven't adopted the `fail` to signal exceptions vs `raise` for re-raises convention.
+Style/SignalException:
+  Enabled: false
+
+# This rule favors constant names from the English standard library which we don't load.
+Style/SpecialGlobalVars:
+  Enabled: false
+
+Style/StderrPuts:
+  Enabled: false
+
+# We don't care about single vs double qoutes.
+Style/StringLiterals:
+  Enabled: false
+
+# We don't care about single vs double qoutes.
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+
+Style/StructInheritance:
+  Enabled: false
+
+# Revisit in RSpec 4
+Style/SuperArguments:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+Style/TernaryParentheses:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
+
+Style/TrivialAccessors:
+  AllowDSLWriters: true
+  AllowPredicates: true
+  ExactNameMatch: true
+
+Style/YodaCondition:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false

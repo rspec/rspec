@@ -1,0 +1,7 @@
+inherit_from:
+  - ../common_rubocop_config.yml
+
+AllCops:
+  NewCops:
+    enable
+  SuggestExtensions: false

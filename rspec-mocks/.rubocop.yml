@@ -1,16 +1,13 @@
 inherit_from:
+  - ../common_rubocop_config.yml
   - .rubocop_todo.yml
-  - .rubocop_rspec_base.yml
+
+AllCops:
+  NewCops:
+    enable
+  SuggestExtensions: false
 
 # All these metrics should go down over time.
-AllCops:
-  TargetRubyVersion: 2.4
-
-Metrics/ClassLength:
-  Max: 279
-
-Metrics/CyclomaticComplexity:
-  Max: 18
 
 Layout/LineLength:
   Max: 193
@@ -18,8 +15,16 @@ Layout/LineLength:
     - features/**/*
     - spec/**/*
 
-Metrics/MethodLength:
-  Max: 49
+Lint/EmptyClass:
+  Exclude:
+    - lib/rspec/mocks/syntax.rb
+    - spec/rspec/mocks/any_instance_spec.rb
+    - spec/rspec/mocks/mutate_const_spec.rb
+    - spec/support/doubled_classes.rb
+
+Lint/TripleQuotes:
+  Exclude:
+    - spec/integration/rails_support_spec.rb
 
 Metrics/AbcSize:
   Max: 47
@@ -29,10 +34,25 @@ Metrics/BlockLength:
   Exclude:
     - spec/**/*
 
+Metrics/ClassLength:
+  Max: 279
+
+Metrics/CyclomaticComplexity:
+  Max: 18
+
+Metrics/MethodLength:
+  Max: 49
+
 Metrics/ModuleLength:
-  Max: 220
+  Max: 140
   Exclude:
     - spec/**/*
 
 Metrics/PerceivedComplexity:
   Max: 19
+
+Style/RedundantConstantBase:
+  Exclude:
+    - features/**/*.rb
+    - lib/rspec/mocks/minitest_integration.rb
+    - spec/**/*_spec.rb
