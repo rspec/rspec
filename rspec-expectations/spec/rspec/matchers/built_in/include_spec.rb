@@ -33,7 +33,11 @@ class FakeHashWithIndifferentAccess < Hash
   end
 end
 
+require 'rspec/support/spec/diff_helpers'
+
 RSpec.describe "#include matcher" do
+  include RSpec::Support::Spec::DiffHelpers
+
   it "is diffable" do
     expect(include("a")).to be_diffable
   end
@@ -80,7 +84,7 @@ RSpec.describe "#include matcher" do
       failure_string = if use_string_keys_in_failure_message?
                          dedent(<<-END)
                            |Diff:
-                           |@@ -1,3 +1,3 @@
+                           |@@ #{one_line_header(3)} @@
                            |-:bar => 3,
                            |-:foo => 1,
                            |+"bar" => 2,
@@ -100,6 +104,33 @@ RSpec.describe "#include matcher" do
       }.to fail_including(failure_string)
     end
 
+    it 'provides a valid diff for fuzzy matchers' do
+      allow(RSpec::Matchers.configuration).to receive(:color?).and_return(false)
+
+      failure_string = if use_string_keys_in_failure_message?
+                         dedent(<<-END)
+                           |Diff:
+                           |@@ #{one_line_header(3)} @@
+                           |-(match /FOO/i) => 1,
+                           |-:bar => 3,
+                           |+"bar" => 2,
+                           |+"foo" => 1,
+                         END
+                       else
+                         dedent(<<-END)
+                           |Diff:
+                           |@@ #{one_line_header(3)} @@
+                           |-(match /FOO/i) => 1,
+                           |-:bar => 3,
+                           |+:bar => 2,
+                           |+:foo => 1,
+                         END
+                       end
+
+      expect {
+        expect(build_target(:foo => 1, :bar => 2)).to include(match(/FOO/i) => 1, :bar => 3)
+      }.to fail_including(failure_string)
+    end
     it 'does not support count constraint' do
       expect {
         expect(build_target(:key => 'value')).to include(:other).once

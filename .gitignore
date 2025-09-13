@@ -1,0 +1,22 @@
+# Ignore local artifacts
+.DS_Store
+
+# Ignore config
+.bundle
+.config
+.idea
+.rspec-local
+.yardoc
+
+# Ignore local Gemfile extensions and the lock file
+bin
+Gemfile-custom
+Gemfile.lock
+
+# Ignore repo specific outputs like pkg
+**/bundle
+**/coverage
+**/pkg
+**/rerun.txt
+**/spec/examples.txt
+**/tmp

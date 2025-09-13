@@ -1276,22 +1276,22 @@ module RSpec::Core
 
       it "raises ArgumentError when a Class is used as an example doc string" do
         expect { group.it(Numeric) { } }
-          .to raise_error(ArgumentError, /`Numeric` is not acceptable for doc_string.\nit must be a string./)
+          .to raise_error(ArgumentError, /Examples must be described with a string, got: `Numeric`/)
       end
 
       it "raises ArgumentError when a Module is used as an example doc string" do
         expect { group.it(RSpec) { } }
-          .to raise_error(ArgumentError, /`RSpec` is not acceptable for doc_string.\nit must be a string./)
+          .to raise_error(ArgumentError, /Examples must be described with a string, got: `RSpec`/)
       end
 
       it "raises ArgumentError when a Symbol is used as an example doc string" do
         expect { group.it(:foo) { } }
-          .to raise_error(ArgumentError, /`:foo` is not acceptable for doc_string.\nit must be a string./)
+          .to raise_error(ArgumentError, /Examples must be described with a string, got: `:foo`/)
       end
 
       it "raises ArgumentError when a Hash is used as an example doc string" do
         expect { group.it(foo: :bar) { } }
-          .to raise_error(ArgumentError, /`{:foo=>:bar}` is not acceptable for doc_string.\nit must be a string./)
+          .to raise_error(ArgumentError, /Examples must be described with a string, got: `{:foo=>:bar}`/)
       end
     end
 

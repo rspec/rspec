@@ -1,0 +1,12 @@
+inherit_from:
+  - common_rubocop_config.yml
+
+AllCops:
+  Exclude:
+    - bin/*
+    - bundle/**/*
+    - rspec-*/tmp/**/*
+    - rspec-support/lib/rspec/support/mutex.rb
+  NewCops:
+    enable
+  SuggestExtensions: false

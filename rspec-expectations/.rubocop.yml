@@ -1,67 +1,52 @@
 inherit_from:
+  - ../common_rubocop_config.yml
   - .rubocop_todo.yml
-  - .rubocop_rspec_base.yml
 
 AllCops:
-  TargetRubyVersion: 2.4
   DisplayCopNames: true
   Exclude:
     - bin/*
     - tmp/**/*
+  NewCops:
+    enable
+  SuggestExtensions: false
+  TargetRubyVersion: 2.4
+
+Layout/AccessModifierIndentation:
+  Exclude:
+    - 'lib/rspec/expectations/syntax.rb' # Too much diff to fix
 
 # Over time we'd like to get this down, but this is what we're at now.
 Layout/LineLength:
   Max: 186
 
-# Offense count: 1
-Style/BlockComments:
+# Offense count: 7
+Layout/ParameterAlignment:
   Enabled: false
 
-Style/ClassAndModuleChildren:
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'spec/rspec/matchers/built_in/contain_exactly_spec.rb'
+
+Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*
 
-Style/EvalWithLocation:
-  Exclude:
-    - spec/rspec/matchers/built_in/respond_to_spec.rb
-
-Style/MultilineBlockChain:
+Lint/ConstantDefinitionInBlock:
   Exclude:
     - spec/**/*
 
-Style/RescueModifier:
+Lint/EmptyBlock:
   Exclude:
+    - benchmarks/*
     - spec/**/*
+
+Lint/EmptyClass:
+  Exclude:
     - benchmarks/**/*
-
-Style/Semicolon:
-  Enabled: false
-
-Style/SingleLineMethods:
-  Exclude:
-    - spec/**/*
-    - benchmarks/**/*
-
-# We have some situations where we need to use `raise ExceptionClass.new(argument)`.
-Style/RaiseArgs:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
-  Exclude:
-    - REPORT_TEMPLATE.md
-
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    default: []
-    '%r':   '||'
-
-Style/WordArray:
-  Enabled: false
-
-Security/Eval:
-  Exclude:
-    - Gemfile
+    - lib/rspec/expectations/syntax.rb
+    - lib/rspec/matchers/matcher_protocol.rb
+    - spec/rspec/matchers/description_generation_spec.rb
 
 Metrics/AbcSize:
   Max: 27
@@ -84,46 +69,43 @@ Metrics/ModuleLength:
 Metrics/PerceivedComplexity:
   Max: 14
 
-Layout/AccessModifierIndentation:
-  Exclude:
-    - 'lib/rspec/expectations/syntax.rb' # Too much diff to fix
-
-# Offense count: 7
-Layout/ParameterAlignment:
+# Offense count: 1
+Style/BlockComments:
   Enabled: false
 
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - spec/rspec/matchers/built_in/contain_exactly_spec.rb
-
-Layout/SpaceInsideParens:
-  Exclude:
-    - spec/rspec/matchers/built_in/*
-
-Lint/AmbiguousBlockAssociation:
+Style/ClassAndModuleChildren:
   Exclude:
     - spec/**/*
 
-Lint/AmbiguousRegexpLiteral:
+Style/EvalWithLocation:
   Exclude:
-    - 'features/step_definitions/*'
+    - spec/rspec/matchers/built_in/respond_to_spec.rb
 
-Lint/SuppressedException:
+Style/MultilineBlockChain:
   Exclude:
-    - benchmarks/**/*
+    - spec/**/*
 
-# Offense count: 3
-Lint/IneffectiveAccessModifier:
-  Exclude:
-    - 'lib/rspec/matchers.rb'
-    - 'lib/rspec/matchers/built_in/compound.rb'
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: []
+    '%r':   '||'
 
-Lint/InheritException:
-  Exclude:
-    - 'lib/rspec/expectations.rb'
-
-Bundler/DuplicatedGem:
+# We have some situations where we need to use `raise ExceptionClass.new(argument)`.
+Style/RaiseArgs:
   Enabled: false
 
-Bundler/OrderedGems:
+Style/RescueModifier:
+  Exclude:
+    - spec/**/*
+    - benchmarks/**/*
+
+Style/Semicolon:
+  Enabled: false
+
+Style/SingleLineMethods:
+  Exclude:
+    - spec/**/*
+    - benchmarks/**/*
+
+Style/WordArray:
   Enabled: false

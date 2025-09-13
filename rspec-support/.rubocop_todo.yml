@@ -307,13 +307,6 @@ Style/FormatString:
   Exclude:
     - 'spec/rspec/support/encoded_string_spec.rb'
 
-# Offense count: 68
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/GlobalStdStream:
