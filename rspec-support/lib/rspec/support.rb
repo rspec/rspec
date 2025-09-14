@@ -160,5 +160,6 @@ module RSpec
     # pp, etc by avoiding an unnecessary require. Instead, autoload will take
     # care of loading the differ on first use.
     autoload :Differ, "rspec/support/differ"
+    autoload :HunkGenerator, "rspec/support/hunk_generator"
   end
 end

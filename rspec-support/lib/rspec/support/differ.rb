@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec::Support.require_rspec_support 'encoded_string'
-RSpec::Support.require_rspec_support 'hunk_generator'
 RSpec::Support.require_rspec_support "object_formatter"
 
 require 'pp'
