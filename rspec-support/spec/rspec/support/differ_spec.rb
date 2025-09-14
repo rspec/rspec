@@ -7,7 +7,7 @@ require 'rspec/support/spec/string_matcher'
 
 module RSpec
   module Support
-    RSpec.describe "Differ" do
+    RSpec.describe Differ do
       include Spec::DiffHelpers
 
       describe '#diff' do
