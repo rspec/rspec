@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.5...main)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.6...main)
 
 Enchancements
 
@@ -10,6 +10,12 @@ Bug Fixes:
 
 * Switch current thread data to alias/accessors to avoid issues with mocked systems.
   (Jon Rowe, #610)
+
+### 3.13.6
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.5...rspec-support-v3.13.6)
+
+Bug Fixes:
+
 * Change `RSpec::Support::HunkGenerator` to autoload rather than manual require, avoids
   a load order issue. (Jon Rowe, rspec/rspec#249)
 
