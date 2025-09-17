@@ -23,8 +23,8 @@ env:
 
 jobs:
   rspec:
-    name: Ruby ${{ matrix.ruby }} ${{ matrix.name_extra || '' }}
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    name: Ruby ${{ matrix.ruby }}
+    runs-on: 'ubuntu-latest'
     strategy:
       matrix:
         ruby:
@@ -33,10 +33,8 @@ jobs:
           - '3.2'
           - '3.1'
           - '3.0'
-          - '2.7'
-          - jruby-9.4.9.0
       fail-fast: false
-    continue-on-error: ${{ matrix.allow_failure || endsWith(matrix.ruby, 'head') }}
+    continue-on-error: false
     defaults:
       run:
         working-directory: ${{ inputs.library }}
@@ -52,14 +50,35 @@ jobs:
       - run: ../script/run_rspec_one_by_one
       - run: ../script/run_cucumber
 
+  compatibility:
+    name: Compatibility sanity checks (specs only) ${{ matrix.ruby }}
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        ruby:
+          - jruby-9.4.9.0
+      fail-fast: false
+    continue-on-error: false
+    defaults:
+      run:
+        working-directory: ${{ inputs.library }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run: ../script/update_rubygems_and_install_bundler
+      - run: bundle install --standalone
+      - run: bundle binstubs --all
+      - run: ../script/run_rspec
+
   windows:
     name: Ruby ${{ matrix.ruby }} (Windows)
     runs-on: windows-latest
     strategy:
       matrix:
         ruby:
-          - '3.3'
-          - 2.7
+          - '3.4'
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
