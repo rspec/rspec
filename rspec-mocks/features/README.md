@@ -75,4 +75,4 @@ message (with itself as an argument) when it receives the `close` message.
 The documentation for rspec-mocks is a work in progress. We'll be adding Cucumber
 features over time, and clarifying existing ones. If you have specific features you'd like to see
 added, find the existing documentation incomplete or confusing, or, better yet, wish to write
-a missing Cucumber feature yourself, please [submit an issue](http://github.com/rspec/rspec-mocks/issues) or a [pull request](http://github.com/rspec/rspec-mocks).
+a missing Cucumber feature yourself, please [submit an issue](http://github.com/rspec/rspec/issues) or a [pull request](http://github.com/rspec/rspec).
