@@ -15,7 +15,7 @@ Feature: Explicit Subject
 
   We recommend using the named helper method over `subject` in examples.
 
-  For more information about declaring a `subject` see the [API docs](http://rubydoc.info/github/rspec/rspec-core/RSpec/Core/MemoizedHelpers/ClassMethods#subject-instance_method).
+  For more information about declaring a `subject` see the [API docs](https://rubydoc.info/github/rspec/rspec/RSpec/Core/MemoizedHelpers/ClassMethods#subject-instance_method).
 
   Scenario: A `subject` can be defined and used in the top level group scope
     Given a file named "top_level_subject_spec.rb" with:

@@ -22,10 +22,6 @@ RSpec.describe RSpec::Support::ShellOut, :slow do
   end
 
   it 'can shell out to ruby with the current load path' do
-    skip "Need to investigate why this is failing -- see " \
-         "https://travis-ci.org/rspec/rspec-core/jobs/60327106 and " \
-         "https://travis-ci.org/rspec/rspec-support/jobs/60296920 for examples"
-
     out, err, status = run_ruby_with_current_load_path('puts $LOAD_PATH.sort.join("\n")')
     expect(err).to eq("")
     expect(out).to include(*$LOAD_PATH.first(10))
