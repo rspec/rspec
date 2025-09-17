@@ -206,7 +206,7 @@ module RSpec
               "and thread data is already broken, its acceptable. Pending " \
               "because future JRuby may fix this. see: " \
               "https://github.com/jruby/jruby/issues/1806 and " \
-              "https://github.com/rspec/rspec-support/pull/610"
+              "https://github.com/rspec/rspec/pull/99"
           else
             false
           end
