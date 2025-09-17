@@ -38,14 +38,17 @@ Maintenance branches are how we manage the different supported point releases
 of RSpec. As such, while they might look like good candidates to merge into
 main, please do not open pull requests to merge them.
 
-## Working on multiple RSpec gems at the same time
+## Working on multiple RSpec repositories at the same time
 
-RSpec is composed of multiple gems (`rspec-core`, `rspec-mocks`, etc). Sometimes you have
-to work on a combination of them at the same time. When submitting your code for review,
-we ask that you get a passing build (green CI). If you are working across the repositories,
-please add a commit that temporarily pins your PR to the right branch of the other repository
-you depend on. For example, if we wanted a change in `rspec-expectations` that relied on a
-change for on `rspec-mocks`. We add a commit with the title:
+RSpec is composed of multiple gems (`rspec-core`, `rspec-mocks`, etc). There are the
+core gems which live in the monorepo, but sometimes the external gems, e.g. `rspec-rails`,
+will require cross repository changes.
+
+When submitting your code for review, we ask that you get a passing build (green CI).
+If you are working across the repositories, it is recommended to get your PR to the monorepo
+completed first, but you can also temporarily add a commit that pins your PR to the right
+branch of the other repository you depend on. For example, if we wanted a change in 
+`rspec-rails` that relied on a change in `rspec-mocks`. We add a commit with the title:
 
 >[WIP] Use rspec-mocks with "custom-failure-message" branch
 
@@ -64,14 +67,9 @@ gem 'rspec-mocks', git: "https://github.com/my_user_name/rspec", branch: 'your-c
 
 In general the process is:
 1. Create PRs explaining what you are trying to achieve.
-2. Pin the repositories to each other.
+2. Pin the external repository to the monorepo.
 3. Check they pass (go green).
 4. Await review if appropriate.
-5. Remove the commit from step 2. We will merge ignoring the failure.
-6. Remove the commit from the other, check it passes with the other commit now on `main`.
-7. Merge the other.
-8. We will trigger builds for the `main` branch of affected repositories to check if everything is in order.
-
-Steps 5-8 should happen continuously (e.g. one after another but within a short timespan)
-so that we don't leave a broken main around. It is important to triage that build process
-and revert if necessary.
+5. Await the merging of the core PR.
+6. Remove the commit from step 2.
+7. Await the merging of the extension PR.
