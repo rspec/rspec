@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe "#have_attributes matcher" do
-  include RSpec::Support::Spec::DiffHelpers
-
   Person = Struct.new(:name, :age)
 
   class Person
@@ -73,7 +71,7 @@ RSpec.describe "#have_attributes matcher" do
       allow(RSpec::Matchers.configuration).to receive_messages(:color? => false)
 
       expected_diff = dedent(<<-EOS)
-        |@@ #{one_line_header} @@
+        |@@ -1 +1 @@
         |-:name => "Wrong Name",
         |+:name => "Correct name",
       EOS
@@ -180,11 +178,10 @@ RSpec.describe "#have_attributes matcher" do
       allow(RSpec::Matchers.configuration).to receive_messages(:color? => false)
 
       expected_diff = dedent(<<-EOS)
-        |@@ #{one_line_header(3)} @@
+        |@@ -1,2 +1,2 @@
         |-:age => 11,
         |+:age => 33,
       EOS
-      expected_diff << "\n :name => \"Correct name\",\n" if Diff::LCS::VERSION.to_f < 1.4
 
       expect {
         expect(person).to have_attributes(:name => correct_name, :age => wrong_age)

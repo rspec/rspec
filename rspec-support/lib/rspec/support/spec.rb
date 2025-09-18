@@ -4,7 +4,6 @@ require 'rspec/support'
 require 'rspec/support/spec/in_sub_process'
 
 RSpec::Support.require_rspec_support "spec/deprecation_helpers"
-RSpec::Support.require_rspec_support "spec/diff_helpers"
 RSpec::Support.require_rspec_support "spec/with_isolated_stderr"
 RSpec::Support.require_rspec_support "spec/stderr_splitter"
 RSpec::Support.require_rspec_support "spec/formatting_support"

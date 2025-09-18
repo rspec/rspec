@@ -516,15 +516,7 @@ module RSpec::Matchers::DSL
         diff = e.message.sub(/\A.*Diff:/m, "Diff:").gsub(/^\s*/, '')
       end
 
-      if Diff::LCS::VERSION.to_f < 1.4
-        expected_diff = "Diff:\n@@ -1,3 +1,3 @@\n-line1\n+LINE1\nline2\n"
-      elsif Diff::LCS::VERSION.to_f < 1.6
-        expected_diff = "Diff:\n@@ -1 +1 @@\n-line1\n+LINE1\n"
-      else
-        expected_diff = "Diff:\n@@ -1,2 +1,2 @@\n-line1\n+LINE1\nline2\n"
-      end
-
-      expect(diff).to eq expected_diff
+      expect(diff).to eq "Diff:\n@@ -1,2 +1,2 @@\n-line1\n+LINE1\nline2\n"
     end
 
     it 'does not confuse the diffability of different matchers' do

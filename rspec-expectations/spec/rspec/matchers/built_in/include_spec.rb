@@ -54,8 +54,6 @@ class CaseInsensitiveHash < Hash
 end
 
 RSpec.describe "#include matcher" do
-  include RSpec::Support::Spec::DiffHelpers
-
   it "is diffable" do
     expect(include("a")).to be_diffable
   end
@@ -111,21 +109,19 @@ RSpec.describe "#include matcher" do
       failure_string = if use_string_keys_in_failure_message?
                          dedent(<<-END)
                            |Diff:
-                           |@@ #{one_line_header(3)} @@
+                           |@@ -1,2 +1,2 @@
                            |-:bar => 3,
                            |-:foo => 1,
                            |+"bar" => 2,
                            |+"foo" => 1,
                          END
                        else
-                         diff = dedent(<<-END)
+                         dedent(<<-END)
                            |Diff:
-                           |@@ #{one_line_header(3)} @@
+                           |@@ -1,2 +1,2 @@
                            |-:bar => 3,
                            |+:bar => 2,
                          END
-                         diff << "\n :foo => 1,\n" if Diff::LCS::VERSION.to_f < 1.4
-                         diff
                        end
 
       expect {
@@ -139,7 +135,7 @@ RSpec.describe "#include matcher" do
       failure_string = if use_string_keys_in_failure_message?
                          dedent(<<-END)
                            |Diff:
-                           |@@ #{one_line_header(3)} @@
+                           |@@ -1,2 +1,2 @@
                            |-(match /FOO/i) => 1,
                            |-:bar => 3,
                            |+"bar" => 2,
@@ -148,7 +144,7 @@ RSpec.describe "#include matcher" do
                        else
                          dedent(<<-END)
                            |Diff:
-                           |@@ #{one_line_header(3)} @@
+                           |@@ -1,2 +1,2 @@
                            |-(match /FOO/i) => 1,
                            |-:bar => 3,
                            |+:bar => 2,
@@ -489,14 +485,14 @@ RSpec.describe "#include matcher" do
           if RUBY_VERSION.to_f > 3.3
             dedent(<<-END)
               |Diff:
-              |@@ #{one_line_header} @@
+              |@@ -1 +1 @@
               |-[{number: 1}, {number: 0}, {number: 3}]
               |+[{number: 1}, {number: 2}, {number: 3}]
             END
           else
             dedent(<<-END)
               |Diff:
-              |@@ #{one_line_header} @@
+              |@@ -1 +1 @@
               |-[{:number=>1}, {:number=>0}, {:number=>3}]
               |+[{:number=>1}, {:number=>2}, {:number=>3}]
             END
