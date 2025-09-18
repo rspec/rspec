@@ -104,6 +104,11 @@ Lint/EmptyBlock:
     - '**/benchmarks/**/*'
     - '**/spec/**/*_spec.rb'
 
+# revisit later in v4.0.0
+Lint/ErbNewArguments:
+  Exclude:
+    - 'rspec-core/lib/rspec/core/configuration_options.rb'
+
 Lint/ImplicitStringConcatenation:
   Enabled: false
 
@@ -168,6 +173,15 @@ Security/Eval:
 # We're fine with `alias`.
 Style/Alias:
   Enabled: false
+
+# Reconsider later on v4.0.0
+Style/ArgumentsForwarding:
+  Enabled: false
+
+# Reconsider later on v4.0.0
+Style/BitwisePredicate:
+  Exclude:
+    - 'rspec-core/lib/rspec/core/bisect/example_minimizer.rb'
 
 Style/BlockDelimiters:
   Enabled: false
@@ -329,6 +343,10 @@ Style/Proc:
 Style/QuotedSymbols:
   Enabled: false
 
+# Revisit later in v4.0.0
+Style/RedundantBegin:
+  Enabled: false
+
 # We use this a lot in specs for referencing reasons
 Style/RedundantConstantBase:
   Exclude:
@@ -345,6 +363,13 @@ Style/RedundantInitialize:
 Style/RedundantHeredocDelimiterQuotes:
   Exclude:
     - '**/spec/**/*_spec.rb'
+
+# This rule seems to be named wrong, it says don't unfreeze frozen things but generally when
+# we do this its because we need it unfrozen.
+Style/RedundantInterpolationUnfreeze:
+  Exclude:
+    - 'rspec-core/lib/rspec/core/drb.rb'
+    - 'rspec-mocks/lib/rspec/mocks/error_generator.rb'
 
 Style/RedundantParentheses:
   Enabled: false
@@ -364,6 +389,10 @@ Style/SelectByRegexp:
 
 # We haven't adopted the `fail` to signal exceptions vs `raise` for re-raises convention.
 Style/SignalException:
+  Enabled: false
+
+# Revisit later in v4.0.0
+Style/SlicingWithRange:
   Enabled: false
 
 # This rule favors constant names from the English standard library which we don't load.

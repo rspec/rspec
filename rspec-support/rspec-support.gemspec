@@ -36,5 +36,5 @@ Gem::Specification.new do |s|
     s.cert_chain = [File.expand_path('~/.gem/rspec-gem-public_cert.pem')]
   end
 
-  s.required_ruby_version = '>= 1.8.7'
+  s.required_ruby_version = '>= 3.0.0'
 end

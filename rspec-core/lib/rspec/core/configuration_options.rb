@@ -111,7 +111,7 @@ module RSpec
       ]
 
       def process_options_into(config)
-        opts = options.reject { |k, _| UNPROCESSABLE_OPTIONS.include? k }
+        opts = options.except(*UNPROCESSABLE_OPTIONS)
 
         order(opts.keys).each do |key|
           force?(key) ? config.force(key => opts[key]) : config.__send__("#{key}=", opts[key])

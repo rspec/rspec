@@ -31,6 +31,8 @@ Gem::Specification.new do |s|
   s.rdoc_options     = ["--charset=UTF-8"]
   s.require_path     = "lib"
 
+  s.required_ruby_version = '>= 3.0.0'
+
   private_key = File.expand_path('~/.gem/rspec-gem-private_key.pem')
   if File.exist?(private_key)
     s.signing_key = private_key
