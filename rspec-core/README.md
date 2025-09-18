@@ -103,7 +103,7 @@ within a shared example group. This includes `before`, `after`, and `around`
 hooks, `let` declarations, and nested groups/contexts.
 
 You can also use the names `shared_context` and `include_context`. These are
-pretty much the same as `shared_examples` and `it_behaves_like`, providing
+pretty much the same as `shared_examples` and `include_examples`, providing
 more accurate naming when you share hooks, `let` declarations, helper methods,
 etc, but no examples.
 
