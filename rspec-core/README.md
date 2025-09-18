@@ -90,7 +90,7 @@ RSpec.shared_examples "collections" do |collection_class|
 end
 
 RSpec.describe Array do
-  it_behaves_like "collections", Array
+  include_examples "collections", Array
 end
 
 RSpec.describe Hash do
