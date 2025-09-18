@@ -77,7 +77,7 @@ You can declare examples within a group using any of `it`, `specify`, or
 ## Shared Examples and Contexts
 
 Declare a shared example group using `shared_examples`, and then include it
-in any group using `include_examples`, or `it_behaves_like`. 
+in any group using `include_examples`, or `it_behaves_like`.
 
 Note that `include_examples` directly includes examples into the current context so
 you often want to use `it_behaves_like` to isolate the examples into a context.
