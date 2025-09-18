@@ -2,15 +2,13 @@
 
 `rspec-expectations` ships with a number of built-in matchers. Each matcher can be used
 with `expect(..).to` or `expect(..).not_to` to define positive and negative expectations
-respectively on an object. Most matchers can also be accessed using the `(...).should` and
-`(...).should_not` syntax; see [using should syntax](https://github.com/rspec/rspec/blob/main/rspec-expectations/Should.md) for why we recommend using `expect`.
+respectively on an object.
 
 e.g.
 
 ```ruby
 expect(result).to   eq(3)
 expect(list).not_to be_empty
-pi.should be > 3
 ```
 
 ## Object identity

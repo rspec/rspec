@@ -59,11 +59,6 @@ RSpec.configure do |config|
   # you configure your source control system to ignore this file.
   config.example_status_persistence_file_path = "spec/examples.txt"
 
-  # Limits the available syntax to the non-monkey patched syntax that is
-  # recommended. For more details, see:
-  # https://rspec.info/features/3-12/rspec-core/configuration/zero-monkey-patching-mode/
-  config.disable_monkey_patching!
-
   # This setting enables warnings. It's recommended, but in some cases may
   # be too noisy due to issues in dependencies.
   config.warnings = true

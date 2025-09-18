@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
-RSpec::Support.require_rspec_expectations "syntax"
-
 module RSpec
   module Expectations
-    # rubocop:disable Metrics/ClassLength
-
     # Provides configuration options for rspec-expectations.
     # If you are using rspec-core, you can access this via a
     # block passed to `RSpec::Core::Configuration#expect_with`.
@@ -35,32 +31,6 @@ module RSpec
         @strict_predicate_matchers = false
       end
 
-      # Configures the supported syntax.
-      # @param [Array<Symbol>, Symbol] values the syntaxes to enable
-      # @example
-      #   RSpec.configure do |rspec|
-      #     rspec.expect_with :rspec do |c|
-      #       c.syntax = :should
-      #       # or
-      #       c.syntax = :expect
-      #       # or
-      #       c.syntax = [:should, :expect]
-      #     end
-      #   end
-      def syntax=(values)
-        if Array(values).include?(:expect)
-          Expectations::Syntax.enable_expect
-        else
-          Expectations::Syntax.disable_expect
-        end
-
-        if Array(values).include?(:should)
-          Expectations::Syntax.enable_should
-        else
-          Expectations::Syntax.disable_should
-        end
-      end
-
       # Configures the maximum character length that RSpec will print while
       # formatting an object. You can set length to nil to prevent RSpec from
       # doing truncation.
@@ -73,19 +43,6 @@ module RSpec
       #   end
       def max_formatted_output_length=(length)
         RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = length
-      end
-
-      # The list of configured syntaxes.
-      # @return [Array<Symbol>] the list of configured syntaxes.
-      # @example
-      #   unless RSpec::Matchers.configuration.syntax.include?(:expect)
-      #     raise "this RSpec extension gem requires the rspec-expectations `:expect` syntax"
-      #   end
-      def syntax
-        syntaxes = []
-        syntaxes << :should if Expectations::Syntax.should_enabled?
-        syntaxes << :expect if Expectations::Syntax.expect_enabled?
-        syntaxes
       end
 
       if ::RSpec.respond_to?(:configuration)
@@ -107,21 +64,6 @@ module RSpec
         end
         # :nocov:
       end
-
-      # :nocov: Because this is only really _useful_ on 1.8, and hard to test elsewhere.
-      #
-      # Adds `should` and `should_not` to the given classes
-      # or modules. This can be used to ensure `should` works
-      # properly on things like proxy objects.
-      #
-      # @param [Array<Module>] modules the list of classes or modules
-      #   to add `should` and `should_not` to.
-      def add_should_and_should_not_to(*modules)
-        modules.each do |mod|
-          Expectations::Syntax.enable_should(mod)
-        end
-      end
-      # :nocov:
 
       # Sets or gets the backtrace formatter. The backtrace formatter should
       # implement `#format_backtrace(Array<String>)`. This is used
@@ -152,12 +94,6 @@ module RSpec
       # false by default for backwards compatibility.
       def include_chain_clauses_in_custom_matcher_descriptions?
         @include_chain_clauses_in_custom_matcher_descriptions ||= false
-      end
-
-      # @private
-      def reset_syntaxes_to_default
-        self.syntax = [:should, :expect]
-        RSpec::Expectations::Syntax.warn_about_should!
       end
 
       # @api private
@@ -250,10 +186,5 @@ module RSpec
     def self.configuration
       @configuration ||= Configuration.new
     end
-
-    # set default syntax
-    configuration.reset_syntaxes_to_default
-
-    # rubocop:enable Metrics/ClassLength
   end
 end

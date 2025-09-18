@@ -328,12 +328,10 @@ module RSpec::Core
       it_behaves_like "a configurable framework adapter", :mock_with
 
       it "allows rspec-mocks to be configured with a provided block" do
-        mod = Module.new
-
-        expect(RSpec::Mocks.configuration).to receive(:add_stub_and_should_receive_to).with(mod)
+        expect(RSpec::Mocks.configuration).to receive(:verify_partial_doubles=).with(true)
 
         config.mock_with :rspec do |c|
-          c.add_stub_and_should_receive_to mod
+          c.verify_partial_doubles = true
         end
       end
 
@@ -2391,20 +2389,13 @@ module RSpec::Core
       end
 
       it 'overrides existing definitions of the aliased method name without issuing warnings' do
-        config.expose_dsl_globally = true
-
         class << ExampleGroup
-          def my_group_method; :original; end
-        end
-
-        Module.class_exec do
           def my_group_method; :original; end
         end
 
         config.alias_example_group_to :my_group_method
 
         expect(ExampleGroup.my_group_method).to be < ExampleGroup
-        expect(Module.new.my_group_method).to be < ExampleGroup
       end
 
       it "allows adding additional metadata" do
@@ -2772,106 +2763,6 @@ module RSpec::Core
         expect(value_1).to be_an(RSpec::Core::Example)
         expect(value_1.description).to eq("works")
         expect(value_2).to be(value_1)
-      end
-    end
-
-    describe '#disable_monkey_patching!' do
-      let!(:config) { RSpec.configuration }
-      let!(:expectations) { RSpec::Expectations }
-      let!(:mocks) { RSpec::Mocks }
-
-      def in_fully_monkey_patched_rspec_environment
-        in_sub_process do
-          config.expose_dsl_globally = true
-          mocks.configuration.syntax = [:expect, :should]
-          mocks.configuration.patch_marshal_to_support_partial_doubles = true
-          expectations.configuration.syntax = [:expect, :should]
-
-          yield
-        end
-      end
-
-      it 'stops exposing the DSL methods globally' do
-        in_fully_monkey_patched_rspec_environment do
-          mod = Module.new
-          expect {
-            config.disable_monkey_patching!
-          }.to change { mod.respond_to?(:describe) }.from(true).to(false)
-        end
-      end
-
-      it 'stops using should syntax for expectations' do
-        in_fully_monkey_patched_rspec_environment do
-          obj = Object.new
-          config.expect_with :rspec
-          expect {
-            config.disable_monkey_patching!
-          }.to change { obj.respond_to?(:should) }.from(true).to(false)
-        end
-      end
-
-      it 'stops using should syntax for mocks' do
-        in_fully_monkey_patched_rspec_environment do
-          obj = Object.new
-          config.mock_with :rspec
-          expect {
-            config.disable_monkey_patching!
-          }.to change { obj.respond_to?(:should_receive) }.from(true).to(false)
-        end
-      end
-
-      it 'stops patching of Marshal' do
-        in_fully_monkey_patched_rspec_environment do
-          expect {
-            config.disable_monkey_patching!
-          }.to change { Marshal.respond_to?(:dump_with_rspec_mocks) }.from(true).to(false)
-        end
-      end
-
-      context 'when user did not configure mock framework' do
-        def emulate_not_configured_mock_framework
-          in_fully_monkey_patched_rspec_environment do
-            allow(config).to receive(:rspec_mocks_loaded?).and_return(false, true)
-            config.instance_variable_set :@mock_framework, nil
-            ExampleGroup.send :remove_class_variable, :@@example_groups_configured
-
-            yield
-          end
-        end
-
-        it 'disables monkey patching after example groups being configured' do
-          emulate_not_configured_mock_framework do
-            obj = Object.new
-            config.disable_monkey_patching!
-
-            expect {
-              ExampleGroup.ensure_example_groups_are_configured
-            }.to change { obj.respond_to?(:should_receive) }.from(true).to(false)
-          end
-        end
-      end
-
-      context 'when user did not configure expectation framework' do
-        def emulate_not_configured_expectation_framework
-          in_fully_monkey_patched_rspec_environment do
-            allow(config).to receive(:rspec_expectations_loaded?).and_return(false, true)
-            config.instance_variable_set :@expectation_frameworks, []
-            ExampleGroup.send :remove_class_variable, :@@example_groups_configured
-
-            yield
-          end
-        end
-
-        it 'disables monkey patching after example groups being configured' do
-          emulate_not_configured_expectation_framework do
-            obj = Object.new
-            config.disable_monkey_patching!
-
-            expect {
-              ExampleGroup.ensure_example_groups_are_configured
-            }.to change { obj.respond_to?(:should) }.from(true).to(false)
-          end
-        end
       end
     end
 

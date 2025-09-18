@@ -107,7 +107,7 @@ module RSpec::Core
           end.new 1
         end
 
-        it { should be_working_with double(:value => 10) }
+        it { is_expected.to be_working_with double(:value => 10) }
       end
 
       [false, nil].each do |falsy_value|
@@ -331,9 +331,9 @@ module RSpec::Core
           def ok?; true; end
           def not_ok?; false; end
 
-          it { should eq(self) }
-          it { should be_ok }
-          it { should_not be_not_ok }
+          it { is_expected.to eq(self) }
+          it { is_expected.to be_ok }
+          it { is_expected.not_to be_not_ok }
         end
 
         expect(group.run).to be true
@@ -648,50 +648,6 @@ module RSpec::Core
     end
   end
 
-  RSpec.describe 'implicit block expectation syntax' do
-    matcher :block_matcher do
-      match { |actual| true }
-      supports_block_expectations
-      def supports_value_expectations?
-        false
-      end
-    end
-
-    subject { 'value or a Proc' }
-
-    it '`should` prints a deprecation warning when given a value' do
-      expect_warn_deprecation(/The implicit block expectation syntax is deprecated, you should pass/)
-      expect { should block_matcher }.not_to raise_error
-    end
-
-    it '`should_not` prints a deprecation warning when given a value' do
-      expect_warn_deprecation(/The implicit block expectation syntax is deprecated, you should pass/)
-      expect { should_not block_matcher }.to raise_error(Exception)
-    end
-  end
-
-  RSpec.describe 'custom matcher that does not specify if it supports value expectations' do
-    let(:value_matcher_class) do
-      Class.new do
-        def matches?(_actual); true; end
-        def failure_message_when_negated; "oops"; end
-      end
-    end
-    let(:value_matcher) { value_matcher_class.new }
-
-    before { expect(value_matcher).not_to respond_to(:supports_value_expectations?) }
-
-    it '`should` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
-      expect { should value_matcher }.not_to raise_error
-    end
-
-    it '`should_not` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
-      expect { should_not value_matcher }.to raise_error(Exception)
-    end
-  end
-
   RSpec.describe 'Module#define_method' do
     it 'retains its normal private visibility on Ruby versions where it is normally private', :if => RUBY_VERSION < '2.5' do
       a_module = Module.new
@@ -699,4 +655,3 @@ module RSpec::Core
     end
   end
 end
-

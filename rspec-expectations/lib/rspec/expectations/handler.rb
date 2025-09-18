@@ -47,8 +47,6 @@ module RSpec
     class PositiveExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
-          return ::RSpec::Matchers::BuiltIn::PositiveOperatorMatcher.new(actual) unless initial_matcher
-
           match_result = matcher.matches?(actual, &block)
           if custom_message && match_result.respond_to?(:error_generator)
             match_result.error_generator.opts[:message] = custom_message
@@ -61,22 +59,12 @@ module RSpec
       def self.verb
         'is expected to'
       end
-
-      def self.should_method
-        :should
-      end
-
-      def self.opposite_should_method
-        :should_not
-      end
     end
 
     # @private
     class NegativeExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
-          return ::RSpec::Matchers::BuiltIn::NegativeOperatorMatcher.new(actual) unless initial_matcher
-
           negated_match_result = does_not_match?(matcher, actual, &block)
           if custom_message && negated_match_result.respond_to?(:error_generator)
             negated_match_result.error_generator.opts[:message] = custom_message
@@ -96,14 +84,6 @@ module RSpec
 
       def self.verb
         'is expected not to'
-      end
-
-      def self.should_method
-        :should_not
-      end
-
-      def self.opposite_should_method
-        :should
       end
     end
 

@@ -182,19 +182,6 @@ expect(
 ).to match([a_hash_including(:a => 'hash'), a_hash_including(:a => 'another')])
 ```
 
-## `should` syntax
-
-In addition to the `expect` syntax, rspec-expectations continues to support the
-`should` syntax:
-
-```ruby
-actual.should eq expected
-actual.should be > 3
-[1, 2, 3].should_not include 4
-```
-
-See [detailed information on the `should` syntax and its usage.](https://github.com/rspec/rspec/blob/main/rspec-expectations/Should.md)
-
 ## Compound Matcher Expressions
 
 You can also create compound matcher expressions using `and` or `or`:
