@@ -525,10 +525,22 @@ module RSpec
               expect { verify_all }.to raise_error(message)
             end
           end
+
+          it "allows custom messages" do
+            wrapped.to receive(:foo), "A custom message"
+            expect { verify_all }.to fail_with("A custom message")
+
+            wrapped.to receive(:foo), "A custom message"
+            wrapped.to receive(:bar), "Also custom message"
+            receiver.bar
+            expect { verify_all }.to fail_with("A custom message")
+          end
         end
+
         it_behaves_like "resets partial mocks cleanly" do
           let(:target) { expect(object) }
         end
+
         it_behaves_like "handles frozen objects cleanly" do
           let(:target) { expect(object) }
         end
