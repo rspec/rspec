@@ -7,6 +7,8 @@ Breaking Changes:
 * Remove monkey-patching `should_receive`/`stub` syntax. (Phil Pirozhkov, rspec/rspec-mocks#1365)
 * Remove the deprecated `RSpec::Mocks::CannotSupportArgMutationsError`.
   (Phil Pirozhkov, rspec/rspec-mocks#1400)
+* Change the default setting for `RSpec::Mocks::Configuration#verify_partial_doubles`
+  to `true`. (Phil Pirozhkov, rspec/rspec-mocks#1409)
 
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.4...rspec-mocks-v3.13.5)

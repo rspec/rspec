@@ -42,6 +42,9 @@ RSpec.describe "Supporting Rails monkey patches", :type => :aruba do
         # Rails monkey patches in **kwargs but this is a good analogy
         def with
         end
+
+        def bar(_)
+        end
       end
 
       RSpec.describe do
