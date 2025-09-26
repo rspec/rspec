@@ -1728,6 +1728,8 @@ module RSpec::Core
               end
             end
 
+            allow(Warning).to receive(:warn).with(/the block passed .+ may be ignored/)
+
             expect {
               group.public_send(name, "some behavior") do
                 let(:leak) { "boom" }
