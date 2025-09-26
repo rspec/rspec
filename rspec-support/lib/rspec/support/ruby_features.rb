@@ -88,10 +88,6 @@ module RSpec
           true
         end
       end
-
-      def distincts_kw_args_from_positional_hash?
-        RUBY_VERSION >= '3.0.0'
-      end
     end
   end
 end

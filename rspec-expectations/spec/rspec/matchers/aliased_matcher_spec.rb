@@ -94,11 +94,7 @@ module RSpec
         def matches?(other); true === other; end
       end
 
-      if RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?
-        def my_keyword_matcher(...) = MyKeywordMatcher.new(...)
-      else
-        def my_keyword_matcher(**kw); MyKeywordMatcher.new(**kw); end
-      end
+      def my_keyword_matcher(...) = MyKeywordMatcher.new(...)
 
       RSpec::Matchers.alias_matcher :my_keyword_override, :my_keyword_matcher
       RSpec::Matchers.define_negated_matcher :not_keyword_override, :my_keyword_matcher

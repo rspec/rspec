@@ -81,7 +81,6 @@ Feature: Matching arguments
       |     expected: ({:bar=>"baz"})                                                         |
       |          got: ({:bar=>"incorrect"})                                                   |
 
-  @distincts_kw_args_from_positional_hash
   Scenario: Using keyword arguments on Rubies that differentiate hashes from keyword arguments
     Given a file named "keyword_example_spec.rb" with:
       """ruby

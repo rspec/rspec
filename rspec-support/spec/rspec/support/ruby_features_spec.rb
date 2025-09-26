@@ -65,10 +65,6 @@ module RSpec
         RubyFeatures.fork_supported?
       end
 
-      specify "distincts_kw_args_from_positional_hash?" do
-        RubyFeatures.distincts_kw_args_from_positional_hash?
-      end
-
       specify "#supports_syntax_suggest?" do
         expect(RubyFeatures.supports_syntax_suggest?).to eq(RUBY_VERSION.to_f >= 3.2)
       end

@@ -7,6 +7,7 @@ Breaking Changes:
 * Removed unused `RSpec::Support::ObjectFormatter::BigDecimalInspector`. (Jon Rowe, rspec/rspec#254)
 * Remove unsupported `RSpec::Support::RubyFeatures.supports_taint?` check. (Jon Rowe, rspec/rspec#255)
 * Remove unsupported `RSpec::Support::RubyFeatures.kw_arg_separation?` check. (Jon Rowe, rspec/rspec#256)
+* Remove unsupported `RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?` check. (Jon Rowe, rspec/rspec#257)
 
 Enhancements
 
