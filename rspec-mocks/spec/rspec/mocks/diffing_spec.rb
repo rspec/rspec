@@ -1,6 +1,8 @@
 require "spec_helper"
 require "pp"
 
+# Spacing in diffs is important so we turn off this rule.
+# rubocop:disable Layout/LineContinuationLeadingSpace
 RSpec.describe "Diffs printed when arguments don't match" do
   before do
     allow(RSpec::Mocks.configuration).to receive(:color?).and_return(false)
@@ -98,73 +100,65 @@ RSpec.describe "Diffs printed when arguments don't match" do
     end
 
     context 'with keyword arguments on normal doubles' do
-      if RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when keyword argument were expected but got an option hash (using splat)" do
-            message =
-              "#<Double \"double\"> received :foo with unexpected arguments\n" \
-              "  expected: ({:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
-              "       got: ({:baz=>:quz, :foo=>:bar}) (options hash)"
+      it "prints a diff when keyword argument were expected but got an option hash (using splat)" do
+        message =
+          "#<Double \"double\"> received :foo with unexpected arguments\n" \
+          "  expected: ({:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
+          "       got: ({:baz=>:quz, :foo=>:bar}) (options hash)"
 
-            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+        message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-            with_unfulfilled_double do |d|
-              expect(d).to receive(:foo).with(**expected_hash)
-              expect {
-                d.foo(expected_hash)
-              }.to fail_with(message)
-            end
-          end
-        RUBY
+        with_unfulfilled_double do |d|
+          expect(d).to receive(:foo).with(**expected_hash)
+          expect {
+            d.foo(expected_hash)
+          }.to fail_with(message)
+        end
+      end
 
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when keyword argument were expected but got an option hash (literal)" do
-            with_unfulfilled_double do |d|
-              expect(d).to receive(:foo).with(:positional, keyword: 1)
+      it "prints a diff when keyword argument were expected but got an option hash (literal)" do
+        with_unfulfilled_double do |d|
+          expect(d).to receive(:foo).with(:positional, keyword: 1)
 
-              message =
-                "#<Double \"double\"> received :foo with unexpected arguments\n" \
-                "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
-                "       got: (:positional, {:keyword=>1}) (options hash)"
+          message =
+            "#<Double \"double\"> received :foo with unexpected arguments\n" \
+            "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
+            "       got: (:positional, {:keyword=>1}) (options hash)"
 
-              message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+          message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-              expect {
-                options = { keyword: 1 }
-                d.foo(:positional, options)
-              }.to fail_with(message)
-            end
-          end
-        RUBY
+          expect {
+            options = { keyword: 1 }
+            d.foo(:positional, options)
+          }.to fail_with(message)
+        end
+      end
 
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when the positional argument doesnt match" do
-            with_unfulfilled_double do |d|
-              input = Class.new
+      it "prints a diff when the positional argument doesnt match" do
+        with_unfulfilled_double do |d|
+          input = Class.new
 
-              expected_input = input.new()
-              actual_input = input.new()
+          expected_input = input.new
+          actual_input = input.new
 
-              expect(d).to receive(:foo).with(expected_input, one: 1)
+          expect(d).to receive(:foo).with(expected_input, one: 1)
 
-              message =
-                "#<Double \"double\"> received :foo with unexpected arguments\n" \
-                "  expected: (#{expected_input.inspect}, {:one=>1}) (keyword arguments)\n" \
-                "       got: (#{actual_input.inspect}, {:one=>1}) (options hash)\n" \
-                "Diff:\n" \
-                "@@ -1 +1 @@\n" \
-                "-[#{expected_input.inspect}, {:one=>1}]\n" \
-                "+[#{actual_input.inspect}, {:one=>1}]\n"
+          message =
+            "#<Double \"double\"> received :foo with unexpected arguments\n" \
+            "  expected: (#{expected_input.inspect}, {:one=>1}) (keyword arguments)\n" \
+            "       got: (#{actual_input.inspect}, {:one=>1}) (options hash)\n" \
+            "Diff:\n" \
+            "@@ -1 +1 @@\n" \
+            "-[#{expected_input.inspect}, {:one=>1}]\n" \
+            "+[#{actual_input.inspect}, {:one=>1}]\n"
 
-              message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+          message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-              expect {
-                options = { one: 1 }
-                d.foo(actual_input, options)
-              }.to fail_with(message)
-            end
-          end
-        RUBY
+          expect {
+            options = { one: 1 }
+            d.foo(actual_input, options)
+          }.to fail_with(message)
+        end
       end
     end
 
@@ -180,66 +174,58 @@ RSpec.describe "Diffs printed when arguments don't match" do
 
       after(:example) { reset d }
 
-      if RSpec::Support::RubyFeatures.distincts_kw_args_from_positional_hash?
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when keyword argument were expected but got an option hash (using splat)" do
-            message =
-              "#{d.inspect} received :foo with unexpected arguments\n" \
-              "  expected: (:positional, {:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
-              "       got: (:positional, {:baz=>:quz, :foo=>:bar}) (options hash)"
+      it "prints a diff when keyword argument were expected but got an option hash (using splat)" do
+        message =
+          "#{d.inspect} received :foo with unexpected arguments\n" \
+          "  expected: (:positional, {:baz=>:quz, :foo=>:bar}) (keyword arguments)\n" \
+          "       got: (:positional, {:baz=>:quz, :foo=>:bar}) (options hash)"
 
-            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+        message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-            expect(d).to receive(:foo).with(:positional, **expected_hash)
-            expect {
-              d.foo(:positional, expected_hash)
-            }.to fail_with(message)
-          end
-        RUBY
+        expect(d).to receive(:foo).with(:positional, **expected_hash)
+        expect {
+          d.foo(:positional, expected_hash)
+        }.to fail_with(message)
+      end
 
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when keyword argument were expected but got an option hash (literal)" do
-            message =
-              "#{d.inspect} received :foo with unexpected arguments\n" \
-              "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
-              "       got: (:positional, {:keyword=>1}) (options hash)"
+      it "prints a diff when keyword argument were expected but got an option hash (literal)" do
+        message =
+          "#{d.inspect} received :foo with unexpected arguments\n" \
+          "  expected: (:positional, {:keyword=>1}) (keyword arguments)\n" \
+          "       got: (:positional, {:keyword=>1}) (options hash)"
 
-            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+        message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-            expect(d).to receive(:foo).with(:positional, keyword: 1)
-            expect {
-              options = { keyword: 1 }
-              d.foo(:positional, options)
-            }.to fail_with(message)
-          end
-        RUBY
+        expect(d).to receive(:foo).with(:positional, keyword: 1)
+        expect {
+          options = { keyword: 1 }
+          d.foo(:positional, options)
+        }.to fail_with(message)
+      end
 
-        eval <<-'RUBY', nil, __FILE__, __LINE__ + 1
-          it "prints a diff when the positional argument doesnt match" do
-            input = Class.new
+      it "prints a diff when the positional argument doesnt match" do
+        input = Class.new
 
-            expected_input = input.new()
-            actual_input = input.new()
+        expected_input = input.new
+        actual_input = input.new
 
-            expect(d).to receive(:foo).with(expected_input, one: 1)
+        expect(d).to receive(:foo).with(expected_input, one: 1)
 
-            message =
-              "#{d.inspect} received :foo with unexpected arguments\n" \
-              "  expected: (#{expected_input.inspect}, {:one=>1}) (keyword arguments)\n" \
-              "       got: (#{actual_input.inspect}, {:one=>1}) (options hash)\n" \
-              "Diff:\n" \
-              "@@ -1 +1 @@\n" \
-              "-[#{expected_input.inspect}, {:one=>1}]\n" \
-              "+[#{actual_input.inspect}, {:one=>1}]\n"
+        message =
+          "#{d.inspect} received :foo with unexpected arguments\n" \
+          "  expected: (#{expected_input.inspect}, {:one=>1}) (keyword arguments)\n" \
+          "       got: (#{actual_input.inspect}, {:one=>1}) (options hash)\n" \
+          "Diff:\n" \
+          "@@ -1 +1 @@\n" \
+          "-[#{expected_input.inspect}, {:one=>1}]\n" \
+          "+[#{actual_input.inspect}, {:one=>1}]\n"
 
-            message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
+        message = message.gsub(/:(\w+)=>/, '\1: ') if RUBY_VERSION.to_f > 3.3
 
-            expect {
-              options = { one: 1 }
-              d.foo(actual_input, options)
-            }.to fail_with(message)
-          end
-        RUBY
+        expect {
+          options = { one: 1 }
+          d.foo(actual_input, options)
+        }.to fail_with(message)
       end
     end
 
@@ -321,3 +307,4 @@ RSpec.describe "Diffs printed when arguments don't match" do
     end
   end
 end
+# rubocop:enable Layout/LineContinuationLeadingSpace
