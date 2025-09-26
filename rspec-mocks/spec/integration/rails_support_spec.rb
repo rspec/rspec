@@ -1,12 +1,6 @@
 require File.expand_path('../../support/aruba', __FILE__)
 
 RSpec.describe "Supporting Rails monkey patches", :type => :aruba do
-  before do
-    if RSpec::Support::OS.windows? && RUBY_VERSION.to_f < 2.4
-      skip "Aruba on windows is broken on Ruby 2.3 and below"
-    end
-  end
-
   it "works when Rails has monkey patched #with" do
     write_file(
       "spec/with_monkey_patch_spec.rb",

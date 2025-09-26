@@ -46,10 +46,6 @@ module RSpec
         line = line.sub(/\A([^:]+:\d+)$/, '\\1'.freeze)
         return nil if line == '-e:1'.freeze
         line
-      rescue SecurityError
-        # :nocov: - SecurityError is no longer produced starting in ruby 2.7
-        nil
-        # :nocov:
       end
 
       # @private

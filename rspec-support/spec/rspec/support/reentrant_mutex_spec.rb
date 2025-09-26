@@ -43,7 +43,7 @@ RSpec.describe RSpec::Support::ReentrantMutex do
   # threads somehow therefore poisoning them so its skipped entirely.
   # This is a temporary work around to allow green cross project builds but
   # needs a fix.
-  if RUBY_VERSION >= '3.0' && RUBY_VERSION < '3.1.3' && !ENV['RUBY_HEAD']
+  if RUBY_VERSION < '3.1.3' && !ENV['RUBY_HEAD']
     it 'waits when trying to lock from another Fiber' do
       mutex.synchronize do
         ready = false

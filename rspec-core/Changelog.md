@@ -3,7 +3,7 @@
 
 Breaking Changes:
 
-* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-core#2787)
+* Ruby < 3.0 is no longer supported. (Phil Pirozhkov, Jon Rowe, rspec/rspec-core#2787, rspec/rspec#258)
 * Extract `should` syntax (including the non-monkey-patching one liner).
   (Phil Pirozhkov, rspec/rspec-core#2803)
 * Remove globally-exposed DSL (example and shared group methods

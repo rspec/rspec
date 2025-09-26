@@ -1,29 +1,19 @@
 module RSpec
   module Core
     RSpec.describe Metadata do
-
       describe '.relative_path' do
         let(:here) { File.expand_path(".") }
+
         it "transforms absolute paths to relative paths" do
           expect(Metadata.relative_path(here)).to eq "."
         end
+
         it "transforms absolute paths to relative paths anywhere in its argument" do
           expect(Metadata.relative_path("foo #{here} bar")).to eq "foo . bar"
         end
+
         it "returns nil if passed an unparseable file:line combo" do
           expect(Metadata.relative_path("-e:1")).to be_nil
-        end
-
-        it "gracefully returns nil if run in a secure thread" do
-          # Ensure our call to `File.expand_path` is not cached as that is the insecure operation.
-          Metadata.instance_eval { @relative_path_regex = nil }
-
-          value = with_safe_set_to_level_that_triggers_security_errors do
-            Metadata.relative_path(".")
-          end
-
-          # on some rubies, File.expand_path is not a security error, so accept "." as well
-          expect([nil, "."]).to include(value)
         end
 
         it 'does not transform directories beginning with the same prefix' do
@@ -32,7 +22,6 @@ module RSpec
           similar_directory = "#{File.expand_path(".")}_similar"
           expect(Metadata.relative_path(similar_directory)).to eq similar_directory
         end
-
       end
 
       specify 'RESERVED_KEYS contains all keys assigned by RSpec (and vice versa)' do

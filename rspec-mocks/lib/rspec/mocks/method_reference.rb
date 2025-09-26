@@ -180,16 +180,10 @@ module RSpec
         uses_class_new?(klass)
       end
 
-      if RUBY_VERSION.to_i >= 3
-        CLASS_NEW = ::Class.instance_method(:new)
+      CLASS_NEW = ::Class.instance_method(:new)
 
-        def self.uses_class_new?(klass)
-          ::RSpec::Support.method_handle_for(klass, :new) == CLASS_NEW.bind(klass)
-        end
-      else # Ruby 2's Method#== is too strict
-        def self.uses_class_new?(klass)
-          ::RSpec::Support.method_handle_for(klass, :new).owner == ::Class
-        end
+      def self.uses_class_new?(klass)
+        ::RSpec::Support.method_handle_for(klass, :new) == CLASS_NEW.bind(klass)
       end
 
       def with_signature
