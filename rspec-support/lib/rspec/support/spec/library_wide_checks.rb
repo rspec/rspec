@@ -51,7 +51,7 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
     extract_regex = /#{Regexp.escape(directory) + File::SEPARATOR}(.+)\.rb$/
 
     # We sort to ensure the files are loaded in a consistent order, regardless
-    # of OS. Otherwise, it could load in a different order on Travis than
+    # of OS. Otherwise, it could load in a different order on CI than
     # locally, and potentially trigger a "circular require considered harmful"
     # warning or similar.
     files.sort.map { |file| file[extract_regex, 1] }
