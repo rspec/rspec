@@ -170,16 +170,6 @@ module RSpec
         end
       end
 
-      class BigDecimalInspector < BaseInspector
-        def self.can_inspect?(object)
-          defined?(BigDecimal) && BigDecimal === object
-        end
-
-        def inspect
-          "#{object.to_s('F')} (#{object.inspect})"
-        end
-      end
-
       class DescribableMatcherInspector < BaseInspector
         def self.can_inspect?(object)
           Support.is_a_matcher?(object) && object.respond_to?(:description)
@@ -240,17 +230,11 @@ module RSpec
       INSPECTOR_CLASSES = [
         TimeInspector,
         DateTimeInspector,
-        BigDecimalInspector,
         UninspectableObjectInspector,
         DescribableMatcherInspector,
         DelegatorInspector,
         InspectableObjectInspector
-      ].tap do |classes|
-        # 2.4 has improved BigDecimal formatting so we do not need
-        # to provide our own.
-        # https://github.com/ruby/bigdecimal/pull/42
-        classes.delete(BigDecimalInspector) if RUBY_VERSION >= '2.4'
-      end
+      ]
 
     private
 
