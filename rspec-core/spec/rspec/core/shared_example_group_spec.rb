@@ -598,6 +598,45 @@ module RSpec
           end
         end
       end
+
+      %w[include_examples include_context].each do |name|
+        describe "##{name}" do
+          context "when passed a block" do
+            it "emits a deprecation warning" do
+              expect(RSpec).to receive(:deprecate).with(
+                "Passing a block to `#{name}`",
+                :replacement =>
+                  "Use `it_behaves_like` instead, or place the block content " \
+                  "after the statement."
+              )
+
+              group = RSpec.describe("host group") do
+                shared_examples "some behavior" do
+                  example "shared example"
+                end
+              end
+
+              group.__send__(name, "some behavior") do
+                let(:leak) { "boom" }
+              end
+            end
+          end
+
+          context "when not passed a block" do
+            it "does not emit a deprecation warning" do
+              expect(RSpec).not_to receive(:deprecate)
+
+              group = RSpec.describe("host group") do
+                shared_examples "some behavior" do
+                  example "shared example"
+                end
+              end
+
+              group.__send__(name, "some behavior")
+            end
+          end
+        end
+      end
     end
   end
 end
