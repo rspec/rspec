@@ -78,17 +78,6 @@ module RSpec
         end
       end
 
-      if RUBY_VERSION.to_f >= 3.0
-        # https://rubyreferences.github.io/rubychanges/3.0.html#keyword-arguments-are-now-fully-separated-from-positional-arguments
-        def kw_arg_separation?
-          true
-        end
-      else
-        def kw_arg_separation?
-          false
-        end
-      end
-
       # TruffleRuby disables ripper due to low performance
       if Ruby.rbx? || Ruby.truffleruby?
         def ripper_supported?

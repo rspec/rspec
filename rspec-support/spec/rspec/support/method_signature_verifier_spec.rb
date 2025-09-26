@@ -325,36 +325,21 @@ module RSpec
             expect(valid?(nil, :a => 1)).to eq(false)
           end
 
-          if RubyFeatures.kw_arg_separation?
-            context "when ruby has kw arg separation" do
-              it 'treats symbols as keyword arguments' do
-                expect(valid?(nil, nil, :z => 1)).to eq(true)
-                expect(valid?(nil, :z => 1)).to eq(true)
-              end
-
-              it 'fails to match string keys as kw args' do
-                expect(valid?(nil, nil, 'z' => 1)).to eq(false)
-                expect(valid?(nil, 'z' => 1)).to eq(false)
-              end
-
-              it 'mentions the invalid keyword args in the error' do
-                expect(error_for(1, 2, :a => 0)).to eq("Invalid keyword arguments provided: a")
-                expect(error_for(1, :a => 0)).to eq("Invalid keyword arguments provided: a")
-                expect(error_for(1, 'a' => 0, :b => 0)).to eq("Invalid keyword arguments provided: a, b")
-              end
+          context "when ruby has kw arg separation" do
+            it 'treats symbols as keyword arguments' do
+              expect(valid?(nil, nil, :z => 1)).to eq(true)
+              expect(valid?(nil, :z => 1)).to eq(true)
             end
-          else
-            it 'treats symbols as keyword arguments and the rest as optional argument' do
-              expect(valid?(nil, 'a' => 1)).to eq(true)
-              expect(valid?(nil, 'a' => 1, :z => 3)).to eq(true)
-              expect(valid?(nil, 'a' => 1, :b => 3)).to eq(false)
-              expect(valid?(nil, 'a' => 1, :b => 2, :z => 3)).to eq(false)
+
+            it 'fails to match string keys as kw args' do
+              expect(valid?(nil, nil, 'z' => 1)).to eq(false)
+              expect(valid?(nil, 'z' => 1)).to eq(false)
             end
 
             it 'mentions the invalid keyword args in the error' do
               expect(error_for(1, 2, :a => 0)).to eq("Invalid keyword arguments provided: a")
               expect(error_for(1, :a => 0)).to eq("Invalid keyword arguments provided: a")
-              expect(error_for(1, 'a' => 0, :b => 0)).to eq("Invalid keyword arguments provided: b")
+              expect(error_for(1, 'a' => 0, :b => 0)).to eq("Invalid keyword arguments provided: a, b")
             end
           end
 
@@ -616,18 +601,10 @@ module RSpec
 
           let(:test_method) { method(:arity_kw_arg_splat) }
 
-          if RubyFeatures.kw_arg_separation?
-            it 'allows undeclared keyword args' do
-              expect(valid?(:x => 1)).to eq(true)
-              expect(valid?(:x => 1, 'y' => 2)).to eq(true)
-              expect(valid?('y' => 2)).to eq(true)
-            end
-          else
-            it 'allows undeclared symbol keyword args' do
-              expect(valid?(:x => 1)).to eq(true)
-              expect(valid?(:x => 1, 'y' => 2)).to eq(false)
-              expect(valid?('y' => 2)).to eq(false)
-            end
+          it 'allows undeclared keyword args' do
+            expect(valid?(:x => 1)).to eq(true)
+            expect(valid?(:x => 1, 'y' => 2)).to eq(true)
+            expect(valid?('y' => 2)).to eq(true)
           end
 
           it 'mentions the required kw args and keyword splat in the description' do
@@ -663,7 +640,7 @@ module RSpec
           it 'allows extra undeclared keyword args' do
             expect(valid?(:x => 1)).to eq(true)
             expect(valid?(:x => 1, :y => 2)).to eq(true)
-            expect(valid?(:x => 1, :y => 2, 'z' => 3)).to eq(RubyFeatures.kw_arg_separation?)
+            expect(valid?(:x => 1, :y => 2, 'z' => 3)).to eq(true)
           end
 
           it 'mentions missing required keyword args in the error' do
@@ -726,9 +703,9 @@ module RSpec
           it 'allows a single arg and any number of keyword args' do
             expect(valid?(nil)).to eq(true)
             expect(valid?(nil, :x => 1)).to eq(true)
-            expect(valid?(nil, 'x' => 1)).to eq(RubyFeatures.kw_arg_separation?)
+            expect(valid?(nil, 'x' => 1)).to eq(true)
             expect(valid?(nil, :x => 1, :y => 2)).to eq(true)
-            expect(valid?(nil, :x => 1, :y => 2, 'z' => 3)).to eq(RubyFeatures.kw_arg_separation?)
+            expect(valid?(nil, :x => 1, :y => 2, 'z' => 3)).to eq(true)
             expect(valid?(:x => 1)).to eq(true)
             expect(valid?(nil, {})).to eq(true)
 
