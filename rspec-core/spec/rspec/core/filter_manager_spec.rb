@@ -184,7 +184,7 @@ module RSpec::Core
       end
 
       describe "location filtering" do
-        include_examples "example identification filter preference", :location do
+        it_behaves_like "example identification filter preference", :location do
           def add_filter(options)
             filter_manager.add_location(__FILE__, [options.fetch(:line_number)])
           end
@@ -192,7 +192,7 @@ module RSpec::Core
       end
 
       describe "id filtering" do
-        include_examples "example identification filter preference", :id do
+        it_behaves_like "example identification filter preference", :id do
           def add_filter(options)
             filter_manager.add_ids(__FILE__, [options.fetch(:scoped_id)])
           end

@@ -344,8 +344,14 @@ module RSpec
       # context.
       #
       # @see SharedExampleGroup
-      def self.include_context(name, *args, &block)
-        find_and_eval_shared("context", name, caller.first, *args, &block)
+      def self.include_context(name, *args)
+        if block_given?
+          raise ArgumentError,
+                "Don't pass a block to `include_context`. " \
+                "Use `it_behaves_like` instead, or place the block content " \
+                "after the statement."
+        end
+        find_and_eval_shared("context", name, caller.first, *args)
       end
 
       # Includes shared content mapped to `name` directly in the group in which
@@ -354,8 +360,14 @@ module RSpec
       # context.
       #
       # @see SharedExampleGroup
-      def self.include_examples(name, *args, &block)
-        find_and_eval_shared("examples", name, caller.first, *args, &block)
+      def self.include_examples(name, *args)
+        if block_given?
+          raise ArgumentError,
+                "Don't pass a block to `include_examples`. " \
+                "Use `it_behaves_like` instead, or place the block content " \
+                "after the statement."
+        end
+        find_and_eval_shared("examples", name, caller.first, *args)
       end
 
       # Clear memoized values when adding/removing examples
