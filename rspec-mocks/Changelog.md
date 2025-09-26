@@ -3,7 +3,7 @@
 
 Breaking Changes:
 
-* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-mocks#1349)
+* Ruby < 3.0 is no longer supported. (Phil Pirozhkov, Jon Rowe, rspec/rspec-mocks#1349, rspec/rspec#258)
 * Remove monkey-patching `should_receive`/`stub` syntax. (Phil Pirozhkov, rspec/rspec-mocks#1365)
 * Remove the deprecated `RSpec::Mocks::CannotSupportArgMutationsError`.
   (Phil Pirozhkov, rspec/rspec-mocks#1400)

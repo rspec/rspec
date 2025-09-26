@@ -3,7 +3,7 @@
 
 Breaking Changes:
 
-* Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-expectations#1231)
+* Ruby < 3.0 is no longer supported. (Phil Pirozhkov, Jon Rowe, rspec/rspec-expectations#1231, rspec/rspec#258)
 * Remove `should` and `should_not` syntax (including one-liners). (Phil Pirozhkov, rspec/rspec-expectations#1245)
 * Turn `strict_predicate_matchers` on by default. (Phil Pirozhkov, rspec/rspec-expectations#1277)
 * Remove support for legacy RSpec matchers (pre 3). (Phil Pirozhkov, rspec/rspec-expectations#1253)

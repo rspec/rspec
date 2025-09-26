@@ -178,7 +178,7 @@ module RSpec
         end.join
       end
 
-      if defined?(Fiber) && RUBY_VERSION.to_f >= 2.0
+      if defined?(Fiber)
         broken_on_jruby =
           if RSpec::Support::Ruby.jruby?
             "As Fiber.new creates a new thread on JRuby this is currently " \

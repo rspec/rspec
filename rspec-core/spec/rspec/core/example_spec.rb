@@ -516,22 +516,6 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
       end
     end
 
-    it "leaves raised exceptions unmodified (GH-1103)", :skip => RUBY_VERSION >= '2.5' do
-      # set the backtrace, otherwise MRI will build a whole new object,
-      # and thus mess with our expectations. Rubinius and JRuby are not
-      # affected.
-      exception = StandardError.new
-      exception.set_backtrace([])
-
-      group = RSpec.describe do
-        example { raise exception.freeze }
-      end
-      group.run
-
-      actual = group.examples.first.execution_result.exception
-      expect(actual.__id__).to eq(exception.__id__)
-    end
-
     context "with --dry-run" do
       before { RSpec.configuration.dry_run = true }
 
