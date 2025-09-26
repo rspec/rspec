@@ -4,6 +4,7 @@
 Breaking Changes:
 
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-support#436)
+* Removed unused `RSpec::Support::ObjectFormatter::BigDecimalInspector`. (Jon Rowe, rspec/rspec#254)
 
 Enhancements
 

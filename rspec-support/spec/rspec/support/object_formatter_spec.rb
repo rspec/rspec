@@ -106,19 +106,10 @@ module RSpec
 
         let(:formatted_decimal) { ObjectFormatter.format(decimal) }
 
-        if RUBY_VERSION >= '2.4'
-          it "uses Ruby's BigDecimal formatting since it is improved in 2.4+" do
-            in_sub_process_if_possible do
-              require 'bigdecimal'
-              expect(formatted_decimal).to eq('0.33e1')
-            end
-          end
-        else
-          it 'includes a conventional representation of the decimal' do
-            in_sub_process_if_possible do
-              require 'bigdecimal'
-              expect(formatted_decimal).to include('3.3 (#<BigDecimal')
-            end
+        it "uses Ruby's BigDecimal formatting" do
+          in_sub_process_if_possible do
+            require 'bigdecimal'
+            expect(formatted_decimal).to eq('0.33e1')
           end
         end
 
