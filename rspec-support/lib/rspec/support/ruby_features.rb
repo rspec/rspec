@@ -89,16 +89,6 @@ module RSpec
         end
       end
 
-      if RUBY_VERSION.to_f >= 2.7
-        def supports_taint?
-          false
-        end
-      else
-        def supports_taint?
-          true
-        end
-      end
-
       # TruffleRuby disables ripper due to low performance
       if Ruby.rbx? || Ruby.truffleruby?
         def ripper_supported?
