@@ -33,11 +33,6 @@ end
 
 # NOTE: `yield` passes a probe to expect an that probe should be passed
 # to expectation target. This is different from the other block matchers.
-# Due to strict requirement in Ruby 1.8 to call a block with arguments if
-# the block is declared to accept them. To work around this limitation,
-# this example group overrides the default definition of expectations
-# and lambdas that take the expectation target in a way that they accept
-# a probe.
 RSpec.shared_examples "an RSpec probe-yielding block-only matcher" do |**options|
   include_examples "an RSpec block-only matcher", **options do
     let(:valid_expectation) { expect { |block| valid_block(&block) } }

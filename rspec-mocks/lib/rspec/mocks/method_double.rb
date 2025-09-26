@@ -282,7 +282,7 @@ module RSpec
         # extremely rare so we'd rather avoid the cost of that check for every
         # method double, and risk the rare situation where this exception will
         # get raised. This was originally discovered in the core library of older
-        # unsupported Rubies, (< 2.0) but could happen in code under test
+        # unsupported Rubies, (< 3.0) but could happen in code under test
         # during meta-programming.
         RSpec.warn_with(
           "WARNING: RSpec could not fully restore #{@object.inspect}." \

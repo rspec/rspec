@@ -132,7 +132,7 @@ expect(actual).to be_xxx         # passes if actual.xxx?
 expect(actual).to have_xxx(:arg) # passes if actual.has_xxx?(:arg)
 ```
 
-### Ranges (Ruby >= 1.9 only)
+### Ranges
 
 ```ruby
 expect(1..10).to cover(3)

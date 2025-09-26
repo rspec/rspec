@@ -412,14 +412,15 @@ module RSpec
 
       # @private
       def self.set_it_up(description, args, registration_collection, &example_group_block)
-        # Ruby 1.9 has a bug that can lead to infinite recursion and a
-        # SystemStackError if you include a module in a superclass after
+        # Historically Ruby had a bug that could lead to infinite recursion and a
+        # SystemStackError if you included a module in a superclass after
         # including it in a subclass: https://gist.github.com/845896
-        # To prevent this, we must include any modules in
-        # RSpec::Core::ExampleGroup before users create example groups and have
-        # a chance to include the same module in a subclass of
-        # RSpec::Core::ExampleGroup. So we need to configure example groups
-        # here.
+        #
+        # To prevent this, we included any modules in RSpec::Core::ExampleGroup
+        # before users create example groups and have a chance to include the same module
+        # in a subclass of RSpec::Core::ExampleGroup.
+        #
+        # This may be changed if a better use case comes up in future.
         ensure_example_groups_are_configured
 
         # Register the example with the group before creating the metadata hash.
