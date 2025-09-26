@@ -5,7 +5,6 @@ on:
     branches:
       - 'main'
       - '*-maintenance'
-      - 'v4.0.0-pre'
   pull_request:
     branches:
       - '*'
@@ -21,25 +20,25 @@ jobs:
     uses: rspec/rspec/.github/workflows/rubocop.yml@main
 
   core:
-    uses: rspec/rspec/.github/workflows/rspec.yml@v4.0.0-pre
+    uses: rspec/rspec/.github/workflows/rspec.yml@main
     with:
       library: 'rspec-core'
-      rspec_version: '= 3.14.0.pre'
+      rspec_version: '= 4.0.0.pre'
 
   mocks:
-    uses: rspec/rspec/.github/workflows/rspec.yml@v4.0.0-pre
+    uses: rspec/rspec/.github/workflows/rspec.yml@main
     with:
       library: 'rspec-mocks'
-      rspec_version: '= 3.14.0.pre'
+      rspec_version: '= 4.0.0.pre'
 
   expectations:
-    uses: rspec/rspec/.github/workflows/rspec.yml@v4.0.0-pre
+    uses: rspec/rspec/.github/workflows/rspec.yml@main
     with:
       library: 'rspec-expectations'
-      rspec_version: '= 3.14.0.pre'
+      rspec_version: '= 4.0.0.pre'
 
   support:
-    uses: rspec/rspec/.github/workflows/rspec.yml@v4.0.0-pre
+    uses: rspec/rspec/.github/workflows/rspec.yml@main
     with:
       library: 'rspec-support'
-      rspec_version: '= 3.14.0.pre'
+      rspec_version: '= 4.0.0.pre'
