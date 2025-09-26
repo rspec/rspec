@@ -5,7 +5,8 @@ Breaking Changes:
 
 * Ruby < 2.3 is no longer supported. (Phil Pirozhkov, rspec/rspec-support#436)
 * Removed unused `RSpec::Support::ObjectFormatter::BigDecimalInspector`. (Jon Rowe, rspec/rspec#254)
-* Remove unsupported `RubyFeature.supports_taint?` check. (Jon Rowe, rspec/rspec#255)
+* Remove unsupported `RSpec::Support::RubyFeatures.supports_taint?` check. (Jon Rowe, rspec/rspec#255)
+* Remove unsupported `RSpec::Support::RubyFeatures.kw_arg_separation?` check. (Jon Rowe, rspec/rspec#256)
 
 Enhancements
 
