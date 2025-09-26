@@ -55,16 +55,6 @@ module RSpec::Core
       end
     end
 
-    it 'does not treat the first argument as a metadata key even if it is a symbol' do
-      group = RSpec.describe(:symbol)
-      expect(group.metadata).not_to include(:symbol)
-    end
-
-    it 'treats the first argument as part of the description when it is a symbol' do
-      group = RSpec.describe(:symbol)
-      expect(group.description).to eq("symbol")
-    end
-
     describe "constant naming" do
       around do |ex|
         before_constants = RSpec::ExampleGroups.constants
@@ -1231,6 +1221,66 @@ module RSpec::Core
         expect(group.examples[2].description).to eq('should 3')
       end
 
+    end
+
+    describe "example group doc string" do
+      it "accepts a string for an example group doc string" do
+        expect { RSpec.describe 'MyClass' }.not_to output.to_stderr
+      end
+
+      it "accepts a class for an example group doc string" do
+        expect { RSpec.describe Numeric }.not_to output.to_stderr
+      end
+
+      it "accepts a module for an example group doc string" do
+        expect { RSpec.describe RSpec }.not_to output.to_stderr
+      end
+
+      it "accepts example group without a doc string" do
+        expect { RSpec.describe }.not_to output.to_stderr
+      end
+
+      it "emits a warning when a Symbol is used as an example group doc string" do
+        expect { RSpec.describe :foo }.
+          to raise_error(ArgumentError, /Example groups must be described with a string, got: `:foo`/)
+      end
+
+      it "emits a warning when a Hash is used as an example group doc string" do
+        expect { RSpec.describe(foo: :bar) { } }.
+          to raise_error(/Example groups must be described with a string, got: `#{{:foo=>:bar}.inspect}`/)
+      end
+    end
+
+    describe "example doc string" do
+      let(:group) { RSpec.describe }
+
+      it "accepts a string for an example doc string" do
+        expect { group.it('MyClass') { } }.not_to raise_error
+      end
+
+      it "accepts example without a doc string" do
+        expect { group.it { } }.not_to raise_error
+      end
+
+      it "raises ArgumentError when a Class is used as an example doc string" do
+        expect { group.it(Numeric) { } }.
+          to raise_error(ArgumentError, /Examples must be described with a string, got: `Numeric`/)
+      end
+
+      it "raises ArgumentError when a Module is used as an example doc string" do
+        expect { group.it(RSpec) { } }.
+          to raise_error(ArgumentError, /Examples must be described with a string, got: `RSpec`/)
+      end
+
+      it "raises ArgumentError when a Symbol is used as an example doc string" do
+        expect { group.it(:foo) { } }.
+          to raise_error(ArgumentError, /Examples must be described with a string, got: `:foo`/)
+      end
+
+      it "raises ArgumentError when a Hash is used as an example doc string" do
+        expect { group.it(foo: :bar) { } }.
+          to raise_error(ArgumentError, /Examples must be described with a string, got: `#{{:foo=>:bar}.inspect}`/)
+      end
     end
 
     describe Object, "describing nested example_groups", :little_less_nested => 'yep' do
