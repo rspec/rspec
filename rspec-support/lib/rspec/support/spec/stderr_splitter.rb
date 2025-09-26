@@ -34,7 +34,7 @@ module RSpec
       end
 
       def write(line)
-        # Ignore warnings coming from gems, specifically Rails on Ruby 2.5+
+        # Ignore warnings coming from gems, specifically Rails
         return if line =~ %r{^\S+/gems/\S+:\d+: warning:} # http://rubular.com/r/kqeUIZOfPG
 
         # Ruby 2.7.0 warnings from keyword arguments span multiple lines, extend check above

@@ -163,7 +163,7 @@ module RSpec
           # that are not. For each set, this method for the first group in the set is
           # still an `O(N)` calculation, but all subsequent groups in the set will be
           # constant time lookups when they call this method.
-          applicable_metadata = applicable_metadata_from(metadata)
+          applicable_metadata = metadata.slice(*@applicable_keys)
 
           if applicable_metadata.any? { |k, _| @proc_keys.include?(k) }
             # It's unsafe to memoize lookups involving procs (since they can
@@ -188,13 +188,6 @@ module RSpec
           @applicable_keys.merge(metadata.keys)
           @proc_keys.merge(proc_keys_from metadata)
           @memoized_lookups.clear
-        end
-
-        # Ruby 2.3 and 2.4 do not have `Hash#slice`
-        def applicable_metadata_from(metadata)
-          @applicable_keys.each_with_object({}) do |key, hash|
-            hash[key] = metadata[key] if metadata.key?(key)
-          end
         end
 
         def proc_keys_from(metadata)

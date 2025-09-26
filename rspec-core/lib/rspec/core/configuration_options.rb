@@ -177,15 +177,9 @@ module RSpec
         config_lines.flat_map(&:shellsplit)
       end
 
-      # :nocov:
       def options_file_as_erb_string(path)
-        if RUBY_VERSION >= '2.6'
-          ERB.new(File.read(path), :trim_mode => '-').result(binding)
-        else
-          ERB.new(File.read(path), nil, '-').result(binding)
-        end
+        ERB.new(File.read(path), :trim_mode => '-').result(binding)
       end
-      # :nocov:
 
       def custom_options_file
         command_line_options[:custom_options_file]
@@ -228,12 +222,6 @@ module RSpec
 
       def resolve_xdg_config_home
         File.expand_path(ENV.fetch("XDG_CONFIG_HOME", "~/.config"))
-      rescue ArgumentError
-        # :nocov:
-        # On Ruby 2.4, `File.expand("~")` works even if `ENV['HOME']` is not set.
-        # But on earlier versions, it fails.
-        nil
-        # :nocov:
       end
     end
   end

@@ -23,21 +23,16 @@ module RSpec
       def stash
         return unless method_defined_directly_on_klass?
         @original_method ||= ::RSpec::Support.method_handle_for(@object, @method)
-        # In Ruby 2.4 and earlier, `undef_method` is private
-        @klass.__send__(:undef_method, @method)
+        @klass.undef_method(@method)
       end
 
       # @private
       def restore
         return unless @original_method
 
-        if @klass.method_defined?(@method)
-          # In Ruby 2.4 and earlier, `undef_method` is private
-          @klass.__send__(:undef_method, @method)
-        end
+        @klass.undef_method(@method) if @klass.method_defined?(@method)
 
-        # In Ruby 2.4 and earlier, `define_method` is private
-        @klass.__send__(:define_method, @method, @original_method)
+        @klass.define_method(@method, @original_method)
 
         @original_method = nil
       end

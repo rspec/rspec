@@ -33,34 +33,17 @@ module RSpec
 
     private
 
-      # This is fixing a bug #501 that is specific to Ruby 3.0. The new implementation
-      # depends on `owned?` that was introduced in Ruby 2.0, so both should work for Ruby 2.x.
-      if RUBY_VERSION.to_f >= 3.0
-        def enter
-          @mutex.lock unless @mutex.owned?
-          @count += 1
-        end
+      def enter
+        @mutex.lock unless @mutex.owned?
+        @count += 1
+      end
 
-        def exit
-          unless @mutex.owned?
-            raise ThreadError, "Attempt to unlock a mutex which is locked by another thread/fiber"
-          end
-          @count -= 1
-          @mutex.unlock if @count == 0
+      def exit
+        unless @mutex.owned?
+          raise ThreadError, "Attempt to unlock a mutex which is locked by another thread/fiber"
         end
-      else
-        def enter
-          @mutex.lock if @owner != Thread.current
-          @owner = Thread.current
-          @count += 1
-        end
-
-        def exit
-          @count -= 1
-          return unless @count == 0
-          @owner = nil
-          @mutex.unlock
-        end
+        @count -= 1
+        @mutex.unlock if @count == 0
       end
     end
   end

@@ -227,14 +227,10 @@ module RSpec
 
       def descending_declaration_line_numbers_by_file
         @descending_declaration_line_numbers_by_file ||= begin
-          declaration_locations = example_groups.flat_map(&:declaration_locations)
-
-          declarations_by_file = declaration_locations.group_by(&:first) # by file name
-
-          # Replace with `transform_values` once we drop support for Ruby 2.3
-          declarations_by_file.map.with_object({}) do |(file, lines), hash|
-            hash[file] = lines.map(&:last).sort.reverse
-          end
+          example_groups.
+            flat_map(&:declaration_locations).
+            group_by(&:first). # by file name
+            transform_values { |lines| lines.map(&:last).sort.reverse }
         end
       end
 

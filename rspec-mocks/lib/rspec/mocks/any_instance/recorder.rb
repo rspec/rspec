@@ -265,8 +265,7 @@ module RSpec
         def mark_invoked!(method_name)
           backup_method!(method_name)
           recorder = self
-          # In Ruby 2.4 and earlier, `define_method` is private
-          @klass.__send__(:define_method, method_name) do |*_args, &_blk|
+          @klass.define_method(method_name) do |*_args, &_blk|
             invoked_instance = recorder.instance_that_received(method_name)
             inspect = "#<#{self.class}:#{object_id} #{instance_variables.map { |name| "#{name}=#{instance_variable_get name}" }.join(', ')}>"
             AnyInstance.error_generator.raise_message_already_received_by_other_instance_error(
