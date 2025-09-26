@@ -347,9 +347,9 @@ module RSpec
       def self.include_context(name, *args)
         if block_given?
           raise ArgumentError,
-            "Don't pass a block to `include_context`. " \
-            "Use `it_behaves_like` instead, or place the block content " \
-            "after the statement."
+                "Don't pass a block to `include_context`. " \
+                "Use `it_behaves_like` instead, or place the block content " \
+                "after the statement."
         end
         find_and_eval_shared("context", name, caller.first, *args)
       end
@@ -363,9 +363,9 @@ module RSpec
       def self.include_examples(name, *args)
         if block_given?
           raise ArgumentError,
-            "Don't pass a block to `include_examples`. " \
-            "Use `it_behaves_like` instead, or place the block content " \
-            "after the statement."
+                "Don't pass a block to `include_examples`. " \
+                "Use `it_behaves_like` instead, or place the block content " \
+                "after the statement."
         end
         find_and_eval_shared("examples", name, caller.first, *args)
       end
