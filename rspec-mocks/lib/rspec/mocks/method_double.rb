@@ -284,8 +284,7 @@ module RSpec
       end
 
       def remove_method_from_definition_target
-        # In Ruby 2.4 and earlier, `remove_method` is private
-        definition_target.__send__(:remove_method, @method_name)
+        definition_target.remove_method(@method_name)
       rescue NameError
         # This can happen when the method has been monkeyed with by
         # something outside RSpec. This happens, for example, when
