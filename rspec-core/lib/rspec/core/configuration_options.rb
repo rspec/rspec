@@ -222,12 +222,6 @@ module RSpec
 
       def resolve_xdg_config_home
         File.expand_path(ENV.fetch("XDG_CONFIG_HOME", "~/.config"))
-      rescue ArgumentError
-        # :nocov:
-        # On Ruby 2.4, `File.expand("~")` works even if `ENV['HOME']` is not set.
-        # But on earlier versions, it fails.
-        nil
-        # :nocov:
       end
     end
   end
