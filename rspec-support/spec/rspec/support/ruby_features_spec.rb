@@ -73,10 +73,6 @@ module RSpec
         expect(RubyFeatures.supports_syntax_suggest?).to eq(RUBY_VERSION.to_f >= 3.2)
       end
 
-      specify "#supports_taint?" do
-        RubyFeatures.supports_taint?
-      end
-
       describe "#ripper_supported?" do
         def ripper_is_implemented?
           in_sub_process_if_possible do
