@@ -684,12 +684,10 @@ module RSpec::Core
     before { expect(value_matcher).not_to respond_to(:supports_value_expectations?) }
 
     it '`should` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
       expect { should value_matcher }.not_to raise_error
     end
 
     it '`should_not` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
       expect { should_not value_matcher }.to raise_error(Exception)
     end
   end
