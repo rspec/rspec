@@ -1870,12 +1870,14 @@ module RSpec
       #       expectations.syntax = :expect
       #     end
       #   end
+      # :nocov:
       def disable_monkey_patching!
         self.expose_dsl_globally = false
         self.disable_monkey_patching = true
         conditionally_disable_mocks_monkey_patching
         conditionally_disable_expectations_monkey_patching
       end
+      # :nocov:
 
       # @private
       attr_accessor :disable_monkey_patching
@@ -2308,6 +2310,7 @@ module RSpec
         output.respond_to?(:tty?) && output.tty?
       end
 
+      # :nocov:
       def conditionally_disable_mocks_monkey_patching
         return unless disable_monkey_patching && rspec_mocks_loaded?
 
@@ -2320,7 +2323,9 @@ module RSpec
       def conditionally_disable_expectations_monkey_patching
         return unless disable_monkey_patching && rspec_expectations_loaded?
 
+        RSpec::Expectations::Configuration.instance_variable_set(:@warn_about_syntax, false)
         RSpec::Expectations.configuration.syntax = :expect
+        RSpec::Expectations::Configuration.warn_about_syntax!
       end
 
       def rspec_mocks_loaded?
@@ -2330,6 +2335,7 @@ module RSpec
       def rspec_expectations_loaded?
         defined?(RSpec::Expectations.configuration)
       end
+      # :nocov:
 
       def update_pattern_attr(name, value)
         if @spec_files_loaded

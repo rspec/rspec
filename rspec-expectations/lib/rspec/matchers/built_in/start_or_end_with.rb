@@ -58,7 +58,12 @@ module RSpec
       # we still provide this constant until 4.0.
       # @deprecated Use StartOrEndWith instead.
       # @private
-      StartAndEndWith = StartOrEndWith
+      def StartAndEndWith # rubocop:disable Naming/MethodName
+        # :nocov:
+        RSpec.deprecate("`StartAndEndWith`", :replacement => "`StartOrEndWith`")
+        StartOrEndWith
+        # :nocov:
+      end
 
       # @api private
       # Provides the implementation for `start_with`.
