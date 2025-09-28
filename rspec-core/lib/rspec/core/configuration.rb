@@ -2323,7 +2323,9 @@ module RSpec
       def conditionally_disable_expectations_monkey_patching
         return unless disable_monkey_patching && rspec_expectations_loaded?
 
+        RSpec::Expectations::Configuration.instance_variable_set(:@warn_about_syntax, false)
         RSpec::Expectations.configuration.syntax = :expect
+        RSpec::Expectations::Configuration.warn_about_syntax!
       end
 
       def rspec_mocks_loaded?
