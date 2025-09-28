@@ -1870,12 +1870,14 @@ module RSpec
       #       expectations.syntax = :expect
       #     end
       #   end
+      # :nocov:
       def disable_monkey_patching!
         self.expose_dsl_globally = false
         self.disable_monkey_patching = true
         conditionally_disable_mocks_monkey_patching
         conditionally_disable_expectations_monkey_patching
       end
+      # :nocov:
 
       # @private
       attr_accessor :disable_monkey_patching
