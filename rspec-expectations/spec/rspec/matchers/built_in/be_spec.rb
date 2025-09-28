@@ -116,7 +116,7 @@ RSpec.describe "expect(...).to be_predicate" do
         expect(-Float::INFINITY).to be_infinite
       end
 
-      it "prints a deprecation warning when actual is truthy" do
+      it "prints a deprecation warning when actual is truthy", :skip => RUBY_VERSION.to_f < 2.4 do
         expect(RSpec).
           to receive(:deprecate).
           with("`infinite?` returned neither `true` nor `false`, but rather `nil`",
