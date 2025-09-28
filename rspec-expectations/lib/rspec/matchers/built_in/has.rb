@@ -4,7 +4,7 @@ module RSpec
       # @api private
       # Provides the implementation for dynamic predicate matchers.
       # Not intended to be inherited directly.
-      class DynamicPredicate < BaseMatcher
+      class DynamicPredicate < BaseMatcher # rubocop:disable Metrics/ClassLength
         include BeHelpers
 
         def initialize(method_name, *args, &block)
