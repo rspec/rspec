@@ -59,8 +59,10 @@ module RSpec
       # @deprecated Use StartOrEndWith instead.
       # @private
       def StartAndEndWith # rubocop:disable Naming/MethodName
+        # :nocov:
         RSpec.deprecate("`StartAndEndWith`", :replacement => "`StartOrEndWith`")
         StartOrEndWith
+        # :nocov:
       end
 
       # @api private
