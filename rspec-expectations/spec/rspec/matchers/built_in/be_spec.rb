@@ -107,7 +107,7 @@ RSpec.describe "expect(...).to be_predicate" do
       expect(thing).not_to have_received(:has_recv?)
     end
 
-    context "when the predicate neither returns true or false" do
+    context "when the predicate neither returns true or false", :skip => RUBY_VERSION.to_f < 1.9 do
       it "prints a deprecation warning when actual is truthy" do
         expect(RSpec).
           to receive(:deprecate).
