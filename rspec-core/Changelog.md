@@ -35,6 +35,7 @@ Breaking Changes:
   (Phil Pirozhkov, rspec/rspec-core#2864)
 * Unify multi-condition filtering to use "all" semantic. (Phil Pirozhkov, rspec/rspec-core#2874)
 * Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
+* Remove deprecated warn_about_potential_false_positives. (Anthony Clark, Phil Pirozhkov, rspec/rspec#260)
 
 Enhancements:
 
