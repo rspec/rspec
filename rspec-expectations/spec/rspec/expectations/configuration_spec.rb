@@ -201,15 +201,15 @@ module RSpec
           expect(RSpec).
             to receive(:deprecate).
             with("Expectations syntax configuration",
-                 :call_site=>nil,
-                 :replacement=>"the default `expect` syntax").
+                 :call_site => nil,
+                 :replacement => "the default `expect` syntax").
             at_least(:once)
 
           expect(RSpec).
             to receive(:deprecate).
             with("`:should` Expectations syntax",
-                 :call_site=>nil,
-                 :replacement=>"the default `expect` syntax").
+                 :call_site => nil,
+                 :replacement => "the default `expect` syntax").
             at_least(:once)
 
           configure_syntax :should
