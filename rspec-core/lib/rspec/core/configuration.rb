@@ -2308,6 +2308,7 @@ module RSpec
         output.respond_to?(:tty?) && output.tty?
       end
 
+      # :nocov:
       def conditionally_disable_mocks_monkey_patching
         return unless disable_monkey_patching && rspec_mocks_loaded?
 
@@ -2330,6 +2331,7 @@ module RSpec
       def rspec_expectations_loaded?
         defined?(RSpec::Expectations.configuration)
       end
+      # :nocov:
 
       def update_pattern_attr(name, value)
         if @spec_files_loaded
