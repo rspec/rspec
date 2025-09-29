@@ -81,8 +81,6 @@ RSpec.configure do |c|
   c.disable_monkey_patching!
 
   # runtime options
-
-  # Temporary measure to prevent failures when run in a sub-build from other repos
   c.raise_errors_for_deprecations!
 
   c.include CommonHelpers
