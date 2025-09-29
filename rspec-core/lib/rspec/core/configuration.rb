@@ -2311,8 +2311,11 @@ module RSpec
       def conditionally_disable_mocks_monkey_patching
         return unless disable_monkey_patching && rspec_mocks_loaded?
 
+        RSpec::Mocks::Configuration.instance_variable_set(:@warn_about_syntax, false)
+        RSpec::Mocks.configuration.syntax = :expect
+        RSpec::Mocks::Configuration.warn_about_syntax!
+
         RSpec::Mocks.configuration.tap do |config|
-          config.syntax = :expect
           config.patch_marshal_to_support_partial_doubles = false
         end
       end
