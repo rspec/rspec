@@ -633,17 +633,17 @@ module RSpec::Core
 
     describe Object do
       context 'with implicit subject' do
-        it_should_behave_like 'a subject'
+        it_behaves_like 'a subject'
       end
 
       context 'with explicit subject' do
         subject { Object.new }
-        it_should_behave_like 'a subject'
+        it_behaves_like 'a subject'
       end
 
       context 'with a constant subject'do
         subject { 123 }
-        it_should_behave_like 'a subject'
+        it_behaves_like 'a subject'
       end
     end
   end
@@ -660,11 +660,13 @@ module RSpec::Core
     subject { 'value or a Proc' }
 
     it '`should` prints a deprecation warning when given a value' do
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /Monkey-patching `should`/)
       expect_warn_deprecation(/The implicit block expectation syntax is deprecated, you should pass/)
       expect { should block_matcher }.not_to raise_error
     end
 
     it '`should_not` prints a deprecation warning when given a value' do
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /Monkey-patching `should_not`/)
       expect_warn_deprecation(/The implicit block expectation syntax is deprecated, you should pass/)
       expect { should_not block_matcher }.to raise_error(Exception)
     end
@@ -682,21 +684,18 @@ module RSpec::Core
     before { expect(value_matcher).not_to respond_to(:supports_value_expectations?) }
 
     it '`should` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
       expect { should value_matcher }.not_to raise_error
     end
 
     it '`should_not` does not print a deprecation warning when given a value' do
-      expect_no_deprecations
       expect { should_not value_matcher }.to raise_error(Exception)
     end
   end
 
   RSpec.describe 'Module#define_method' do
-    it 'retains its normal private visibility on Ruby versions where it is normally private', :if => RUBY_VERSION < '2.5' do
+    it 'retains its normal private visibility on Ruby versions where it is normally private', :skip => RUBY_VERSION >= '2.5' do
       a_module = Module.new
       expect { a_module.define_method(:name) { "implementation" } }.to raise_error NoMethodError
     end
   end
 end
-

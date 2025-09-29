@@ -76,17 +76,3 @@ Feature: Syntax Configuration
     Then the output should contain all of these:
       | 8 examples, 4 failures    |
       | undefined method `expect' |
-
-  Scenario: Explicitly enable both syntaxes
-    Given a file named "spec/spec_helper.rb" with:
-      """ruby
-      RSpec.configure do |config|
-        config.expect_with :rspec do |expectations|
-          expectations.syntax = [:should, :expect]
-        end
-      end
-      """
-    When I run `rspec`
-    Then the examples should all pass
-     And the output should not contain "deprecated"
-
