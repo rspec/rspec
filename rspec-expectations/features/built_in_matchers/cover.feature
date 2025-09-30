@@ -13,7 +13,9 @@ Feature: `cover` matcher
   Scenario: Range usage
     Given a file named "range_cover_matcher_spec.rb" with:
       """ruby
-      RSpec.describe (1..10) do
+      RSpec.describe "Range" do
+        subject(:range) { (1..10) }
+
         it { is_expected.to cover(4) }
         it { is_expected.to cover(6) }
         it { is_expected.to cover(8) }

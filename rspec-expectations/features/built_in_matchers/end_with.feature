@@ -30,7 +30,9 @@ Feature: `end_with` matcher
   Scenario: Array usage
     Given a file named "example_spec.rb" with:
       """ruby
-      RSpec.describe [0, 1, 2, 3, 4] do
+      RSpec.describe "Array" do
+        subject(:array) { [0, 1, 2, 3, 4] }
+
         it { is_expected.to end_with 4 }
         it { is_expected.to end_with 3, 4 }
         it { is_expected.not_to end_with 3 }

@@ -25,7 +25,9 @@ Feature: `be_within` matcher
   Scenario: Basic usage
     Given a file named "be_within_matcher_spec.rb" with:
       """ruby
-      RSpec.describe 27.5 do
+      RSpec.describe "Float" do
+        subject(:number) { 27.5 }
+
         it { is_expected.to be_within(0.5).of(27.9) }
         it { is_expected.to be_within(0.5).of(28.0) }
         it { is_expected.to be_within(0.5).of(27.1) }

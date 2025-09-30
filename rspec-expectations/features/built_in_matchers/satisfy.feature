@@ -21,7 +21,9 @@ Feature: `satisfy` matcher
   Scenario: Basic usage
     Given a file named "satisfy_matcher_spec.rb" with:
       """ruby
-      RSpec.describe 10 do
+      RSpec.describe "Integer" do
+        subject(:number) { 10 }
+
         it { is_expected.to satisfy { |v| v > 5 } }
         it { is_expected.not_to satisfy { |v| v > 15 } }
 

@@ -13,7 +13,9 @@ Feature: Comparison matchers
   Scenario: Numeric operator matchers
     Given a file named "numeric_operator_matchers_spec.rb" with:
       """ruby
-      RSpec.describe 18 do
+      RSpec.describe "Numeric" do
+        subject(:number) { 18 }
+
         it { is_expected.to be < 20 }
         it { is_expected.to be > 15 }
         it { is_expected.to be <= 19 }
