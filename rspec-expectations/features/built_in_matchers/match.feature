@@ -33,7 +33,9 @@ Feature: `match` matcher
   Scenario: Regular expression usage
     Given a file named "regexp_match_spec.rb" with:
       """ruby
-      RSpec.describe /foo/ do
+      RSpec.describe "Regexp" do
+        subject(:regexp) { /foo/ }
+
         it { is_expected.to match("food") }
         it { is_expected.not_to match("drinks") }
 

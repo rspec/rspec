@@ -21,7 +21,8 @@ Feature: Configuring an expectation framework
         end
       end
 
-      RSpec.describe 6 do
+      RSpec.describe "multiple" do
+        subject(:number) { 6 }
         it { is_expected.to be_a_multiple_of 3 }
       end
       """
@@ -35,9 +36,10 @@ Feature: Configuring an expectation framework
         config.expect_with :rspec
       end
 
-      RSpec.describe 5 do
+      RSpec.describe "numeric comparison" do
+        subject(:number) { 5 }
         it "is greater than 4" do
-          expect(5).to be > 4
+          expect(number).to be > 4
         end
       end
       """
@@ -52,15 +54,17 @@ Feature: Configuring an expectation framework
         config.expect_with :test_unit
       end
 
-      RSpec.describe [1] do
+      RSpec.describe 'Array comparison' do
+        subject(:array) { [1] }
+
         it "is equal to [1]" do
-          assert_equal [1], [1], "expected [1] to equal [1]"
+          assert_equal [1], array, "expected [1] to equal [1]"
         end
 
-        specify { assert_not_equal [1], [] }
+        specify { assert_not_equal [], array }
 
         it "is equal to [2] (intentional failure)" do
-          assert [1] == [2], "errantly expected [2] to equal [1]"
+          assert array == [2], "errantly expected [2] to equal [1]"
         end
       end
       """
@@ -114,9 +118,11 @@ Feature: Configuring an expectation framework
         config.expect_with :rspec, :test_unit
       end
 
-      RSpec.describe [1] do
+      RSpec.describe 'Array comparison' do
+        subject(:array) { [1] }
+
         it "is equal to [1]" do
-          assert_equal [1], [1], "expected [1] to equal [1]"
+          assert_equal [1], array, "expected [1] to equal [1]"
         end
 
         it "matches array [1]" do
@@ -156,19 +162,21 @@ Feature: Configuring an expectation framework
         config.expect_with :test_unit, :minitest
       end
 
-      RSpec.describe [1] do
+      RSpec.describe 'Array comparison' do
+        subject(:array) { [1] }
+
         it "is equal to [1]" do
-          assert_equal [1], [1], "expected [1] to equal [1]"
+          assert_equal [1], array, "expected [1] to equal [1]"
         end
 
-        specify { assert_not_equal [1], [] }
+        specify { assert_not_equal [], array }
 
         it "the an object is the same as itself" do
           x = [1]
           assert_same x, x, "expected x to be the same x"
         end
 
-        specify { refute_same [1], [1] }
+        specify { refute_same [1], array }
       end
       """
     When I run `rspec example_spec.rb`
