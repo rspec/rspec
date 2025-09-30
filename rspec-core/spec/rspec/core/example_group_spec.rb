@@ -1276,7 +1276,8 @@ module RSpec::Core
       end
 
       it "outputs deprication warning when description is a hash" do
-        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `{"foo"=>"bar"}` as example doc string/)
+        formatted = RUBY_VERSION > '3.4' ? '\{"foo" => "bar"\}' : '\{"foo"=>"bar"\}'
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `#{formatted}` as example doc string/)
         RSpec.describe.it({ "foo" => "bar" })
       end
     end
