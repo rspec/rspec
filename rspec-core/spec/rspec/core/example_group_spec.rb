@@ -1272,7 +1272,8 @@ module RSpec::Core
       end
 
       it "emits a warning when a Hash is used as an example group doc string" do
-        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `#{{ :foo=>:bar }.inspect}` as example group doc string/)
+        formatted = RUBY_VERSION > "3.4" ? "{foo: :bar}" : "\{:foo=>:bar\}"
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `#{formatted}` as example group doc string/)
         RSpec.describe(:foo => :bar) { }
       end
     end
