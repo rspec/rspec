@@ -37,7 +37,7 @@ Breaking Changes:
 * Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
 * Raise an error when an example group description is neither a string, class or module.
   (Eisuke Yoshida, rspec/rspec-core#3081)
-* Raise an error when an example description is nor a string.
+* Raise an error when an example description is not a string nor a class.
   (Eisuke Yoshida, rspec/rspec-core#3081)
 
 Enhancements:
