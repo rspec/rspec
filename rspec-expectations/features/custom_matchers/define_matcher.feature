@@ -15,21 +15,25 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject { 9 }
         it { is_expected.to be_a_multiple_of(3) }
       end
 
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject { 9 }
         it { is_expected.not_to be_a_multiple_of(4) }
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject { 9 }
         it { is_expected.to be_a_multiple_of(4) }
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject { 9 }
         it { is_expected.not_to be_a_multiple_of(3) }
       end
       """
@@ -60,8 +64,8 @@ Feature: Defining a custom matcher
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(4) }
+      RSpec.describe "Integer" do
+        it { expect(9).to be_a_multiple_of(4) }
       end
       """
     When I run `rspec ./matcher_with_failure_message_spec.rb`
@@ -84,8 +88,8 @@ Feature: Defining a custom matcher
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(3) }
+      RSpec.describe "Integer" do
+        it { expect(9).not_to be_a_multiple_of(3) }
       end
       """
     When I run `rspec ./matcher_with_failure_for_message_spec.rb`
@@ -107,12 +111,12 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(3) }
+      RSpec.describe "Integer" do
+        it { expect(9).to be_a_multiple_of(3) }
       end
 
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(4) }
+      RSpec.describe "Integer" do
+        it { expect(9).not_to be_a_multiple_of(4) }
       end
       """
     When I run `rspec ./matcher_overriding_description_spec.rb --format documentation`
@@ -156,8 +160,8 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 10 do
-        it { is_expected.to be_the_sum_of(1,2,3,4) }
+      RSpec.describe "Integer" do
+        it { expect(10).to be_the_sum_of(1,2,3,4) }
       end
       """
     When I run `rspec ./matcher_with_multiple_args_spec.rb --format documentation`
@@ -178,8 +182,8 @@ Feature: Defining a custom matcher
         description { "be lazily equal to #{block_arg.call}" }
       end
 
-      RSpec.describe 10 do
-        it { is_expected.to be_lazily_equal_to { 10 } }
+      RSpec.describe "Integer" do
+        it { expect(10).to be_lazily_equal_to { 10 } }
       end
       """
     When I run `rspec ./matcher_with_block_arg_spec.rb --format documentation`
@@ -290,7 +294,9 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe [1, 2, 3] do
+      RSpec.describe "Array" do
+        subject(:array) { [1, 2, 3] }
+
         it { is_expected.to contain(1, 2) }
         it { is_expected.not_to contain(4, 5, 6) }
 
@@ -315,7 +321,9 @@ Feature: Defining a custom matcher
         match { |actual| is_multiple?(actual) }
       end
 
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject(:number) { 9 }
+
         it { is_expected.to be_a_multiple_of(3) }
         it { is_expected.not_to be_a_multiple_of(4) }
 
@@ -344,7 +352,9 @@ Feature: Defining a custom matcher
         match { |actual| is_multiple?(actual, expected) }
       end
 
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject(:number) { 9 }
+
         it { is_expected.to be_a_multiple_of(3) }
         it { is_expected.not_to be_a_multiple_of(4) }
 
@@ -418,11 +428,15 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 1 do
+      RSpec.describe "Integer" do
+        subject(:number) { 1 }
+
         it { is_expected.to is_lower_than 2 }
       end
 
-      RSpec.describe 1 do
+      RSpec.describe "Integer" do
+        subject(:number) { 1 }
+
         it { is_expected.not_to is_lower_than 'a' }
       end
 
@@ -448,7 +462,9 @@ Feature: Defining a custom matcher
 
       RSpec::Matchers.alias_matcher :be_n_of , :be_a_multiple_of
 
-      RSpec.describe 9 do
+      RSpec.describe "Integer" do
+        subject(:number) { 9 }
+
         it { is_expected.to be_n_of(3) }
       end
       """
