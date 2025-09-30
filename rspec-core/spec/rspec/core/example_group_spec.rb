@@ -1240,12 +1240,12 @@ module RSpec::Core
         expect { RSpec.describe }.not_to output.to_stderr
       end
 
-      it "emits a warning when a Symbol is used as an example group doc string" do
+      it "raises ArgumentError when a Symbol is used as an example group doc string" do
         expect { RSpec.describe :foo }.
           to raise_error(ArgumentError, /Example groups must be described with a string, got: `:foo`/)
       end
 
-      it "emits a warning when a Hash is used as an example group doc string" do
+      it "raises ArgumentError when a Hash is used as an example group doc string" do
         expect { RSpec.describe(foo: :bar) { } }.
           to raise_error(/Example groups must be described with a string, got: `#{{ :foo=>:bar }.inspect}`/)
       end
