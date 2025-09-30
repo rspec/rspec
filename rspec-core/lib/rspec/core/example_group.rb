@@ -275,6 +275,11 @@ module RSpec
             combined_metadata.merge!(args.pop) if args.last.is_a? Hash
             args << combined_metadata
 
+            unless NilClass === description || String === description || Class === description || Module === description
+              RSpec.deprecate("#{description.class} object `#{description.inspect}` as example group doc string",
+                              :replacement => 'a string or a class')
+            end
+
             subclass(self, description, args, registration_collection, &example_group_block)
           ensure
             thread_data.delete(:in_example_group) if top_level
