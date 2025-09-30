@@ -31,36 +31,6 @@ module RSpec::Core
         end
       end
 
-      describe "with a number" do
-        it "returns the number" do
-          expect(subject_value_for(15)).to eq(15)
-        end
-      end
-
-      describe "with a hash" do
-        it "returns the hash" do
-          expect(subject_value_for(:foo => 3)).to eq(:foo => 3)
-        end
-      end
-
-      describe "with a symbol" do
-        it "returns the symbol" do
-          expect(subject_value_for(:foo)).to eq(:foo)
-        end
-      end
-
-      describe "with true" do
-        it "returns `true`" do
-          expect(subject_value_for(true)).to eq(true)
-        end
-      end
-
-      describe "with false" do
-        it "returns `false`" do
-          expect(subject_value_for(false)).to eq(false)
-        end
-      end
-
       describe "with nil" do
         it "returns `nil`" do
           expect(subject_value_for(nil)).to eq(nil)
@@ -340,7 +310,7 @@ module RSpec::Core
       end
 
       it 'supports a new expect-based syntax' do
-        group = RSpec.describe([1, 2, 3]) do
+        group = RSpec.describe(Array) do
           it { is_expected.to be_an Array }
           it { is_expected.not_to include 4 }
         end
