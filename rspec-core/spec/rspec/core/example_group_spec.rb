@@ -1247,7 +1247,7 @@ module RSpec::Core
 
       it "emits a warning when a Hash is used as an example group doc string" do
         expect { RSpec.describe(foo: :bar) { } }.
-          to raise_error(/Example groups must be described with a string, got: `#{{:foo=>:bar}.inspect}`/)
+          to raise_error(/Example groups must be described with a string, got: `#{{ :foo=>:bar }.inspect}`/)
       end
     end
 
@@ -1279,7 +1279,7 @@ module RSpec::Core
 
       it "raises ArgumentError when a Hash is used as an example doc string" do
         expect { group.it(foo: :bar) { } }.
-          to raise_error(ArgumentError, /Examples must be described with a string, got: `#{{:foo=>:bar}.inspect}`/)
+          to raise_error(ArgumentError, /Examples must be described with a string, got: `#{{ :foo=>:bar }.inspect}`/)
       end
     end
 
