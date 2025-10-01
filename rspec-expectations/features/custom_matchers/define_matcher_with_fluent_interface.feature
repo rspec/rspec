@@ -15,7 +15,9 @@ Feature: Defining a matcher with fluent interface
         end
       end
 
-      RSpec.describe 5 do
+      RSpec.describe "Integer" do
+        subject(:number) { 5 }
+
         it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
       end
       """
@@ -34,7 +36,9 @@ Feature: Defining a matcher with fluent interface
         chain :and_smaller_than, :second
       end
 
-      RSpec.describe 5 do
+      RSpec.describe "Integer" do
+        subject(:number) { 5 }
+
         it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
       end
       """
@@ -61,7 +65,9 @@ Feature: Defining a matcher with fluent interface
           end
         end
 
-        RSpec.describe 5 do
+        RSpec.describe "Integer" do
+        subject(:number) { 5 }
+
           it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
         end
         """
