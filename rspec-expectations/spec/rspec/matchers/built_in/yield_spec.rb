@@ -34,13 +34,13 @@ end
 # NOTE: `yield` passes a probe to expect an that probe should be passed
 # to expectation target. This is different from the other block matchers.
 RSpec.shared_examples "an RSpec probe-yielding block-only matcher" do |**options|
-  include_examples "an RSpec block-only matcher", **options do
-    let(:valid_expectation) { expect { |block| valid_block(&block) } }
-    let(:invalid_expectation) { expect { |block| invalid_block(&block) } }
+  include_examples "an RSpec block-only matcher", **options
 
-    let(:valid_block_lambda) { lambda { |block| valid_block(&block) } }
-    let(:invalid_block_lambda) { lambda { |block| invalid_block(&block) } }
-  end
+  let(:valid_expectation) { expect { |block| valid_block(&block) } }
+  let(:invalid_expectation) { expect { |block| invalid_block(&block) } }
+
+  let(:valid_block_lambda) { lambda { |block| valid_block(&block) } }
+  let(:invalid_block_lambda) { lambda { |block| invalid_block(&block) } }
 end
 
 RSpec.describe "yield_control matcher" do
