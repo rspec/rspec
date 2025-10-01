@@ -207,7 +207,7 @@ module RSpec::Core
           RSpec.configuration.full_cause_backtrace = true
         end
 
-        it 'prints full cause backtrace', :if => RSpec::Support::RubyFeatures.supports_exception_cause? do
+        it 'prints full cause backtrace', :skip => !RSpec::Support::RubyFeatures.supports_exception_cause? do
           the_presenter = Formatters::ExceptionPresenter.new(the_exception, example)
 
           expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
@@ -232,7 +232,7 @@ module RSpec::Core
         let(:first_exception) { FakeException.new("Real\nculprit", backtrace) }
 
         shared_examples 'expected result for the case when there is no backtrace' do
-          it 'wont fail for the exception with a nil backtrace', :if => RSpec::Support::RubyFeatures.supports_exception_cause? do
+          it 'wont fail for the exception with a nil backtrace', :skip => !RSpec::Support::RubyFeatures.supports_exception_cause? do
             the_presenter = Formatters::ExceptionPresenter.new(the_exception, example)
 
             expect(the_presenter.fully_formatted(1)).to eq(<<-EOS.gsub(/^ +\|/, ''))
@@ -264,7 +264,7 @@ module RSpec::Core
         end
       end
 
-      it 'wont produce a stack error when cause is the exception itself', :if => RSpec::Support::RubyFeatures.supports_exception_cause? do
+      it 'wont produce a stack error when cause is the exception itself', :skip => !RSpec::Support::RubyFeatures.supports_exception_cause? do
         allow(the_exception).to receive(:cause) { the_exception }
         the_presenter = Formatters::ExceptionPresenter.new(the_exception, example)
 
