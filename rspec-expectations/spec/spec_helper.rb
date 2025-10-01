@@ -65,13 +65,13 @@ RSpec.configure do |config|
   config.project_source_dirs -= ["lib"]
 end
 
-RSpec.shared_context "with warn_about_potential_false_positives set to false" do
-  original_value = RSpec::Expectations.configuration.warn_about_potential_false_positives?
+RSpec.shared_context "with on_potential_false_positives set to nothing" do
+  original_value = RSpec::Expectations.configuration.on_potential_false_positives
 
-  after(:context)  { RSpec::Expectations.configuration.warn_about_potential_false_positives = original_value }
+  after(:context)  { RSpec::Expectations.configuration.on_potential_false_positives = original_value }
 end
 
-RSpec.configuration.include_context "with warn_about_potential_false_positives set to false", :warn_about_potential_false_positives
+RSpec.configuration.include_context "with on_potential_false_positives set to nothing", :potential_false_positives
 
 RSpec.shared_context "with modified configuration" do
   around do |example|
