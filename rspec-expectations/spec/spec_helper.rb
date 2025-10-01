@@ -3,7 +3,7 @@
 require 'rspec/support/spec'
 require 'rspec/support/spec/in_sub_process'
 
-RSpec::Support::Spec.setup_simplecov do
+RSpec::Support::Spec::Coverage.setup do
   minimum_coverage 100
 end
 

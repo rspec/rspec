@@ -3,6 +3,7 @@
 require 'rspec/support'
 require 'rspec/support/spec/in_sub_process'
 
+RSpec::Support.require_rspec_support "spec/coverage"
 RSpec::Support.require_rspec_support "spec/deprecation_helpers"
 RSpec::Support.require_rspec_support "spec/with_isolated_stderr"
 RSpec::Support.require_rspec_support "spec/stderr_splitter"
@@ -40,44 +41,4 @@ RSpec.configure do |c|
   c.define_derived_metadata :failing_on_windows_ci do |meta|
     meta[:pending] ||= "This spec fails on Windows CI and needs someone to fix it."
   end if RSpec::Support::OS.windows? && ENV['CI']
-end
-
-module RSpec
-  module Support
-    module Spec
-      def self.setup_simplecov(&block)
-        # Simplecov emits some ruby warnings when loaded, so silence them.
-        old_verbose, $VERBOSE = $VERBOSE, false
-
-        return if ENV['NO_COVERAGE']
-        return if RUBY_ENGINE != 'ruby' || RSpec::Support::OS.windows?
-
-        # Don't load it when we're running a single isolated
-        # test file rather than the whole suite.
-        return if RSpec.configuration.files_to_run.one?
-
-        require 'simplecov'
-        start_simplecov(&block)
-      rescue LoadError
-        warn "Simplecov could not be loaded"
-      ensure
-        $VERBOSE = old_verbose
-      end
-
-      def self.start_simplecov(&block)
-        SimpleCov.start do
-          add_filter "bundle/"
-          add_filter "tmp/"
-          add_filter do |source_file|
-            # Filter out `spec` directory except when it is under `lib`
-            # (as is the case in rspec-support)
-            source_file.filename.include?('/spec/') && !source_file.filename.include?('/lib/')
-          end
-
-          instance_eval(&block) if block
-        end
-      end
-      private_class_method :start_simplecov
-    end
-  end
 end
