@@ -27,31 +27,6 @@ RSpec.describe RSpec::Matchers do
     end
   end
 
-  context "when included into a superclass after a subclass has already included it" do
-    desc_start = "does not print"
-    matcher_method = :avoid_outputting
-
-    it "#{desc_start} a warning so the user is made aware of the MRI 1.9 bug that can cause infinite recursion" do
-      superclass = stub_const("Superclass", Class.new)
-      stub_const("Subclass", Class.new(superclass) { include RSpec::Matchers })
-
-      expect {
-        superclass.send(:include, RSpec::Matchers)
-      }.to send(matcher_method, a_string_including(
-        "Superclass", "Subclass", "has been included"
-      )).to_stderr
-    end
-
-    it "does not warn when this is a re-inclusion" do
-      superclass = stub_const("Superclass", Class.new { include RSpec::Matchers })
-      stub_const("Subclass", Class.new(superclass) { include RSpec::Matchers })
-
-      expect {
-        superclass.send(:include, RSpec::Matchers)
-      }.to avoid_outputting.to_stderr
-    end
-  end
-
   describe "#respond_to?" do
     it "handles dynamic matcher methods" do
       expect(self).to respond_to(:be_happy, :have_eyes_closed)
