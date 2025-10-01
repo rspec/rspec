@@ -89,7 +89,10 @@ You can declare examples within a group using any of `it`, `specify`, or
 ## Shared Examples and Contexts
 
 Declare a shared example group using `shared_examples`, and then include it
-in any group using `include_examples`.
+in any group using `include_examples`, or `it_behaves_like`.
+
+Note that `include_examples` directly includes examples into the current context so
+you often want to use `it_behaves_like` to isolate the examples into a context.
 
 ```ruby
 RSpec.shared_examples "collections" do |collection_class|
@@ -103,7 +106,7 @@ RSpec.describe Array do
 end
 
 RSpec.describe Hash do
-  include_examples "collections", Hash
+  it_behaves_like "collections", Hash
 end
 ```
 
@@ -164,11 +167,11 @@ RSpec.shared_examples "collections" do
 end
 
 RSpec.describe Array do
-  include_examples "collections"
+  it_behaves_like "collections"
 end
 
 RSpec.describe Hash do
-  include_examples "collections"
+  it_behaves_like "collections"
 end
 ```
 
