@@ -1,6 +1,6 @@
 require 'rspec/support/spec'
 
-RSpec::Support::Spec.setup_simplecov do
+RSpec::Support::Spec::Coverage.setup do
   minimum_coverage 98
 end
 
