@@ -243,15 +243,6 @@ module RSpec::Core
         self.formatter.__send__(:backtrace_line, original_line)
         expect(original_line).to eq(File.expand_path(__FILE__))
       end
-
-      it "deals gracefully with a security error" do
-        Metadata.instance_eval { @relative_path_regex = nil }
-        with_safe_set_to_level_that_triggers_security_errors do
-          self.formatter.__send__(:backtrace_line, __FILE__)
-          # on some rubies, this doesn't raise a SecurityError; this test just
-          # assures that if it *does* raise an error, the error is caught inside
-        end
-      end
     end
 
     context "when the current directory matches one of the default exclusion patterns" do

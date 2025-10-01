@@ -5,9 +5,10 @@ module RSpec
     # Provides a base class with as little methods as possible, so that
     # most methods can be delegated via `method_missing`.
     #
-    # On Ruby 2.0+ BasicObject could be used for this purpose, but it
-    # introduce some extra complexity with constant resolution, so the
-    # BlankSlate pattern was prefered.
+    # BasicObject could be used for this purpose, but it introduces
+    # some extra complexity with constant resolution, so the BlankSlate
+    # pattern was prefered.
+    #
     # @private
     class BaseDelegator
       kept_methods = [

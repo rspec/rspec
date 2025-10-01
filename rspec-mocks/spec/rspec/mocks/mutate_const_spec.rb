@@ -169,13 +169,6 @@ module RSpec
             hide_const("TestClass::Hash")
             expect(::Hash).to equal(top_level_hash)
           end
-
-          it 'does not affect the ability to access the top-level constant from nested contexts', :silence_warnings, :skip => RUBY_VERSION >= '2.5' do
-            top_level_hash = ::Hash
-
-            hide_const("TestClass::Hash")
-            expect(TestClass::Hash).to equal(top_level_hash)
-          end
         end
 
         context 'for a loaded deeply nested constant' do

@@ -34,17 +34,8 @@ module RSpec
       end
 
       def write(line)
-        # Ignore warnings coming from gems, specifically Rails on Ruby 2.5+
+        # Ignore warnings coming from gems, specifically Rails
         return if line =~ %r{^\S+/gems/\S+:\d+: warning:} # http://rubular.com/r/kqeUIZOfPG
-
-        # Ruby 2.7.0 warnings from keyword arguments span multiple lines, extend check above
-        # to look for the next line.
-        return if @last_line =~ %r{^\S+/gems/\S+:\d+: warning:} &&
-                  line =~ %r{warning: The called method .* is defined here}
-
-        # Ruby 2.7.0 complains about hashes used in place of keyword arguments
-        # Aruba 0.14.2 uses this internally triggering that here
-        return if line =~ %r{lib/ruby/2\.7\.0/fileutils\.rb:622: warning:}
 
         @orig_stderr.write(line)
         @output_tracker.write(line)

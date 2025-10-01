@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples "an RSpec block-only matcher" do |*options|
-  # Note: Ruby 1.8 expects you to call a block with arguments if it is
-  # declared that accept arguments. In this case, some of the specs
-  # that include examples from this shared example group do not pass
-  # arguments. A workaround is to use splat and pick the first argument
-  # if it was passed.
-  options = options.first || {}
-
+RSpec.shared_examples "an RSpec block-only matcher" do |**options|
   # Note: do not use `matcher` in 2 expectation expressions in a single
   # example here. In some cases (such as `change { x += 2 }.to(2)`), it
   # will fail because using it a second time will apply `x += 2` twice,

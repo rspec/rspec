@@ -2,9 +2,6 @@ module RSpec
   module Mocks
     # @private
     class MethodDouble
-      # @private TODO: drop in favor of FrozenError in ruby 2.5+
-      FROZEN_ERROR_MSG = /can't modify frozen/
-
       # @private
       attr_reader :method_name, :object, :expectations, :stubs, :method_stasher
 
@@ -81,14 +78,8 @@ module RSpec
         end
 
         @method_is_proxied = true
-      rescue RuntimeError, TypeError => e
-        # TODO: drop in favor of FrozenError in ruby 2.5+
-        #  RuntimeError (and FrozenError) for ruby 2.x
-        #  TypeError for ruby 1.x
-        if (defined?(FrozenError) && e.is_a?(FrozenError)) || FROZEN_ERROR_MSG === e.message
-          raise ArgumentError, "Cannot proxy frozen objects, rspec-mocks relies on proxies for method stubbing and expectations."
-        end
-        raise
+      rescue FrozenError
+        raise ArgumentError, "Cannot proxy frozen objects, rspec-mocks relies on proxies for method stubbing and expectations."
       end
 
       # The implementation of the proxied method. Subclasses may override this
@@ -112,14 +103,8 @@ module RSpec
         end
 
         @method_is_proxied = false
-      rescue RuntimeError, TypeError => e
-        # TODO: drop in favor of FrozenError in ruby 2.5+
-        #  RuntimeError (and FrozenError) for ruby 2.x
-        #  TypeError for ruby 1.x
-        if (defined?(FrozenError) && e.is_a?(FrozenError)) || FROZEN_ERROR_MSG === e.message
-          return show_frozen_warning
-        end
-        raise
+      rescue FrozenError
+        return show_frozen_warning
       end
 
       # @private
@@ -284,8 +269,7 @@ module RSpec
       end
 
       def remove_method_from_definition_target
-        # In Ruby 2.4 and earlier, `remove_method` is private
-        definition_target.__send__(:remove_method, @method_name)
+        definition_target.remove_method(@method_name)
       rescue NameError
         # This can happen when the method has been monkeyed with by
         # something outside RSpec. This happens, for example, when
@@ -298,7 +282,7 @@ module RSpec
         # extremely rare so we'd rather avoid the cost of that check for every
         # method double, and risk the rare situation where this exception will
         # get raised. This was originally discovered in the core library of older
-        # unsupported Rubies, (< 2.0) but could happen in code under test
+        # unsupported Rubies, (< 3.0) but could happen in code under test
         # during meta-programming.
         RSpec.warn_with(
           "WARNING: RSpec could not fully restore #{@object.inspect}." \

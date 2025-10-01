@@ -187,7 +187,7 @@ module RSpec::Core
             # below aborts at a deterministic place, we need to block here.
             # The sleep will be interrupted by the signal once the OS sends it.
             # For the most part, this is only needed on JRuby, but we saw
-            # the asynchronous behavior on an MRI 2.0 travis build as well.
+            # the asynchronous behavior on an MRI build as well.
             sleep 5
           end
         end

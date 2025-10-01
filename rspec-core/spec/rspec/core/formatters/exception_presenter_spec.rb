@@ -630,16 +630,6 @@ module RSpec::Core
         end
       end
 
-      context "when backtrace will generate a security error" do
-        let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:#{__LINE__}"]) }
-
-        it "is handled gracefully" do
-          expect {
-            with_safe_set_to_level_that_triggers_security_errors { read_failed_lines }
-          }.not_to raise_error
-        end
-      end
-
       context "when ruby reports a bogus line number in the stack trace" do
         let(:exception) { instance_double(Exception, :backtrace => [ "#{__FILE__}:10000000"]) }
 

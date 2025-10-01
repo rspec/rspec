@@ -328,12 +328,6 @@ module RSpec
         end
 
         context "when removing the method double" do
-          before do
-            if RUBY_VERSION < "2.2" && RUBY_VERSION >= "2.0" && RSpec::Support::Ruby.mri?
-              pending "Does not work on 2.0-2.1 because frozen structs can have methods restored"
-            end
-          end
-
           it "warns about being unable to remove the method double" do
             target.to receive(:foo).and_return(:baz)
             expect_warning_without_call_site(/rspec-mocks was unable to restore the original `foo` method on #{object.inspect}/)

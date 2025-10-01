@@ -27,31 +27,6 @@ RSpec.describe RSpec::Matchers do
     end
   end
 
-  context "when included into a superclass after a subclass has already included it" do
-    desc_start = "does not print"
-    matcher_method = :avoid_outputting
-
-    it "#{desc_start} a warning so the user is made aware of the MRI 1.9 bug that can cause infinite recursion" do
-      superclass = stub_const("Superclass", Class.new)
-      stub_const("Subclass", Class.new(superclass) { include RSpec::Matchers })
-
-      expect {
-        superclass.send(:include, RSpec::Matchers)
-      }.to send(matcher_method, a_string_including(
-        "Superclass", "Subclass", "has been included"
-      )).to_stderr
-    end
-
-    it "does not warn when this is a re-inclusion" do
-      superclass = stub_const("Superclass", Class.new { include RSpec::Matchers })
-      stub_const("Subclass", Class.new(superclass) { include RSpec::Matchers })
-
-      expect {
-        superclass.send(:include, RSpec::Matchers)
-      }.to avoid_outputting.to_stderr
-    end
-  end
-
   describe "#respond_to?" do
     it "handles dynamic matcher methods" do
       expect(self).to respond_to(:be_happy, :have_eyes_closed)
@@ -81,19 +56,9 @@ module RSpec
       end
 
       it 'does not match a multi-element array' do
-        # our original implementation regsitered the matcher definition as
-        # `&RSpec::Matchers.method(:is_a_matcher?)`, which has a bug
-        # on 1.8.7:
-        #
-        # irb(main):001:0> def foo(x); end
-        # => nil
-        # irb(main):002:0> method(:foo).call([1, 2, 3])
-        # => nil
-        # irb(main):003:0> method(:foo).to_proc.call([1, 2, 3])
-        # ArgumentError: wrong number of arguments (3 for 1)
-        #   from (irb):1:in `foo'
-        #   from (irb):1:in `to_proc'
-        #   from (irb):3:in `call'
+        # Our original implementation registered the matcher definition as
+        # `&RSpec::Matchers.method(:is_a_matcher?)`, which had a bug
+        # on a legacy version of Ruby which treated the array as a splat.
         #
         # This spec guards against a regression for that case.
         expect(RSpec::Support.is_a_matcher?([1, 2, 3])).to eq(false)

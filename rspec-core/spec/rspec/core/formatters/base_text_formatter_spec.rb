@@ -186,13 +186,11 @@ RSpec.describe RSpec::Core::Formatters::BaseTextFormatter do
       end
     end
 
-    if String.method_defined?(:encoding)
-      context "with an exception that has a differently encoded message" do
-        it "runs without encountering an encoding exception" do
-          group.example("Mixing encodings, e.g. UTF-8: © and Binary") { raise "Error: \xC2\xA9".dup.force_encoding("ASCII-8BIT") }
-          run_all_and_dump_failures
-          expect(formatter_output.string).to match(/RuntimeError:\n\s+Error: \?\?/m) # ?? because the characters dont encode properly
-        end
+    context "with an exception that has a differently encoded message" do
+      it "runs without encountering an encoding exception" do
+        group.example("Mixing encodings, e.g. UTF-8: © and Binary") { raise "Error: \xC2\xA9".dup.force_encoding("ASCII-8BIT") }
+        run_all_and_dump_failures
+        expect(formatter_output.string).to match(/RuntimeError:\n\s+Error: \?\?/m) # ?? because the characters dont encode properly
       end
     end
 
