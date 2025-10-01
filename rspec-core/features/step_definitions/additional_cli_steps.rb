@@ -78,16 +78,6 @@ Then(/^the output from `([^`]+)` should indicate it ran only the subtraction fil
   step %Q{the output from "#{cmd}" should not contain "Addition"}
 end
 
-Then /^the backtrace\-normalized output should contain:$/ do |partial_output|
-  # ruby 1.9 includes additional stuff in the backtrace,
-  # so we need to normalize it to compare it with our expected output.
-  normalized_output = all_output.split("\n").map do |line|
-    line =~ /(^\s+# [^:]+:\d+)/ ? $1 : line # http://rubular.com/r/zDD7DdWyzF
-  end.join("\n")
-
-  expect(normalized_output).to include(partial_output)
-end
-
 Then /^the output should not contain any error backtraces$/ do
   step %q{the output should not contain "lib/rspec/core"}
 end
