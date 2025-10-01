@@ -34,17 +34,13 @@ module RSpec
       # parent.
       # @private
       class Channel
-        if String.method_defined?(:encoding)
-          MARSHAL_DUMP_ENCODING = Marshal.dump("").encoding
-        end
+        MARSHAL_DUMP_ENCODING = Marshal.dump("").encoding
 
         def initialize
           @read_io, @write_io = IO.pipe
 
-          if defined?(MARSHAL_DUMP_ENCODING) && IO.method_defined?(:set_encoding)
-            # Ensure the pipe can send any content produced by Marshal.dump
-            @write_io.set_encoding MARSHAL_DUMP_ENCODING
-          end
+          # Ensure the pipe can send any content produced by Marshal.dump
+          @write_io.set_encoding MARSHAL_DUMP_ENCODING
         end
 
         def send(message)
