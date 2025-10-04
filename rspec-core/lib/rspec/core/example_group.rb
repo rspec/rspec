@@ -528,9 +528,6 @@ module RSpec
       # @private
       def self.ensure_example_groups_are_configured
         unless defined?(@@example_groups_configured)
-          unless RSpec.configuration.disable_monkey_patching
-            RSpec.deprecate("Monkey-patching mode", :call_site => nil)
-          end
           RSpec.configuration.configure_mock_framework
           RSpec.configuration.configure_expectation_framework
           # rubocop:disable Style/ClassVars

@@ -96,7 +96,8 @@ module RSpec
           end
           if meta.key?(:unless)
             RSpec.deprecate("`:unless` metadata will have no special meaning in RSpec 4 and",
-                            :replacement => "`:skip`")
+                            :replacement => "`:skip`",
+                            :call_site => meta[:location])
           end
           !meta.fetch(:if, true) || meta[:unless]
         end
