@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source "https://gem.coop"
 
 %w[rspec rspec-core rspec-expectations rspec-mocks rspec-support].each do |lib|
   gem lib, :path => File.expand_path("../#{lib}", __FILE__)
