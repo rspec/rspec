@@ -30,7 +30,9 @@ Feature: `start_with` matcher
   Scenario: With an array
     Given a file named "example_spec.rb" with:
       """ruby
-      RSpec.describe [0, 1, 2, 3, 4] do
+      RSpec.describe "Array" do
+        subject(:array) { [0, 1, 2, 3, 4] }
+
         it { is_expected.to start_with 0 }
         it { is_expected.to start_with(0, 1)}
         it { is_expected.not_to start_with(2) }
