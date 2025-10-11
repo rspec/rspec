@@ -101,14 +101,20 @@ jobs:
             options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
           - version: "JRuby 1.7"
             tag: ghcr.io/rspec/docker-ci:jruby-1.7
+            env:
+              JAVA_OPTS: '-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1'
           - version: "JRuby 1.7 1.8 mode"
             tag: ghcr.io/rspec/docker-ci:jruby-1.7
             jruby_opts: '--dev --1.8'
             pre: gem uninstall jruby-openssl
             options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+            env:
+              JAVA_OPTS: '-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1'
           - version: "JRuby 9.1.17.0"
             tag: ghcr.io/rspec/docker-ci:jruby-9.1.17.0
             options: "--add-host rubygems.org:151.101.129.227 --add-host api.rubygems.org:151.101.129.227"
+            env:
+              JAVA_OPTS: '-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1'
     env:
       LEGACY_CI: true
       JRUBY_OPTS: ${{ matrix.container.jruby_opts || '--dev' }}
@@ -125,7 +131,7 @@ jobs:
       - run: ${{ matrix.container.post }}
       - run: bundle exec rspec
         working-directory: ${{ inputs.library }}
-      - run: ../script/run_cucumber
+      - run: bundle exec cucumber --strict
         working-directory: ${{ inputs.library }}
 
   windows:
