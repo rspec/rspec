@@ -44,7 +44,7 @@ module RSpec
         end
       end
 
-      context 'on an interpreter that does not provide BasicObject', :uses_should, :unless => defined?(::BasicObject) do
+      context 'on an interpreter that does not provide BasicObject', :uses_should, :skip => defined?(::BasicObject) do
         def with_delegate
           in_sub_process_if_possible do
             require 'delegate'

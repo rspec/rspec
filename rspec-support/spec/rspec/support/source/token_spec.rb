@@ -1,7 +1,7 @@
 require 'rspec/support/source/token'
 
 class RSpec::Support::Source
-  RSpec.describe Token, :if => RSpec::Support::RubyFeatures.ripper_supported? do
+  RSpec.describe Token, :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
     let(:target_token) do
       tokens.first
     end

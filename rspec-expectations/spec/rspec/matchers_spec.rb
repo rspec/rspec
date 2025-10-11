@@ -68,7 +68,7 @@ RSpec.describe RSpec::Matchers do
       expect(respond_to?(:puts)).to eq false
     end
 
-    it "allows `method` to get dynamic matcher methods", :if => RUBY_VERSION.to_f >= 1.9 do
+    it "allows `method` to get dynamic matcher methods", :skip => RUBY_VERSION.to_f < 1.9 do
       expect(method(:be_happy).call).to be_a(be_happy.class)
     end
   end
@@ -77,7 +77,7 @@ end
 module RSpec
   module Matchers
     RSpec.describe ".is_a_matcher?" do
-      it 'does not match BasicObject', :if => RUBY_VERSION.to_f > 1.8 do
+      it 'does not match BasicObject', :skip => RUBY_VERSION.to_f < 1.9 do
         expect(RSpec::Matchers.is_a_matcher?(BasicObject.new)).to eq(false)
       end
 

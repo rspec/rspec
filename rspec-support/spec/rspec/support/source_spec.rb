@@ -1,7 +1,7 @@
 require 'rspec/support/source'
 
 module RSpec::Support
-  RSpec.describe Source, :if => RSpec::Support::RubyFeatures.ripper_supported? do
+  RSpec.describe Source, :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
     subject(:source) do
       Source.new(source_string)
     end

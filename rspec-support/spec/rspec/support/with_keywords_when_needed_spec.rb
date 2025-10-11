@@ -26,19 +26,19 @@ module RSpec::Support
         run(klass, "value" => 42) { |arg| check_argument(arg["value"]) }
       end
 
-      it "will run a block with optional keyword arguments when none are provided", :if => kw_args_supported? do
+      it "will run a block with optional keyword arguments when none are provided", :skip => !kw_args_supported? do
         binding.eval(<<-CODE, __FILE__, __LINE__)
         run(klass, 42) { |arg, val: nil| check_argument(arg) }
         CODE
       end
 
-      it "will run a block with optional keyword arguments when they are provided", :if => required_kw_args_supported? do
+      it "will run a block with optional keyword arguments when they are provided", :skip => !required_kw_args_supported? do
         binding.eval(<<-CODE, __FILE__, __LINE__)
         run(klass, val: 42) { |val: nil| check_argument(val) }
         CODE
       end
 
-      it "will run a block with required keyword arguments", :if => required_kw_args_supported? do
+      it "will run a block with required keyword arguments", :skip => !required_kw_args_supported? do
         binding.eval(<<-CODE, __FILE__, __LINE__)
         run(klass, val: 42) { |val:| check_argument(val) }
         CODE
