@@ -1,5 +1,24 @@
 set -e
 
-if [ -d features ]; then
-  bundle exec cucumber --strict
-fi
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
+SCRIPT_DIR="${ROOT_DIR}/script"
+source $SCRIPT_DIR/functions.sh
+
+function run_features {
+  if [ -d features ]; then
+    if is_mri; then
+      bundle exec cucumber --strict
+    else
+      # force jRuby to use client mode JVM or a compilation mode thats as close as possible,
+      # idea taken from https://github.com/jruby/jruby/wiki/Improving-startup-time
+      #
+      # Note that we delay setting this until we run the cukes because we've seen
+      # spec failures in our spec suite due to problems with this mode.
+      export JAVA_OPTS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1'
+
+      bundle exec cucumber --strict
+    fi
+  fi
+}
+
+decide_what_to_run run_features $@
