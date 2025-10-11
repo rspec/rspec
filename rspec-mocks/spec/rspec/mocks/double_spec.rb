@@ -733,7 +733,7 @@ module RSpec
         end
       end
 
-      describe "#to_str", :unless => RUBY_VERSION == '1.9.2' do
+      describe "#to_str", :skip => RUBY_VERSION == '1.9.2' do
         it "should not respond to #to_str to avoid being coerced to strings by the runtime" do
           dbl = double("Foo")
           expect { dbl.to_str }.to raise_error(

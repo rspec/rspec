@@ -1,7 +1,7 @@
 require 'rspec/support/source/node'
 
 class RSpec::Support::Source
-  RSpec.describe Node, :if => RSpec::Support::RubyFeatures.ripper_supported? do
+  RSpec.describe Node, :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
     let(:root_node) do
       Node.new(sexp)
     end

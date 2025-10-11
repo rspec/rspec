@@ -133,7 +133,7 @@ module RSpec
         end
       end
 
-      context "stubbing with prepend", :if => Support::RubyFeatures.module_prepends_supported? do
+      context "stubbing with prepend", :skip => !Support::RubyFeatures.module_prepends_supported? do
         module ToBePrepended
           def value
             :"#{super}_prepended"

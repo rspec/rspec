@@ -142,7 +142,7 @@ RSpec.describe "expect(...).to be_predicate" do
     expect(object).to be_predicate(hash_a_like.new)
   end
 
-  it 'handles keyword arguments to the predicate', :if => RSpec::Support::RubyFeatures.required_kw_args_supported? do
+  it 'handles keyword arguments to the predicate', :skip => !RSpec::Support::RubyFeatures.required_kw_args_supported? do
     object = Object.new
     binding.eval(<<-CODE, __FILE__, __LINE__)
     def object.predicate?(returns:); returns; end
