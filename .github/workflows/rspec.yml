@@ -131,7 +131,7 @@ jobs:
       - run: ${{ matrix.container.post }}
       - run: bundle exec rspec
         working-directory: ${{ inputs.library }}
-      - run: [ -d "features" ] && bundle exec cucumber --strict
+      - run: script/run_cucumber_legacy
         working-directory: ${{ inputs.library }}
 
   windows:
