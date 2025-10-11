@@ -8,13 +8,13 @@ function run_specs_one_by_one {
   echo "Running each spec file, one-by-one..."
 
   for file in `find spec -iname '*_spec.rb'`; do
-    echo "Running $file"
+    echo "Running $PWD/$file"
     $ROOT_DIR/bin/rspec $file -b --format progress
   done
 }
 
 if is_mri; then
-  run_specs_one_by_one
+  decide_what_to_run run_specs_one_by_one $@
 else
   echo "Skipping the one by one specs on non-MRI rubies"
 fi
