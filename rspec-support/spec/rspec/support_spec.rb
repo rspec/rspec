@@ -97,17 +97,17 @@ module RSpec
           end
         end
 
-        it 'still works', :skip => !supports_rebinding_module_methods? do
+        it 'still works', :skip => RUBY_VERSION.to_f < 1.9 || !supports_rebinding_module_methods? do
           object = basic_class.new
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
         end
 
-        it 'works when `method` has been overridden', :skip => !supports_rebinding_module_methods? do
+        it 'works when `method` has been overridden', :skip => RUBY_VERSION.to_f < 1.9 || !supports_rebinding_module_methods? do
           object = basic_class_with_method_override.new
           expect(Support.method_handle_for(object, :foo).call).to eq :bar
         end
 
-        it 'allows `method` to be proxied', :skip => supports_rebinding_module_methods? do
+        it 'allows `method` to be proxied', :skip => RUBY_VERSION.to_f < 1.9 || supports_rebinding_module_methods? do
           object = basic_class_with_proxying.new
           expect(Support.method_handle_for(object, :reverse).call).to eq "oof"
         end
