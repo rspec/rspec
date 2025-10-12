@@ -360,6 +360,56 @@ module RSpec
         # rubocop:enable Lint/StructNewOverride
       end
 
+      shared_examples "handles stubbed #is_a? cleanly for a single instance" do
+        let(:klass) do
+          Class.new do
+            def call_stubbed_method
+              is_a?(self.class)
+            end
+          end
+        end
+
+        let(:object) { klass.new }
+
+        it "safely checks that the instance can be proxied" do
+          stubbed_answer = double("stubbed on an instance")
+          target.to receive(:is_a?).and_return(stubbed_answer)
+          expect(object.call_stubbed_method).to eq(stubbed_answer)
+        end
+      end
+
+      shared_examples "handles stubbed #is_a? cleanly for any_instance_of" do
+        let(:superclass) { Class.new }
+
+        let(:klass) do
+          Class.new(superclass) do
+            def call_stubbed_method
+              is_a?(self.class)
+            end
+          end
+        end
+
+        context "the class under test" do
+          let(:stubbed_class) { klass }
+
+          it "safely checks that the instance can be proxied" do
+            stubbed_answer = double("stubbed on the class under test")
+            target.to receive(:is_a?).and_return(stubbed_answer)
+            expect(klass.new.call_stubbed_method).to eq(stubbed_answer)
+          end
+        end
+
+        context "the parent of the class under test" do
+          let(:stubbed_class) { superclass }
+
+          it "safely checks that the instance can be proxied" do
+            stubbed_answer = double("stubbed on the superclass")
+            target.to receive(:is_a?).and_return(stubbed_answer)
+            expect(klass.new.call_stubbed_method).to eq(stubbed_answer)
+          end
+        end
+      end
+
       describe "allow(...).to receive" do
         it_behaves_like "an allowance" do
           let(:receiver) { double }
@@ -369,6 +419,9 @@ module RSpec
           let(:target) { allow(object) }
         end
         it_behaves_like "handles frozen objects cleanly" do
+          let(:target) { allow(object) }
+        end
+        it_behaves_like "handles stubbed #is_a? cleanly for a single instance" do
           let(:target) { allow(object) }
         end
 
@@ -435,6 +488,10 @@ module RSpec
         it_behaves_like "resets partial mocks of any instance cleanly" do
           let(:target) { allow_any_instance_of(klass) }
         end
+
+        it_behaves_like "handles stubbed #is_a? cleanly for any_instance_of" do
+          let(:target) { allow_any_instance_of(stubbed_class) }
+        end
       end
 
       describe "allow_any_instance_of(...).not_to receive" do
@@ -480,6 +537,9 @@ module RSpec
         end
         it_behaves_like "handles frozen objects cleanly" do
           let(:target) { expect(object) }
+        end
+        it_behaves_like "handles stubbed #is_a? cleanly for a single instance" do
+          let(:target) { allow(object) }
         end
 
         context "ordered with receive counts" do
@@ -579,6 +639,9 @@ module RSpec
         end
         it_behaves_like "resets partial mocks of any instance cleanly" do
           let(:target) { expect_any_instance_of(klass) }
+        end
+        it_behaves_like "handles stubbed #is_a? cleanly for any_instance_of" do
+          let(:target) { expect_any_instance_of(stubbed_class) }
         end
       end
 
