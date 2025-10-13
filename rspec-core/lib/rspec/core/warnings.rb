@@ -10,10 +10,13 @@ module RSpec
       def deprecate(deprecated, data={})
         return unless RSpec.configuration.issue_deprecation?
 
+        unless data.key?(:call_site)
+          data[:call_site] = CallerFilter.first_non_rspec_line
+        end
+
         RSpec.configuration.reporter.deprecation(
           {
-            :deprecated => deprecated,
-            :call_site => CallerFilter.first_non_rspec_line
+            :deprecated => deprecated
           }.merge(data)
         )
       end

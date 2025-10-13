@@ -234,7 +234,7 @@ module RSpec::Core
 
     describe '#exit_code' do
       let(:world) { World.new }
-      let(:config) { Configuration.new }
+      let(:config) { Configuration.new.tap { |c| c.order = :defined } }
       let(:runner) { Runner.new({}, config, world) }
 
       it 'defaults to 1' do

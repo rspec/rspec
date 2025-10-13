@@ -86,6 +86,8 @@ module RSpec
         setup(err, out)
         return @configuration.reporter.exit_early(exit_code) if RSpec.world.wants_to_quit
 
+        @configuration.issue_config_deprecations
+
         run_specs(@world.ordered_example_groups).tap do
           persist_example_statuses
         end

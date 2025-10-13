@@ -20,6 +20,10 @@ Feature: Custom deprecation stream
   Background:
     Given a file named "lib/foo.rb" with:
       """ruby
+      RSpec.configure do |c|
+        c.order = :defined
+      end
+
       class Foo
         def bar
           RSpec.deprecate "Foo#bar"
