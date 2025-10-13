@@ -1,7 +1,7 @@
 require 'rspec/core/drb'
 
 RSpec.describe RSpec::Core::DRbRunner, :isolated_directory => true, :isolated_home => true, :type => :drb, :skip => RUBY_PLATFORM == 'java' do
-  let(:config) { RSpec::Core::Configuration.new }
+  let(:config) { RSpec::Core::Configuration.new.tap { |c| c.order = :defined } }
   let(:out)    { StringIO.new }
   let(:err)    { StringIO.new }
 
@@ -67,6 +67,7 @@ RSpec.describe RSpec::Core::DRbRunner, :isolated_directory => true, :isolated_ho
       def self.run(argv, err, out)
         options = RSpec::Core::ConfigurationOptions.new(argv)
         config  = RSpec::Core::Configuration.new
+        config.order = :defined
         RSpec.configuration = config
         RSpec::Core::Runner.new(options, config).run(err, out)
       end
@@ -119,6 +120,7 @@ RSpec.describe RSpec::Core::DRbOptions, :isolated_directory => true, :isolated_h
 
     def drb_filter_manager_for(args)
       configuration = RSpec::Core::Configuration.new
+      configuration.order = :defined
       RSpec::Core::DRbRunner.new(config_options_object(*args), configuration).drb_argv
       configuration.filter_manager
     end
