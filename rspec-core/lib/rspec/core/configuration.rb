@@ -636,6 +636,16 @@ module RSpec
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
 
+      def issue_config_deprecations
+        unless ordering_manager.order_set?
+          RSpec.deprecate(
+            "Default order of :defined",
+            :replacement => "`config.order = :defined` or set any other order option",
+            :call_site => false
+          )
+        end
+      end
+
       # @private
       #
       # Used to set higher priority option values from the command line.

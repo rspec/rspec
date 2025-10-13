@@ -19,6 +19,14 @@ module RSpec::Core
       end
     end
 
+    describe '#issue_config_deprecations' do
+      it 'will issue warning if config has not had order set' do
+        expect(RSpec.configuration.reporter).to receive(:deprecation).
+          with(include(:deprecated => match(/Default order/), :call_site => eq(false)))
+        config.issue_config_deprecations
+      end
+    end
+
     describe '#on_example_group_definition' do
       before do
         RSpec.configure do |c|

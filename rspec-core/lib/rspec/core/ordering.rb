@@ -149,6 +149,11 @@ module RSpec
           @seed = rand(0xFFFF)
           @seed_forced = false
           @order_forced = false
+          @order_set = false
+        end
+
+        def order_set?
+          @order_set || @order_forced
         end
 
         def seed_used?
@@ -183,6 +188,7 @@ module RSpec
                 Delayed.new(ordering_registry, ordering_name)
               end
 
+            @order_set = true
             register_ordering(:global, strategy)
           end
         end

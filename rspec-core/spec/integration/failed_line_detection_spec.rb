@@ -75,7 +75,7 @@ RSpec.describe 'Failed line detection' do
       end
     "
 
-    run_command "./spec/default_config_spec.rb"
+    run_command "./spec/default_config_spec.rb --order defined"
 
     expect(
       last_cmd_stdout
@@ -92,6 +92,7 @@ RSpec.describe 'Failed line detection' do
       require './app/app_mod'
 
       RSpec.configure do |c|
+        c.order = :defined
         c.project_source_dirs = %w[ lib spec ]
       end
 

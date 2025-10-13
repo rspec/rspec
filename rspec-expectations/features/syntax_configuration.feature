@@ -81,6 +81,7 @@ Feature: Syntax Configuration
     Given a file named "spec/spec_helper.rb" with:
       """ruby
       RSpec.configure do |config|
+        config.order = :random
         config.expect_with :rspec do |expectations|
           expectations.syntax = [:should, :expect]
         end

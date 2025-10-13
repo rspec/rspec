@@ -5,6 +5,8 @@ RSpec.describe 'Filtering' do
 
   it 'prints a rerun command for shared examples in external files that works to rerun' do
     write_file "spec/support/shared_examples.rb", "
+      RSpec.configure { |c| c.order = :defined }
+
       RSpec.shared_examples 'with a failing example' do
         example { expect(1).to eq(2) } # failing
         example { expect(2).to eq(2) } # passing
@@ -112,6 +114,7 @@ RSpec.describe 'Filtering' do
       write_file_formatted 'spec/a_spec.rb', "
         RSpec.configure do |c|
           c.filter_run_excluding :slow
+          c.order = :defined
         end
 
         RSpec.describe 'A slow group', :slow do
@@ -130,13 +133,13 @@ RSpec.describe 'Filtering' do
       expect(last_cmd_stdout).to include("2 examples, 0 failures, 1 pending", "ex 3", "ex 5 (PENDING").
         and exclude("ex 1", "ex 2", "ex 4")
 
-      run_command "spec/a_spec.rb:5 -fd" # selecting 'A slow group'
+      run_command "spec/a_spec.rb:6 -fd" # selecting 'A slow group'
       expect(last_cmd_stdout).to include("2 examples, 0 failures", "ex 1", "ex 2").and exclude("ex 3", "ex 4", "ex 5")
 
-      run_command "spec/a_spec.rb:12 -fd" # selecting slow example
+      run_command "spec/a_spec.rb:13 -fd" # selecting slow example
       expect(last_cmd_stdout).to include("1 example, 0 failures", "ex 4").and exclude("ex 1", "ex 2", "ex 3", "ex 5")
 
-      run_command "spec/a_spec.rb:13 -fd" # selecting :skip => true example
+      run_command "spec/a_spec.rb:14 -fd" # selecting :skip => true example
       expect(last_cmd_stdout).to include("1 example, 0 failures, 1 pending", "ex 5 (PENDING").
         and exclude("ex 1", "ex 2", "ex 3", "ex 4")
     end
@@ -221,6 +224,8 @@ RSpec.describe 'Filtering' do
   context "passing example ids at the command line" do
     it "selects matching examples" do
       write_file_formatted "spec/file_1_spec.rb", "
+        RSpec.configure { |c| c.order = :defined }
+
         RSpec.describe 'File 1' do
           1.upto(3) do |i|
             example('ex ' + i.to_s) { expect(i).to be_odd }

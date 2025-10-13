@@ -24,6 +24,7 @@ module RSpec
         orig_example = RSpec.current_example
 
         RSpec.configuration = RSpec::Core::Configuration.new
+        RSpec.configuration.order = :defined
         RSpec.world         = RSpec::Core::World.new(RSpec.configuration)
 
         yield RSpec.configuration
