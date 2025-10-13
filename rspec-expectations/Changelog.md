@@ -16,6 +16,8 @@ Breaking Changes:
 * Remove deprecated `StartAndEndWith` matcher base class. (Phil Pirozhkov, rspec/rspec-expectations#1288)
 * Raise `ArgumentError` when a `nil` is passed as the first argument to `raise_error`.
   (Phil Pirozhkov, rspec/rspec-expectations#1389)
+* Remove deprecated `RSpec::Expectations::Config#warn_about_potential_false_positives`.
+  (Anthony Clark, Phil Pirozhkov, rspec/rspec#260)
 
 Enhancements:
 

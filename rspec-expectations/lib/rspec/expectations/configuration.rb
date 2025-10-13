@@ -93,25 +93,6 @@ module RSpec
         end
       end
 
-      # Configures whether RSpec will warn about matcher use which will
-      # potentially cause false positives in tests.
-      #
-      # @param [Boolean] boolean
-      # @deprecated Use {#on_potential_false_positives=} which supports :warn, :raise, and :nothing behaviors
-      def warn_about_potential_false_positives=(boolean)
-        RSpec.deprecate(
-          "warn_about_potential_false_positives=",
-          :replacement => "`on_potential_false_positives=` which supports :warn, :raise, and :nothing behaviors"
-        )
-        if boolean
-          self.on_potential_false_positives = :warn
-        elsif warn_about_potential_false_positives?
-          self.on_potential_false_positives = :nothing
-        else
-          # no-op, handler is something else
-        end
-      end
-
       # Configures what RSpec will do about matcher use which would potentially cause
       # false positives in tests. Defaults to `:warn` since this is generally the desired behavior,
       # but can also be set to `:raise` or `:nothing`.
@@ -149,18 +130,6 @@ module RSpec
 
       def strict_predicate_matchers?
         @strict_predicate_matchers
-      end
-
-      # Indicates whether RSpec will warn about matcher use which will
-      # potentially cause false positives in tests, generally you want to
-      # avoid such scenarios so this defaults to `true`.
-      # @deprecated Use {#on_potential_false_positives} which supports :warn, :raise, and :nothing behaviors
-      def warn_about_potential_false_positives?
-        RSpec.deprecate(
-          "warn_about_potential_false_positives?",
-          :replacement => "`on_potential_false_positives` which supports :warn, :raise, and :nothing behaviors"
-        )
-        on_potential_false_positives == :warn
       end
 
       # @private

@@ -57,13 +57,13 @@ RSpec.describe "expect { ... }.to raise_error" do
     end
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "can suppress the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect { raise }.to raise_error
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
+  it "can suppress the warning when configured to do so", :potential_false_positives do
     RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect { raise }.to raise_error
@@ -186,8 +186,8 @@ RSpec.describe "expect { ... }.not_to raise_error" do
       expect { "bees" }.not_to raise_error(RuntimeError)
     end
 
-    it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-      RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+    it "can suppress the warning when configured to do so", :potential_false_positives do
+      RSpec::Expectations.configuration.on_potential_false_positives = :nothing
       expect_no_warnings
       expect { "bees" }.not_to raise_error(RuntimeError)
     end
@@ -295,28 +295,28 @@ RSpec.describe "expect { ... }.to raise_error.with_message(message)" do
 end
 
 RSpec.describe "expect { ... }.not_to raise_error('message')" do
-  it "issues a warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = true
+  it "issues a warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :warn
     expect_warning_with_call_site __FILE__, __LINE__+1, /not_to raise_error\(message\)` risks false positives/
     expect { raise 'blarg' }.not_to raise_error('blah')
   end
 
-  it "supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "suppresses the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect { raise 'blarg' }.not_to raise_error('blah')
   end
 end
 
 RSpec.describe "expect { ... }.not_to raise_error(/message/)" do
-  it "issues a warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = true
+  it "issues a warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :warn
     expect_warning_with_call_site __FILE__, __LINE__+1, /not_to raise_error\(message\)` risks false positives/
     expect { raise 'blarg' }.not_to raise_error(/blah/)
   end
 
-  it "supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "suppresses the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect { raise 'blarg' }.not_to raise_error(/blah/)
   end
@@ -352,8 +352,8 @@ RSpec.describe "expect { ... }.not_to raise_error(NamedError)" do
     expect {}.not_to raise_error(NameError)
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "can suppress the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect {}.not_to raise_error(NameError)
   end
@@ -389,8 +389,8 @@ RSpec.describe "expect { ... }.not_to raise_error(NamedError, error_message) wit
     expect {}.not_to raise_error(RuntimeError, "example message")
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "can suppress the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect {}.not_to raise_error(RuntimeError, "example message")
   end
@@ -427,8 +427,8 @@ RSpec.describe "expect { ... }.not_to raise_error(NamedError, error_message) wit
     expect {}.not_to raise_error(RuntimeError, /ample mess/)
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "can suppress the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect {}.not_to raise_error(RuntimeError, /ample mess/)
   end
@@ -513,8 +513,8 @@ RSpec.describe "expect { ... }.not_to raise_error(NamedError, error_message) { |
     expect {}.not_to raise_error(RuntimeError, "example message") { |err| }
   end
 
-  it "can supresses the warning when configured to do so", :warn_about_potential_false_positives do
-    RSpec::Expectations.configuration.warn_about_potential_false_positives = false
+  it "can suppress the warning when configured to do so", :potential_false_positives do
+    RSpec::Expectations.configuration.on_potential_false_positives = :nothing
     expect_no_warnings
     expect {}.not_to raise_error(RuntimeError, "example message") { |err| }
   end
