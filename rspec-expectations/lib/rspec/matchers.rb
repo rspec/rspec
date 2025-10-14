@@ -697,7 +697,8 @@ module RSpec
     def match(expected)
       BuiltIn::Match.new(expected)
     end
-    alias_matcher :match_regex, :match
+    # @deprecated
+    alias_matcher :match_regex, :match, :deprecated => "`RSpec::Expectations::Matchers#match_regex`"
     alias_matcher :an_object_matching, :match
     alias_matcher :a_string_matching, :match
     alias_matcher :matching, :match

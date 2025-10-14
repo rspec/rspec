@@ -58,7 +58,15 @@ module RSpec
       # we still provide this constant until 4.0.
       # @deprecated Use StartOrEndWith instead.
       # @private
-      StartAndEndWith = StartOrEndWith
+      class StartAndEndWith < StartOrEndWith
+        def initialize(*args)
+          RSpec.deprecate(
+            "RSpec::Matchers::BuiltIn::StartAndEndWith",
+            :replacement => "RSpec::Matchers::BuiltIn::StartOrEndWith"
+          )
+          super
+        end
+      end
 
       # @api private
       # Provides the implementation for `start_with`.

@@ -394,19 +394,23 @@ module RSpec::Matchers::DSL
         include_context "isolate include_chain_clauses_in_custom_matcher_descriptions"
 
         context "without include_chain_clauses_in_custom_matcher_descriptions configured" do
-          before { RSpec::Expectations.configuration.include_chain_clauses_in_custom_matcher_descriptions = false }
-          let(:match) { matcher.and_smaller_than(10).and_divisible_by(3) }
+          before do
+            expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /include_chain_clauses_in_custom_matcher_descriptions/)
+            RSpec::Expectations.configuration.include_chain_clauses_in_custom_matcher_descriptions = false
+          end
+
+          let(:chained_matcher) { matcher.and_smaller_than(10).and_divisible_by(3) }
 
           it "provides a default description that does not include any of the chained matchers' descriptions" do
-            expect(match.description).to eq 'be bigger than 5'
+            expect(chained_matcher.description).to eq 'be bigger than 5'
           end
 
           it "provides a default positive expectation failure message that does not include any of the chained matchers' descriptions" do
-            expect { expect(8).to match }.to fail_with 'expected 8 to be bigger than 5'
+            expect { expect(8).to chained_matcher }.to fail_with 'expected 8 to be bigger than 5'
           end
 
           it "provides a default negative expectation failure message that does not include the any of the chained matchers's descriptions" do
-            expect { expect(9).to_not match }.to fail_with 'expected 9 not to be bigger than 5'
+            expect { expect(9).to_not chained_matcher }.to fail_with 'expected 9 not to be bigger than 5'
           end
         end
 
@@ -434,6 +438,7 @@ module RSpec::Matchers::DSL
         it 'only decides if to include the chained clauses at the time description is invoked' do
           matcher.and_divisible_by(3)
 
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /include_chain_clauses_in_custom_matcher_descriptions/)
           expect {
             RSpec::Expectations.configuration.include_chain_clauses_in_custom_matcher_descriptions = false
           }.to change { matcher.description }.
@@ -926,7 +931,10 @@ module RSpec::Matchers::DSL
 
         context "with include_chain_clauses_in_custom_matcher_descriptions configured to false" do
           include_context "isolate include_chain_clauses_in_custom_matcher_descriptions"
-          before { RSpec::Expectations.configuration.include_chain_clauses_in_custom_matcher_descriptions = false }
+          before do
+            expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /include_chain_clauses_in_custom_matcher_descriptions/)
+            RSpec::Expectations.configuration.include_chain_clauses_in_custom_matcher_descriptions = false
+          end
 
           it "provides a default description that does not include any of the chained matchers' descriptions" do
             expect(matcher.and_divisible_by(10).description).to eq 'be even and divisible by 10'
