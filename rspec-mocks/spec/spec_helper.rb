@@ -81,17 +81,23 @@ RSpec.configure do |config|
   config.suppress_deprecations do
     config.expose_dsl_globally = false
   end
-  config.mock_with :rspec
+
   config.color_mode = :automatic
   config.order = :random
 
   config.expect_with :rspec do |expectations|
-    expectations.syntax = :expect
+    config.suppress_deprecations do
+      expectations.syntax = :expect
+    end
   end
 
   config.mock_with :rspec do |mocks|
     $default_rspec_mocks_syntax = mocks.syntax
-    mocks.syntax = :expect
+    config.suppress_deprecations do
+      mocks.syntax = :expect
+    end
+    # This is being explictly set to silence the warning
+    mocks.verify_partial_doubles = false
   end
 
   old_verbose = nil
@@ -134,11 +140,15 @@ RSpec.shared_context "with syntax" do |syntax|
 
   before(:all) do
     orig_syntax = RSpec::Mocks.configuration.syntax
-    RSpec::Mocks.configuration.syntax = syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Mocks.configuration.syntax = syntax
+    end
   end
 
   after(:all) do
-    RSpec::Mocks.configuration.syntax = orig_syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Mocks.configuration.syntax = orig_syntax
+    end
   end
 end
 
@@ -146,7 +156,9 @@ RSpec.shared_context "with isolated configuration" do
   orig_configuration = nil
   before do
     orig_configuration = RSpec::Mocks.configuration
-    RSpec::Mocks.instance_variable_set(:@configuration, RSpec::Mocks::Configuration.new)
+    isolated_config = RSpec::Mocks::Configuration.new
+    isolated_config.verify_partial_doubles = false
+    RSpec::Mocks.instance_variable_set(:@configuration, isolated_config)
   end
 
   after do
@@ -173,6 +185,8 @@ RSpec.shared_context "with the default mocks syntax" do
   end
 
   after(:all) do
-    RSpec::Mocks.configuration.syntax = orig_syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Mocks.configuration.syntax = orig_syntax
+    end
   end
 end
