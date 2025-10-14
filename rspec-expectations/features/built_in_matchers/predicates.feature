@@ -50,12 +50,12 @@ Feature: Predicate matchers
   Scenario: Expecting `subject` to `be_zero` (based on Integer#zero?)
     Given a file named "be_zero_spec.rb" with:
       """ruby
-      RSpec.describe 0 do
-        it { is_expected.to be_zero }
+      RSpec.describe "Integer" do
+        it { expect(0).to be_zero }
       end
 
-      RSpec.describe 7 do
-        it { is_expected.to be_zero } # deliberate failure
+      RSpec.describe "Integer" do
+        it { expect(7).to be_zero } # deliberate failure
       end
       """
     When I run `rspec be_zero_spec.rb`
@@ -65,12 +65,12 @@ Feature: Predicate matchers
   Scenario: Expecting `subject` to not `be_empty` (based on Array#empty?)
     Given a file named "not_to_be_empty_spec.rb" with:
       """ruby
-      RSpec.describe [1, 2, 3] do
-        it { is_expected.not_to be_empty }
+      RSpec.describe "Array" do
+        it { expect([1, 2, 3]).not_to be_empty }
       end
 
-      RSpec.describe [] do
-        it { is_expected.not_to be_empty } # deliberate failure
+      RSpec.describe "Array" do
+        it { expect([]).not_to be_empty } # deliberate failure
       end
       """
     When I run `rspec not_to_be_empty_spec.rb`
@@ -125,7 +125,9 @@ Feature: Predicate matchers
          end
        end
 
-       RSpec.describe 12 do
+       RSpec.describe "Integer" do
+         subject(:number) { 12 }
+
          it { is_expected.to be_multiple_of(3) }
          it { is_expected.not_to be_multiple_of(7) }
 

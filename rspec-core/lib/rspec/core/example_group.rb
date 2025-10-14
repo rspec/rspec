@@ -146,6 +146,10 @@ module RSpec
         idempotently_define_singleton_method(name) do |*all_args, &block|
           desc, *args = *all_args
 
+          unless NilClass === desc || String === desc
+            raise ArgumentError, "Examples must be described with a string, got: `#{desc.inspect}`"
+          end
+
           options = Metadata.build_hash_from(args)
           options.update(:skip => RSpec::Core::Pending::NOT_YET_IMPLEMENTED) unless block
           options.update(extra_options)
@@ -269,6 +273,10 @@ module RSpec
             combined_metadata = metadata.dup
             combined_metadata.merge!(args.pop) if args.last.is_a? Hash
             args << combined_metadata
+
+            unless NilClass === description || String === description || Class === description || Module === description
+              raise ArgumentError, "Example groups must be described with a string, got: `#{description.inspect}`"
+            end
 
             subclass(self, description, args, registration_collection, &example_group_block)
           ensure
