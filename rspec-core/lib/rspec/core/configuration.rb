@@ -2402,7 +2402,10 @@ module RSpec
         return unless disable_monkey_patching && rspec_mocks_loaded?
 
         RSpec::Mocks.configuration.tap do |config|
-          config.syntax = :expect
+          suppress_deprecations do
+            config.syntax = :expect
+          end
+
           config.patch_marshal_to_support_partial_doubles = false
         end
       end

@@ -39,6 +39,7 @@ module RSpec
           # config setting, which makes it hard to get at the original
           # default value. in spec_helper.rb we store the default value
           # in $default_rspec_mocks_syntax so we can use it here.
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /syntax=/)
           RSpec::Mocks.configuration.syntax = $default_rspec_mocks_syntax
           expect(dbl).to respond_to(*should_methods)
           expect(self).to respond_to(*expect_methods)
@@ -130,7 +131,9 @@ module RSpec
       describe "configuring rspec-mocks directly" do
         it_behaves_like "configuring the syntax" do
           def configure_syntax(syntax)
-            RSpec::Mocks.configuration.syntax = syntax
+            RSpec.configuration.suppress_deprecations do
+              RSpec::Mocks.configuration.syntax = syntax
+            end
           end
 
           def configured_syntax
@@ -148,7 +151,9 @@ module RSpec
           def configure_syntax(syntax)
             RSpec.configure do |rspec|
               rspec.mock_with :rspec do |c|
-                c.syntax = syntax
+                rspec.suppress_deprecations do
+                  c.syntax = syntax
+                end
               end
             end
           end
@@ -182,6 +187,14 @@ module RSpec
             config.when_declaring_verifying_double(&block2)
             expect(config.verifying_double_callbacks).to eq [block, block2]
           end
+        end
+      end
+
+      describe "#verify_partial_doubles?" do
+        it "will issue a deprecation if config value hasn't been explicitly set" do
+          config = RSpec::Mocks::Configuration.new
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Default.*verify_partial_doubles/)
+          config.verify_partial_doubles?
         end
       end
     end

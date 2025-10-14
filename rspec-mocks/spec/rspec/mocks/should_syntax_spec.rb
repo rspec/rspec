@@ -460,23 +460,20 @@ RSpec.context "with default syntax configuration" do
   orig_syntax = nil
 
   before(:all) { orig_syntax = RSpec::Mocks.configuration.syntax }
-  after(:all)  { RSpec::Mocks.configuration.syntax = orig_syntax }
   before       { RSpec::Mocks.configuration.reset_syntaxes_to_default }
 
+  after(:all) do
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Mocks.configuration.syntax = orig_syntax
+    end
+  end
+
   if RSpec::Support::RubyFeatures.required_kw_args_supported?
-    let(:expected_arguments) {
-      [
-        /Using.*without explicitly enabling/,
-      ]
-    }
-    let(:expected_keywords) {
-      {:replacement => "the new `:expect` syntax or explicitly enable `:should`"}
-    }
     it "it warns about should once, regardless of how many times it is called" do
-      # Use eval to avoid syntax error on 1.8 and 1.9
-      eval("expect(RSpec).to receive(:deprecate).with(*expected_arguments, **expected_keywords)")
       o = Object.new
       o2 = Object.new
+
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /should_receive` from rspec-mocks/)
       o.should_receive(:bees)
       o2.should_receive(:bees)
 
@@ -485,34 +482,28 @@ RSpec.context "with default syntax configuration" do
     end
 
     it "warns about should not once, regardless of how many times it is called" do
-      # Use eval to avoid syntax error on 1.8 and 1.9
-      eval("expect(RSpec).to receive(:deprecate).with(*expected_arguments, **expected_keywords)")
       o = Object.new
       o2 = Object.new
+
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /should_not_receive` from rspec-mocks/)
       o.should_not_receive(:bees)
       o2.should_not_receive(:bees)
     end
 
     it "warns about stubbing once, regardless of how many times it is called" do
-      # Use eval to avoid syntax error on 1.8 and 1.9
-      eval("expect(RSpec).to receive(:deprecate).with(*expected_arguments, **expected_keywords)")
       o = Object.new
       o2 = Object.new
 
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /stub` from rspec-mocks/)
       o.stub(:faces)
       o2.stub(:faces)
     end
   else
-    let(:expected_arguments) {
-      [
-        /Using.*without explicitly enabling/,
-        {:replacement => "the new `:expect` syntax or explicitly enable `:should`"}
-      ]
-    }
     it "it warns about should once, regardless of how many times it is called" do
-      expect(RSpec).to receive(:deprecate).with(*expected_arguments)
       o = Object.new
       o2 = Object.new
+
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /should_receive` from rspec-mocks/)
       o.should_receive(:bees)
       o2.should_receive(:bees)
 
@@ -521,26 +512,26 @@ RSpec.context "with default syntax configuration" do
     end
 
     it "warns about should not once, regardless of how many times it is called" do
-      expect(RSpec).to receive(:deprecate).with(*expected_arguments)
       o = Object.new
       o2 = Object.new
+
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /should_not_receive` from rspec-mocks/)
       o.should_not_receive(:bees)
       o2.should_not_receive(:bees)
     end
 
     it "warns about stubbing once, regardless of how many times it is called" do
-      expect(RSpec).to receive(:deprecate).with(*expected_arguments)
       o = Object.new
       o2 = Object.new
 
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /stub` from rspec-mocks/)
       o.stub(:faces)
       o2.stub(:faces)
     end
   end
 
   it "warns about unstubbing once, regardless of how many times it is called" do
-    expect(RSpec).to receive(:deprecate).with(/Using.*without explicitly enabling/,
-      :replacement => "`allow(...).to receive(...).and_call_original` or explicitly enable `:should`")
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 7, /unstub` from rspec-mocks/)
     o = Object.new
     o2 = Object.new
 
@@ -552,7 +543,7 @@ RSpec.context "with default syntax configuration" do
   end
 
   it "doesn't warn about stubbing after a reset and setting should" do
-    expect(RSpec).not_to receive(:deprecate)
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /syntax=/)
     RSpec::Mocks.configuration.reset_syntaxes_to_default
     RSpec::Mocks.configuration.syntax = :should
     o = Object.new

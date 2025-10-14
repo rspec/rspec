@@ -143,6 +143,7 @@ module RSpec
       end
 
       it "uses reports nil in the error message" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /allow_message_expectations_on_nil/)
         allow_message_expectations_on_nil
 
         nil_var = nil
