@@ -1,4 +1,4 @@
 --order random
---color
+--force-color
 --warnings
 -r spec_helper
