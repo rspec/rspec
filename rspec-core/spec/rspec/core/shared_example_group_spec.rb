@@ -606,8 +606,9 @@ module RSpec
               expect(RSpec).to receive(:deprecate).with(
                 "Passing a block to `#{name}`",
                 :replacement =>
-                  "Use `it_behaves_like` instead, or place the block content " \
-                  "after the statement."
+                  "Either use `it_behaves_like` to wrap the block " \
+                  "contents in a context, or place the block content " \
+                  "within the parent context."
               )
 
               group = RSpec.describe("host group") do

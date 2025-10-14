@@ -356,8 +356,9 @@ module RSpec
           RSpec.deprecate(
             "Passing a block to `include_context`",
             :replacement =>
-              "Use `it_behaves_like` instead, or place the block content " \
-              "after the statement.")
+              "Either use `it_behaves_like` to wrap the block " \
+              "contents in a context, or place the block content " \
+              "within the parent context.")
         end
         find_and_eval_shared("context", name, caller.first, *args, &block)
       end
@@ -373,8 +374,9 @@ module RSpec
           RSpec.deprecate(
             "Passing a block to `include_examples`",
             :replacement =>
-              "Use `it_behaves_like` instead, or place the block content " \
-              "after the statement.")
+              "Either use `it_behaves_like` to wrap the block " \
+              "contents in a context, or place the block content " \
+              "within the parent context.")
         end
         find_and_eval_shared("examples", name, caller.first, *args, &block)
       end
