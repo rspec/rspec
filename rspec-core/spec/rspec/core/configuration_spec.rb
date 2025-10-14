@@ -2745,9 +2745,16 @@ module RSpec::Core
 
     describe '#warnings' do
       around do |example|
+        original_deprecated = nil
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          original_deprecated = ::Warning[:deprecated]
+        end
         original_setting = $VERBOSE
         example.run
         $VERBOSE = original_setting
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          ::Warning[:deprecated] = original_deprecated
+        end
       end
 
       it "sets verbose to true when true" do
@@ -2756,14 +2763,17 @@ module RSpec::Core
       end
 
       it "sets verbose to false when true" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warnings = false/)
         config.warnings = false
         expect($VERBOSE).to eq false
       end
 
       it 'returns the verbosity setting' do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warnings = true/)
         config.warnings = true
         expect(config.warnings?).to eq true
 
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warnings = false/)
         config.warnings = false
         expect(config.warnings?).to eq false
       end
@@ -2771,6 +2781,59 @@ module RSpec::Core
       it 'is loaded from config by #force' do
         config.force :warnings => true
         expect($VERBOSE).to eq true
+      end
+
+      it "is configured to nil by default" do
+        blank_config = Configuration.new
+        expect(blank_config.warnings).to eq nil
+      end
+
+      it "sets $VERBOSE and Warning[:deprecated] to true when :all" do
+        config.warnings = :all
+        expect($VERBOSE).to eq true
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          expect(::Warning[:deprecated]).to eq true
+        end
+      end
+
+      it "sets $VERBOSE and Warning[:deprecated] to false when :none" do
+        config.warnings = :none
+        expect($VERBOSE).to eq false
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          expect(::Warning[:deprecated]).to eq false
+        end
+      end
+
+      it "sets $VERBOSE to false but Warning[:deprecated] to true when :deprecations_only" do
+        config.warnings = :deprecations_only
+        expect($VERBOSE).to eq false
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          expect(::Warning[:deprecated]).to eq true
+        end
+      end
+
+      it "raises on unsupported warnings value" do
+        [:unknown].each do |unacceptable|
+          expect {
+            config.warnings = unacceptable
+          }.to raise_error(a_string_including("Unsupported value for `warnings` (#{unacceptable.inspect})"))
+        end
+      end
+
+      it 'returns the verbosity settings' do
+        deprecation_warnings_on = Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+
+        config.warnings = :all
+        expect(config.warnings?).to eq true
+        expect(config.deprecation_warnings?).to eq deprecation_warnings_on
+
+        config.warnings = :deprecations_only
+        expect(config.warnings?).to eq false
+        expect(config.deprecation_warnings?).to eq deprecation_warnings_on
+
+        config.warnings = :none
+        expect(config.warnings?).to eq false
+        expect(config.deprecation_warnings?).to eq false
       end
     end
 

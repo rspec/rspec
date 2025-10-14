@@ -630,6 +630,7 @@ module RSpec
         @world = World::Null
         @shared_context_metadata_behavior = :trigger_inclusion
         @pending_failure_output = :full
+        @warnings = nil
 
         define_built_in_hooks
       end
@@ -1828,10 +1829,63 @@ module RSpec
       # @private
       delegate_to_ordering_manager :seed_used?, :ordering_registry
 
-      # Set Ruby warnings on or off.
+      # Set Ruby warnings. `:deprecations_only` is recommended, but may be too
+      # noisy due to dependencies.
+      # Can be set to `:all` or `:none` to show all warnings or none of them.
+      # rubocop:disable Metrics/CyclomaticComplexity
       def warnings=(value)
-        $VERBOSE = !!value
+        if TrueClass === value || FalseClass === value
+          RSpec.deprecate(
+            "RSpec::Core::Configuration#warnings = #{value}",
+            :replacement => "`warnings = #{value ? ":all" : ":none"}`"
+          )
+        end
+
+        case value
+        when :none, false
+          @warnings = :none
+          $VERBOSE = false
+          if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+            # :nocov:
+            ::Warning[:deprecated] = false
+            # :nocov:
+          end
+        when :all, true
+          @warnings = :all
+          $VERBOSE = true
+          if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+            # :nocov:
+            ::Warning[:deprecated] = true
+            # :nocov:
+          end
+        when :deprecations_only
+          @warnings = :deprecations_only
+          $VERBOSE = false
+          if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+            # :nocov:
+            ::Warning[:deprecated] = true
+            # :nocov:
+          end
+        else
+          raise "Unsupported value for `warnings` (#{value.inspect}). " \
+                "Only `:none`, `:all` and `:deprecations_only` are supported."
+        end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
+
+      # @return [Boolean] Whether or not ruby deprecations are enabled.
+      def deprecation_warnings?
+        # :nocov:
+        if Object.const_defined?(:Warning) && Warning.respond_to?(:[]=)
+          ::Warning[:deprecated]
+        else
+          false
+        end
+        # :nocov:
+      end
+
+      # @return [Symbol] The configured warning level
+      attr_reader :warnings
 
       # @return [Boolean] Whether or not ruby warnings are enabled.
       def warnings?
