@@ -9,7 +9,7 @@ function run_specs_one_by_one {
 
   for file in `find spec -iname '*_spec.rb'`; do
     echo "Running $PWD/$file"
-    $ROOT_DIR/bin/rspec $file -b --format progress
+    $ROOT_DIR/bin/rspec $file -b --format progress $@
   done
 }
 

@@ -7,7 +7,7 @@ source $SCRIPT_DIR/functions.sh
 function run_features {
   if [ -d features ]; then
     if is_mri; then
-      bundle exec cucumber --strict
+      bundle exec cucumber --strict $@
     else
       # force jRuby to use client mode JVM or a compilation mode thats as close as possible,
       # idea taken from https://github.com/jruby/jruby/wiki/Improving-startup-time
@@ -16,7 +16,7 @@ function run_features {
       # spec failures in our spec suite due to problems with this mode.
       export JAVA_OPTS='-client -XX:+TieredCompilation -XX:TieredStopAtLevel=1'
 
-      bundle exec cucumber --strict
+      bundle exec cucumber --strict $@
     fi
   fi
 }
