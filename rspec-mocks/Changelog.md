@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.5...3-13-maintenance)
 
+Bug Fixes:
+
+* Work around possible infinite loop when stubbing `is_a?`. (Erin Paget, rspec/rspec#265)
+
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.4...rspec-mocks-v3.13.5)
 

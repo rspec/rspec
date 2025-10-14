@@ -32,7 +32,7 @@ module RSpec
 
       # @private
       def ensure_can_be_proxied!(object)
-        return unless object.is_a?(Symbol)
+        return unless Symbol === object
 
         msg = "Cannot proxy frozen objects. Symbols such as #{object} cannot be mocked or stubbed."
         raise ArgumentError, msg
