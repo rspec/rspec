@@ -99,11 +99,26 @@ module RSpec
         end
 
         def predicate_matches?(value=true)
-          if RSpec::Expectations.configuration.strict_predicate_matchers?
-            value == predicate_result
-          else
-            value == !!predicate_result
+          current_predicate_result = predicate_result
+
+          strict_result = (value == current_predicate_result)
+
+          return strict_result if RSpec::Expectations.configuration.strict_predicate_matchers?
+
+          truthy_result = (value == !!current_predicate_result)
+
+          return truthy_result if RSpec::Expectations.configuration.strict_predicate_matchers_set_manually?
+
+          if truthy_result != strict_result
+            RSpec.deprecate(
+              "`#{predicate_method_name}` did not return a boolean result",
+              :replacement =>
+                "`#{value ? "be_truthy" : "be_falsey"}` or set " \
+                "`strict_predicate_matchers = false` for RSpec::Expectations::Configuration"
+            )
           end
+
+          truthy_result
         end
 
         def root
@@ -170,7 +185,15 @@ module RSpec
         end
 
         def predicate_method_name
-          actual.respond_to?(predicate) ? predicate : present_tense_predicate
+          if actual.respond_to?(predicate)
+            predicate
+          else
+            RSpec.deprecate(
+              "`be_#{root}` checking `#{present_tense_predicate}` as a fallback is being removed in RSpec 4 and",
+              :replacement => "`be_#{root}s` or change your method name to `#{predicate}`"
+            )
+            present_tense_predicate
+          end
         end
 
         def failure_to_respond_explanation

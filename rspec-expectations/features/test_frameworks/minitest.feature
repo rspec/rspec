@@ -109,3 +109,27 @@ Feature: Minitest integration
       And the output should contain "expected ZeroDivisionError but nothing was raised"
       And the output should contain "Got 2 failures from failure aggregation block"
       And the output should contain "Expected [1, 2] to be empty?"
+
+  Scenario: Use rspec/expectations with minitest/spec and the deprecated should syntax
+    Given a file named "rspec_expectations_spec.rb" with:
+      """ruby
+      require 'minitest/autorun'
+      require 'minitest/spec'
+      require 'rspec/expectations/minitest_integration'
+
+      RSpec::Matchers.configuration.syntax = [:should]
+
+      describe "Using RSpec::Expectations with Minitest::Spec" do
+        it 'passes an expectation' do
+          (1 + 3).should eq 4
+        end
+
+        it 'fails an expectation' do
+          [1, 2].should be_empty
+        end
+      end
+      """
+     When I run `ruby rspec_expectations_spec.rb`
+     Then the output should contain "2 runs, 0 assertions, 1 failures, 0 errors"
+      And the output should contain "expected `[1, 2].empty?` to be truthy, got false"
+      And the output should contain "syntax= is deprecated"

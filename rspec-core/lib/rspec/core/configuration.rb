@@ -2410,7 +2410,9 @@ module RSpec
       def conditionally_disable_expectations_monkey_patching
         return unless disable_monkey_patching && rspec_expectations_loaded?
 
-        RSpec::Expectations.configuration.syntax = :expect
+        suppress_deprecations do
+          RSpec::Expectations.configuration.syntax = :expect
+        end
       end
 
       def rspec_mocks_loaded?

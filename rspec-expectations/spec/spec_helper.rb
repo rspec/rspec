@@ -81,7 +81,9 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |expectations|
     $default_expectation_syntax = expectations.syntax # rubocop:disable Style/GlobalVars
-    expectations.syntax = :expect
+    config.suppress_deprecations do
+      expectations.syntax = :expect
+    end
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
     expectations.strict_predicate_matchers = true
   end
@@ -107,11 +109,15 @@ RSpec.shared_context "with #should enabled", :uses_should do
 
   before(:all) do
     orig_syntax = RSpec::Matchers.configuration.syntax
-    RSpec::Matchers.configuration.syntax = [:expect, :should]
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Matchers.configuration.syntax = [:expect, :should]
+    end
   end
 
   after(:context) do
-    RSpec::Matchers.configuration.syntax = orig_syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Matchers.configuration.syntax = orig_syntax
+    end
   end
 end
 
@@ -124,9 +130,10 @@ RSpec.shared_context "with the default expectation syntax" do
   end
 
   after(:context) do
-    RSpec::Matchers.configuration.syntax = orig_syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Matchers.configuration.syntax = orig_syntax
+    end
   end
-
 end
 
 RSpec.shared_context "with #should exclusively enabled", :uses_only_should do
@@ -134,11 +141,15 @@ RSpec.shared_context "with #should exclusively enabled", :uses_only_should do
 
   before(:context) do
     orig_syntax = RSpec::Matchers.configuration.syntax
-    RSpec::Matchers.configuration.syntax = :should
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Matchers.configuration.syntax = :should
+    end
   end
 
   after(:context) do
-    RSpec::Matchers.configuration.syntax = orig_syntax
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Matchers.configuration.syntax = orig_syntax
+    end
   end
 end
 
@@ -151,9 +162,16 @@ RSpec.shared_context "isolate include_chain_clauses_in_custom_matcher_descriptio
 end
 
 RSpec.shared_context "with warn_about_potential_false_positives set to false", :warn_about_potential_false_positives do
-  original_value = RSpec::Expectations.configuration.warn_about_potential_false_positives?
+  original_value =
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Expectations.configuration.warn_about_potential_false_positives?
+    end
 
-  after(:context)  { RSpec::Expectations.configuration.warn_about_potential_false_positives = original_value }
+  after(:context)  do
+    RSpec.configuration.suppress_deprecations do
+      RSpec::Expectations.configuration.warn_about_potential_false_positives = original_value
+    end
+  end
 end
 
 module MinitestIntegration

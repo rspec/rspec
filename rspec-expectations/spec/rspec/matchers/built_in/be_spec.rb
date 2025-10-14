@@ -31,7 +31,14 @@ RSpec.describe "expect(...).to be_predicate" do
   end
 
   it "passes when actual returns true for :predicates? (present tense)" do
-    actual = double("actual", :exists? => true, :exist? => true)
+    actual = double("actual", :exists? => true)
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
+    expect(actual).to be_exist
+  end
+
+  it "prints a deprecation warning for present tense fallback" do
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /`be_exist` checking `exists\?` as a fallback/)
+    actual = double("actual", :exists? => true)
     expect(actual).to be_exist
   end
 
@@ -162,6 +169,7 @@ RSpec.describe "expect(...).to be_predicate" do
     mouth = Object.new
     def mouth.frowns?(return_val); return_val; end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth).to be_frown(true)
   end
 
@@ -204,6 +212,7 @@ RSpec.describe "expect(...).to be_predicate" do
   it "fails on error other than NameError (with the present tense predicate)" do
     actual = double
     expect(actual).to receive(:foos?).and_raise("aaaah")
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 2)
     expect {
       expect(actual).to be_foo
     }.to raise_error(/aaaah/)
@@ -277,6 +286,35 @@ RSpec.describe "expect(...).not_to be_predicate" do
 
     it "passes when actual returns nil for :sym?" do
       actual = double("actual", :happy? => nil)
+      expect(actual).not_to be_happy
+    end
+
+    it "shows actual comparison made when it fails" do
+      actual = double("actual", :happy? => 42)
+      expect {
+        expect(actual).not_to be_happy
+      }.to fail_with("expected `#{actual.inspect}.happy?` to be falsey, got 42")
+    end
+  end
+
+  context "when strict_predicate_matchers is not set it behaves like it was set to false" do
+    # rubocop:disable Style/RedundantBegin
+    around do |example|
+      begin
+        orig_config  = RSpec::Expectations.configuration
+
+        RSpec::Expectations.configuration = RSpec::Expectations::Configuration.new
+
+        example.run
+      ensure
+        RSpec::Expectations.configuration = orig_config
+      end
+    end
+    # rubocop:enable Style/RedundantBegin
+
+    it "passes when actual returns nil for :sym?" do
+      actual = double("actual", :happy? => nil)
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /did not return a boolean result/)
       expect(actual).not_to be_happy
     end
 
@@ -376,7 +414,9 @@ RSpec.describe "expect(...).to be_predicate(&block)" do
     mouth = Object.new
     def mouth.frowns?; yield; end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth).to be_frown { true }
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth).not_to be_frown { false }
   end
 
@@ -394,10 +434,12 @@ RSpec.describe "expect(...).to be_predicate(&block)" do
       false
     end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth2).to be_frown do
       true
     end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth2).not_to be_frown do
       false
     end
@@ -417,10 +459,12 @@ RSpec.describe "expect(...).to be_predicate(&block)" do
       true
     end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth2).to be_frown { true } do
       false
     end
 
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
     expect(mouth2).not_to be_frown { false } do
       true
     end
