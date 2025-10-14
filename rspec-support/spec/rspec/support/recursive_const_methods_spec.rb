@@ -33,7 +33,9 @@ module RSpec
         end
 
         it 'does not blow up on buggy classes that raise weird errors on `to_str`' do
-          allow(Foo::Bar).to receive(:to_str).and_raise("boom!")
+          without_partial_double_verification do
+            allow(Foo::Bar).to receive(:to_str).and_raise("boom!")
+          end
           const, _ = recursive_const_defined?('::RSpec::Support::Foo::Bar::VAL')
 
           expect(const).to eq(10)
