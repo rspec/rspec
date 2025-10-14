@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...3-99-maintenance)
 
+Deprecations:
+
+* Add RSpec 4 deprecation warnings. (Benoit Tigeot, Jon Rowe, Phil Pirozhkov, rspec/rspec-expectations#1301, rspec/rspec#124)
+
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
 

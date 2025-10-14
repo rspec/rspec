@@ -4,6 +4,42 @@ RSpec.describe "expect(...).to have_sym(*args)" do
     let(:matcher) { have_key(:a) }
   end
 
+  context "when strict_predicate_matchers is not set it behaves like it was set to false" do
+    # rubocop:disable Style/RedundantBegin
+    around do |example|
+      begin
+        orig_config  = RSpec::Expectations.configuration
+
+        RSpec::Expectations.configuration = RSpec::Expectations::Configuration.new
+
+        example.run
+      ensure
+        RSpec::Expectations.configuration = orig_config
+      end
+    end
+    # rubocop:enable Style/RedundantBegin
+
+    it "passes if #has_sym?(*args) returns truthy" do
+      actual = double("actual", :has_foo? => 42)
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /did not return a boolean result/)
+      expect(actual).to have_foo
+    end
+
+    it "allows dynamic matchers to pass for supplied methods on spies" do
+      thing = spy("thing", :has_furg? => 42)
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /did not return a boolean result/)
+      expect(thing).to have_furg(:furg)
+    end
+
+    it "does not allow dynamic matchers to pass for inferred methods on spies" do
+      thing = spy("thing")
+      expect {
+        expect(thing).to have_furg(:foo)
+      }.to fail
+      expect(thing).not_to have_received(:furg?)
+    end
+  end
+
   it "passes if #has_sym?(*args) returns true" do
     expect({ :a => "A" }).to have_key(:a)
   end
@@ -157,6 +193,42 @@ RSpec.describe "expect(...).not_to have_sym(*args)" do
 
     it "passes if #has_sym?(*args) returns nil" do
       actual = double("actual", :has_foo? => nil)
+      expect(actual).not_to have_foo
+    end
+
+    it "allows dynamic matchers to pass for supplied methods on spies" do
+      thing = spy("thing", :furg? => true)
+      expect(thing).to be_furg(:foo)
+      expect(thing).to have_received(:furg?).with(:foo)
+    end
+
+    it "does not allow dynamic matchers to pass for inferred methods on spies" do
+      thing = spy("thing")
+      expect {
+        expect(thing).to be_furg(:foo)
+      }.to fail
+      expect(thing).not_to have_received(:furg?)
+    end
+  end
+
+  context "when strict_predicate_matchers is not set it behaves like it was set to false" do
+    # rubocop:disable Style/RedundantBegin
+    around do |example|
+      begin
+        orig_config  = RSpec::Expectations.configuration
+
+        RSpec::Expectations.configuration = RSpec::Expectations::Configuration.new
+
+        example.run
+      ensure
+        RSpec::Expectations.configuration = orig_config
+      end
+    end
+    # rubocop:enable Style/RedundantBegin
+
+    it "passes if #has_sym?(*args) returns nil" do
+      actual = double("actual", :has_foo? => nil)
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /did not return a boolean result/)
       expect(actual).not_to have_foo
     end
 

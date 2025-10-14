@@ -1,4 +1,22 @@
 RSpec.describe "expect(...).to start_with" do
+  it "has a deprecated old constant" do
+    require 'rspec/matchers/built_in/start_or_end_with'
+
+    deprecated_matcher =
+      Class.new(RSpec::Matchers::BuiltIn::StartAndEndWith) do
+        def subset_matches?
+          values_match?(expected, actual[0, expected.length])
+        end
+
+        def element_matches?
+          values_match?(expected, actual[0])
+        end
+      end
+
+    expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /StartAndEndWith/)
+    expect("abd").to deprecated_matcher.new("ab")
+  end
+
   it_behaves_like "an RSpec value matcher", :valid_value => "ab", :invalid_value => "bc" do
     let(:matcher) { start_with("a") }
   end

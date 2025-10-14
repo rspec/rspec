@@ -36,6 +36,10 @@ module RSpec
         klass = options.fetch(:klass) { AliasedMatcher }
 
         define_method(new_name) do |*args, &block|
+          if options[:deprecated]
+            RSpec.deprecate(options[:deprecated], :replacement => "`#{old_name}`")
+          end
+
           matcher = __send__(old_name, *args, &block)
           matcher.matcher_name = new_name if matcher.respond_to?(:matcher_name=)
           klass.new(matcher, description_override)

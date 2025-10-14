@@ -28,7 +28,7 @@ module RSpec
 
       def initialize
         @on_potential_false_positives = :warn
-        @strict_predicate_matchers = false
+        @strict_predicate_matchers = nil
       end
 
       # Configures the supported syntax.
@@ -44,6 +44,10 @@ module RSpec
       #     end
       #   end
       def syntax=(values)
+        RSpec.deprecate(
+          "RSpec::Expectations::Configuration#syntax=",
+          :replacement => "the expect syntax, which is the only option in RSpec 4"
+        )
         if Array(values).include?(:expect)
           Expectations::Syntax.enable_expect
         else
@@ -141,8 +145,19 @@ module RSpec
 
       # Sets if custom matcher descriptions and failure messages
       # should include clauses from methods defined using `chain`.
+      # @deprecated
       # @param value [Boolean]
-      attr_writer :include_chain_clauses_in_custom_matcher_descriptions
+      def include_chain_clauses_in_custom_matcher_descriptions=(value)
+        unless value
+          RSpec.deprecate(
+            "RSpec::Expectations::Configuration#include_chain_clauses_in_custom_matcher_descriptions " \
+            "option will be removed in RSpec 4, and will default to true"
+          )
+        end
+        @include_chain_clauses_in_custom_matcher_descriptions = value
+      end
+
+      attr_reader :include_chain_clauses_in_custom_matcher_descriptions
 
       # Indicates whether or not custom matcher descriptions and failure messages
       # should include clauses from methods defined using `chain`. It is
@@ -153,7 +168,8 @@ module RSpec
 
       # @private
       def reset_syntaxes_to_default
-        self.syntax = [:should, :expect]
+        RSpec::Expectations::Syntax.enable_expect
+        RSpec::Expectations::Syntax.enable_should
         RSpec::Expectations::Syntax.warn_about_should!
       end
 
@@ -170,10 +186,15 @@ module RSpec
       # potentially cause false positives in tests.
       #
       # @param [Boolean] boolean
+      # @deprecated Use {#on_potential_false_positives=} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives=(boolean)
-        if boolean
+        RSpec.deprecate(
+          "RSpec::Expectations::Configuration#warn_about_potential_false_positives=",
+          :replacement => "`on_potential_false_positives=` which supports :warn, :raise, and :nothing behaviors"
+        )
+        if true === boolean
           self.on_potential_false_positives = :warn
-        elsif warn_about_potential_false_positives?
+        elsif false === boolean
           self.on_potential_false_positives = :nothing
         else
           # no-op, handler is something else
@@ -216,13 +237,24 @@ module RSpec
       end
 
       def strict_predicate_matchers?
-        @strict_predicate_matchers
+        !!@strict_predicate_matchers
+      end
+
+      # @private
+      # Used to indicate if strict_predicate_matchers has been set manually
+      def strict_predicate_matchers_set_manually?
+        !@strict_predicate_matchers.nil?
       end
 
       # Indicates whether RSpec will warn about matcher use which will
       # potentially cause false positives in tests, generally you want to
       # avoid such scenarios so this defaults to `true`.
+      # @deprecated Use {#on_potential_false_positives} which supports :warn, :raise, and :nothing behaviors
       def warn_about_potential_false_positives?
+        RSpec.deprecate(
+          "RSpec::Expectations::Configuration#warn_about_potential_false_positives?",
+          :replacement => "`on_potential_false_positives` == :warn (or other subset of :warn, :raise, and :nothing behaviors)"
+        )
         on_potential_false_positives == :warn
       end
 
@@ -236,6 +268,11 @@ module RSpec
     # @return [RSpec::Expectations::Configuration] the configuration object
     def self.configuration
       @configuration ||= Configuration.new
+    end
+
+    # @private
+    def self.configuration=(config)
+      @configuration = config
     end
 
     # set default syntax

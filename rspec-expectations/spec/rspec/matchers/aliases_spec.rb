@@ -276,7 +276,8 @@ module RSpec
       ).with_description('an object matching /foo/')
     end
 
-    specify do
+    it 'prints a deprecation warning for `match_regex`', :skip => RSpec::Support::Ruby.jruby? do
+      expect_deprecation_with_call_site(__FILE__, __LINE__ + 2, /match_regex/)
       expect(
         match_regex(/foo/)
       ).to be_aliased_to(

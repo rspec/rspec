@@ -68,12 +68,16 @@ RSpec.shared_examples "an RSpec block-only matcher" do |*options|
 
   it 'fails gracefully when given a value' do
     expect {
-      expect(3).to matcher
+      RSpec.configuration.suppress_deprecations do
+        expect(3).to matcher
+      end
     }.to fail_with(/was not( given)? a block/)
 
     unless options[:disallows_negation]
       expect {
-        expect(3).not_to matcher
+        RSpec.configuration.suppress_deprecations do
+          expect(3).not_to matcher
+        end
       }.to fail_with(/was not( given)? a block/)
     end
   end

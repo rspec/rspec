@@ -82,8 +82,15 @@ module RSpec
 
         it "can be set back to false" do
           config.include_chain_clauses_in_custom_matcher_descriptions = true
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /include_chain_clauses_in_custom_matcher_descriptions.*will default to true/)
           config.include_chain_clauses_in_custom_matcher_descriptions = false
           expect(config.include_chain_clauses_in_custom_matcher_descriptions?).to be false
+        end
+
+        it "prints a deprecation warning" do
+          config.include_chain_clauses_in_custom_matcher_descriptions = true
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /include_chain_clauses_in_custom_matcher_descriptions.*will default to true/)
+          config.include_chain_clauses_in_custom_matcher_descriptions = false
         end
       end
 
@@ -110,24 +117,38 @@ module RSpec
       end
 
       describe "#warn_about_potential_false_positives?" do
+        it "is deprecated" do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives\?/)
+          config.warn_about_potential_false_positives?
+        end
+
         it "returns true when on_potential_false_positives is :warn" do
           config.on_potential_false_positives = :warn
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives\?/)
           expect(config.warn_about_potential_false_positives?).to be true
         end
 
         it "returns false when on_potential_false_positives is not :warn" do
           config.on_potential_false_positives = :nothing
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives\?/)
           expect(config.warn_about_potential_false_positives?).to be false
         end
       end
 
       describe "#warn_about_potential_false_positives=" do
+        it "is deprecated" do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives=/)
+          config.warn_about_potential_false_positives = true
+        end
+
         it "sets on_potential_false_positives to :warn when true" do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives=/)
           config.warn_about_potential_false_positives = true
           expect(config.on_potential_false_positives).to eq(:warn)
         end
 
         it "sets on_potential_false_positives to :nothing when false" do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /warn_about_potential_false_positives=/)
           config.warn_about_potential_false_positives = false
           expect(config.on_potential_false_positives).to eq(:nothing)
         end
@@ -208,30 +229,37 @@ module RSpec
           before { configure_default_syntax }
 
           it "warns when the should syntax is called by default" do
-            expected_arguments = [
-              /Using.*without explicitly enabling/,
-              { :replacement => "the new `:expect` syntax or explicitly enable `:should` with `config.expect_with(:rspec) { |c| c.syntax = :should }`" }
-            ]
+            expected_arguments = [/`:should` syntax/, { :replacement => "the `:expect` syntax" }]
 
-            expect(RSpec).to receive(:deprecate).with(*expected_arguments)
-            3.should eq(3)
+            RSpec::Mocks.with_temporary_scope do
+              expect(RSpec).to receive(:deprecate).with(*expected_arguments)
+              3.should eq(3)
+            end
           end
 
           it "includes the call site in the deprecation warning by default" do
-            expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
-            3.should eq(3)
+            RSpec::Mocks.with_temporary_scope do
+              expect_deprecation_with_call_site(__FILE__, __LINE__ + 1)
+              3.should eq(3)
+            end
           end
 
           it "does not warn when only the should syntax is explicitly configured" do
             configure_syntax(:should)
-            RSpec.should_not receive(:deprecate)
-            3.should eq(3)
+
+            RSpec::Mocks.with_temporary_scope do
+              RSpec.should_not receive(:deprecate)
+              3.should eq(3)
+            end
           end
 
           it "does not warn when both the should and expect syntaxes are explicitly configured" do
             configure_syntax([:should, :expect])
-            expect(RSpec).not_to receive(:deprecate)
-            3.should eq(3)
+
+            RSpec::Mocks.with_temporary_scope do
+              expect(RSpec).not_to receive(:deprecate)
+              3.should eq(3)
+            end
           end
         end
 
@@ -263,7 +291,9 @@ module RSpec
       describe "configuring rspec-expectations directly" do
         it_behaves_like "configuring the expectation syntax" do
           def configure_syntax(syntax)
-            RSpec::Matchers.configuration.syntax = syntax
+            RSpec.configuration.suppress_deprecations do
+              RSpec::Matchers.configuration.syntax = syntax
+            end
           end
 
           def configured_syntax
@@ -276,8 +306,10 @@ module RSpec
         it_behaves_like "configuring the expectation syntax" do
           def configure_syntax(syntax)
             RSpec.configure do |rspec|
-              rspec.expect_with :rspec do |c|
-                c.syntax = syntax
+              rspec.suppress_deprecations do
+                rspec.expect_with :rspec do |c|
+                  c.syntax = syntax
+                end
               end
             end
           end

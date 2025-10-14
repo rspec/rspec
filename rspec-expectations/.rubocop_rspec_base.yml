@@ -20,7 +20,7 @@ Style/CaseEquality:
 
 # Warns when the class is excessively long.
 Metrics/ClassLength:
-  Max: 100
+  Max: 130
 
 Style/CollectionMethods:
   PreferredMethods:
