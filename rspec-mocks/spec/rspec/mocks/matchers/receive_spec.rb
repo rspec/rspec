@@ -780,6 +780,9 @@ module RSpec
         end
 
         it 'can toggle the available syntax' do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 4, /syntax=/)
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 5, /syntax=/)
+
           expect(framework.new).to respond_to(:expect)
           RSpec::Mocks.configuration.syntax = :should
           expect(framework.new).not_to respond_to(:expect)
@@ -787,7 +790,11 @@ module RSpec
           expect(framework.new).to respond_to(:expect)
         end
 
-        after { RSpec::Mocks.configuration.syntax = :expect }
+        after do
+          RSpec.configuration.suppress_deprecations do
+            RSpec::Mocks.configuration.syntax = :expect
+          end
+        end
       end
 
       context "when rspec-expectations is included in the test framework first" do
