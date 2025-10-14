@@ -5,6 +5,11 @@ Deprecations:
 
 * Add RSpec 4 deprecation warnings. (Phil Pirozhkov, Jon Rowe, rspec/rspec-core#2880, rspec/rspec#106)
 
+Enhancements:
+
+* Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
+  options. (Jean Boussier, rspec/rspec#161)
+
 ### 3.13.5 / 2025-06-25
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.4...rspec-core-v3.13.5)
 
