@@ -10,6 +10,9 @@ module RSpec
         @verify_partial_doubles = false
         @temporarily_suppress_partial_double_verification = false
         @color = false
+
+        # Temporary config for 3.99
+        @warn_about_verify_partial_doubles = true
       end
 
       # Sets whether RSpec will warn, ignore, or fail a test when
@@ -79,6 +82,10 @@ module RSpec
       #  end
       #
       def syntax=(*values)
+        RSpec.deprecate(
+          "RSpec::Mocks::Configuration#syntax=",
+          :replacement => "the expect syntax, which is the only option in RSpec 4"
+        )
         syntaxes = values.flatten
         if syntaxes.include?(:expect)
           Syntax.enable_expect
@@ -148,10 +155,19 @@ module RSpec
       # doubles. Any stubs will have their arguments checked against the original
       # method, and methods that do not exist cannot be stubbed.
       def verify_partial_doubles=(val)
+        @warn_about_verify_partial_doubles = false
         @verify_partial_doubles = !!val
       end
 
       def verify_partial_doubles?
+        if @warn_about_verify_partial_doubles
+          RSpec.deprecate(
+            "Default setting of `false` for `RSpec::Mocks::Configuration#verify_partial_doubles`",
+            :replacement => "`verify_partial_doubles = false` explicitly, or set to `true` and remove in RSpec 4"
+          )
+          @warn_about_verify_partial_doubles = false
+        end
+
         @verify_partial_doubles
       end
 
@@ -196,7 +212,8 @@ module RSpec
       # @api private
       # Resets the configured syntax to the default.
       def reset_syntaxes_to_default
-        self.syntax = [:should, :expect]
+        Syntax.enable_should
+        Syntax.enable_expect
         RSpec::Mocks::Syntax.warn_about_should!
       end
     end

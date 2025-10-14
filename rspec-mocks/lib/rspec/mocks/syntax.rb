@@ -10,12 +10,9 @@ module RSpec
       end
 
       # @private
-      def self.warn_unless_should_configured(method_name , replacement="the new `:expect` syntax or explicitly enable `:should`")
+      def self.warn_unless_should_configured(method_name , replacement="the `:expect` syntax")
         if @warn_about_should
-          RSpec.deprecate(
-            "Using `#{method_name}` from rspec-mocks' old `:should` syntax without explicitly enabling the syntax",
-            :replacement => replacement
-          )
+          RSpec.deprecate("Using `#{method_name}` from rspec-mocks' old `:should` syntax", :replacement => replacement)
 
           @warn_about_should = false
         end
