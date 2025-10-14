@@ -5,6 +5,7 @@ source $SCRIPT_DIR/predicate_functions.sh
 function decide_what_to_run {
   local cmd=$1
   local maybe_library=$2
+  shift 2
 
   if [ $PWD -ef $ROOT_DIR ]; then
     local lib_dir=false
@@ -20,7 +21,7 @@ function decide_what_to_run {
 
       # if it is an rspec lib run the command in that folder only
       pushd $lib_dir > /dev/null
-        $cmd
+        $cmd $@
       popd > /dev/null
     else
       echo "Running in all directories..."
@@ -29,12 +30,12 @@ function decide_what_to_run {
       # otherwise run it for all folders
       for lib_dir in `ls -d rspec-*`; do
         pushd $lib_dir > /dev/null
-          $cmd
+          $cmd $@
         popd > /dev/null
       done
     fi;
   else
     # run command if in folder
-    $cmd
+    $cmd $@
   fi;
 }
