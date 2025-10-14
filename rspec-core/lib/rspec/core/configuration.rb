@@ -1829,6 +1829,7 @@ module RSpec
       # @private
       delegate_to_ordering_manager :seed_used?, :ordering_registry
 
+      # :nocov:
       # Set Ruby warnings. `:deprecations_only` is recommended, but may be too
       # noisy due to dependencies.
       # Can be set to `:all` or `:none` to show all warnings or none of them.
@@ -1865,6 +1866,7 @@ module RSpec
       def warnings?
         $VERBOSE
       end
+      # :nocov:
 
       # @private
       def warnings_set?
@@ -1872,10 +1874,12 @@ module RSpec
       end
 
       if defined?(::Warning) && ::Warning.respond_to?(:[]=)
+        # :nocov:
         # @private
         def deprecation_warnings=(value)
           ::Warning[:deprecated] = value
         end
+        # :nocov:
       else
         # :nocov:
         # Set Ruby deprecation warnings on or off.
