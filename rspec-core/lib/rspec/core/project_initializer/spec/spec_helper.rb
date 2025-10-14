@@ -35,6 +35,11 @@ RSpec.configure do |config|
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin
+  # This setting turns on all Ruby warnings. It's recommended, but in some cases may
+  # be too noisy due to issues in dependencies. The default is set to `:deprecations_only`
+  # but it can also be set to `:none` to suppress them.
+  config.warnings = :all
+
   # This allows you to limit a spec run to individual examples or groups
   # you care about by tagging them with `:focus` metadata. When nothing
   # is tagged with `:focus`, all examples get run. RSpec also provides
@@ -46,10 +51,6 @@ RSpec.configure do |config|
   # the `--only-failures` and `--next-failure` CLI options. We recommend
   # you configure your source control system to ignore this file.
   config.example_status_persistence_file_path = "spec/examples.txt"
-
-  # This setting enables warnings. It's recommended, but in some cases may
-  # be too noisy due to issues in dependencies.
-  config.warnings = true
 
   # Many RSpec users commonly either run the entire suite or an individual
   # file, and it's useful to allow more verbose output when running an

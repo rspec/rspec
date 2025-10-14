@@ -35,12 +35,15 @@ Breaking Changes:
   (Phil Pirozhkov, rspec/rspec-core#2864)
 * Unify multi-condition filtering to use "all" semantic. (Phil Pirozhkov, rspec/rspec-core#2874)
 * Change the default order to random. (Santiago Bartesaghi, rspec/rspec-core#2929)
+* Default warning level is now `:deprecations_only`. (Jon Rowe, rspec/rspec#161)
 
 Enhancements:
 
 * Add config option (`RSpec::Core::Configuration#force_line_number_for_spec_rerun`) to
   allways print a line number rather than an example id when the line number is ambiguous.
   (Baden Ashford, rspec/rspec-core#3085)
+* Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
+  options. (Jean Boussier, rspec/rspec#161)
 
 ### 3.13.4 / 2025-05-27
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.3...rspec-core-v3.13.4)
