@@ -37,13 +37,13 @@ end
 # and lambdas that take the expectation target in a way that they accept
 # a probe.
 RSpec.shared_examples "an RSpec probe-yielding block-only matcher" do |*options|
-  include_examples "an RSpec block-only matcher", { :expects_lambda => true }.merge(options.first || {}) do
-    let(:valid_expectation) { expect { |block| valid_block(&block) } }
-    let(:invalid_expectation) { expect { |block| invalid_block(&block) } }
+  include_examples "an RSpec block-only matcher", { :expects_lambda => true }.merge(options.first || {})
 
-    let(:valid_block_lambda) { lambda { |block| valid_block(&block) } }
-    let(:invalid_block_lambda) { lambda { |block| invalid_block(&block) } }
-  end
+  let(:valid_expectation) { expect { |block| valid_block(&block) } }
+  let(:invalid_expectation) { expect { |block| invalid_block(&block) } }
+
+  let(:valid_block_lambda) { lambda { |block| valid_block(&block) } }
+  let(:invalid_block_lambda) { lambda { |block| invalid_block(&block) } }
 end
 
 RSpec.describe "yield_control matcher" do
