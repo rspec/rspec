@@ -1698,9 +1698,10 @@ module RSpec::Core
 
         it "leaves RSpec's thread metadata unchanged, even when an error occurs during evaluation" do
           expect {
-            self.group.send(name, "named this") do
+            self.group.shared_examples "explosive" do
               raise "boom"
             end
+            self.group.send(name, "explosive")
           }.to raise_error("boom").and avoid_changing(RSpec::Support, :thread_local_data)
         end
 
@@ -1739,6 +1740,8 @@ module RSpec::Core
         end
 
         it "evals the block when given" do
+          expect_deprecation_with_call_site(__FILE__, __LINE__ + 10, /Passing a block/)
+
           key = "#{__FILE__}:#{__LINE__}"
           group = RSpec.describe do
             shared_examples(key) do

@@ -11,7 +11,7 @@ Bug Fixes:
 
 Deprecations:
 
-* Add RSpec 4 deprecation warnings. (Phil Pirozhkov, Jon Rowe, rspec/rspec-core#2880, rspec/rspec#106)
+* Add RSpec 4 deprecation warnings. (Phil Pirozhkov, Jon Rowe, rspec/rspec-core#2880, rspec/rspec#106, rspec/rspec#243)
 
 Enhancements:
 
