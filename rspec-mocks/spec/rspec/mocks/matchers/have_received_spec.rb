@@ -673,12 +673,12 @@ module RSpec
     end
 
     RSpec.describe Matchers::HaveReceived, "when used in a context that has rspec-mocks and rspec-expectations available" do
-      include_examples Matchers::HaveReceived do
-        # Override `fail_including` for this context, since `have_received` is a normal
-        # rspec-expectations matcher, the error class is different.
-        def fail_including(*snippets)
-          raise_error(RSpec::Expectations::ExpectationNotMetError, a_string_including(*snippets))
-        end
+      include_examples Matchers::HaveReceived
+
+      # Override `fail_including` for this context, since `have_received` is a normal
+      # rspec-expectations matcher, the error class is different.
+      def fail_including(*snippets)
+        raise_error(RSpec::Expectations::ExpectationNotMetError, a_string_including(*snippets))
       end
     end
 

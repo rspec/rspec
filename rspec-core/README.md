@@ -75,7 +75,7 @@ You can declare examples within a group using any of `it`, `specify`, or
 ## Shared Examples and Contexts
 
 Declare a shared example group using `shared_examples`, and then include it
-in any group using `include_examples`.
+in any group using `it_behaves_like` or `include_examples`.
 
 ```ruby
 RSpec.shared_examples "collections" do |collection_class|
@@ -84,14 +84,38 @@ RSpec.shared_examples "collections" do |collection_class|
   end
 end
 
+RSpec.shared_examples "implements #empty?" do
+  it "returns true when there are no members" do
+    expect(empty_target).to be_empty
+  end
+
+  it "returns false when there are members" do
+    expect(non_empty_target).to_not be_empty
+  end
+end
+
 RSpec.describe Array do
   include_examples "collections", Array
+
+  it_behaves_like "implements #empty?" do
+    let(:empty_target) { Array.new }
+    let(:non_empty_target) { [:key] }
+  end
 end
 
 RSpec.describe Hash do
   include_examples "collections", Hash
+
+  it_behaves_like "implements #empty?" do
+    let(:empty_target) { Hash.new }
+    let(:non_empty_target) { {key: :value} }
+  end
 end
 ```
+
+Note that `include_examples` directly includes examples into the current context, whilst
+`it_behaves_like` wraps the examples in a new context which allows you to pass a block
+to customise things like `let` or `subject` without using local variables passed in.
 
 Nearly anything that can be declared within an example group can be declared
 within a shared example group. This includes `before`, `after`, and `around`
