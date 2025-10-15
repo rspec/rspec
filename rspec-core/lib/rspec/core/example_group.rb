@@ -352,6 +352,8 @@ module RSpec
       #
       # @see SharedExampleGroup
       def self.include_context(name, *args, &block)
+        issue_block_inclusion_deprecation("include_context") if block
+
         find_and_eval_shared("context", name, caller.first, *args, &block)
       end
 
@@ -362,6 +364,8 @@ module RSpec
       #
       # @see SharedExampleGroup
       def self.include_examples(name, *args, &block)
+        issue_block_inclusion_deprecation("include_examples") if block
+
         find_and_eval_shared("examples", name, caller.first, *args, &block)
       end
 
@@ -397,6 +401,17 @@ module RSpec
         shared_module.include_in(
           self, Metadata.relative_path(inclusion_location),
           args, customization_block
+        )
+      end
+
+      # @private
+      def self.issue_block_inclusion_deprecation(method)
+        RSpec.deprecate(
+          "Passing a block to `#{method}`",
+          :replacement =>
+            "Either use `it_behaves_like` to wrap the block " \
+            "contents in a context, or place the block content " \
+            "within the parent context."
         )
       end
 
