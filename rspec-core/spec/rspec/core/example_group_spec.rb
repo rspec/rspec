@@ -57,16 +57,6 @@ module RSpec::Core
       end
     end
 
-    it 'does not treat the first argument as a metadata key even if it is a symbol' do
-      group = RSpec.describe(:symbol)
-      expect(group.metadata).not_to include(:symbol)
-    end
-
-    it 'treats the first argument as part of the description when it is a symbol' do
-      group = RSpec.describe(:symbol)
-      expect(group.description).to eq("symbol")
-    end
-
     describe "constant naming" do
       around do |ex|
         before_constants = RSpec::ExampleGroups.constants
@@ -1257,7 +1247,56 @@ module RSpec::Core
         expect(group.examples[1].description).to eq('should 2')
         expect(group.examples[2].description).to eq('should 3')
       end
+    end
 
+    describe "deprecation warnings for example group doc string" do
+      it "accepts a string for an example group doc string" do
+        expect { RSpec.describe 'MyClass' }.not_to output.to_stderr
+      end
+
+      it "accepts a class for an example group doc string" do
+        expect { RSpec.describe Numeric }.not_to output.to_stderr
+      end
+
+      it "accepts a module for an example group doc string" do
+        expect { RSpec.describe RSpec }.not_to output.to_stderr
+      end
+
+      it "accepts example group without a doc string" do
+        expect { RSpec.describe }.not_to output.to_stderr
+      end
+
+      it "emits a warning when a Symbol is used as an example group doc string" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Symbol object `:foo` as example group doc string/)
+        RSpec.describe :foo
+      end
+
+      it "emits a warning when a Hash is used as an example group doc string" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `#{Regexp.escape({ :foo => :bar }.inspect)}` as example group doc string/)
+        RSpec.describe(:foo => :bar) { }
+      end
+    end
+
+    describe "deprecation warnings for example doc string" do
+      it "does not output deprecation warning when description is a string" do
+        expect_no_deprecation
+        RSpec.describe.it('hoge')
+      end
+
+      it "does not output deprecation warning when description is nil" do
+        expect_no_deprecation
+        RSpec.describe.it
+      end
+
+      it "outputs deprecation warining when description is a symbol" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Symbol object `:symbol` as example doc string/)
+        RSpec.describe.it(:symbol)
+      end
+
+      it "outputs deprication warning when description is a hash" do
+        expect_deprecation_with_call_site(__FILE__, __LINE__ + 1, /Hash object `#{Regexp.escape({ :foo => :bar }.inspect)}` as example doc string/)
+        RSpec.describe.it({ :foo => :bar })
+      end
     end
 
     describe Object, "describing nested example_groups", :little_less_nested => 'yep' do
