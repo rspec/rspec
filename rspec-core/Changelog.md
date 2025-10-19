@@ -1,6 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.5...3-13-maintenance)
 
+Bug Fixes:
+
+* Add explicit block parameter to `RSpec::World::Null.traverse_example_group_trees_until` to
+  prevent warning. (@viralpraxis, rspec/rspec#240)
+
 ### 3.13.5 / 2025-06-25
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.4...rspec-core-v3.13.5)
 

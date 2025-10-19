@@ -269,7 +269,7 @@ module RSpec
           []
         end
 
-        def self.traverse_example_group_trees_until
+        def self.traverse_example_group_trees_until(&_block)
         end
 
         # :nocov:
