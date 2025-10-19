@@ -2,7 +2,6 @@ class Bar; end
 class Foo; end
 
 module RSpec::Core
-
   RSpec.describe RSpec::Core::World do
     let(:configuration) { RSpec.configuration }
     let(:world) { RSpec.world }
@@ -301,6 +300,38 @@ module RSpec::Core
             expect(reporter).not_to receive(:message)
             world.announce_filters
           end
+        end
+      end
+    end
+
+    context "Null implements the same api World" do
+      # JRuby has refine as a method so exclude it
+      methods = World::Null.methods - Object.methods - [:refine]
+      methods.each do |name|
+        specify "##{name} has the same signature" do
+          null_signature =
+            World::Null.method(name).parameters.map do |signature|
+              if signature.length == 2
+                type, variable_name = *signature
+
+                if variable_name == :_
+                  [type]
+                else
+                  variable_name_as_string = variable_name.to_s
+
+                  if variable_name_as_string.start_with?("_")
+                    [type, variable_name_as_string.gsub(/^_/, "").to_sym]
+                  else
+                    [type, variable_name]
+                  end
+                end
+              else
+                signature
+              end
+            end
+          world_signature = World.instance_method(name).parameters
+
+          expect(null_signature).to eq(world_signature)
         end
       end
     end

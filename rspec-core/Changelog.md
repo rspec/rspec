@@ -46,6 +46,11 @@ Enhancements:
 * Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
   options. (Jean Boussier, rspec/rspec#161)
 
+Bug Fixes:
+
+* Add explicit block parameter to `RSpec::World::Null.traverse_example_group_trees_until` to
+  prevent warning. (@viralpraxis, rspec/rspec#240)
+
 ### 3.13.4 / 2025-05-27
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.3...rspec-core-v3.13.4)
 
