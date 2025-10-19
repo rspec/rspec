@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.5...main)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.6...main)
 
 Breaking Changes:
 
@@ -45,6 +45,9 @@ Enhancements:
   (Baden Ashford, rspec/rspec-core#3085)
 * Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
   options. (Jean Boussier, rspec/rspec#161)
+
+### 3.13.6 / 2025-10-19
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.5...rspec-core-v3.13.6)
 
 Bug Fixes:
 
