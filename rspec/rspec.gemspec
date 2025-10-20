@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
     'bug_tracker_uri'   => 'https://github.com/rspec/rspec/issues',
     'documentation_uri' => 'https://rspec.info/documentation/',
     'mailing_list_uri'  => 'https://groups.google.com/forum/#!forum/rspec',
-    'source_code_uri'   => "https://github.com/rspec/rspec/blob/rspec-metagem-v#{s.version}/rspec",
+    'rubygems_mfa_required' => 'true',
+    'source_code_uri' => "https://github.com/rspec/rspec/tree/rspec-v#{s.version}/rspec"
   }
 
   s.files            = `git ls-files -- lib/*`.split("\n")
