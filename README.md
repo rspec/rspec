@@ -1,4 +1,4 @@
-# rspec [![Build Status](https://github.com/rspec/rspec/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rspec/rspec/actions) [![Code Climate](https://codeclimate.com/github/rspec/rspec.svg)](https://codeclimate.com/github/rspec/rspec)
+# rspec [![Build Status](https://github.com/rspec/rspec/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rspec/rspec/actions)
 
 This is the RSpec mono repo, it contains the core gems we think of as "rspec", they are:
 
