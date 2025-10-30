@@ -39,6 +39,8 @@ module RSpec
         it_behaves_like "reserved_method", :to_int, responds: true, value: 0
         it_behaves_like "reserved_method", :to_a, responds: true
         it_behaves_like "reserved_method", :to_ary, responds: true
+        it_behaves_like "reserved_method", :to_h, responds: true, value: {}
+        it_behaves_like "reserved_method", :to_hash, responds: true, value: {}
         it_behaves_like "reserved_method", :to_str, responds: true, value: "#[Double \"obj\"]"
 
         it "supports Array#flatten" do
@@ -52,6 +54,8 @@ module RSpec
         it_behaves_like "reserved_method", :to_int, responds: false
         it_behaves_like "reserved_method", :to_a, responds: :raises_error
         it_behaves_like "reserved_method", :to_ary, responds: :raises_error
+        it_behaves_like "reserved_method", :to_h, responds: false
+        it_behaves_like "reserved_method", :to_hash, responds: false
         it_behaves_like "reserved_method", :to_str, responds: false
 
         it "supports Array#flatten" do
