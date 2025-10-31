@@ -1,6 +1,68 @@
 module RSpec
   module Mocks
     RSpec.describe TestDouble do
+      shared_examples "reserved_method" do |name, responds:, value: nil|
+        it "can be overridden with a stub" do
+          allow(obj).to receive(name) { :non_nil_value }
+          expect(obj.send(name)).to be(:non_nil_value)
+        end
+
+        it "responds when overridden" do
+          allow(obj).to receive(:to_ary) { :non_nil_value }
+          expect(obj).to respond_to(:to_ary)
+        end
+
+        if responds === true
+          it "does respond to ##{name}" do
+            expect(obj).to respond_to(name)
+          end
+
+          it "returns nil for ##{name}" do
+            expect(obj.send(name)).to eq value
+          end
+        else
+          it "does not respond to ##{name}" do
+            expect(obj).to_not respond_to(name)
+          end
+
+          if responds == :raises_error
+            it "raises a NoMethodError for ##{name}" do
+              expect { obj.send(name) }.to raise_error(NoMethodError)
+            end
+          end
+        end
+      end
+
+      context "as_null_object" do
+        let(:obj) { double('obj').as_null_object }
+
+        it_behaves_like "reserved_method", :to_int, responds: true, value: 0
+        it_behaves_like "reserved_method", :to_a, responds: true
+        it_behaves_like "reserved_method", :to_ary, responds: true
+        it_behaves_like "reserved_method", :to_h, responds: true, value: {}
+        it_behaves_like "reserved_method", :to_hash, responds: true, value: {}
+        it_behaves_like "reserved_method", :to_str, responds: true, value: "#[Double \"obj\"]"
+
+        it "supports Array#flatten" do
+          expect([obj].flatten).to eq([obj])
+        end
+      end
+
+      context "without as_null_object" do
+        let(:obj) { double('obj') }
+
+        it_behaves_like "reserved_method", :to_int, responds: false
+        it_behaves_like "reserved_method", :to_a, responds: :raises_error
+        it_behaves_like "reserved_method", :to_ary, responds: :raises_error
+        it_behaves_like "reserved_method", :to_h, responds: false
+        it_behaves_like "reserved_method", :to_hash, responds: false
+        it_behaves_like "reserved_method", :to_str, responds: false
+
+        it "supports Array#flatten" do
+          expect([obj].flatten).to eq([obj])
+        end
+      end
+
       describe "#freeze" do
         subject { double }
 
