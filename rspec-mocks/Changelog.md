@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.6...main)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.7...main)
 
 Breaking Changes:
 
@@ -12,6 +12,9 @@ Breaking Changes:
 * Remove deprecated `allow_message_expectations_on_nil` example method.
   (Phil Pirozhkov, rspec/rspec-mocks#1410)
 * Fix stubbing of prepended-only methods. (Lin Jen-Shin, rspec/rspec-mocks#1218)
+
+### 3.13.7 / 2025-10-31
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.6...rspec-mocks-v3.13.7)
 
 Bug Fixes:
 
