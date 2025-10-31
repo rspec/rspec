@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.6...3-13-maintenance)
 
+Bug Fixes:
+
+* Special case `to_h`, `to_hash` responses on null objects, prevents an issue with Rails. (Jon Rowe, rspec/rspec#275)
+
 ### 3.13.6 / 2025-10-14
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.5...rspec-mocks-v3.13.6)
 

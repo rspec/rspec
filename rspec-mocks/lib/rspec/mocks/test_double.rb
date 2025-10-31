@@ -79,9 +79,10 @@ module RSpec
 
         if proxy.null_object?
           case message
-          when :to_int        then return 0
-          when :to_a, :to_ary then return nil
-          when :to_str        then return to_s
+          when :to_int         then return 0
+          when :to_a, :to_ary  then return nil
+          when :to_h, :to_hash then return {}
+          when :to_str         then return to_s
           else return self
           end
         end
