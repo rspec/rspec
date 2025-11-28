@@ -62,7 +62,7 @@ module RSpec
       end
 
       def beginning_line_number
-        source_location.last
+        source_location[1]
       end
 
       def source_location

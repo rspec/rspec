@@ -186,7 +186,7 @@ module RSpec
         end
 
         def formatted_location(block)
-          block.source_location.join(":")
+          block.source_location.take(2).join(":")
         end
       end
     end

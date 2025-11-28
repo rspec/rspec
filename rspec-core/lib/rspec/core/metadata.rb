@@ -137,7 +137,7 @@ module RSpec
           file_path, line_number = if backtrace
                                      file_path_and_line_number_from(backtrace)
                                    elsif block.respond_to?(:source_location)
-                                     block.source_location
+                                     block.source_location.take(2)
                                    else
                                      file_path_and_line_number_from(caller)
                                    end
