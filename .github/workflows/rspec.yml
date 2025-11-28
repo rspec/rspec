@@ -28,6 +28,7 @@ jobs:
     strategy:
       matrix:
         ruby:
+          - '4.0.0-preview2'
           - '3.4'
           - '3.3'
           - '3.2'
@@ -44,8 +45,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
       - run: ../script/update_rubygems_and_install_bundler
-      - run: bundle install --standalone
-      - run: bundle binstubs --all
+      - run: ../script/bundle
       - run: ../script/run_rspec
       - run: ../script/run_rspec_one_by_one
       - run: ../script/run_cucumber
@@ -68,8 +68,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
       - run: ../script/update_rubygems_and_install_bundler
-      - run: bundle install --standalone
-      - run: bundle binstubs --all
+      - run: ../script/bundle
       - run: ../script/run_rspec
 
   windows:

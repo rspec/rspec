@@ -14,3 +14,11 @@ function is_ruby_31_plus {
     return 1
   fi
 }
+
+function is_ruby_4_plus {
+  if ruby -e "exit(RUBY_VERSION.to_f >= 4)"; then
+    return 0
+  else
+    return 1
+  fi
+}
