@@ -15,6 +15,5 @@ jobs:
         with:
           ruby-version: 3.3
       - run: script/update_rubygems_and_install_bundler
-      - run: bundle install --standalone
-      - run: bundle binstubs --all
+      - run: script/bundle
       - run: bin/rubocop
