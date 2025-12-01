@@ -68,8 +68,19 @@ module RSpec
 
         save_original_implementation_callable!
         definition_target.class_exec(self, method_name, @original_visibility || visibility) do |method_double, method_name, visibility|
-          define_method(method_name) do |*args, &block|
-            method_double.proxy_method_invoked(self, *args, &block)
+          if RUBY_VERSION.to_f > 3 && method_name == :respond_to?
+            define_method(method_name) do |*args, &block|
+              # This is a work around for a respond_to? check within kernel_inspect
+              if caller_locations[0].label == "Kernel#inspect"
+                super(*args, &block)
+              else
+                method_double.proxy_method_invoked(self, *args, &block)
+              end
+            end
+          else
+            define_method(method_name) do |*args, &block|
+              method_double.proxy_method_invoked(self, *args, &block)
+            end
           end
           # This can't be `if respond_to?(:ruby2_keywords, true)`,
           # see https://github.com/rspec/rspec-mocks/pull/1385#issuecomment-755340298
