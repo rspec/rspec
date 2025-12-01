@@ -394,7 +394,7 @@ module RSpec
         end
 
         def hook_description
-          "around hook at #{Metadata.relative_path(block.source_location.join(':'))}"
+          "around hook at #{Metadata.relative_path(block.source_location.take(2).join(':'))}"
         end
       end
 
