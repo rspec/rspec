@@ -3,8 +3,8 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/functions.sh
 
-if is_ruby_4_plus; then
-  echo "Downgrading bundler to 2.7.2"
+if is_ruby_32_plus; then
+  echo "Pinning bundler to 2.7.2"
   yes | gem update --no-document --system
   yes | gem install bundler:2.7.2
 elif is_ruby_31_plus; then

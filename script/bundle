@@ -4,7 +4,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/functions.sh
 
 echo "bundle install --standalone"
-if is_ruby_4_plus; then
+if is_ruby_32_plus; then
   bundle _2.7.2_ install --standalone
 else
   bundle install --standalone
