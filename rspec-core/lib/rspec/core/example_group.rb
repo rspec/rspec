@@ -326,7 +326,7 @@ module RSpec
           # Pass :caller so the :location metadata is set properly.
           # Otherwise, it'll be set to the next line because that's
           # the block's source_location.
-          group = example_group("#{report_label} #{name}", :caller => (the_caller = caller)) do
+          group = example_group("#{report_label} #{name}", :caller => (the_caller = caller(1, 1))) do
             find_and_eval_shared("examples", name, the_caller.first, *args, &customization_block)
           end
           group.metadata[:shared_group_name] = name
@@ -347,7 +347,7 @@ module RSpec
       def self.include_context(name, *args)
         issue_block_inclusion_error!("include_context") if block_given?
 
-        find_and_eval_shared("context", name, caller.first, *args)
+        find_and_eval_shared("context", name, caller(1, 1).first, *args)
       end
 
       # Includes shared content mapped to `name` directly in the group in which
@@ -359,7 +359,7 @@ module RSpec
       def self.include_examples(name, *args)
         issue_block_inclusion_error!("include_examples") if block_given?
 
-        find_and_eval_shared("examples", name, caller.first, *args)
+        find_and_eval_shared("examples", name, caller(1, 1).first, *args)
       end
 
       # Clear memoized values when adding/removing examples
