@@ -9,7 +9,7 @@ if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version == "9.1.17.
         relative_arg = relative_arg.to_path if relative_arg.respond_to? :to_path
         relative_arg = JRuby::Type.convert_to_str(relative_arg)
 
-        caller.first.rindex(/:\d+:in /)
+        caller(1, 1).first.rindex(/:\d+:in /)
         file = $` # just the filename
         raise LoadError, "cannot infer basepath" if /\A\((.*)\)/ =~ file # eval etc.
 
