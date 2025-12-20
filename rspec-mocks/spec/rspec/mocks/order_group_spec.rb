@@ -23,4 +23,31 @@ RSpec.describe 'OrderGroup' do
       expect(expectations).to eq [ordered_1, ordered_2, nil]
     end
   end
+
+  describe '#invoked' do
+    let(:ordered) { double :ordered? => true }
+
+    before do
+      order_group.register ordered
+    end
+
+    it 'handles concurrent registration of invocations' do
+      concurrency = 4
+      repetition = 10
+
+      (concurrency * repetition).times do
+        order_group.register ordered
+      end
+
+      concurrency.times.map do |_|
+        Thread.new do
+          repetition.times do |_|
+            order_group.invoked ordered
+          end
+        end
+      end.map(&:join)
+
+      expect(order_group.send(:expected_invocations).size).to eq(concurrency * repetition)
+    end
+  end
 end
