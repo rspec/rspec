@@ -163,7 +163,7 @@ module RSpec
 
         # rubocop:disable Lint/RescueException
         # :nocov:
-        if SyntaxError.instance_methods.include?(:detailed_message)
+        if SyntaxError.method_defined?(:detailed_message)
           def exception_message_string(exception)
             case exception
             when SyntaxError then exception.detailed_message.to_s

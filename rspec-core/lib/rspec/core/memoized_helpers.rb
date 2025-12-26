@@ -250,7 +250,7 @@ EOS
           #
           # Note we do not check ancestor modules (see: `instance_methods(false)`)
           # as we can override them.
-          if our_module.instance_methods(false).include?(name)
+          if our_module.method_defined?(name, false)
             our_module.__send__(:remove_method, name)
           end
           our_module.__send__(:define_method, name, &block)
@@ -260,7 +260,7 @@ EOS
           #
           # Note we do not check ancestor modules (see: `instance_methods(false)`)
           # as we can override them.
-          if instance_methods(false).include?(name)
+          if method_defined?(name, false)
             remove_method(name)
           end
 
