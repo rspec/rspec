@@ -2133,7 +2133,7 @@ module RSpec::Core
 
       module IncludeExtendOrPrependMeOnce
         def self.included(host)
-          raise "included again" if host.instance_methods.include?(:foobar)
+          raise "included again" if host.method_defined?(:foobar)
           host.class_exec { def foobar; end }
         end
 
@@ -2143,7 +2143,7 @@ module RSpec::Core
         end
 
         def self.prepended(host)
-          raise "prepended again" if host.instance_methods.include?(:barbaz)
+          raise "prepended again" if host.method_defined?(:barbaz)
           host.class_exec { def barbaz; end }
         end
       end
