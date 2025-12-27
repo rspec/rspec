@@ -3,12 +3,11 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/functions.sh
 
-echo "bundle install --standalone"
-if is_ruby_32_plus; then
-  bundle _2.7.2_ install --standalone
-else
-  bundle install --standalone
-fi
+echo "Set bundle path to .bundle/gems"
+bundle config set --local path '.bundle/gems'
 
-echo "bundle binstubs --all"
-bundle binstubs --all
+echo "bundle install --standalone"
+bundle install --standalone
+
+echo "bundle binstubs --all --standalone"
+bundle binstubs --all --standalone
