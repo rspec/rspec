@@ -67,8 +67,9 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
       - run: ../script/update_rubygems_and_install_bundler
+      - run: bundle config set --local path '.bundle/gems'
       - run: bundle install --standalone
-      - run: bundle binstubs --all
+      - run: bundle binstubs --all --standalone
       - run: ../script/run_rspec
       - run: ../script/run_rspec_one_by_one
       - run: ../script/run_cucumber
