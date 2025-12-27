@@ -15,10 +15,7 @@ permissions:
 
 jobs:
   docs:
-    uses: rspec/rspec/.github/workflows/documentation_coverage.yml@main
-
-  rubocop:
-    uses: rspec/rspec/.github/workflows/rubocop.yml@main
+    uses: rspec/rspec/.github/workflows/documentation_coverage.yml@3-13-maintenance
 
   core:
     uses: rspec/rspec/.github/workflows/rspec.yml@3-13-maintenance
