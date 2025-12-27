@@ -35,7 +35,7 @@ gem 'mutex_m', '~> 0.1.0' if RUBY_VERSION.to_f > 3.3
 # Tooling / our testing
 #
 
-gem 'aruba', '>= 1.1.0', '< 3.0.0'
+gem 'aruba', '>= 2.3.3', '< 3.0.0'
 gem 'coderay' # syntax highlighting
 gem 'rake', '>= 13.0.0'
 gem "thread_order", "~> 1.1.0"

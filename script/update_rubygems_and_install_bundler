@@ -3,11 +3,7 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/functions.sh
 
-if is_ruby_32_plus; then
-  echo "Pinning bundler to 2.7.2"
-  yes | gem update --no-document --system
-  yes | gem install bundler:2.7.2
-elif is_ruby_31_plus; then
+if is_ruby_31_plus; then
   echo "Installing most recent rubygems / bundler"
   yes | gem update --no-document --system
   yes | gem install --no-document bundler
