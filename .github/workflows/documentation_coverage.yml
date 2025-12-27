@@ -27,6 +27,7 @@ jobs:
         with:
           ruby-version: 3.3
       - run: ../script/update_rubygems_and_install_bundler
+      - run: bundle config set --local path '.bundle/gems'
       - run: bundle install --standalone
       - run: bundle binstubs --all
       - run: ../script/check_documentation_coverage
