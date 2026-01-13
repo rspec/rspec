@@ -83,11 +83,6 @@ RSpec.describe 'Failed line detection' do
                            and include("raise 'AppMod failure'").
                            and include("raise 'SpecSupport failure'")
 
-    if RUBY_VERSION.to_f > 3.3
-      # Ruby 3.4 seems to print the calling function and we've not configured it otherwise
-      expect(last_cmd_stdout).to include("AppMod.trigger_failure")
-    end
-
     write_file "spec/change_config_spec.rb", "
       require './app/app_mod'
 

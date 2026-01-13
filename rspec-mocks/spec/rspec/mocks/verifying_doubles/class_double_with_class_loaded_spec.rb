@@ -165,10 +165,6 @@ module RSpec
 
         context "on a class with a private `new`" do
           it 'uses the method signature from `#initialize` for arg verification' do
-            if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version < '9.2.1.0'
-              pending "Failing on JRuby due to https://github.com/jruby/jruby/issues/2565"
-            end
-
             klass = Class.new(LoadedClass) do
               private_class_method :new
             end

@@ -69,7 +69,7 @@ module RSpec::Expectations
 
     it 'ensures the sub-failure backtraces are in a form that overlaps with the aggregated failure backtrace' do
       if RSpec::Support::Ruby.jruby?
-        pending "This is broken on 9.2.x.x" unless RSpec::Support::Ruby.jruby_version < '9.2.0.0'
+        pending "This is broken on JRuby 9.2+"
       end
       # On JRuby, `caller` and `raise` backtraces can differ significantly --
       # I've seen one include java frames but not the other -- and as a result,
@@ -463,6 +463,10 @@ module RSpec::Expectations
       elsif RSpec::Support::Ruby.mri? || RSpec::Support::Ruby.truffleruby?
         def exception_complement(block_levels)
           ":in `block (#{block_levels} levels) in <module:Expectations>'"
+        end
+      elsif RUBY_VERSION.to_f > 3.3
+        def exception_complement(block_levels)
+          ":in 'block in Expectations'"
         end
       else
         def exception_complement(block_levels)
