@@ -216,29 +216,17 @@ RSpec.describe 'Spec file load errors' do
             While loading ./broken_file a `raise SyntaxError` occurred, RSpec will now quit.
           EOS
 
-          # There was a fix was backported in 3.2.3, but syntax changed in 3.4.0 in terms of line endings
-          if RUBY_VERSION > '3.2.2'
-            expect(formatted_output.gsub("\n\n", "\n")).to include unindent(<<-EOS)
-            SyntaxError:
-              --> ./tmp/aruba/broken_file.rb
-              Unmatched keyword, missing `end' ?
-                1  class WorkInProgress
-              > 2    def initialize(arg)
-                3    def foo
-                4    end
-                5  end
-            EOS
-          else
-            expect(formatted_output).to include unindent(<<-EOS)
-            SyntaxError:
-              --> ./tmp/aruba/broken_file.rb
-              Unmatched keyword, missing `end' ?
-                1  class WorkInProgress
-              > 2    def initialize(arg)
-                4    end
-                5  end
-            EOS
-          end
+          # Extra blank lines were added in 3.4.0; strip out for compat with 3.2/3.3
+          expect(formatted_output.gsub("\n\n", "\n")).to include unindent(<<-EOS)
+          SyntaxError:
+            --> ./tmp/aruba/broken_file.rb
+            Unmatched keyword, missing `end' ?
+              1  class WorkInProgress
+            > 2    def initialize(arg)
+              3    def foo
+              4    end
+              5  end
+          EOS
           expect(formatted_output).to include %r{./tmp/aruba/broken_file.rb:\d: syntax error}
 
           expect(formatted_output).to include unindent(<<-EOS)
