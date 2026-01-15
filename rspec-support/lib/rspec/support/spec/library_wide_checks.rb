@@ -112,6 +112,10 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
   end
 
   it "issues no warnings when the spec files are loaded", :slow do
+    if RSpec::Support::Ruby.jruby? && RSpec::Support::OS.apple_silicon?
+      pending "JRuby on MacOS Apple Silicon outputs warnings due to lack of native console (and stty) support per https://github.com/jruby/jruby/issues/8271"
+    end
+
     expect(spec_file_results).to have_successful_no_warnings_output
   end
 
