@@ -71,11 +71,6 @@ RSpec.describe RSpec do
       # Prevent rspec/autorun from trying to run RSpec.
       disable_autorun_code
     ], :skip_spec_files => %r{/fake_libs/}, :allowed_loaded_feature_regexps => allowed_loaded_features do
-    if RSpec::Support::Ruby.jruby? && JRUBY_VERSION =~ /9\.1\.17\.0/
-      before(:example, :description => /spec files/) do
-        pending "JRuby 9.1.17.0 generates unrelated warnings"
-      end
-    end
   end
 
   describe ".configuration" do

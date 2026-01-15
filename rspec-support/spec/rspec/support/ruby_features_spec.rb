@@ -124,9 +124,6 @@ module RSpec
         end
 
         it 'returns whether Ripper is correctly implemented in the current environment' do
-          if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version.between?('9.0.0.0', '9.2.1.0')
-            pending "Ripper is not supported on JRuby 9.1.17.0 despite this tests claims"
-          end
           expect(RubyFeatures.ripper_supported?).to eq(ripper_is_implemented? && ripper_works_correctly?)
         end
 
