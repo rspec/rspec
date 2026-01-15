@@ -121,11 +121,11 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
   # Detecting STDERR in a way that doesn't use a reference
   if STDERR.respond_to?(:path)
     def be_stderr
-      have_attributes({:path => '<STDERR>'})
+      have_attributes(:path => '<STDERR>')
     end
   elsif STDERR.inspect =~ /STDERR/
     def be_stderr
-      have_attributes({:inspect => "#<IO:<STDERR>>"})
+      have_attributes(:inspect => "#<IO:<STDERR>>")
     end
   else
     def be_stderr
