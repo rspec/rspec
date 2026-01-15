@@ -114,7 +114,7 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
       tempfile.close
       tempfile.unlink
     end
-    # This is the important part of the test that would fail without proper cloning hygeine
+    # This is the important part of the test that would fail without proper cloning hygiene
     expect(splitter.to_io).to be_stderr
   end
 
@@ -129,7 +129,7 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
     end
   else
     def be_stderr
-      raise skip "JRuby < 9.0.0.0 doesn't have a predictable identifier for stdout"
+      raise "Unable to determine a predictable identifier for stdout (e.g on JRuby < 9.0)"
     end
   end
 end
