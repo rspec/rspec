@@ -44,5 +44,5 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency "rspec-support", "~> #{RSpec::Mocks::Version::STRING.split('.')[0..1].concat(['0']).join('.')}"
   end
 
-  s.add_runtime_dependency "diff-lcs", ">= 1.6.0", "< 2.0"
+  s.add_runtime_dependency "diff-lcs", ">= 1.6.0", "< 3.0"
 end
