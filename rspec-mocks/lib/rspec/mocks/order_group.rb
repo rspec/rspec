@@ -1,3 +1,5 @@
+RSpec::Support.require_rspec_support 'reentrant_mutex'
+
 module RSpec
   module Mocks
     # @private
@@ -5,6 +7,7 @@ module RSpec
       def initialize
         @expectations = []
         @invocation_order = []
+        @invocation_order_mutex = Support::Mutex.new
         @index = 0
       end
 
@@ -14,7 +17,9 @@ module RSpec
       end
 
       def invoked(message)
-        @invocation_order << message
+        @invocation_order_mutex.synchronize do
+          @invocation_order << message
+        end
       end
 
       # @private
@@ -47,7 +52,9 @@ module RSpec
 
       def clear
         @index = 0
-        @invocation_order.clear
+        @invocation_order_mutex.synchronize do
+          @invocation_order.clear
+        end
         @expectations.clear
       end
 
@@ -66,11 +73,15 @@ module RSpec
       end
 
       def invoked_expectations
-        @expectations.select { |e| e.ordered? && @invocation_order.include?(e) }
+        @invocation_order_mutex.synchronize do
+          @expectations.select { |e| e.ordered? && @invocation_order.include?(e) }
+        end
       end
 
       def expected_invocations
-        @invocation_order.map { |invocation| expectation_for(invocation) }.compact
+        @invocation_order_mutex.synchronize do
+          @invocation_order.map { |invocation| expectation_for(invocation) }.compact
+        end
       end
 
       def expectation_for(message)
