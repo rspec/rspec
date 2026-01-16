@@ -18,6 +18,14 @@ module RSpec
       def windows_file_path?
         ::File::ALT_SEPARATOR == '\\'
       end
+
+      def macos?
+        !!(RbConfig::CONFIG['host_os']&.downcase =~ /darwin/)
+      end
+
+      def apple_silicon?
+        macos? && !!(RbConfig::CONFIG['host_cpu'] =~ /arm64|aarch64/)
+      end
     end
 
     # @api private

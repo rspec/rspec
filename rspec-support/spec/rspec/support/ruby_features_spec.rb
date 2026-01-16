@@ -33,6 +33,43 @@ module RSpec
           expect(OS).to_not be_windows_file_path
         end
       end
+
+      describe ".macos?" do
+        %w[darwin Darwin].each do |fragment|
+          it "returns true when host os is #{fragment}" do
+            stub_const("RbConfig::CONFIG", 'host_os' => fragment)
+            expect(OS.macos?).to be true
+          end
+        end
+
+        %w[cygwin mswin mingw bccwin wince emx linux].each do |fragment|
+          it "returns false when host os is #{fragment}" do
+            stub_const("RbConfig::CONFIG", 'host_os' => fragment)
+            expect(OS.macos?).to be false
+          end
+        end
+      end
+
+      describe ".apple_silicon?" do
+        %w[arm64 aarch64].each do |fragment|
+          it "returns true when host cpu is #{fragment}" do
+            stub_const("RbConfig::CONFIG", 'host_os' => 'darwin', 'host_cpu' => fragment)
+            expect(OS.apple_silicon?).to be true
+          end
+        end
+
+        %w[i386 x86 x86_64 amd64].each do |fragment|
+          it "returns false when host cpu is #{fragment}" do
+            stub_const("RbConfig::CONFIG", 'host_os' => 'darwin', 'host_cpu' => fragment)
+            expect(OS.apple_silicon?).to be false
+          end
+        end
+
+        it "returns false when host os is not darwin" do
+          stub_const("RbConfig::CONFIG", 'host_os' => 'linux', 'host_cpu' => 'arm64')
+          expect(OS.apple_silicon?).to be false
+        end
+      end
     end
 
     RSpec.describe Ruby do
