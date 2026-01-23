@@ -178,34 +178,92 @@ module RSpec
         end
 
         context "when the class has a prepended module" do
-          it 'allows stubbing a method that is not defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def other; end } }
-            allow_any_instance_of(klass).to receive(:foo).and_return(45)
+          context 'with a method not defined on the prepended module' do
+            before do
+              klass.class_eval { prepend Module.new { def other; end } }
+            end
 
-            expect(klass.new.foo).to eq(45)
-          end
-
-          it 'prevents stubbing a method that is defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def foo; end } }
-
-            expect {
+            it 'allows stubbing the method' do
               allow_any_instance_of(klass).to receive(:foo).and_return(45)
-            }.to fail_with(/prepended module/)
-          end
 
-          it 'allows stubbing a chain starting with a method that is not defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def other; end } }
-            allow_any_instance_of(klass).to receive_message_chain(:foo, :bar).and_return(45)
+              expect(klass.new.foo).to eq(45)
+            end
 
-            expect(klass.new.foo.bar).to eq(45)
-          end
-
-          it 'prevents stubbing a chain starting with a method that is defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def foo; end } }
-
-            expect {
+            it 'allows stubbing a chain starting with the method' do
               allow_any_instance_of(klass).to receive_message_chain(:foo, :bar).and_return(45)
-            }.to fail_with(/prepended module/)
+
+              expect(klass.new.foo.bar).to eq(45)
+            end
+          end
+
+          context 'with a public method defined on the prepended module' do
+            before do
+              klass.class_eval { prepend Module.new { def foo; end } }
+            end
+
+            it 'prevents stubbing the method' do
+              expect {
+                allow_any_instance_of(klass).to receive(:foo).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+
+            it 'prevents stubbing a chain starting with the method' do
+              expect {
+                allow_any_instance_of(klass).to receive_message_chain(:foo, :bar).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+          end
+
+          context 'with a protected method defined on the prepended module' do
+            before do
+              klass.class_eval do
+                prepend Module.new {
+                  protected
+
+                  def protected_method
+                    :prepended_protected_method_return_value
+                  end
+                }
+              end
+            end
+
+            it 'prevents stubbing the method' do
+              expect {
+                allow_any_instance_of(klass).to receive(:protected_method).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+
+            it 'prevents stubbing a chain starting with the method' do
+              expect {
+                allow_any_instance_of(klass).to receive_message_chain(:protected_method, :bar).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+          end
+
+          context 'with a private method defined on the prepended module' do
+            before do
+              klass.class_eval do
+                prepend Module.new {
+                  private
+
+                  def private_method
+                    :prepended_private_method_return_value
+                  end
+                }
+              end
+            end
+
+            it 'prevents stubbing the method' do
+              expect {
+                allow_any_instance_of(klass).to receive(:private_method).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+
+            it 'prevents stubbing a chain starting with the method' do
+              expect {
+                allow_any_instance_of(klass).to receive_message_chain(:private_method, :bar).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
           end
         end
 
@@ -592,19 +650,68 @@ module RSpec
         end
 
         context "when the class has a prepended module" do
-          it 'allows mocking a method that is not defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def other; end } }
-            expect_any_instance_of(klass).to receive(:foo).and_return(45)
+          context 'with a method not defined on the prepended module' do
+            before do
+              klass.class_eval { prepend Module.new { def other; end } }
+            end
 
-            expect(klass.new.foo).to eq(45)
+            it 'allows mocking the method' do
+              expect_any_instance_of(klass).to receive(:foo).and_return(45)
+
+              expect(klass.new.foo).to eq(45)
+            end
           end
 
-          it 'prevents mocking a method that is defined on the prepended module' do
-            klass.class_eval { prepend Module.new { def foo; end } }
+          context 'with a public method defined on the prepended module' do
+            before do
+              klass.class_eval { prepend Module.new { def foo; end } }
+            end
 
-            expect {
-              expect_any_instance_of(klass).to receive(:foo).and_return(45)
-            }.to fail_with(/prepended module/)
+            it 'prevents mocking the method' do
+              expect {
+                expect_any_instance_of(klass).to receive(:foo).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+          end
+
+          context 'with a protected method defined on the prepended module' do
+            before do
+              klass.class_eval do
+                prepend Module.new {
+                  protected
+
+                  def protected_method
+                    :prepended_protected_method_return_value
+                  end
+                }
+              end
+            end
+
+            it 'prevents mocking the method' do
+              expect {
+                expect_any_instance_of(klass).to receive(:protected_method).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
+          end
+
+          context 'with a private method defined on the prepended module' do
+            before do
+              klass.class_eval do
+                prepend Module.new {
+                  private
+
+                  def private_method
+                    :prepended_private_method_return_value
+                  end
+                }
+              end
+            end
+
+            it 'prevents mocking the method' do
+              expect {
+                expect_any_instance_of(klass).to receive(:private_method).and_return(45)
+              }.to fail_with(/prepended module/)
+            end
           end
         end
 
