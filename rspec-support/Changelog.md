@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.6...3-13-maintenance)
 
+Bug Fixes:
+
+* Stop fuzzy matching causing false positives from Range objects. (Eric Mueller, rspec/rspec#298)
+
 ### 3.13.6
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.5...rspec-support-v3.13.6)
 
