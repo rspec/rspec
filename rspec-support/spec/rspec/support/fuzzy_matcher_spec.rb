@@ -26,6 +26,13 @@ module RSpec
         expect(/foo/).not_to match_against(/bar/)
       end
 
+      it 'can match a range only against a range' do
+        expect(1..5).to match_against(1..5)
+        expect(1..5).not_to match_against(1..6)
+        expect(1..5).not_to match_against(2..4)
+        expect(1..5).not_to match_against(3)
+      end
+
       it 'can match a class against an instance' do
         expect(String).to match_against("foo")
         expect(String).not_to match_against(123)

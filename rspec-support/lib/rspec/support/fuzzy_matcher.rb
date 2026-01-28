@@ -10,6 +10,9 @@ module RSpec
       def self.values_match?(expected, actual)
         if Hash === actual
           return hashes_match?(expected, actual) if Hash === expected
+        elsif Range === expected
+          # Check that actual is an equivalent Range, rather than included/covered.
+          return expected == actual
         elsif Array === expected && Enumerable === actual && !(Struct === actual)
           return arrays_match?(expected, actual.to_a)
         end
