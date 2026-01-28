@@ -20,6 +20,11 @@ Bug Fixes:
   (Jon Rowe, #610)
 * Always return a boolean from `RSpec::Support::Ruby.rbx?` and
  `RSpec::Support::Ruby.truffleruby?` (Phil Pirozhkov, rspec/rspec-support#486)
+
+### 3.13.7 / 2026-01-28
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.6...rspec-support-v3.13.7)
+
+Bug Fixes:
 * Stop fuzzy matching causing false positives from Range objects. (Eric Mueller, rspec/rspec#298)
 
 ### 3.13.6 / 2025-08-18
