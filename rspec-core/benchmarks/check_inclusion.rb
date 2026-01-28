@@ -32,7 +32,7 @@ Benchmark.benchmark do |bm|
   3.times do
     bm.report do
       n.times do
-        Foo.included_modules.include?(modules.first)
+        Foo.included_modules.include?(modules.first) # rubocop:disable Style/ModuleMemberExistenceCheck
       end
     end
   end
@@ -42,7 +42,7 @@ Benchmark.benchmark do |bm|
   3.times do
     bm.report do
       n.times do
-        Foo.included_modules.include?(modules.last)
+        Foo.included_modules.include?(modules.last) # rubocop:disable Style/ModuleMemberExistenceCheck
       end
     end
   end
