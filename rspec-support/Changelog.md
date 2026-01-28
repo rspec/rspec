@@ -8,7 +8,7 @@ Bug Fixes:
 
 * Stop fuzzy matching causing false positives from Range objects. (Eric Mueller, rspec/rspec#298)
 
-### 3.13.6
+### 3.13.6 / 2025-08-18
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.5...rspec-support-v3.13.6)
 
 Bug Fixes:
@@ -16,7 +16,7 @@ Bug Fixes:
 * Change `RSpec::Support::HunkGenerator` to autoload rather than manual require, avoids
   a load order issue. (Jon Rowe, rspec/rspec#249)
 
-### 3.13.5
+### 3.13.5 / 2025-05-27
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.4...rspec-support-v3.13.5)
 
 Bug Fixes:
@@ -25,7 +25,7 @@ Bug Fixes:
   a check for keyword arguments, meaning a hash would be wrongly detected as keyword arguments
   when it should have been a positional argument. (Malcolm O'Hare, rspec/rspec#121)
 
-### 3.13.4
+### 3.13.4 / 2025-05-01
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.3...rspec-support-v3.13.4)
 
 Bug Fixes:
