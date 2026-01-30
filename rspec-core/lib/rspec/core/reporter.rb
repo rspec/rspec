@@ -8,13 +8,14 @@ module RSpec::Core
         :close, :deprecation, :deprecation_summary, :dump_failures, :dump_pending,
         :dump_profile, :dump_summary, :example_failed, :example_group_finished,
         :example_group_started, :example_passed, :example_pending, :example_started,
-        :message, :seed, :start, :start_dump, :stop, :example_finished
+        :message, :seed, :start, :start_dump, :stop, :example_finished, :expected_example_count
       ])
 
     def initialize(configuration)
       @configuration = configuration
       @listeners = Hash.new { |h, k| h[k] = Set.new }
       @examples = []
+      @expected_example_count = 0
       @failed_examples = []
       @pending_examples = []
       @duration = @start = @load_time = nil
@@ -89,6 +90,7 @@ module RSpec::Core
     def start(expected_example_count, time=RSpec::Core::Time.now)
       @start = time
       @load_time = (@start - @configuration.start_time).to_f
+      @expected_example_count = expected_example_count
       notify :seed, Notifications::SeedNotification.new(@configuration.seed, seed_used?)
       notify :start, Notifications::StartNotification.new(expected_example_count, @load_time)
     end
@@ -185,7 +187,7 @@ module RSpec::Core
         end
         notify :dump_summary, Notifications::SummaryNotification.new(@duration, @examples, @failed_examples,
                                                                      @pending_examples, @load_time,
-                                                                     @non_example_exception_count)
+                                                                     @non_example_exception_count, @expected_example_count)
         notify :seed, Notifications::SeedNotification.new(@configuration.seed, seed_used?)
       end
     end
