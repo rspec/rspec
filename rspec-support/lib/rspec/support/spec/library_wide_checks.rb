@@ -85,6 +85,7 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
   define_method :load_all_spec_files do
     files = files_to_require_for("spec") + lib_test_env_files
     files = files.reject { |f| f =~ skip_spec_files }
+    files.each { |f| puts f.inspect }
     load_all_files(files, preamble_for_spec)
   end
 
@@ -111,6 +112,7 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
   end
 
   it "issues no warnings when the spec files are loaded", :slow do
+    puts spec_file_results.inspect
     expect(spec_file_results).to have_successful_no_warnings_output
   end
 
