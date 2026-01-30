@@ -22,8 +22,12 @@ RSpec.describe RSpec::Mocks do
     :preamble_for_lib => lib_preamble,
     :allowed_loaded_feature_regexps => [
       /rbconfig/ # loaded by rspec-support
-    ] do
-
+    ],
+    :skip_spec_files => Regexp.union(
+        # Ignore a spec which issues an aruba warning on 2.4 and isn't really core to our behaviour
+        %r{integration/rails_support_spec},
+        %r{support/aruba}
+    ) do
       if RSpec::Support::Ruby.jruby? && JRUBY_VERSION =~ /9\.1\.7\.0/
         before(:example, :description => /spec files/) do
           pending "JRuby 9.1.7.0 currently generates a circular warning which" \
