@@ -38,7 +38,14 @@ module RSpec
         "#<#{self.class} #{path}>"
       end
 
-      if RSpec::Support::RubyFeatures.ripper_supported?
+      if RSpec::Support::RubyFeatures.prism_supported?
+        def parse_result
+          @parse_result ||= begin
+            require 'prism'
+            Prism.parse(source.to_str)
+          end
+        end
+      elsif RSpec::Support::RubyFeatures.ripper_supported?
         RSpec::Support.require_rspec_support 'source/node'
         RSpec::Support.require_rspec_support 'source/token'
 

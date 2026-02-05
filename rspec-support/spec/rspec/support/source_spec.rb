@@ -3,7 +3,7 @@
 require 'rspec/support/source'
 
 module RSpec::Support
-  RSpec.describe Source, :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
+  RSpec.describe Source, :skip => !RSpec::Support::RubyFeatures.parser_supported? do
     subject(:source) do
       Source.new(source_string)
     end
@@ -71,6 +71,42 @@ module RSpec::Support
       end
     end
 
+    describe '#inspect' do
+      it 'returns a string including class name and file path' do
+        expect(source.inspect).to start_with('#<RSpec::Support::Source (string)>')
+      end
+    end
+  end
+
+  RSpec.describe Source, :skip => !RSpec::Support::RubyFeatures.prism_supported? do
+    subject(:source) do
+      Source.new(source_string)
+    end
+
+    let(:source_string) { <<-END.gsub(/^ +\|/, '') }
+      |2.times do
+      |  puts :foo
+      |end
+    END
+
+    describe '#parse_result' do
+      it 'returns a Prism::ParseResult' do
+        expect(source.parse_result).to be_a(Prism::ParseResult)
+      end
+    end
+  end
+
+  RSpec.describe Source, :skip => RSpec::Support::RubyFeatures.prism_supported? || !RSpec::Support::RubyFeatures.ripper_supported? do
+    subject(:source) do
+      Source.new(source_string)
+    end
+
+    let(:source_string) { <<-END.gsub(/^ +\|/, '') }
+      |2.times do
+      |  puts :foo
+      |end
+    END
+
     describe '#ast' do
       it 'returns a root node' do
         expect(source.ast).to have_attributes(:type => :program)
@@ -128,12 +164,6 @@ module RSpec::Support
         )
 
         expect(source.tokens_by_line_number[0]).to be_empty
-      end
-    end
-
-    describe '#inspect' do
-      it 'returns a string including class name and file path' do
-        expect(source.inspect).to start_with('#<RSpec::Support::Source (string)>')
       end
     end
   end

@@ -419,7 +419,7 @@ module RSpec
           end
         end
 
-        if RSpec::Support::RubyFeatures.ripper_supported?
+        if RSpec::Support::RubyFeatures.parser_supported?
           def extract_value_block_snippet
             return nil unless @value_proc
             Expectations::BlockSnippetExtractor.try_extracting_single_line_body_of(@value_proc, @matcher_name)

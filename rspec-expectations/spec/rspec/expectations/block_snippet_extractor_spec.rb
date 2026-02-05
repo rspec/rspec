@@ -3,7 +3,7 @@
 require 'rspec/expectations/block_snippet_extractor'
 
 module RSpec::Expectations
-  RSpec.describe BlockSnippetExtractor, :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
+  RSpec.describe BlockSnippetExtractor, :skip => !RSpec::Support::RubyFeatures.parser_supported? do
     subject(:extractor) do
       BlockSnippetExtractor.new(proc_object, 'target_method')
     end
