@@ -185,7 +185,8 @@ module RSpec::Core
         end
         notify :dump_summary, Notifications::SummaryNotification.new(@duration, @examples, @failed_examples,
                                                                      @pending_examples, @load_time,
-                                                                     @non_example_exception_count)
+                                                                     @non_example_exception_count,
+                                                                     @configuration.end_of_run_counts)
         notify :seed, Notifications::SeedNotification.new(@configuration.seed, seed_used?)
       end
     end

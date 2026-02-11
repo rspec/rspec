@@ -199,6 +199,15 @@ RSpec.describe RSpec::Core::Formatters::JsonFormatter do
       summary_line = formatter.output_hash[:summary_line]
       expect(summary_line).to eq "10 examples, 3 failures, 4 pending, 1 error occurred outside of examples"
     end
+
+    it "includes extra counts in the summary hash" do
+      extra = [
+        RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 })
+      ]
+      send_notification :dump_summary, summary_notification(1.0, examples(10), examples(3), examples(4), 0, 0, extra)
+      expect(formatter.output_hash[:summary]).to include(:expectation_count => 25)
+      expect(formatter.output_hash[:summary_line]).to eq "10 examples, 3 failures, 4 pending, 25 expectations"
+    end
   end
 
   describe "#dump_profile", :slow do

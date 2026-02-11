@@ -29,6 +29,7 @@ module RSpec
             :pending_count => summary.pending_count,
             :errors_outside_of_examples_count => summary.errors_outside_of_examples_count
           }
+          summary.end_of_run_counts.each { |counter| @output_hash[:summary].merge!(counter.as_json) }
           @output_hash[:summary_line] = summary.totals_line
         end
 

@@ -83,5 +83,33 @@ module RSpec
 
     autoload :BlockSnippetExtractor, "rspec/expectations/block_snippet_extractor"
     autoload :FailureAggregator,     "rspec/expectations/failure_aggregator"
+
+    @expectation_count = 0
+
+    class << self
+      attr_reader :expectation_count
+
+      # @private
+      def increment_expectation_count
+        @expectation_count += 1
+      end
+
+      # @private
+      def reset_expectation_count
+        @expectation_count = 0
+      end
+    end
+  end
+end
+
+if RSpec.respond_to?(:configure)
+  RSpec.configure do |config|
+    config.add_end_of_run_count("expectation") do
+      RSpec::Expectations.expectation_count
+    end
+
+    config.before(:suite) do
+      RSpec::Expectations.reset_expectation_count
+    end
   end
 end

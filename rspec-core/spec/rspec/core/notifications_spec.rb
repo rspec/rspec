@@ -452,6 +452,203 @@ module RSpec::Core::Notifications
           expect(fully_formatted).to include('<red>2 examples, 0 failures, 1 error occurred outside of examples</red>')
         end
       end
+
+      context "when there are extra counts" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it 'includes the extra count in the summary line' do
+          expect(fully_formatted).to include('2 examples, 0 failures, 25 expectations')
+        end
+      end
+    end
+
+    describe '#totals_line' do
+      context "with no extra counts" do
+        it "returns the standard summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures")
+        end
+      end
+
+      context "with extra counts" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "appends extra counts to the summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 25 expectations")
+        end
+      end
+
+      context "with a singular extra count" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 1 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "uses the singular label" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 1 expectation")
+        end
+      end
+
+      context "with a custom plural label" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("query", "queries", -> { 3 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "uses the custom plural label" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 3 queries")
+        end
+      end
+
+      context "with multiple extra counts" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 }),
+            RSpec::Core::EndOfRunCount.new("query", "queries", -> { 3 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "appends all extra counts" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 25 expectations, 3 queries")
+        end
+      end
+
+      context "with a zero extra count" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 0 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "includes the zero count in the summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 0 expectations")
+        end
+      end
+
+      context "when an extra count block raises an error" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("broken", nil, -> { raise "oops" }),
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "skips the broken counter and continues with the rest" do
+          allow(RSpec).to receive(:warning)
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 25 expectations")
+        end
+
+        it "issues a warning" do
+          expect(RSpec).to receive(:warning).with(/End-of-run counter "broken" raised: oops/)
+          notification.totals_line
+        end
+      end
+
+      context "when an extra count block returns nil" do
+        subject(:notification) do
+          extra = [
+            RSpec::Core::EndOfRunCount.new("broken", nil, -> {}),
+            RSpec::Core::EndOfRunCount.new("expectation", nil, -> { 25 })
+          ]
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            extra
+          )
+        end
+
+        it "skips the nil counter and continues with the rest" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 25 expectations")
+        end
+      end
+    end
+
+    describe '#end_of_run_counts' do
+      it "defaults to an empty array when constructed with 6 arguments" do
+        n = ::RSpec::Core::Notifications::SummaryNotification.new(1.0, [], [], [], 0.1, 0)
+        expect(n.end_of_run_counts).to eq([])
+      end
+
+      it "does not affect totals_line when empty" do
+        n = ::RSpec::Core::Notifications::SummaryNotification.new(1.0, [], [], [], 0.1, 0)
+        expect(n.totals_line).to eq("0 examples, 0 failures")
+      end
     end
   end
 end

@@ -2721,6 +2721,36 @@ module RSpec::Core
       end
     end
 
+    describe "#add_end_of_run_count" do
+      it "registers a counter with a singular label" do
+        config.add_end_of_run_count("expectation") { 1 }
+        expect(config.end_of_run_counts.size).to eq(1)
+        expect(config.end_of_run_counts.first.to_s).to eq("1 expectation")
+      end
+
+      it "auto-pluralizes the label" do
+        config.add_end_of_run_count("expectation") { 5 }
+        expect(config.end_of_run_counts.first.to_s).to eq("5 expectations")
+      end
+
+      it "accepts an explicit plural form" do
+        config.add_end_of_run_count("query", "queries") { 3 }
+        expect(config.end_of_run_counts.first.to_s).to eq("3 queries")
+      end
+
+      it "raises ArgumentError when no block is given" do
+        expect {
+          config.add_end_of_run_count("expectation")
+        }.to raise_error(ArgumentError, /block.*required/)
+      end
+
+      it "allows multiple counters to be registered" do
+        config.add_end_of_run_count("expectation") { 10 }
+        config.add_end_of_run_count("assertion") { 20 }
+        expect(config.end_of_run_counts.size).to eq(2)
+      end
+    end
+
     # assigns files_or_directories_to_run and triggers post-processing
     # via `files_to_run`.
     def assign_files_or_directories_to_run(*value)
