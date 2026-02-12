@@ -6,6 +6,39 @@ RSpec::Support.require_rspec_support 'ruby_features'
 
 module RSpec
   module Core
+    # @private
+    # Value object representing a counter to display at end of run.
+    EndOfRunCount = Struct.new(:singular, :plural, :block) do
+      def self.join_for_summary(counts)
+        suffix = counts.map(&:to_s).reject(&:empty?).join(", ")
+        suffix.empty? ? "" : ", #{suffix}"
+      end
+
+      def to_s
+        return "" unless compute_count
+        "#{@count} #{label}"
+      end
+
+      def as_json
+        return {} unless compute_count
+        { :"#{singular.gsub(' ', '_')}_count" => @count }
+      end
+
+    private
+
+      def compute_count
+        @count = block.call
+        !@count.nil?
+      rescue => e
+        RSpec.warning("End-of-run counter #{singular.inspect} raised: #{e.message}")
+        false
+      end
+
+      def label
+        @count.to_i == 1 ? singular : (plural || "#{singular}s")
+      end
+    end
+
     # rubocop:disable Metrics/ClassLength
 
     # Stores runtime configuration information.
@@ -429,7 +462,8 @@ module RSpec
       # @private
       attr_accessor :static_config_filter_manager
       # @private
-      attr_reader :backtrace_formatter, :ordering_manager, :loaded_spec_files
+      attr_reader :backtrace_formatter, :ordering_manager, :loaded_spec_files,
+                  :end_of_run_counts
 
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
@@ -489,6 +523,7 @@ module RSpec
         @world = World::Null
         @pending_failure_output = :full
         @force_line_number_for_spec_rerun = false
+        @end_of_run_counts = []
         @warnings = nil
 
         if warnings?
@@ -580,6 +615,24 @@ module RSpec
           add_setting(name, opts)
         end
         __send__("#{name}=", default) if default
+      end
+
+      # Registers a counter to be displayed in the end-of-run summary line.
+      # The block should return the current count when called.
+      #
+      # @param singular [String] singular label (e.g. "expectation")
+      # @param plural [String] optional plural label; defaults to singular + "s"
+      # @yield block that returns the current count
+      #
+      # @example
+      #     RSpec.configure do |c|
+      #       c.add_end_of_run_count("expectation") do
+      #         MyLib.expectation_count
+      #       end
+      #     end
+      def add_end_of_run_count(singular, plural=nil, &block)
+        raise ArgumentError, "A block that returns the count is required" unless block
+        @end_of_run_counts << EndOfRunCount.new(singular, plural, block)
       end
 
       # Returns the configured mock framework adapter module.

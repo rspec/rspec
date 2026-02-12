@@ -302,6 +302,20 @@ module RSpec::Core
 
         reporter.finish
       end
+
+      it "passes end_of_run_counts from configuration to SummaryNotification" do
+        config.add_end_of_run_count("expectation") { 42 }
+        formatter = instance_double("ProgressFormatter")
+        reporter.register_listener formatter, :dump_summary
+        reporter.start 1
+
+        expect(formatter).to receive(:dump_summary) do |notification|
+          expect(notification.end_of_run_counts.size).to eq(1)
+          expect(notification.end_of_run_counts.first.to_s).to eq("42 expectations")
+        end
+
+        reporter.finish
+      end
     end
 
     describe "#notify_non_example_exception" do

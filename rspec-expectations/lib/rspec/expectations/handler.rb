@@ -36,6 +36,7 @@ module RSpec
     # @private
     class PositiveExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
+        ::RSpec::Expectations.increment_expectation_count
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
           match_result = matcher.matches?(actual, &block)
           if custom_message && match_result.respond_to?(:error_generator)
@@ -54,6 +55,7 @@ module RSpec
     # @private
     class NegativeExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
+        ::RSpec::Expectations.increment_expectation_count
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
           negated_match_result = does_not_match?(matcher, actual, &block)
           if custom_message && negated_match_result.respond_to?(:error_generator)

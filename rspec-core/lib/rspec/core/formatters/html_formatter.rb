@@ -105,7 +105,8 @@ module RSpec
             summary.duration,
             summary.example_count,
             summary.failure_count,
-            summary.pending_count
+            summary.pending_count,
+            summary.end_of_run_counts
           )
           @printer.flush
         end
