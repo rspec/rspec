@@ -89,7 +89,7 @@ module RSpec::Core::Formatters
       end
     end
 
-    context 'in Ripper supported environment', :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in Ripper supported environment', :skip => !RSpec::Support::RubyFeatures.parser_supported? do
       context 'when the expression spans multiple lines' do
         let(:source) do
           do_something_fail :foo,
@@ -274,6 +274,26 @@ module RSpec::Core::Formatters
         end
       end
 
+      context "when the expression includes paren and xstring heredoc pairs as non-nested structure" do
+        def `(cmd)
+          cmd
+        end
+
+        let(:source) do
+          do_something_fail(<<-`END`)
+            foo
+          END
+        end
+
+        it 'returns all the lines' do
+          expect(expression_lines).to eq([
+            '          do_something_fail(<<-`END`)',
+            '            foo',
+            '          END'
+          ])
+        end
+      end
+
       context 'when the expression spans lines after the closing paren line' do
         let(:source) do
           do_something_fail(:foo
@@ -411,7 +431,7 @@ module RSpec::Core::Formatters
       end
     end
 
-    context 'in Ripper unsupported environment', :skip => RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in parser unsupported environment', :skip => RSpec::Support::RubyFeatures.parser_supported? do
       context 'when the expression spans multiple lines' do
         let(:source) do
           do_something_fail :foo,

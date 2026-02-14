@@ -86,6 +86,16 @@ module RSpec
         end
       end
 
+      if RUBY_VERSION.to_f >= 3.3
+        def prism_supported?
+          true
+        end
+      else
+        def prism_supported?
+          false
+        end
+      end
+
       # TruffleRuby disables ripper due to low performance
       if Ruby.rbx? || Ruby.truffleruby?
         def ripper_supported?
@@ -95,6 +105,10 @@ module RSpec
         def ripper_supported?
           true
         end
+      end
+
+      def parser_supported?
+        prism_supported? || ripper_supported?
       end
     end
   end
