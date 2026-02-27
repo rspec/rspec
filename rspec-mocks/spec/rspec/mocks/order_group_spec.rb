@@ -18,6 +18,7 @@ RSpec.describe 'OrderGroup' do
     it 'returns the first ordered? expectation' do
       expect(order_group.consume).to eq ordered_1
     end
+
     it 'keeps returning ordered? expectation until all are returned' do
       expectations = 3.times.map { order_group.consume }
       expect(expectations).to eq [ordered_1, ordered_2, nil]
@@ -26,10 +27,6 @@ RSpec.describe 'OrderGroup' do
 
   describe '#invoked' do
     let(:ordered) { double :ordered? => true }
-
-    before do
-      order_group.register ordered
-    end
 
     it 'handles concurrent registration of invocations' do
       concurrency = 4
