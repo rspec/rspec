@@ -4,6 +4,7 @@
 Bug Fixes:
 
 * Improve thread safety of mocks invocation recording. (Chad Wilson, #286)
+* Expand `any_instance` warning about prepended methods to private/protected methods. (Alex Dean, #297)
 
 # 4.0.0.beta1 / 2026-02-18
 
