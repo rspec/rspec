@@ -4,6 +4,7 @@
 Bug Fixes:
 
 * Improve thread safety of mocks invocation recording. (Chad Wilson, #286)
+* Expand `any_instance` warning about prepended methods to private/protected methods. (Alex Dean, #297)
 
 ### 3.13.7 / 2025-10-31
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.6...rspec-mocks-v3.13.7)
