@@ -19,6 +19,7 @@ module RSpec::Core
       @pending_examples = []
       @duration = @start = @load_time = nil
       @non_example_exception_count = 0
+      @expectation_count = 0
       @setup_default = lambda {}
       @setup = false
       @profiler = nil
@@ -26,6 +27,11 @@ module RSpec::Core
 
     # @private
     attr_reader :examples, :failed_examples, :pending_examples
+
+    # @private
+    def increment_expectation_count
+      @expectation_count += 1
+    end
 
     # Registers a listener to a list of notifications. The reporter will send
     # notification of events to all registered listeners.
@@ -186,7 +192,7 @@ module RSpec::Core
         notify :dump_summary, Notifications::SummaryNotification.new(@duration, @examples, @failed_examples,
                                                                      @pending_examples, @load_time,
                                                                      @non_example_exception_count,
-                                                                     @configuration.end_of_run_counts)
+                                                                     @expectation_count)
         notify :seed, Notifications::SeedNotification.new(@configuration.seed, seed_used?)
       end
     end

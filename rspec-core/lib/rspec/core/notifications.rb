@@ -283,19 +283,12 @@ module RSpec::Core
     # @attr errors_outside_of_examples_count [Integer] the number of errors that
     #                                                  have occurred processing
     #                                                  the spec suite
-    # @attr raw_end_of_run_counts [Array<EndOfRunCount>, nil] extra counters registered
-    #                                                        via Configuration#add_end_of_run_count
+    # @attr expectation_count [Integer] the number of expectations made during the run
     SummaryNotification = Struct.new(:duration, :examples, :failed_examples,
                                      :pending_examples, :load_time,
                                      :errors_outside_of_examples_count,
-                                     :raw_end_of_run_counts)
+                                     :expectation_count)
     class SummaryNotification
-      # @api
-      # @return [Array<EndOfRunCount>] extra counters registered via Configuration#add_end_of_run_count
-      def end_of_run_counts
-        raw_end_of_run_counts || []
-      end
-
       # @api
       # @return [Fixnum] the number of examples run
       def example_count
@@ -327,7 +320,9 @@ module RSpec::Core
             " occurred outside of examples"
           )
         end
-        summary += EndOfRunCount.join_for_summary(end_of_run_counts)
+        if (expectation_count || 0) > 0
+          summary += ", " + Formatters::Helpers.pluralize(expectation_count, "expectation")
+        end
         summary
       end
 

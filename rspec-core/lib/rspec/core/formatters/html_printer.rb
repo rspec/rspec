@@ -57,13 +57,13 @@ module RSpec
                        "(PENDING: #{h(pending_message)})</span></dd>"
         end
 
-        def print_summary(duration, example_count, failure_count, pending_count, end_of_run_counts=[])
+        def print_summary(duration, example_count, failure_count, pending_count, expectation_count=0)
           totals = String.new(
             "#{example_count} example#{'s' unless example_count == 1}, "
           )
           totals << "#{failure_count} failure#{'s' unless failure_count == 1}"
           totals << ", #{pending_count} pending" if pending_count > 0
-          totals << RSpec::Core::EndOfRunCount.join_for_summary(end_of_run_counts)
+          totals << ", #{expectation_count} expectation#{'s' unless expectation_count == 1}" if (expectation_count || 0) > 0
 
           formatted_duration = "%.5f" % duration
 

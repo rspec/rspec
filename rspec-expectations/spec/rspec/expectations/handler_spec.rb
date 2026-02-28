@@ -261,34 +261,16 @@ module RSpec
 
   describe "expectation counting" do
     let(:matcher) { ExampleExpectations::ArbitraryMatcher.new(:expected => true) }
+    let(:reporter) { ::RSpec.configuration.reporter }
 
-    it "increments the count for a positive expectation" do
-      count_before = RSpec::Expectations.expectation_count
+    it "increments the reporter expectation count for a positive expectation" do
+      expect(reporter).to receive(:increment_expectation_count)
       RSpec::Expectations::PositiveExpectationHandler.handle_matcher(true, matcher)
-      count_after = RSpec::Expectations.expectation_count
-      expect(count_after - count_before).to eq(1)
     end
 
-    it "increments the count for a negative expectation" do
-      count_before = RSpec::Expectations.expectation_count
+    it "increments the reporter expectation count for a negative expectation" do
+      expect(reporter).to receive(:increment_expectation_count)
       RSpec::Expectations::NegativeExpectationHandler.handle_matcher(false, matcher)
-      count_after = RSpec::Expectations.expectation_count
-      expect(count_after - count_before).to eq(1)
-    end
-
-    it "accumulates across multiple expectations" do
-      count_before = RSpec::Expectations.expectation_count
-      RSpec::Expectations::PositiveExpectationHandler.handle_matcher(true, matcher)
-      RSpec::Expectations::NegativeExpectationHandler.handle_matcher(false, matcher)
-      RSpec::Expectations::PositiveExpectationHandler.handle_matcher(true, matcher)
-      count_after = RSpec::Expectations.expectation_count
-      expect(count_after - count_before).to eq(3)
-    end
-
-    it "can be reset" do
-      RSpec::Expectations::PositiveExpectationHandler.handle_matcher(true, matcher)
-      RSpec::Expectations.reset_expectation_count
-      expect(RSpec::Expectations.expectation_count).to eq(0)
     end
   end
 end

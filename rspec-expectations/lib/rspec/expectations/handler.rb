@@ -21,6 +21,11 @@ module RSpec
         ::RSpec::Matchers.last_matcher = matcher
       end
 
+      def self.notify_expectation
+        return unless ::RSpec.respond_to?(:configuration)
+        ::RSpec.configuration.initialized_reporter&.increment_expectation_count
+      end
+
       def self.handle_failure(matcher, message, failure_message_method)
         message = message.call if message.respond_to?(:call)
         message ||= matcher.__send__(failure_message_method)
@@ -36,7 +41,7 @@ module RSpec
     # @private
     class PositiveExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
-        ::RSpec::Expectations.increment_expectation_count
+        ExpectationHelper.notify_expectation
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
           match_result = matcher.matches?(actual, &block)
           if custom_message && match_result.respond_to?(:error_generator)
@@ -55,7 +60,7 @@ module RSpec
     # @private
     class NegativeExpectationHandler
       def self.handle_matcher(actual, initial_matcher, custom_message=nil, &block)
-        ::RSpec::Expectations.increment_expectation_count
+        ExpectationHelper.notify_expectation
         ExpectationHelper.with_matcher(self, initial_matcher, custom_message) do |matcher|
           negated_match_result = does_not_match?(matcher, actual, &block)
           if custom_message && negated_match_result.respond_to?(:error_generator)
