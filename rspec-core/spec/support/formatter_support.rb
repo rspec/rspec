@@ -138,7 +138,7 @@ module FormatterSupport
       |       boom
       |
       |Finished in n.nnnn seconds (files took n.nnnn seconds to load)
-      |10 examples, 6 failures, 2 pending
+      |10 examples, 6 failures, 2 pending, 6 expectations
       |
       |Failed examples:
       |
@@ -257,8 +257,8 @@ module FormatterSupport
     ::RSpec::Core::Notifications::ExamplesNotification.new reporter
   end
 
-  def summary_notification(duration, examples, failed, pending, time, errors = 0)
-    ::RSpec::Core::Notifications::SummaryNotification.new duration, examples, failed, pending, time, errors
+  def summary_notification(duration, examples, failed, pending, time, errors=0, expectation_count=0) # rubocop:disable Metrics/ParameterLists
+    ::RSpec::Core::Notifications::SummaryNotification.new duration, examples, failed, pending, time, errors, expectation_count
   end
 
   def profile_notification(duration, examples, number)

@@ -949,6 +949,13 @@ module RSpec
         end
       end
 
+      # @private
+      # Returns the reporter if it has already been initialized,
+      # without triggering lazy initialization.
+      def initialized_reporter
+        @reporter
+      end
+
       # @return [RSpec::Core::Reporter] the currently configured reporter
       def reporter
         # @reporter_buffer should only ever be set in this method to cover
