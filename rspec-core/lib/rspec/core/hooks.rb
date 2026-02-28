@@ -578,7 +578,7 @@ module RSpec
         def extract_scope_from(args)
           if known_scope?(args.first)
             normalized_scope_for(args.shift)
-          elsif args.any? { |a| a.is_a?(Symbol) }
+          elsif args.any?(Symbol)
             error_message = "You must explicitly give a scope " \
                             "(#{SCOPES.join(", ")}) or scope alias " \
                             "(#{SCOPE_ALIASES.keys.join(", ")}) when using symbols as " \

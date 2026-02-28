@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/rspec/rspec/issues',
-    'changelog_uri' => "https://github.com/rspec/rspec/tree/rspec-expectations-v#{s.version}/rspec-expectations/Changelog.md",
+    'changelog_uri' => "https://github.com/rspec/rspec/tree/v#{s.version}/rspec-expectations/Changelog.md",
     'documentation_uri' => 'https://rspec.info/documentation/',
     'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/rspec',
-    'source_code_uri' => "https://github.com/rspec/rspec/tree/rspec-expectations-v#{s.version}/rspec-expectations",
+    'source_code_uri' => "https://github.com/rspec/rspec/tree/v#{s.version}/rspec-expectations",
     'rubygems_mfa_required' => 'true',
   }
 
@@ -45,5 +45,5 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency "rspec-support", "~> #{RSpec::Expectations::Version::STRING.split('.')[0..1].concat(['0']).join('.')}"
   end
 
-  s.add_runtime_dependency "diff-lcs", ">= 1.6.0", "< 2.0"
+  s.add_runtime_dependency "diff-lcs", ">= 1.6.0", "< 3.0"
 end

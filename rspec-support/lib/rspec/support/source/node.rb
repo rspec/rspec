@@ -40,7 +40,7 @@ module RSpec
         end
 
         def children
-          @children ||= args.select { |arg| arg.is_a?(Node) }.freeze
+          @children ||= args.grep(Node).freeze
         end
 
         def location

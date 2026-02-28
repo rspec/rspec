@@ -109,7 +109,7 @@ module RSpec
 
         def readable_list_of(items)
           described_items = surface_descriptions_in(items)
-          if described_items.all? { |item| item.is_a?(Hash) }
+          if described_items.all?(Hash)
             " #{described_items.inject(:merge).inspect}"
           else
             EnglishPhrasing.list(described_items)

@@ -9,7 +9,7 @@ module RSpec
         include Comparable
 
         def self.location?(array)
-          array.is_a?(Array) && array.size == 2 && array.all? { |e| e.is_a?(Integer) }
+          array.is_a?(Array) && array.size == 2 && array.all?(Integer)
         end
 
         def <=>(other)

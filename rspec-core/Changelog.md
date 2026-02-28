@@ -1,6 +1,8 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.6...main)
 
+# 4.0.0.beta1 / 2026-02-18
+
 Breaking Changes:
 
 * Ruby < 3.0 is no longer supported. (Phil Pirozhkov, Jon Rowe, rspec/rspec-core#2787, rspec/rspec#258)
@@ -41,7 +43,7 @@ Breaking Changes:
 Enhancements:
 
 * Add config option (`RSpec::Core::Configuration#force_line_number_for_spec_rerun`) to
-  allways print a line number rather than an example id when the line number is ambiguous.
+  always print a line number rather than an example id when the line number is ambiguous.
   (Baden Ashford, rspec/rspec-core#3085)
 * Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
   options. (Jean Boussier, rspec/rspec#161)

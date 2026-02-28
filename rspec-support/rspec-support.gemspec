@@ -16,11 +16,11 @@ Gem::Specification.new do |s|
 
   s.metadata = {
     'bug_tracker_uri' => 'https://github.com/rspec/rspec/issues',
-    'changelog_uri' => "https://github.com/rspec/rspec/tree/rspec-support-v#{s.version}/rspec-support/Changelog.md",
+    'changelog_uri' => "https://github.com/rspec/rspec/tree/v#{s.version}/rspec-support/Changelog.md",
     'documentation_uri' => 'https://rspec.info/documentation/',
     'mailing_list_uri' => 'https://groups.google.com/forum/#!forum/rspec',
     'rubygems_mfa_required' => 'true',
-    'source_code_uri' => "https://github.com/rspec/rspec/tree/rspec-support-v#{s.version}/rspec-support",
+    'source_code_uri' => "https://github.com/rspec/rspec/tree/v#{s.version}/rspec-support",
   }
 
   s.files         = `git ls-files -- lib/*`.split("\n")

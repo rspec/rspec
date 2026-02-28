@@ -276,7 +276,9 @@ module RSpec
 
         def allow_no_prepended_module_definition_of(method_name)
           prepended_modules = RSpec::Mocks::Proxy.prepended_modules_of(@klass)
-          problem_mod = prepended_modules.find { |mod| mod.method_defined?(method_name) }
+          problem_mod = prepended_modules.find do |mod|
+            MethodReference.method_defined_at_any_visibility?(mod, method_name)
+          end
           return unless problem_mod
 
           AnyInstance.error_generator.raise_not_supported_with_prepend_error(method_name, problem_mod)

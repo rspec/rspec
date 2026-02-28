@@ -250,6 +250,12 @@ Style/ExpandPathArguments:
 Style/FetchEnvVar:
   Enabled: false
 
+# Generally when we reach for File.open it's
+# because we want an open file handle.
+Style/FileOpen:
+  Exclude:
+    - '**/spec/**/*.rb'
+
 # Revisit in RSpec 4
 Style/FileRead:
   Enabled: false
@@ -319,6 +325,11 @@ Style/NestedParenthesizedCalls:
 Style/NumericPredicate:
   Enabled: false
 
+# require has a cost, albiet a minor one and we've historically
+# combined classes into files according to need due to this.
+Style/OneClassPerFile:
+  Enabled: false
+
 Style/ParallelAssignment:
   Enabled: false
 
@@ -344,6 +355,10 @@ Style/Proc:
 
 # We don't care about single vs double quotes
 Style/QuotedSymbols:
+  Enabled: false
+
+# We prefer the readability of other styles
+Style/ReduceToHash:
   Enabled: false
 
 # Revisit later in v4.0.0
