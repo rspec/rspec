@@ -17,16 +17,16 @@ RSpec.describe "expect(...).to satisfy { block }" do
   end
 
   context "when no custom description is provided" do
-    context 'in Ripper supported environment', :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in parser supported environment', :skip => !RSpec::Support::RubyFeatures.parser_supported? do
       it "fails with block snippet if block returns false" do
         expect {
           expect(false).to satisfy { |val| val }
         }.to fail_with("expected false to satisfy expression `val`")
 
         expect do
-          expect(false).to satisfy do |val|
+          expect(false).to(satisfy do |val|
             val
-          end
+          end)
         end.to fail_with("expected false to satisfy expression `val`")
       end
 
@@ -41,7 +41,7 @@ RSpec.describe "expect(...).to satisfy { block }" do
       end
     end
 
-    context 'in Ripper unsupported environment', :skip => RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in parser unsupported environment', :skip => RSpec::Support::RubyFeatures.parser_supported? do
       it "fails without block snippet if block returns false" do
         expect {
           expect(false).to satisfy { |val| val }
@@ -90,7 +90,7 @@ RSpec.describe "expect(...).not_to satisfy { block }" do
   end
 
   context "when no custom description is provided" do
-    context 'in Ripper supported environment', :skip => !RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in parser supported environment', :skip => !RSpec::Support::RubyFeatures.parser_supported? do
       it "fails with block snippet if block returns true" do
         expect {
           expect(true).not_to satisfy { |val| val }
@@ -98,7 +98,7 @@ RSpec.describe "expect(...).not_to satisfy { block }" do
       end
     end
 
-    context 'in Ripper unsupported environment', :skip => RSpec::Support::RubyFeatures.ripper_supported? do
+    context 'in parser unsupported environment', :skip => RSpec::Support::RubyFeatures.parser_supported? do
       it "fails without block snippet if block returns true" do
         expect {
           expect(true).not_to satisfy { |val| val }

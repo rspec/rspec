@@ -38,7 +38,7 @@ module RSpec
 
       private
 
-        if RSpec::Support::RubyFeatures.ripper_supported?
+        if RSpec::Support::RubyFeatures.parser_supported?
           def block_representation
             if (block_snippet = extract_block_snippet)
               "expression `#{block_snippet}`"
