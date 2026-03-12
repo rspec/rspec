@@ -14,17 +14,16 @@ Feature: Thread dump on SIGINFO / SIGPWR
   Threads without a backtrace show "<no backtrace available>".
 
   Scenario: Sending the backtrace signal during a run prints a thread dump to stderr
-    Given a file named "slow_spec.rb" with:
+    Given a file named "spec/truth_spec.rb" with:
       """ruby
-      RSpec.describe "slow examples" do
-        it "sleeps a bit" do
-          sleep 2
-        end
-        it "sleeps again" do
-          sleep 1
+      RSpec.describe "truth" do
+        it "is truthy" do
+          backtrace_signal = RSpec::Core::Runner.send(:backtrace_signal)
+          Process.kill(backtrace_signal, Process.pid) if backtrace_signal
+          expect(true).to be_truthy
         end
       end
       """
-    When I run `rspec slow_spec.rb` with the backtrace signal sent during the run
-    Then the output should contain %R{Thread TID-[a-z0-9]+ <[^>]+> .+/slow_spec.rb:}
-    And the output should contain "slow_spec.rb"
+    When I run `rspec spec/truth_spec.rb`
+    Then the output should contain %R{Thread TID-[a-z0-9]+ <[^>]*> .+/spec/truth_spec\.rb:4:in 'Process\.kill'}
+    And the output should contain "spec/truth_spec.rb"
