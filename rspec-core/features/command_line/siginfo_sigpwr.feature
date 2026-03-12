@@ -25,5 +25,5 @@ Feature: Thread dump on SIGINFO / SIGPWR
       end
       """
     When I run `rspec spec/truth_spec.rb`
-    Then the output should contain %R{Thread TID-[a-z0-9]+ <[^>]*> .+/spec/truth_spec\.rb:4:in '(Process\.kill|kill)'}
+    Then the output should contain %R{Thread TID-[a-z0-9]+ <[^>]*> .+/spec/truth_spec\.rb:4:in ('Process\.kill|`kill)'}
     And the output should contain "spec/truth_spec.rb"
