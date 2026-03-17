@@ -34,3 +34,8 @@ jobs:
       - run: mkdir -p documentation/${{ matrix.rspec_library }}/${{ inputs.rspec_version }}
       - run: ../bin/yard doc --no-cache --output-dir ../documentation/${{ matrix.rspec_library }}/${{ inputs.rspec_version }}
         working-directory: ${{ matrix.rspec_library }}
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: ${{ matrix.rspec_library }}-${{ inputs.rspec_version }}-${{ github.sha }}
+          path: documentation/${{ matrix.rspec_library }}/${{ inputs.rspec_version }}
