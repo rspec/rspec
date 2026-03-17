@@ -1,0 +1,36 @@
+name: Auto-generate documentation
+on:
+  workflow_call:
+    inputs:
+      # This tells the action where to store the output docs
+      rspec_version:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  RSPEC_CI: true
+
+jobs:
+  generate_documentation:
+    name: Auto-generate documentation
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        rspec_library:
+          - 'rspec-core'
+          - 'rspec-expectations'
+          - 'rspec-mocks'
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+      - run: script/update_rubygems_and_install_bundler
+      - run: script/bundle
+      - run: mkdir -p documentation/${{ matrix.rspec_library }}/${{ inputs.rspec_version }}
+      - run: ../bin/yard doc --no-cache --output-dir ../documentation/${{ matrix.rspec_library }}/${{ inputs.rspec_version }}
+        working-directory: ${{ matrix.rspec_library }}

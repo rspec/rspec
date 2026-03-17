@@ -16,6 +16,11 @@ jobs:
   docs:
     uses: ./.github/workflows/documentation_coverage.yml
 
+  generate_documentation:
+    uses: ./.github/workflows/generate_documentation.yml
+    with:
+      rspec_version: "4.0"
+
   rubocop:
     uses: ./.github/workflows/rubocop.yml
 
