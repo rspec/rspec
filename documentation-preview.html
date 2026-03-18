@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RSpec Documentation Preview</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      color: #1a1a2e;
+      background: #f8f9fa;
+    }
+
+    #loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      gap: 1.5rem;
+      padding: 2rem;
+
+      & h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      & p {
+        color: #555;
+        font-size: 0.9rem;
+      }
+    }
+
+    #status {
+      font-size: 0.85rem;
+      color: #666;
+      min-height: 1.2em;
+    }
+
+    #error {
+      color: #b91c1c;
+      font-size: 0.85rem;
+      max-width: 500px;
+      text-align: center;
+      min-height: 1.2em;
+    }
+
+    #viewer {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    #content-frame {
+      border: none;
+      position: fixed;
+      top: 0;
+      left: 260px;
+      width: calc(100vw - 260px);
+      height: 100vh;
+    }
+
+    #toggle-sidebar {
+      display: none;
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 20;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 700px) {
+      #sidebar { transform: translateX(-100%); transition: transform 0.2s; }
+      #sidebar.open { transform: translateX(0); }
+      #content-frame { left: 0; width: 100vw; }
+      #toggle-sidebar { display: block; }
+    }
+  </style>
+  </head>
+  <body>
+
+    <div id="loading-screen">
+      <h1>Loading Documentation Preview...</h1>
+      <p>If you have provided a valid github artifact then the content will be loaded here...</p>
+
+      <div id="status"></div>
+      <div id="error"></div>
+    </div>
+
+    <div id="viewer">
+      <iframe id="viewer-frame" sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3/dist/jszip.min.js"></script>
+    <script>
+      (function () {
+        "use strict";
+
+        const loadingScreen = document.getElementById("loading-screen");
+        const status = document.getElementById("status");
+        const error = document.getElementById("error");
+
+        const viewer = document.getElementById("viewer");
+        const frame = document.getElementById("viewer-frame");
+
+        let virtualFS = new Map();
+        let blobCache = new Map();
+        let docRoot = "";
+        let currentPage = "";
+        let htmlFiles = [];
+
+        function setStatus(msg) {
+          status.textContent = msg;
+          error.textContent = "";
+        }
+
+        function setError(msg) {
+          error.textContent = msg;
+          status.textContent = "";
+        }
+
+        function mimeFor(path) {
+          const ext = path.split(".").pop().toLowerCase();
+          const map = {
+            html: "text/html", htm: "text/html",
+            css: "text/css",
+            js: "application/javascript",
+            json: "application/json",
+            png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg",
+            gif: "image/gif", svg: "image/svg+xml", ico: "image/x-icon",
+            woff: "font/woff", woff2: "font/woff2", ttf: "font/ttf",
+            eot: "application/vnd.ms-fontobject",
+            txt: "text/plain", md: "text/plain",
+          };
+          return map[ext] || "application/octet-stream";
+        }
+
+        // Resolve a relative path against a base directory within the virtual FS.
+        // e.g. resolve("../Matchers.html", "RSpec/Core/") => "RSpec/Matchers.html"
+        function resolvePath(relative, baseDir) {
+          if (relative.startsWith("data:") || relative.startsWith("blob:") ||
+              relative.startsWith("http://") || relative.startsWith("https://") ||
+              relative.startsWith("javascript:") || relative.startsWith("#") ||
+              relative.startsWith("mailto:")) {
+            return null;
+          }
+          try {
+            const base = "http://vfs/" + baseDir;
+            const resolved = new URL(relative, base).pathname.slice(1);
+            return resolved;
+          } catch {
+            return null;
+          }
+        }
+
+        function dirOf(path) {
+          const i = path.lastIndexOf("/");
+          return i === -1 ? "" : path.slice(0, i + 1);
+        }
+
+        function getBlobURL(path) {
+          if (blobCache.has(path)) return blobCache.get(path);
+
+          const entry = virtualFS.get(path);
+
+          if (!entry) return null;
+
+          const url = URL.createObjectURL(entry.blob);
+          blobCache.set(path, url);
+          return url;
+        }
+
+        function revokeAll() {
+          for (const url of blobCache.values()) URL.revokeObjectURL(url);
+          blobCache.clear();
+          virtualFS.clear();
+        }
+
+        async function rewriteCSS(cssText, cssDir) {
+          return cssText.replace(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g, (match, ref) => {
+            const resolved = resolvePath(ref, cssDir);
+
+            if (!resolved) return match;
+
+            const url = getBlobURL(resolved);
+            return url ? `url("${url}")` : match;
+          });
+        }
+
+        async function getRewrittenCSSBlob(path) {
+          const cacheKey = "__css__" + path;
+
+          if (blobCache.has(cacheKey)) return blobCache.get(cacheKey);
+
+          const entry = virtualFS.get(path);
+          if (!entry) return null;
+
+          const text = await entry.blob.text();
+          const rewritten = await rewriteCSS(text, dirOf(path));
+          const blob = new Blob([rewritten], { type: "text/css" });
+          const url = URL.createObjectURL(blob);
+          blobCache.set(cacheKey, url);
+          return url;
+        }
+
+        // Injected into every served HTML page to intercept navigation.
+        const NAV_INTERCEPT_SCRIPT =
+          `<script>
+            (function() {
+              function intercept(e) {
+                var a = e.target.closest("a[data-vfs-path]");
+                if (!a) return;
+                e.preventDefault();
+                window.parent.postMessage({ type: "navigate", path: a.getAttribute("data-vfs-path"), hash: a.getAttribute("data-vfs-hash") || "" }, "*");
+              }
+              document.addEventListener("click", intercept);
+
+              // Intercept YARD's iframe src assignments for sidebar lists
+              var origSet = Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, "src");
+              if (origSet && origSet.set) {
+                Object.defineProperty(HTMLIFrameElement.prototype, "src", {
+                  set: function(val) {
+                    if (val && !val.startsWith("blob:") && !val.startsWith("http") && !val.startsWith("data:") && !val.startsWith("javascript:")) {
+                      window.parent.postMessage({ type: "iframe-src", src: val, from: document.__vfsPath || "" }, "*");
+                      return;
+                    }
+                    origSet.set.call(this, val);
+                  },
+                  get: origSet.get,
+                  configurable: true,
+                });
+              }
+            })();
+          <\/script>`;
+
+        async function rewriteHTML(path) {
+          const entry = virtualFS.get(path);
+          if (!entry) return null;
+
+          const text = await entry.blob.text();
+          const baseDir = dirOf(path);
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, "text/html");
+
+          const attrs = [
+            { sel: "[href]", attr: "href" },
+            { sel: "[src]", attr: "src" },
+            { sel: "[data-src]", attr: "data-src" },
+          ];
+
+          for (const { sel, attr } of attrs) {
+            for (const el of doc.querySelectorAll(sel)) {
+              const raw = el.getAttribute(attr);
+              if (!raw) continue;
+
+              // Split off hash
+              const hashIdx = raw.indexOf("#");
+              const ref = hashIdx === -1 ? raw : raw.slice(0, hashIdx);
+              const hash = hashIdx === -1 ? "" : raw.slice(hashIdx);
+
+              if (!ref) {
+                continue;
+              }
+
+              const resolved = resolvePath(ref, baseDir);
+              if (!resolved) continue;
+
+              // Is this a link to another HTML page?
+              if (el.tagName === "A" && /\.html?$/i.test(resolved) && virtualFS.has(resolved)) {
+                el.setAttribute("data-vfs-path", resolved);
+                el.setAttribute("data-vfs-hash", hash);
+                el.setAttribute("href", "#");
+                continue;
+              }
+
+              // Is this an iframe src pointing to an HTML file?
+              if (el.tagName === "IFRAME" && /\.html?$/i.test(resolved) && virtualFS.has(resolved)) {
+                const iframeBlob = await rewriteHTML(resolved);
+                if (iframeBlob) el.setAttribute(attr, iframeBlob);
+                continue;
+              }
+
+              // CSS files need url() rewriting
+              if (el.tagName === "LINK" && el.getAttribute("rel") === "stylesheet" && /\.css$/i.test(resolved)) {
+                const cssUrl = await getRewrittenCSSBlob(resolved);
+                if (cssUrl) el.setAttribute(attr, cssUrl);
+                continue;
+              }
+
+              // All other assets — use blob URL
+              const blobUrl = getBlobURL(resolved);
+              if (blobUrl) el.setAttribute(attr, blobUrl);
+            }
+          }
+
+          // Inject path reference and navigation script
+          const meta = doc.createElement("meta");
+          meta.setAttribute("name", "vfs-path");
+          meta.setAttribute("content", path);
+          doc.head.prepend(meta);
+
+          const scriptTag = doc.createElement("script");
+          scriptTag.textContent = `document.__vfsPath = "${path}";`;
+          doc.head.appendChild(scriptTag);
+
+          // Inject nav intercept at end of body
+          doc.body.insertAdjacentHTML("beforeend", NAV_INTERCEPT_SCRIPT);
+
+          const serializer = new XMLSerializer();
+          const html = serializer.serializeToString(doc);
+          const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+          return URL.createObjectURL(blob);
+        }
+
+        async function showPage(path, hash) {
+          setStatus("Rendering " + path + "...");
+
+          const url = await rewriteHTML(path);
+
+          if (!url) {
+            setError("File not found in archive: " + path);
+            return;
+          }
+
+          frame.src = url + (hash || "");
+          currentPage = path;
+
+          setStatus("");
+        }
+
+        // Listen for navigation messages from the iframe
+        window.addEventListener("message", async function (e) {
+          if (!e.data || !e.data.type) return;
+
+          if (e.data.type === "navigate") {
+            await showPage(e.data.path, e.data.hash);
+          }
+
+          if (e.data.type === "iframe-src") {
+            // YARD sidebar iframe navigation — resolve relative to the requesting page
+            const from = e.data.from || currentPage;
+            const resolved = resolvePath(e.data.src, dirOf(from));
+            if (resolved && virtualFS.has(resolved)) {
+              const url = await rewriteHTML(resolved);
+              if (url) {
+                // Find the iframe inside the content frame and set its src
+                try {
+                  const innerDoc = frame.contentDocument;
+                  if (innerDoc) {
+                    const iframes = innerDoc.querySelectorAll("iframe");
+                    for (const ifr of iframes) {
+                      ifr.src = url;
+                    }
+                  }
+                } catch { /* cross-origin, ignore */ }
+              }
+            }
+          }
+        });
+
+        async function loadZip(data) {
+          revokeAll();
+          setStatus("Extracting zip...");
+
+          const zip = await JSZip.loadAsync(data);
+          const entries = Object.keys(zip.files).filter(name => !zip.files[name].dir);
+
+          let root = "";
+          let minDepth = Infinity;
+          for (const name of entries) {
+            if (name.endsWith("/index.html") || name === "index.html") {
+              const depth = name.split("/").length;
+              if (depth < minDepth) {
+                minDepth = depth;
+                root = name.replace(/index\.html$/, "");
+              }
+            }
+          }
+          docRoot = root;
+
+          setStatus("Processing " + entries.length + " files...");
+
+          for (const name of entries) {
+            if (!name.startsWith(docRoot)) continue;
+
+            const relative = name.slice(docRoot.length);
+            if (!relative) continue;
+
+            const arrayBuf = await zip.files[name].async("arraybuffer");
+            const mime = mimeFor(relative);
+            const blob = new Blob([arrayBuf], { type: mime });
+            virtualFS.set(relative, { blob, type: mime });
+          }
+
+          if (virtualFS.size === 0) {
+            throw new Error("No files found in zip. Check that it contains YARD documentation output.");
+          }
+
+          loadingScreen.style.display = "none";
+          viewer.style.display = "block";
+
+          const start = virtualFS.has("index.html") ? "index.html"
+                      : virtualFS.has("_index.html") ? "_index.html"
+                      : htmlFiles[0];
+
+          if (start) await showPage(start, "");
+        }
+
+        async function loadArtifact() {
+          const params = new URLSearchParams(window.location.search);
+          const artifact = params.get("artifact");
+          const run = params.get("run");
+          const numbersOnly = /^\d+$/;
+
+          if (numbersOnly.test(run) && numbersOnly.test(artifact)) {
+            const url = `https://github.com/rspec/rspec/actions/runs/${run}/artifacts/${artifact}`;
+            setStatus("Fetching zip from URL... " + url);
+            try {
+              const resp = await fetch(url);
+              if (!resp.ok) throw new Error("HTTP " + resp.status + " " + resp.statusText);
+              const data = await resp.arrayBuffer();
+              await loadZip(data);
+            } catch (err) {
+              setError("Failed to fetch: " + err.message);
+            }
+          } else {
+            setError("No RSpec build specified, please use this page with a pre-built RSpec documentation artifact");
+          }
+        }
+
+        loadArtifact()
+      })();
+    </script>
+  </body>
+</html>
