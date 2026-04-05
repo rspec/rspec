@@ -99,6 +99,10 @@ Lint/AmbiguousOperatorPrecedence:
   Exclude:
     - '**/benchmarks/**/*'
 
+Lint/DuplicateMethods:
+  Exclude:
+    - '*/spec/**/*_spec.rb'
+
 Lint/EmptyBlock:
   Exclude:
     - '**/benchmarks/**/*'
