@@ -20,6 +20,10 @@ require 'rspec/support/spec/coverage'
 RSpec::Support::Spec::Coverage.setup do
   root File.expand_path("../..", __FILE__)
   minimum_coverage 100
+  if RUBY_VERSION.to_f < 3.3
+    # We use Prism on later Rubies which can't be checked for coverage here.
+    add_filter "lib/rspec/core/formatters/snippet_extractor.rb"
+  end
 end
 
 load File.expand_path("../../exe/rspec", __FILE__)

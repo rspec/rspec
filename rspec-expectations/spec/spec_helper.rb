@@ -7,6 +7,11 @@ require 'io/console' if RSpec::Support::Ruby.jruby? && RSpec::Support::OS.apple_
 
 RSpec::Support::Spec::Coverage.setup do
   minimum_coverage 100
+
+  if RUBY_VERSION.to_f < 3.3
+    # We use Prism on later Rubies which can't be checked for coverage here.
+    add_filter "lib/rspec/expectations/block_snippet_extractor.rb"
+  end
 end
 
 Dir['./spec/support/**/*.rb'].each do |f|
