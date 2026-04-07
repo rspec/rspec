@@ -285,7 +285,8 @@ module RSpec::Core
     #                                                  the spec suite
     SummaryNotification = Struct.new(:duration, :examples, :failed_examples,
                                      :pending_examples, :load_time,
-                                     :errors_outside_of_examples_count)
+                                     :errors_outside_of_examples_count,
+                                     :expected_example_count)
     class SummaryNotification
       # @api
       # @return [Fixnum] the number of examples run
@@ -311,13 +312,17 @@ module RSpec::Core
         summary = Formatters::Helpers.pluralize(example_count, "example") +
           ", " + Formatters::Helpers.pluralize(failure_count, "failure")
         summary += ", #{pending_count} pending" if pending_count > 0
+
         if errors_outside_of_examples_count > 0
           summary += (
             ", " +
             Formatters::Helpers.pluralize(errors_outside_of_examples_count, "error") +
             " occurred outside of examples"
           )
+        elsif expected_example_count > example_count
+          summary += ", #{expected_example_count - example_count} example not run for unknown reasons"
         end
+
         summary
       end
 
@@ -331,7 +336,7 @@ module RSpec::Core
       #                          specific colors.
       # @return [String] A colorized results line.
       def colorized_totals_line(colorizer=::RSpec::Core::Formatters::ConsoleCodes)
-        if failure_count > 0 || errors_outside_of_examples_count > 0
+        if failure_count > 0 || errors_outside_of_examples_count > 0 || expected_example_count > example_count
           colorizer.wrap(totals_line, RSpec.configuration.failure_color)
         elsif pending_count > 0
           colorizer.wrap(totals_line, RSpec.configuration.pending_color)
