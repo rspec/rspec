@@ -72,6 +72,30 @@ jobs:
       - run: ../script/bundle
       - run: ../script/run_rspec
 
+  diff_lcs:
+    name: Diff LCS version 2 checks ${{ matrix.ruby }}
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        ruby:
+          - '4.0'
+          - '3.4'
+          - '3.3'
+          - '3.2'
+      fail-fast: false
+    continue-on-error: false
+    defaults:
+      run:
+        working-directory: ${{ inputs.library }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run: ../script/update_rubygems_and_install_bundler
+      - run: ../script/bundle diff-lcs
+      - run: bundle exec --gemfile=../Gemfile-diff-lcs rspec
+
   windows:
     name: Ruby ${{ matrix.ruby }} (Windows)
     runs-on: windows-latest
