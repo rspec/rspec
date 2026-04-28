@@ -160,8 +160,7 @@ module RSpec::Core::Formatters
         end
       end
 
-      argument_error_points_invoker = RSpec::Support::Ruby.jruby?
-      context 'when the expression is a method definition and ends with "end"-only line', :skip => argument_error_points_invoker do
+      context 'when the expression is a method definition and ends with "end"-only line' do
         let(:source) do
           obj = Object.new
 
@@ -222,7 +221,7 @@ module RSpec::Core::Formatters
         end
       end
 
-      context 'when the expression is a setter method definition', :skip => argument_error_points_invoker do
+      context 'when the expression is a setter method definition' do
         let(:source) do
           obj = Object.new
 
