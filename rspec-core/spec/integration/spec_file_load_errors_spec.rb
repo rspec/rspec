@@ -103,7 +103,7 @@ RSpec.describe 'Spec file load errors' do
     # Remove extra line which is only shown on CRuby
     output = output.sub("# ./helper_with_exit.rb:1:in #{quoted('exit')}\n", "")
 
-    if defined?(JRUBY_VERSION) && !JRUBY_VERSION.empty?
+    if RSpec::Support::Ruby.jruby?
       expect(output).to eq unindent(<<-EOS)
 
         While loading ./helper_with_exit.rb an `exit` / `raise SystemExit` occurred, RSpec will now quit.
