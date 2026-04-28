@@ -612,6 +612,9 @@ module RSpec
           end
 
           it 'does not result in infinite recursion when `respond_to?` is stubbed' do
+            if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version >= '10.1.0.0'
+              skip 'Flaky on JRuby 10.1 due to some interaction with Object#instance_exec (?) https://github.com/rspec/rspec/issues/321'
+            end
             # Setting a method expectation causes the method to be proxied
             # RSpec may call #respond_to? when processing a failed expectation
             # If those internal calls go to the proxied method, that could
