@@ -56,8 +56,9 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - jruby-9.4
-          - jruby-10.0
+          - jruby-10.1 # ruby 4.0 compatible
+          - jruby-10.0 # ruby 3.4 compatible
+          - jruby-9.4  # ruby 3.1 compatible
       fail-fast: false
     continue-on-error: false
     defaults:

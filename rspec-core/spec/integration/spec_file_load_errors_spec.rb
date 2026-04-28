@@ -236,7 +236,10 @@ RSpec.describe 'Spec file load errors' do
         end
       end
     else
-      it 'prints a basic error when no syntax_suggest is available/loaded', :skip => RSpec::Support::Ruby.jruby? do
+      it 'prints a basic error when no syntax_suggest is available/loaded' do
+        if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version < '10'
+          skip 'JRuby < 10 cannot get the __send__ backtrace correctly'
+        end
         run_command "--require ./broken_file"
         expect(last_cmd_exit_status).to eq(error_exit_code)
 

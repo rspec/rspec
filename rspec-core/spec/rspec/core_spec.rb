@@ -10,9 +10,6 @@ RSpec.describe RSpec do
     %r{/fake_libs/},  # ignore these, obviously
   ]
 
-  # JRuby appears to not respect `--disable=gem` so rubygems also gets loaded.
-  allowed_loaded_features << /rubygems/ if RSpec::Support::Ruby.jruby?
-
   # Truffleruby cext files
   allowed_loaded_features << /\/truffle\/cext/ if RSpec::Support::Ruby.truffleruby?
 
