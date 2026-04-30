@@ -75,25 +75,9 @@ module RSpec
       end
 
     private
-
-      if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version < '9.2.0.0'
-        # On JRuby 9.1.x.x and before, `caller` and `raise` produce different backtraces with
-        # regards to `.java` stack frames. It's important that we use `raise` for JRuby to produce
-        # a backtrace that has a continuous common section with the raised `MultipleExpectationsNotMetError`,
-        # so that rspec-core's truncation logic can work properly on it to list the backtrace
-        # relative to the `aggregate_failures` block.
-        # :nocov:
-        def assign_backtrace(failure)
-          raise failure
-        rescue failure.class => e
-          failure.set_backtrace(e.backtrace)
-        end
-        # :nocov:
-      else
-        # Using `caller` performs better (and is simpler) than `raise` on most Rubies.
-        def assign_backtrace(failure)
-          failure.set_backtrace(caller)
-        end
+      # Using `caller` performs better (and is simpler) than `raise` on most Rubies.
+      def assign_backtrace(failure)
+        failure.set_backtrace(caller)
       end
 
       def initialize(block_label, metadata)

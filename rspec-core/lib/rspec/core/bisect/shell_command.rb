@@ -19,13 +19,13 @@ module RSpec
           parts = []
 
           parts << RUBY << load_path
-          parts << open3_safe_escape(RSpec::Core.path_to_executable)
+          parts << escape(RSpec::Core.path_to_executable)
 
           parts << "--format"   << "bisect-drb"
           parts << "--drb-port" << server.drb_port
 
           parts.concat(reusable_cli_options)
-          parts.concat(locations.map { |l| open3_safe_escape(l) })
+          parts.concat(locations.map { |l| escape(l) })
 
           parts.join(" ")
         end
@@ -65,16 +65,6 @@ module RSpec
 
         include RSpec::Core::ShellEscape
 
-        # On JRuby, Open3.popen3 does not handle shellescaped args properly:
-        # https://github.com/jruby/jruby/issues/2767
-        if RSpec::Support::Ruby.jruby?
-          # :nocov:
-          alias open3_safe_escape quote
-          # :nocov:
-        else
-          alias open3_safe_escape escape
-        end
-
         def environment_repro_parts
           bisect_environment_hash.map do |k, v|
             %Q(#{k}="#{v}")
@@ -110,7 +100,7 @@ module RSpec
         end
 
         def load_path
-          @load_path ||= "-I#{$LOAD_PATH.map { |p| open3_safe_escape(p) }.join(':')}"
+          @load_path ||= "-I#{$LOAD_PATH.map { |p| escape(p) }.join(':')}"
         end
 
         # Path to the currently running Ruby executable, borrowed from Rake:

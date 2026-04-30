@@ -246,7 +246,7 @@ module RSpec::Core
     end
 
     def uses_quoting_for_escaping?
-      RSpec::Support::OS.windows? || RSpec::Support::Ruby.jruby?
+      RSpec::Support::OS.windows?
     end
   end
 end

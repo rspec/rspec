@@ -118,50 +118,8 @@ module RSpec
           end
         end
 
-        def ripper_works_correctly?
-          ripper_reports_correct_line_number? &&
-            ripper_can_parse_source_including_keywordish_symbol? &&
-            ripper_can_parse_source_referencing_keyword_arguments?
-        end
-
-        # https://github.com/jruby/jruby/issues/3386
-        def ripper_reports_correct_line_number?
-          in_sub_process_if_possible do
-            require 'ripper'
-            tokens = ::Ripper.lex('foo')
-            token = tokens.first
-            location = token.first
-            line_number = location.first
-            line_number == 1
-          end
-        end
-
-        # https://github.com/jruby/jruby/issues/4562
-        def ripper_can_parse_source_including_keywordish_symbol?
-          in_sub_process_if_possible do
-            require 'ripper'
-            sexp = ::Ripper.sexp(':if')
-            !sexp.nil?
-          end
-        end
-
-        # https://github.com/jruby/jruby/issues/5209
-        def ripper_can_parse_source_referencing_keyword_arguments?
-          in_sub_process_if_possible do
-            require 'ripper'
-            # It doesn't matter if keyword arguments don't exist.
-            if Ruby.mri? || Ruby.jruby? || Ruby.truffleruby?
-              begin
-                !::Ripper.sexp('def a(**kw_args); end').nil?
-              rescue NoMethodError
-                false
-              end
-            end
-          end
-        end
-
         it 'returns whether Ripper is correctly implemented in the current environment' do
-          expect(RubyFeatures.ripper_supported?).to eq(ripper_is_implemented? && ripper_works_correctly?)
+          expect(RubyFeatures.ripper_supported?).to eq(ripper_is_implemented?)
         end
 
         it 'does not load Ripper' do
