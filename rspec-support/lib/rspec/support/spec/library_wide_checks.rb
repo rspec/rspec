@@ -67,7 +67,7 @@ RSpec.shared_examples_for "library wide checks" do |lib, options|
 
     stdout, stderr, status = with_env 'NO_COVERAGE' => '1' do
       options = %w[ -w ]
-      options << "--disable=gem" if RSpec::Support::Ruby.mri?
+      options << "--disable=gem"
       run_ruby_with_current_load_path(command, *options)
     end
 
