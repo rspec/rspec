@@ -90,13 +90,9 @@ module RSpec
         visibility = proxy.visibility_for(message)
 
         # Defined private and protected methods will still trigger `method_missing`
-        # when called publicly. We want ruby's method visibility error to get raised,
-        # so we simply delegate to `super` in that case.
-        #   return super if visibility == :private || visibility == :protected
-        # ...well, we would delegate to `super`, but there's a JRuby
-        # bug, so we raise our own visibility error instead:
-        # https://github.com/jruby/jruby/issues/1398
-        # Only works without this workaround with JRuby 9.2
+        # when called publicly. We originally wanted ruby's method visibility error to get raised,
+        # i.e to delegate to `super` - however workarounds for JRuby bugs (since resolved) were introduced which
+        # also had the benefit across implementations of including additional context via our own visibility error.
         if visibility == :private || visibility == :protected
           ErrorGenerator.new(self).raise_non_public_error(
             message, visibility
