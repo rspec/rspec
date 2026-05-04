@@ -19,10 +19,6 @@ group :documentation do
   gem 'yard', '~> 0.9.24', :require => false
 end
 
-platforms :jruby do
-  gem "jruby-openssl"
-end
-
 #
 # Support for gems extracted in Ruby versions
 #
