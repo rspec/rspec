@@ -87,7 +87,7 @@ end
 if RUBY_VERSION < '2.4.0'
   gem 'minitest', '< 5.12.0'
 else
-  gem 'minitest', '~> 5.12.0'
+  gem 'minitest', '~> 5.15'
 end
 
 gem "mocha", "~> 0.13.0"
@@ -117,10 +117,6 @@ if RUBY_VERSION < '2.0.0'
   gem 'thor', '< 1.0.0'
 else
   gem 'thor', '> 1.0.0'
-end
-
-if RUBY_VERSION.to_f > 3.3
-  gem 'mutex_m', '~> 0.1.0'
 end
 
 eval File.read('Gemfile-custom') if File.exist?('Gemfile-custom')
