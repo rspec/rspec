@@ -30,6 +30,7 @@ end
 gem 'bigdecimal', :require => false if RUBY_VERSION.to_f >= 3.3
 gem 'drb' if RUBY_VERSION.to_f >= 3.3
 gem 'mutex_m', '~> 0.1.0' if RUBY_VERSION.to_f > 3.3
+gem 'tsort', '0.1.0' if RUBY_VERSION.to_f < 3.1
 
 #
 # Tooling / our testing
