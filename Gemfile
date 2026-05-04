@@ -110,6 +110,7 @@ if RUBY_VERSION >= '3.3' && RUBY_ENGINE == 'ruby'
 end
 
 gem 'test-unit', '~> 3.0' if RUBY_VERSION.to_f >= 2.2
+gem 'tsort', '0.1.0' if RUBY_VERSION > '3.0.0' && RUBY_VERSION.to_f < 3.1
 
 gem "thread_order", "~> 1.1.0"
 
