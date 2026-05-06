@@ -34,6 +34,7 @@ module FormatterSupport
     configuration = runner.configuration
     configuration.filter_gems_from_backtrace "gems/bundler"
     configuration.backtrace_formatter.exclusion_patterns << /rspec_with_simplecov/
+    configuration.backtrace_formatter.exclusion_patterns << /erb\.rb/ # remove differences/churn between use of stdlib and bundled erb
     configuration.backtrace_formatter.inclusion_patterns = []
 
     yield runner if block_given?

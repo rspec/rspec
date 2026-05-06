@@ -161,8 +161,9 @@ module RSpec
               )).and exclude(a_string_matching(anonymous_module_regex))
             )
 
-            expect(example_group.ancestors.map(&:inspect)).to include_a_named_rather_than_anonymous_module
-            expect(example_group.ancestors.map(&:to_s)).to include_a_named_rather_than_anonymous_module
+            relevant_ancestors = example_group.ancestors.take_while { |x| x != RSpec::Core::MemoizedHelpers }
+            expect(relevant_ancestors.map(&:inspect)).to include_a_named_rather_than_anonymous_module
+            expect(relevant_ancestors.map(&:to_s)).to include_a_named_rather_than_anonymous_module
           end
 
           ["name", :name, ExampleModule, ExampleClass].each do |object|

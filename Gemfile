@@ -19,17 +19,13 @@ group :documentation do
   gem 'yard', '~> 0.9.24', :require => false
 end
 
-platforms :jruby do
-  gem "jruby-openssl"
-end
-
 #
 # Support for gems extracted in Ruby versions
 #
 
 gem 'bigdecimal', :require => false if RUBY_VERSION.to_f >= 3.3
 gem 'drb' if RUBY_VERSION.to_f >= 3.3
-gem 'mutex_m', '~> 0.1.0' if RUBY_VERSION.to_f > 3.3
+gem 'tsort', '0.1.0' if RUBY_VERSION.to_f < 3.1
 
 #
 # Tooling / our testing
@@ -48,7 +44,7 @@ gem "rubocop", "~> 1.80" if RUBY_VERSION >= '3.3' && RUBY_ENGINE == 'ruby'
 #
 
 gem 'flexmock', '~> 0.9.0'
-gem 'minitest', '~> 5.12.0'
+gem 'minitest', '~> 5.15'
 gem 'mocha', '~> 0.13.0'
 gem 'rr', "~> 1.0.4"
 gem 'test-unit', '~> 3.0'
