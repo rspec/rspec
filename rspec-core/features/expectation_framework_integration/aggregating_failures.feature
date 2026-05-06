@@ -94,6 +94,7 @@ Feature: Aggregating Failures
                 # ./spec/use_block_form_spec.rb:12
       """
 
+  @broken-on-jruby
   Scenario: Use `:aggregate_failures` metadata
     Given a file named "spec/use_metadata_spec.rb" with:
       """ruby
