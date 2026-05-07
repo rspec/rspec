@@ -15,28 +15,28 @@ permissions:
 
 jobs:
   docs:
-    uses: rspec/rspec/.github/workflows/documentation_coverage.yml@3-13-maintenance
+    uses: ./.github/workflows/documentation_coverage.yml
 
   core:
-    uses: rspec/rspec/.github/workflows/rspec.yml@3-13-maintenance
+    uses: ./.github/workflows/rspec.yml
     with:
       library: 'rspec-core'
       rspec_version: '~> 3.13.0'
 
   mocks:
-    uses: rspec/rspec/.github/workflows/rspec.yml@3-13-maintenance
+    uses: ./.github/workflows/rspec.yml
     with:
       library: 'rspec-mocks'
       rspec_version: '~> 3.13.0'
 
   expectations:
-    uses: rspec/rspec/.github/workflows/rspec.yml@3-13-maintenance
+    uses: ./.github/workflows/rspec.yml
     with:
       library: 'rspec-expectations'
       rspec_version: '~> 3.13.0'
 
   support:
-    uses: rspec/rspec/.github/workflows/rspec.yml@3-13-maintenance
+    uses: ./.github/workflows/rspec.yml
     with:
       library: 'rspec-support'
       rspec_version: '~> 3.13.0'
