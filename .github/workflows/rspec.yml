@@ -123,7 +123,7 @@ jobs:
     steps:
       - run: git config --global --add safe.directory $GITHUB_WORKSPACE
       - run: git init $GITHUB_WORKSPACE
-      - run: git remote add origin https://github.com/rspec/rspec
+      - run: git remote add origin https://github.com/$GITHUB_REPOSITORY
       - run: git config --local gc.auto 0
       - run: git fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +$GITHUB_SHA:$GITHUB_REF
       - run: git checkout --progress --force $GITHUB_REF

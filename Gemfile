@@ -87,7 +87,7 @@ end
 if RUBY_VERSION < '2.4.0'
   gem 'minitest', '< 5.12.0'
 else
-  gem 'minitest', '~> 5.12.0'
+  gem 'minitest', '~> 5.15'
 end
 
 gem "mocha", "~> 0.13.0"
@@ -110,6 +110,7 @@ if RUBY_VERSION >= '3.3' && RUBY_ENGINE == 'ruby'
 end
 
 gem 'test-unit', '~> 3.0' if RUBY_VERSION.to_f >= 2.2
+gem 'tsort', '0.1.0' if RUBY_VERSION > '3.0.0' && RUBY_VERSION.to_f < 3.1
 
 gem "thread_order", "~> 1.1.0"
 
@@ -117,10 +118,6 @@ if RUBY_VERSION < '2.0.0'
   gem 'thor', '< 1.0.0'
 else
   gem 'thor', '> 1.0.0'
-end
-
-if RUBY_VERSION.to_f > 3.3
-  gem 'mutex_m', '~> 0.1.0'
 end
 
 eval File.read('Gemfile-custom') if File.exist?('Gemfile-custom')
