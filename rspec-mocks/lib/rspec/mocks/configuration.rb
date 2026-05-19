@@ -58,9 +58,7 @@ module RSpec
       attr_writer :verify_doubled_constant_names
 
       # Returns the `stub_const` constant name verification mode.
-      def verify_constant_names
-        @verify_constant_names
-      end
+      attr_reader :verify_constant_names
 
       # Controls whether `stub_const` verifies the constant name it is given.
       # Accepts one of three values:
