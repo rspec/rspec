@@ -125,7 +125,7 @@ module RSpec
 
       # @private
       def self.verify_constant_name(constant_name)
-        mode = RSpec::Mocks.configuration.verify_constant_names
+        mode = RSpec::Mocks.configuration.verify_stub_constant_mode
         return if mode == :none
 
         if mode == :namespace
@@ -137,12 +137,12 @@ module RSpec
           raise VerifyingDoubleNotDefinedError,
                 "#{namespace.inspect} is not a defined constant. " \
                 "Perhaps you misspelt #{constant_name.inspect}? " \
-                "Disable check with the `verify_constant_names` configuration option."
+                "Disable check with the `verify_stub_constant_mode` configuration option."
         else
           raise VerifyingDoubleNotDefinedError,
                 "#{constant_name.inspect} is not a defined constant. " \
                 "Perhaps you misspelt it? " \
-                "Disable check with the `verify_constant_names` configuration option."
+                "Disable check with the `verify_stub_constant_mode` configuration option."
         end
       end
 

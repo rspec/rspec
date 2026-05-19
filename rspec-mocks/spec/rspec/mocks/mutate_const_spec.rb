@@ -427,11 +427,11 @@ module RSpec
           end
         end
 
-        context 'when `verify_constant_names` is `:none`' do
+        context 'when `verify_stub_constant_mode` is `:none`' do
           include_context "with isolated configuration"
 
           before do
-            RSpec::Mocks.configuration.verify_constant_names = :none
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :none
           end
 
           it 'allows undefined constants to be stubbed' do
@@ -440,11 +440,11 @@ module RSpec
           end
         end
 
-        context 'when `verify_constant_names` is `:full`' do
+        context 'when `verify_stub_constant_mode` is `:full`' do
           include_context "with isolated configuration"
 
           before do
-            RSpec::Mocks.configuration.verify_constant_names = :full
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :full
           end
 
           it 'raises when stubbing an undefined constant' do
@@ -462,11 +462,11 @@ module RSpec
           end
         end
 
-        context 'when `verify_constant_names` is `:namespace`' do
+        context 'when `verify_stub_constant_mode` is `:namespace`' do
           include_context "with isolated configuration"
 
           before do
-            RSpec::Mocks.configuration.verify_constant_names = :namespace
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :namespace
           end
 
           it 'raises when the enclosing namespace is undefined' do
@@ -486,13 +486,13 @@ module RSpec
           end
         end
 
-        context 'when `verify_constant_names` is given an invalid value' do
+        context 'when `verify_stub_constant_mode` is given an invalid value' do
           include_context "with isolated configuration"
 
           it 'raises an ArgumentError' do
             expect {
-              RSpec::Mocks.configuration.verify_constant_names = :bogus
-            }.to raise_error(ArgumentError, /verify_constant_names/)
+              RSpec::Mocks.configuration.verify_stub_constant_mode = :bogus
+            }.to raise_error(ArgumentError, /verify_stub_constant_mode/)
           end
         end
       end

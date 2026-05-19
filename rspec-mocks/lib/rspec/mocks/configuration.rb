@@ -6,7 +6,7 @@ module RSpec
         @allow_message_expectations_on_nil = nil
         @yield_receiver_to_any_instance_implementation_blocks = true
         @verify_doubled_constant_names = false
-        @verify_constant_names = :none
+        @verify_stub_constant_mode = :none
         @transfer_nested_constants = false
         @verify_partial_doubles = true
         @temporarily_suppress_partial_double_verification = false
@@ -58,7 +58,7 @@ module RSpec
       attr_writer :verify_doubled_constant_names
 
       # Returns the `stub_const` constant name verification mode.
-      attr_reader :verify_constant_names
+      attr_reader :verify_stub_constant_mode
 
       # Controls whether `stub_const` verifies the constant name it is given.
       # Accepts one of three values:
@@ -73,13 +73,13 @@ module RSpec
       # You probably only want `:full` when running your entire test suite,
       # with all production code loaded; it will prevent you from stubbing
       # constants in isolated unit tests.
-      def verify_constant_names=(value)
+      def verify_stub_constant_mode=(value)
         unless [:none, :namespace, :full].include?(value)
           raise ArgumentError,
-                "verify_constant_names must be one of :none, :namespace or " \
+                "verify_stub_constant_mode must be one of :none, :namespace or " \
                 ":full, but got #{value.inspect}"
         end
-        @verify_constant_names = value
+        @verify_stub_constant_mode = value
       end
 
       # Provides a way to perform customisations when verifying doubles.
