@@ -6,6 +6,7 @@ module RSpec
         @allow_message_expectations_on_nil = nil
         @yield_receiver_to_any_instance_implementation_blocks = true
         @verify_doubled_constant_names = false
+        @verify_constant_names = :none
         @transfer_nested_constants = false
         @verify_partial_doubles = true
         @temporarily_suppress_partial_double_verification = false
@@ -50,12 +51,38 @@ module RSpec
       end
 
       # When this is set to true, an error will be raised when
-      # `instance_double`, `class_double` or `stub_const` is given the name of
-      # an undefined constant. You probably only want to set this when running
-      # your entire test suite, with all production code loaded. Setting this
-      # for an isolated unit test will prevent you from being able to isolate
-      # it!
+      # `instance_double` or `class_double` is given the name of an undefined
+      # constant. You probably only want to set this when running your entire
+      # test suite, with all production code loaded. Setting this for an
+      # isolated unit test will prevent you from being able to isolate it!
       attr_writer :verify_doubled_constant_names
+
+      # Returns the `stub_const` constant name verification mode.
+      def verify_constant_names
+        @verify_constant_names
+      end
+
+      # Controls whether `stub_const` verifies the constant name it is given.
+      # Accepts one of three values:
+      #
+      # * `:none` (default) - no verification is performed.
+      # * `:namespace` - an error is raised when the constant's enclosing
+      #   namespace is not defined (e.g. stubbing `Foo::Bar` when `Foo` does
+      #   not exist).
+      # * `:full` - an error is raised when the constant itself is not already
+      #   defined.
+      #
+      # You probably only want `:full` when running your entire test suite,
+      # with all production code loaded; it will prevent you from stubbing
+      # constants in isolated unit tests.
+      def verify_constant_names=(value)
+        unless [:none, :namespace, :full].include?(value)
+          raise ArgumentError,
+                "verify_constant_names must be one of :none, :namespace or " \
+                ":full, but got #{value.inspect}"
+        end
+        @verify_constant_names = value
+      end
 
       # Provides a way to perform customisations when verifying doubles.
       #

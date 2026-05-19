@@ -427,11 +427,24 @@ module RSpec
           end
         end
 
-        context 'when `verify_doubled_constant_names` is enabled' do
+        context 'when `verify_constant_names` is `:none`' do
           include_context "with isolated configuration"
 
           before do
-            RSpec::Mocks.configuration.verify_doubled_constant_names = true
+            RSpec::Mocks.configuration.verify_constant_names = :none
+          end
+
+          it 'allows undefined constants to be stubbed' do
+            stub_const("SomeUndefinedConst", Module.new)
+            expect(SomeUndefinedConst).to be_a(Module)
+          end
+        end
+
+        context 'when `verify_constant_names` is `:full`' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_constant_names = :full
           end
 
           it 'raises when stubbing an undefined constant' do
@@ -446,6 +459,40 @@ module RSpec
             expect(TestClass).not_to be(orig_value)
             reset_rspec_mocks
             expect(TestClass).to be(orig_value)
+          end
+        end
+
+        context 'when `verify_constant_names` is `:namespace`' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_constant_names = :namespace
+          end
+
+          it 'raises when the enclosing namespace is undefined' do
+            expect {
+              stub_const("SomeUndefinedConst::Nested", Module.new)
+            }.to raise_error(/SomeUndefinedConst.*is not a defined constant/)
+          end
+
+          it 'allows a new constant under a defined namespace' do
+            stub_const("TestClass::BrandNew", Module.new)
+            expect(TestClass::BrandNew).to be_a(Module)
+          end
+
+          it 'allows a new top-level constant' do
+            stub_const("SomeUndefinedConst", Module.new)
+            expect(SomeUndefinedConst).to be_a(Module)
+          end
+        end
+
+        context 'when `verify_constant_names` is given an invalid value' do
+          include_context "with isolated configuration"
+
+          it 'raises an ArgumentError' do
+            expect {
+              RSpec::Mocks.configuration.verify_constant_names = :bogus
+            }.to raise_error(ArgumentError, /verify_constant_names/)
           end
         end
       end

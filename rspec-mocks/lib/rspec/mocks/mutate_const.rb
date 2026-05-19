@@ -111,12 +111,7 @@ module RSpec
 
         defined = recursive_const_defined?(constant_name, &raise_on_invalid_const)
 
-        if !defined && RSpec::Mocks.configuration.verify_doubled_constant_names?
-          raise VerifyingDoubleNotDefinedError,
-                "#{constant_name.inspect} is not a defined constant. " \
-                "Perhaps you misspelt it? " \
-                "Disable check with `verify_doubled_constant_names` configuration option."
-        end
+        verify_constant_name(constant_name) unless defined
 
         mutator = if defined
                     DefinedConstantReplacer
@@ -126,6 +121,29 @@ module RSpec
 
         mutate(mutator.new(constant_name, value, options[:transfer_nested_constants]))
         value
+      end
+
+      # @private
+      def self.verify_constant_name(constant_name)
+        mode = RSpec::Mocks.configuration.verify_constant_names
+        return if mode == :none
+
+        if mode == :namespace
+          parts = normalize_const_name(constant_name).split('::')
+          return if parts.size < 2
+          namespace = parts[0..-2].join('::')
+          return if recursive_const_defined?(namespace)
+
+          raise VerifyingDoubleNotDefinedError,
+                "#{namespace.inspect} is not a defined constant. " \
+                "Perhaps you misspelt #{constant_name.inspect}? " \
+                "Disable check with the `verify_constant_names` configuration option."
+        else
+          raise VerifyingDoubleNotDefinedError,
+                "#{constant_name.inspect} is not a defined constant. " \
+                "Perhaps you misspelt it? " \
+                "Disable check with the `verify_constant_names` configuration option."
+        end
       end
 
       # Hides a constant.
