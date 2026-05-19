@@ -426,6 +426,28 @@ module RSpec
             expect(defined?(TestClass::Nested::NestedEvenMore::X)).to be_falsey
           end
         end
+
+        context 'when `verify_doubled_constant_names` is enabled' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_doubled_constant_names = true
+          end
+
+          it 'raises when stubbing an undefined constant' do
+            expect {
+              stub_const("SomeUndefinedConst", Module.new)
+            }.to raise_error(/SomeUndefinedConst.*is not a defined constant/)
+          end
+
+          it 'still allows defined constants to be stubbed' do
+            orig_value = TestClass
+            stub_const("TestClass", Module.new)
+            expect(TestClass).not_to be(orig_value)
+            reset_rspec_mocks
+            expect(TestClass).to be(orig_value)
+          end
+        end
       end
     end
 

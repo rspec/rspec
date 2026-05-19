@@ -109,7 +109,16 @@ module RSpec
           raise ArgumentError, "`stub_const` requires a String, but you provided a #{constant_name.class.name}"
         end
 
-        mutator = if recursive_const_defined?(constant_name, &raise_on_invalid_const)
+        defined = recursive_const_defined?(constant_name, &raise_on_invalid_const)
+
+        if !defined && RSpec::Mocks.configuration.verify_doubled_constant_names?
+          raise VerifyingDoubleNotDefinedError,
+                "#{constant_name.inspect} is not a defined constant. " \
+                "Perhaps you misspelt it? " \
+                "Disable check with `verify_doubled_constant_names` configuration option."
+        end
+
+        mutator = if defined
                     DefinedConstantReplacer
                   else
                     UndefinedConstantSetter

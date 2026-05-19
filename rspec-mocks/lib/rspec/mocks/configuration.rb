@@ -50,10 +50,11 @@ module RSpec
       end
 
       # When this is set to true, an error will be raised when
-      # `instance_double` or `class_double` is given the name of an undefined
-      # constant. You probably only want to set this when running your entire
-      # test suite, with all production code loaded. Setting this for an
-      # isolated unit test will prevent you from being able to isolate it!
+      # `instance_double`, `class_double` or `stub_const` is given the name of
+      # an undefined constant. You probably only want to set this when running
+      # your entire test suite, with all production code loaded. Setting this
+      # for an isolated unit test will prevent you from being able to isolate
+      # it!
       attr_writer :verify_doubled_constant_names
 
       # Provides a way to perform customisations when verifying doubles.
