@@ -84,5 +84,15 @@ RSpec.describe "RSpec::Core::Formatters::ConsoleCodes" do
         expect(console_codes.wrap('abc', :bold)).to eq "\e[1mabc\e[0m"
       end
     end
+
+    context "when color is disabled" do
+      before do
+        allow(RSpec.configuration).to receive(:color_enabled?) { false }
+      end
+
+      it "returns the text without any console codes" do
+        expect(console_codes.wrap('abc', :green)).to eq 'abc'
+      end
+    end
   end
 end
