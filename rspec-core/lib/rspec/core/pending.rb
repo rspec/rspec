@@ -53,7 +53,7 @@ module RSpec
       #     end
       #
       # @note When using `pending` inside an example body using this method
-      #   hooks, such as `before(:example)`, have already be run. This means that
+      #   hooks, such as `before(:example)`, have already been run. This means that
       #   a failure from the code in the `before` hook will prevent the example
       #   from being considered pending, as the example body would not be
       #   executed. If you need to consider hooks as pending as well you can use
