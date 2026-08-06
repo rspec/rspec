@@ -706,7 +706,16 @@ module RSpec
       # @private
       def self.update_inherited_metadata(updates)
         metadata.update(updates) do |key, existing_group_value, new_inherited_value|
-          @user_metadata.key?(key) ? existing_group_value : new_inherited_value
+          # `@user_metadata` is only assigned by `set_it_up`. The singleton
+          # example group used to include a shared group into an individual
+          # example never goes through it, and its metadata is the example's
+          # own, so the existing value wins -- as it does in
+          # `Example#update_inherited_metadata`.
+          if @user_metadata.nil? || @user_metadata.key?(key)
+            existing_group_value
+          else
+            new_inherited_value
+          end
         end
 
         RSpec.configuration.configure_group(self)
