@@ -202,8 +202,10 @@ module RSpec::Expectations
           aggregate_failures do
             raise error
 
-            later_expectation_executed = true # rubocop:disable Lint/UnreachableCode
+            # rubocop:disable Lint/UnreachableCode
+            later_expectation_executed = true
             expect(1).to eq(1)
+            # rubocop:enable Lint/UnreachableCode
           end
         }.to raise_error(error)
 
