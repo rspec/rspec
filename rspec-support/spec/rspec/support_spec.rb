@@ -53,9 +53,6 @@ module RSpec
 
       it 'fails with `NameError` when an undefined method is fetched ' +
          'from an object that has overridden `method` to raise an Exception' do
-        if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version >= '10.1.0.0'
-          pending 'https://github.com/jruby/jruby/issues/9398'
-        end
         object = double
         allow(object).to receive(:method).and_raise(Exception)
         expect {
