@@ -1,6 +1,6 @@
 Feature: Aggregating Failures
 
-  Normally, an expectation failure causes the example to immediately abort.  When you have multiple independent expectations, it's nice to be able to see all of the failures rather than just the first.  One solution is to split off a separate example for each expectation, but if the setup for the examples is slow, that's going to take extra time and slow things down.  `aggregate_failures` provides an alternate solution.  It wraps a set of expectations with a block.  Within the block, expectation failures will not immediatly abort like normal; instead, the failures will be aggregated into a single exception that is raised at the end of the block, allowing you to see all expectations that failed.
+  Normally, an expectation failure causes the example to immediately abort.  When you have multiple independent expectations, it's nice to be able to see all of the failures rather than just the first.  One solution is to split off a separate example for each expectation, but if the setup for the examples is slow, that's going to take extra time and slow things down.  `aggregate_failures` provides an alternate solution.  It wraps a set of expectations with a block.  Within the block, expectation failures will not immediately abort like normal; instead, the failures will be aggregated into a single exception that is raised at the end of the block, allowing you to see all expectations that failed.
 
   `aggregate_failures` takes an optional string argument that will be used in the aggregated failure message as a label.
 
