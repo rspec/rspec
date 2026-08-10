@@ -426,6 +426,75 @@ module RSpec
             expect(defined?(TestClass::Nested::NestedEvenMore::X)).to be_falsey
           end
         end
+
+        context 'when `verify_stub_constant_mode` is `:none`' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :none
+          end
+
+          it 'allows undefined constants to be stubbed' do
+            stub_const("SomeUndefinedConst", Module.new)
+            expect(SomeUndefinedConst).to be_a(Module)
+          end
+        end
+
+        context 'when `verify_stub_constant_mode` is `:full`' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :full
+          end
+
+          it 'raises when stubbing an undefined constant' do
+            expect {
+              stub_const("SomeUndefinedConst", Module.new)
+            }.to raise_error(/SomeUndefinedConst.*is not a defined constant/)
+          end
+
+          it 'still allows defined constants to be stubbed' do
+            orig_value = TestClass
+            stub_const("TestClass", Module.new)
+            expect(TestClass).not_to be(orig_value)
+            reset_rspec_mocks
+            expect(TestClass).to be(orig_value)
+          end
+        end
+
+        context 'when `verify_stub_constant_mode` is `:namespace`' do
+          include_context "with isolated configuration"
+
+          before do
+            RSpec::Mocks.configuration.verify_stub_constant_mode = :namespace
+          end
+
+          it 'raises when the enclosing namespace is undefined' do
+            expect {
+              stub_const("SomeUndefinedConst::Nested", Module.new)
+            }.to raise_error(/SomeUndefinedConst.*is not a defined constant/)
+          end
+
+          it 'allows a new constant under a defined namespace' do
+            stub_const("TestClass::BrandNew", Module.new)
+            expect(TestClass::BrandNew).to be_a(Module)
+          end
+
+          it 'allows a new top-level constant' do
+            stub_const("SomeUndefinedConst", Module.new)
+            expect(SomeUndefinedConst).to be_a(Module)
+          end
+        end
+
+        context 'when `verify_stub_constant_mode` is given an invalid value' do
+          include_context "with isolated configuration"
+
+          it 'raises an ArgumentError' do
+            expect {
+              RSpec::Mocks.configuration.verify_stub_constant_mode = :bogus
+            }.to raise_error(ArgumentError, /verify_stub_constant_mode/)
+          end
+        end
       end
     end
 
