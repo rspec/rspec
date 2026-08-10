@@ -452,6 +452,98 @@ module RSpec::Core::Notifications
           expect(fully_formatted).to include('<red>2 examples, 0 failures, 1 error occurred outside of examples</red>')
         end
       end
+
+      context "when there is an expectation count" do
+        subject(:notification) do
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            25
+          )
+        end
+
+        it 'includes the expectation count in the summary line' do
+          expect(fully_formatted).to include('2 examples, 0 failures, 25 expectations')
+        end
+      end
+    end
+
+    describe '#totals_line' do
+      context "with no expectation count" do
+        it "returns the standard summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures")
+        end
+      end
+
+      context "with expectation count" do
+        subject(:notification) do
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            25
+          )
+        end
+
+        it "appends expectation count to the summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 25 expectations")
+        end
+      end
+
+      context "with a singular expectation count" do
+        subject(:notification) do
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            1
+          )
+        end
+
+        it "uses the singular label" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures, 1 expectation")
+        end
+      end
+
+      context "with a zero expectation count" do
+        subject(:notification) do
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            0
+          )
+        end
+
+        it "omits the expectation count from the summary" do
+          expect(notification.totals_line).to eq("2 examples, 0 failures")
+        end
+      end
+    end
+
+    describe '#expectation_count' do
+      it "defaults to nil when constructed with 6 arguments" do
+        n = ::RSpec::Core::Notifications::SummaryNotification.new(1.0, [], [], [], 0.1, 0)
+        expect(n.expectation_count).to be_nil
+      end
+
+      it "does not affect totals_line when nil" do
+        n = ::RSpec::Core::Notifications::SummaryNotification.new(1.0, [], [], [], 0.1, 0)
+        expect(n.totals_line).to eq("0 examples, 0 failures")
+      end
     end
   end
 end

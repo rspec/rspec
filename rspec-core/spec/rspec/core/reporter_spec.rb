@@ -302,6 +302,20 @@ module RSpec::Core
 
         reporter.finish
       end
+
+      it "passes expectation_count to SummaryNotification" do
+        reporter.increment_expectation_count
+        reporter.increment_expectation_count
+        formatter = instance_double("ProgressFormatter")
+        reporter.register_listener formatter, :dump_summary
+        reporter.start 1
+
+        expect(formatter).to receive(:dump_summary) do |notification|
+          expect(notification.expectation_count).to eq(2)
+        end
+
+        reporter.finish
+      end
     end
 
     describe "#notify_non_example_exception" do

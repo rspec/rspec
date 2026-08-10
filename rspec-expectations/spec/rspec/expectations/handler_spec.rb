@@ -258,4 +258,19 @@ module RSpec
       end
     end
   end
+
+  describe "expectation counting" do
+    let(:matcher) { ExampleExpectations::ArbitraryMatcher.new(:expected => true) }
+    let(:reporter) { ::RSpec.configuration.reporter }
+
+    it "increments the reporter expectation count for a positive expectation" do
+      expect(reporter).to receive(:increment_expectation_count)
+      RSpec::Expectations::PositiveExpectationHandler.handle_matcher(true, matcher)
+    end
+
+    it "increments the reporter expectation count for a negative expectation" do
+      expect(reporter).to receive(:increment_expectation_count)
+      RSpec::Expectations::NegativeExpectationHandler.handle_matcher(false, matcher)
+    end
+  end
 end
