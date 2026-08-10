@@ -4,6 +4,16 @@ RSpec::Support.require_rspec_support 'ruby_features'
 module RSpec
   module Mocks
     # Raised when a message expectation is not satisfied.
+    #
+    # This inherits from `Exception` (not `StandardError`) so that a
+    # `rescue => e` or `rescue StandardError` in the code under test
+    # will not accidentally swallow it. This allows rspec to immediately
+    # halt execution of the tested code when an unexpected message is received.
+    #
+    # However, code that does `rescue Exception` *will* intercept this error.
+    # The failure will still be reported at the end of the example,
+    # but the tested code will continue executing instead of stopping immediately,
+    # which may cause confusing behavior or misleading secondary errors.
     MockExpectationError = Class.new(Exception)
 
     # Raised when a test double is used after it has been torn
