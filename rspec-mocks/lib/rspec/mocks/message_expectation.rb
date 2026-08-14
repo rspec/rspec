@@ -14,7 +14,7 @@ module RSpec
         @received = false
       end
 
-      def invoke(*_)
+      def invoke(*_, &_block)
         @received = true
         @response
       end
