@@ -390,6 +390,12 @@ module RSpec
       # return [Boolean]
       add_setting :force_line_number_for_spec_rerun
 
+      # @macro add_setting
+      # Require the first argument of an example or example group to be a doc
+      # string (defaults to `false`). See {#strict_docstring!}.
+      # return [Boolean]
+      add_setting :strict_docstring
+
       # Determines which bisect runner implementation gets used to run subsets
       # of the suite during a bisection. Your choices are:
       #
@@ -489,6 +495,7 @@ module RSpec
         @world = World::Null
         @pending_failure_output = :full
         @force_line_number_for_spec_rerun = false
+        @strict_docstring = false
         @warnings = nil
 
         if warnings?
@@ -1745,6 +1752,24 @@ module RSpec
       #   end
       def raise_errors_for_deprecations!
         self.deprecation_stream = Formatters::DeprecationFormatter::RaiseErrorStream.new
+      end
+
+      # Requires the first argument of an example or example group to be a doc
+      # string, raising an `ArgumentError` when it is not. Examples accept a
+      # `String`, example groups additionally accept a `Class` or a `Module`.
+      #
+      # Without it, a `Symbol` or a `Hash` passed as the first argument in the
+      # hope of it being treated as metadata is silently turned into a doc
+      # string instead, e.g. `it :slow do` describes an example as "slow"
+      # rather than tagging it with `:slow`.
+      #
+      # @example
+      #
+      #   RSpec.configure do |rspec|
+      #     rspec.strict_docstring!
+      #   end
+      def strict_docstring!
+        self.strict_docstring = true
       end
 
       # Defines a callback that can assign derived metadata values.

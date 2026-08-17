@@ -79,6 +79,7 @@ RSpec.configure do |c|
 
   # runtime options
   c.raise_errors_for_deprecations!
+  c.strict_docstring!
   c.include CommonHelpers
 
   c.expect_with :rspec do |expectations|

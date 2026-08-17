@@ -51,6 +51,7 @@ end
 
 RSpec.configure do |config|
   config.order = :random
+  config.strict_docstring!
 
   config.include CommonHelperMethods
   config.include RSpec::Support::InSubProcess
