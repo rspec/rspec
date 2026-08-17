@@ -120,6 +120,9 @@ module RSpec
       #     @param metadata [Array<Symbol>, Hash] Metadata for the example.
       #       Symbols will be transformed into hash entries with `true` values.
       #     @param example_implementation [Block] The implementation of the example.
+      #   @note Any other object is converted into a doc string with `to_s`,
+      #     unless {RSpec::Core::Configuration#strict_docstring!} is enabled, in
+      #     which case an `ArgumentError` is raised.
       #   @yield [Example] the example object
       #   @example
       #     $1 do
@@ -146,7 +149,7 @@ module RSpec
         idempotently_define_singleton_method(name) do |*all_args, &block|
           desc, *args = *all_args
 
-          unless NilClass === desc || String === desc
+          if RSpec.configuration.strict_docstring? && !(NilClass === desc || String === desc)
             raise ArgumentError, "Examples must be described with a string, got: `#{desc.inspect}`"
           end
 
@@ -213,11 +216,15 @@ module RSpec
       #   @overload $1(&example_group_definition)
       #     @param example_group_definition [Block] The definition of the example group.
       #   @overload $1(doc_string, *metadata, &example_implementation)
-      #     @param doc_string [String] The group's doc string.
+      #     @param doc_string [String, Class, Module] The group's doc string. A
+      #       class or a module additionally sets the group's `described_class`.
       #     @param metadata [Array<Symbol>, Hash] Metadata for the group.
       #       Symbols will be transformed into hash entries with `true` values.
       #     @param example_group_definition [Block] The definition of the example group.
       #   @return [RSpec::Core::ExampleGroup]
+      #   @note Any other object is converted into a doc string with `to_s`,
+      #     unless {RSpec::Core::Configuration#strict_docstring!} is enabled, in
+      #     which case an `ArgumentError` is raised.
       #
       #   Generates a subclass of this example group which inherits
       #   everything except the examples themselves.
@@ -274,8 +281,10 @@ module RSpec
             combined_metadata.merge!(args.pop) if args.last.is_a? Hash
             args << combined_metadata
 
-            unless NilClass === description || String === description || Class === description || Module === description
-              raise ArgumentError, "Example groups must be described with a string, got: `#{description.inspect}`"
+            if RSpec.configuration.strict_docstring? &&
+               !(NilClass === description || String === description || Module === description)
+              raise ArgumentError, "Example groups must be described with a string, class or " \
+                                   "module, got: `#{description.inspect}`"
             end
 
             subclass(self, description, args, registration_collection, &example_group_block)

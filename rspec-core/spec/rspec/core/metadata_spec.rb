@@ -374,6 +374,12 @@ module RSpec
             end
           end
 
+          context "with a Symbol" do
+            it "returns the symbol" do
+              expect(value_for :group).to be(:group)
+            end
+          end
+
           context "with a class" do
             it "returns the class" do
               expect(value_for String).to be(String)

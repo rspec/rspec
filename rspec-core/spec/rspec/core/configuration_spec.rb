@@ -2600,6 +2600,25 @@ module RSpec::Core
       end
     end
 
+    describe "#strict_docstring" do
+      it 'is not enabled by default' do
+        expect(config.strict_docstring?).to be false
+      end
+
+      it 'is enabled by `#strict_docstring!`' do
+        config.strict_docstring!
+
+        expect(config.strict_docstring?).to be true
+      end
+
+      it 'can be disabled again through the writer' do
+        config.strict_docstring!
+        config.strict_docstring = false
+
+        expect(config.strict_docstring?).to be false
+      end
+    end
+
     describe "#expose_current_running_example_as" do
       before { stub_const(Configuration::ExposeCurrentExample.name, Module.new) }
 
