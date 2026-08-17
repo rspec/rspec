@@ -1432,19 +1432,12 @@ module RSpec
       context "when a class overrides Object#method" do
         let(:http_request_class) { Struct.new(:method, :uri) }
 
-        broken_on_jruby_10_1 =
-          if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version >= '10.1.0.0'
-            "re-raising exceptions currently broken due to https://github.com/jruby/jruby/issues/9398"
-          else
-            false
-          end
-
-        it "stubs the method correctly", :pending => broken_on_jruby_10_1 do
+        it "stubs the method correctly" do
           allow_any_instance_of(http_request_class).to receive(:existing_method).and_return("foo")
           expect(http_request_class.new.existing_method).to eq "foo"
         end
 
-        it "mocks the method correctly", :pending => broken_on_jruby_10_1 do
+        it "mocks the method correctly" do
           expect_any_instance_of(http_request_class).to receive(:existing_method).and_return("foo")
           expect(http_request_class.new.existing_method).to eq "foo"
         end
