@@ -1047,6 +1047,20 @@ module RSpec::Core
 
           expect(foo_value).to eq 19
         end
+
+        it 'includes a shared example group that has its own metadata in the singleton class of matching examples' do
+          RSpec.shared_examples "shared group", :shared_group_metadata do
+            let(:foo) { 20 }
+          end
+          RSpec.configuration.include_context "shared group", :include_it
+
+          foo_value = nil
+          describe_successfully do
+            it("", :include_it, :shared_group_metadata) { foo_value = foo }
+          end
+
+          expect(foo_value).to eq 20
+        end
       end
     end
 
