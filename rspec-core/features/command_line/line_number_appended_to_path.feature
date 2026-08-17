@@ -41,7 +41,8 @@ Feature: `<file>:<line_number>` (line number appended to file path)
       """
     And a file named "one_liner_spec.rb" with:
       """ruby
-      RSpec.describe 9 do
+      RSpec.describe "9" do
+        subject(:number) { 9 }
 
         it { is_expected.to be > 8 }
 
@@ -153,7 +154,7 @@ Feature: `<file>:<line_number>` (line number appended to file path)
     And the output should not contain "second file"
 
   Scenario: Matching one-liners
-    When I run `rspec one_liner_spec.rb:3 --format doc`
+    When I run `rspec one_liner_spec.rb:4 --format doc`
     Then the examples should all pass
     Then the output should contain "is expected to be > 8"
     But the output should not contain "is expected to be < 10"

@@ -51,6 +51,12 @@ module RSpec::Core
             command_line_config.run
             expect(File.read('spec/spec_helper.rb')).to match(/RSpec\.configure do \|config\|/m)
           end
+
+          it "enables `strict_docstring` outside of the commented out suggestions" do
+            command_line_config.run
+            enabled_settings = File.read('spec/spec_helper.rb').sub(/^=begin$.*^=end$/m, '')
+            expect(enabled_settings).to match(/^\s*config\.strict_docstring!$/)
+          end
         end
 
         context "with a spec/spec_helper.rb file" do

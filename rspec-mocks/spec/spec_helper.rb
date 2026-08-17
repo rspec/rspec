@@ -84,6 +84,7 @@ RSpec.configure do |config|
   end
 
   config.order = :random
+  config.strict_docstring!
 
   old_verbose = nil
   config.before(:each, :silence_warnings) do
