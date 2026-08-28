@@ -88,12 +88,10 @@ RSpec.describe 'RSpec::Support::StdErrSplitter' do
   unless RSpec::Support::Ruby.rbx? || RSpec::Support::Ruby.truffleruby?
     # TruffleRuby doesn't support warnings for now
     # https://github.com/oracle/truffleruby/issues/2595
-    # rubocop:disable Lint/Void
     it 'will fail an example which generates a warning' do
-      true unless $undefined
+      true unless $undefined # rubocop:disable Lint/Void
       expect { splitter.verify_no_warnings! }.to raise_error(/Warnings were generated:/)
     end
-    # rubocop:enable Lint/Void
   end
 
   it 'does not reuse the stream when cloned' do

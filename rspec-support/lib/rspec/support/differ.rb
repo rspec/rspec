@@ -7,8 +7,7 @@ require 'pp'
 
 module RSpec
   module Support
-    # rubocop:disable Metrics/ClassLength
-    class Differ
+    class Differ # rubocop:disable Metrics/ClassLength
       def diff(actual, expected)
         diff = ""
 
@@ -27,8 +26,7 @@ module RSpec
         diff.to_s
       end
 
-      # rubocop:disable Metrics/MethodLength
-      def diff_as_string(actual, expected)
+      def diff_as_string(actual, expected) # rubocop:disable Metrics/MethodLength
         encoding = EncodedString.pick_encoding(actual, expected)
 
         actual   = EncodedString.new(actual, encoding)
@@ -55,7 +53,6 @@ module RSpec
       rescue Encoding::CompatibilityError
         handle_encoding_errors(actual, expected)
       end
-      # rubocop:enable Metrics/MethodLength
 
       if defined?(RSpec::Mocks::ArgumentMatchers::AnyArgMatcher)
         def diff_hashes_as_object(actual, expected)
@@ -230,6 +227,5 @@ module RSpec
         end
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end

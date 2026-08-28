@@ -23,9 +23,7 @@ module RSpec
             begin
               result = yield
               warning_preventer.verify_no_warnings! if prevent_warnings
-              # rubocop:disable Lint/HandleExceptions
-            rescue Support::AllExceptionsExceptOnesWeMustNotRescue => exception
-              # rubocop:enable Lint/HandleExceptions
+            rescue Support::AllExceptionsExceptOnesWeMustNotRescue => exception # rubocop:disable Lint/SuppressedException
             end
 
             exception_writer.write marshal_dump_with_unmarshable_object_handling(exception)
