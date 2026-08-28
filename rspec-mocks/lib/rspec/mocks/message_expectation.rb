@@ -418,9 +418,8 @@ module RSpec
         # @private
         attr_reader :type
 
-        # rubocop:disable Metrics/ParameterLists
         def initialize(error_generator, expectation_ordering, expected_from, method_double,
-                       type=:expectation, opts={}, &implementation_block)
+                       type=:expectation, opts={}, &implementation_block) # rubocop:disable Metrics/ParameterLists
           @type = type
           @error_generator = error_generator
           @error_generator.opts = error_generator.opts.merge(opts)
@@ -449,7 +448,6 @@ module RSpec
           @implementation = Implementation.new
           self.inner_implementation_action = implementation_block
         end
-        # rubocop:enable Metrics/ParameterLists
 
         def expected_args
           @argument_list_matcher.expected_args

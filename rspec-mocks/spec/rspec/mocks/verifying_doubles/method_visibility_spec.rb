@@ -100,12 +100,11 @@ module RSpec
       def preserves_visibility(method_name, visibility)
         double = yield
 
-        # rubocop:disable Style/DocumentDynamicEvalDefinition
+        # rubocop:disable-next Style/DocumentDynamicEvalDefinition
         expect {
           # send bypasses visibility, so we use eval instead.
           eval("double.#{method_name}")
         }.to raise_error(NoMethodError, a_message_indicating_visibility_violation(method_name, visibility))
-        # rubocop:enable Style/DocumentDynamicEvalDefinition
 
         expect { double.send(method_name) }.not_to raise_error
         expect { double.__send__(method_name) }.not_to raise_error

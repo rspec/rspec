@@ -3,10 +3,8 @@ class LoadedClass
   N = :n
   INSTANCE = LoadedClass.new
 
-  # rubocop:disable Lint/RedundantCopDisableDirective,Style/RedundantInitialize
   def initialize(_a, _b)
   end
-  # rubocop:enable Lint/RedundantCopDisableDirective,Style/RedundantInitialize
 
   class << self
     def respond_to?(method_name, include_all=false)

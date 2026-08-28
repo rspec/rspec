@@ -62,7 +62,7 @@ module RSpec
       end
 
       def default_error_message(expectation, expected_args, actual_args)
-        "#{intro} received #{expectation.message.inspect} #{unexpected_arguments_message(expected_args, actual_args)}".dup
+        "#{intro} received #{expectation.message.inspect} #{unexpected_arguments_message(expected_args, actual_args)}"
       end
 
       # rubocop:disable Metrics/ParameterLists

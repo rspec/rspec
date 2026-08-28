@@ -1,6 +1,6 @@
 module RSpec
   module Mocks
-    # rubocop:disable Naming/MethodParameterName
+    # rubocop:disable-next Naming/MethodParameterName
     RSpec.describe Matchers::Receive do
       # FIXME: this is defined here to prevent
       # "warning: method redefined; discarding old kw_args_method"
@@ -8,11 +8,10 @@ module RSpec
       # When we flatten those shared examples in RSpec 4 because
       # of no "should" syntax, it will become possible to put this
       # class definition closer to examples that use it.
-      # rubocop:disable Lint/ConstantDefinitionInBlock
+      # rubocop:disable-next Lint/ConstantDefinitionInBlock
       class TestObject
         def kw_args_method(a:, b:); end
       end
-      # rubocop:enable Lint/ConstantDefinitionInBlock
 
       shared_examples "a receive matcher" do |*options|
         it 'allows the caller to configure how the subject responds' do
@@ -93,7 +92,7 @@ module RSpec
             dbl.kw_args_method(a: 1, b: 2)
           end
 
-          # rubocop:disable Style/MultilineBlockChain
+          # rubocop:disable-next Style/MultilineBlockChain
           it "fails to expect to receive hash with keyword args" do
             expect {
               dbl = instance_double(TestObject)
@@ -113,7 +112,6 @@ module RSpec
               end
             end
           end
-          # rubocop:enable Style/MultilineBlockChain
 
           it "expects to receive hash with a hash" do
             dbl = instance_double(TestObject)
@@ -345,9 +343,8 @@ module RSpec
         end
 
         # This is done to fake out frozen methods
-        # rubocop:disable Lint/StructNewOverride
         context "with fake frozen object" do
-          let(:klass)  { Struct.new(:foo, :frozen?, :freeze) }
+          let(:klass)  { Struct.new(:foo, :frozen?, :freeze) } # rubocop:disable Lint/StructNewOverride
           let(:object) { klass.new :bar, true }
 
           it "allows the caller to configure how the subject responds" do
@@ -357,7 +354,6 @@ module RSpec
             expect { reset object }.to change { object.foo }.from(5).to(:bar)
           end
         end
-        # rubocop:enable Lint/StructNewOverride
       end
 
       shared_examples "handles stubbed #is_a? cleanly for a single instance" do
@@ -782,6 +778,5 @@ module RSpec
         end
       end
     end
-    # rubocop:enable Naming/MethodParameterName
   end
 end

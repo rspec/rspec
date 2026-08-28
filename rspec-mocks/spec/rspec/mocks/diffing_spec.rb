@@ -2,7 +2,7 @@ require "spec_helper"
 require "pp"
 
 # Spacing in diffs is important so we turn off this rule.
-# rubocop:disable Layout/LineContinuationLeadingSpace
+# rubocop:disable-next Layout/LineContinuationLeadingSpace
 RSpec.describe "Diffs printed when arguments don't match" do
   before do
     allow(RSpec::Mocks.configuration).to receive(:color?).and_return(false)
@@ -307,4 +307,3 @@ RSpec.describe "Diffs printed when arguments don't match" do
     end
   end
 end
-# rubocop:enable Layout/LineContinuationLeadingSpace
