@@ -6,8 +6,8 @@ module RSpec
       # @api private
       # Provides the implementation for `raise_error`.
       # Not intended to be instantiated directly.
-      # rubocop:disable Metrics/ClassLength
-      # rubocop:disable Lint/RescueException
+      # rubocop:disable-next Metrics/ClassLength
+      # rubocop:disable-next Lint/RescueException
       class RaiseError
         include Composable
 
@@ -258,8 +258,6 @@ module RSpec
           warning if @actual_error
         end
       end
-      # rubocop:enable Lint/RescueException
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end

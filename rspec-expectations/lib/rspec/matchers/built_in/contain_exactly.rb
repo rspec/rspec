@@ -6,7 +6,7 @@ module RSpec
       # @api private
       # Provides the implementation for `contain_exactly` and `match_array`.
       # Not intended to be instantiated directly.
-      # rubocop:disable Metrics/ClassLength
+      # rubocop:disable-next Metrics/ClassLength
       class ContainExactly < BaseMatcher
         # @api private
         # @return [String]
@@ -297,7 +297,6 @@ module RSpec
           end
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end

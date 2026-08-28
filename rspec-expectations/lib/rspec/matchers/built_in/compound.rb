@@ -235,13 +235,12 @@ module RSpec
                                  "because they both expect a call stack jump."
           end
 
-          # rubocop:disable Lint/IneffectiveAccessModifier
+          # rubocop:disable-next Lint/IneffectiveAccessModifier
           def self.matcher_expects_call_stack_jump?(matcher)
             matcher.expects_call_stack_jump?
           rescue NoMethodError
             false
           end
-          # rubocop:enable Lint/IneffectiveAccessModifier
         end
 
         # @api public

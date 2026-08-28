@@ -46,7 +46,7 @@ module RSpec
           rescue => other_exception
             raise
           ensure
-            # rubocop:disable Lint/EnsureReturn
+            # rubocop:disable-next Lint/EnsureReturn
             unless other_exception
               if @expected_symbol.nil?
                 return !!@caught_symbol
@@ -58,7 +58,6 @@ module RSpec
                 end
               end
             end
-            # rubocop:enable Lint/EnsureReturn
           end
         end
         # rubocop:enable Metrics/MethodLength
