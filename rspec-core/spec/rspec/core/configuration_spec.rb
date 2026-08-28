@@ -156,12 +156,10 @@ module RSpec::Core
           expect(config.deprecation_stream).to equal(value)
         end
 
-        # rubocop:disable Lint/SelfAssignment
         it 'does not print a warning if set to the value it already has' do
-          config.deprecation_stream = config.deprecation_stream
+          config.deprecation_stream = config.deprecation_stream # rubocop:disable Lint/SelfAssignment
           expect(config).not_to have_received(:warn)
         end
-        # rubocop:enable Lint/SelfAssignment
       end
     end
 
@@ -194,12 +192,11 @@ module RSpec::Core
           expect(config.output_stream).to eq($stdout)
         end
 
-        # rubocop:disable Lint/SelfAssignment
+        # rubocop:disable-next Lint/SelfAssignment
         it 'does not print a warning if set to the value it already has' do
           config.output_stream = config.output_stream
           expect(config).not_to have_received(:warn)
         end
-        # rubocop:enable Lint/SelfAssignment
       end
     end
 

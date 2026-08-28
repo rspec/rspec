@@ -436,9 +436,8 @@ module RSpec
 
       # Build an object to store runtime configuration options and set defaults
       def initialize
-        # rubocop:disable Style/GlobalVars
+        # rubocop:disable-next Style/GlobalVars
         @start_time = $_rspec_core_load_started_at || ::RSpec::Core::Time.now
-        # rubocop:enable Style/GlobalVars
         @expectation_frameworks = []
         @include_modules = FilterableItemRepository::QueryOptimized.new
         @extend_modules  = FilterableItemRepository::QueryOptimized.new

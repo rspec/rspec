@@ -242,7 +242,7 @@ FILTERING
           name, value = tag.gsub(/^(~@|~|@)/, '').split(':', 2)
           name = name.to_sym
 
-          # rubocop:disable Lint/DuplicateBranch
+          # rubocop:disable-next Lint/DuplicateBranch
           parsed_value = case value
                          when  nil        then true # The default value for tags is true
                          when 'true'      then true
@@ -254,7 +254,6 @@ FILTERING
                          else
                            value
                          end
-          # rubocop:enable Lint/DuplicateBranch
 
           add_tag_filter(options, filter_type, name, parsed_value)
         end

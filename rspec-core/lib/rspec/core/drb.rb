@@ -86,7 +86,7 @@ module RSpec
 
       def add_filter(argv, name, hash)
         hash.each_pair do |k, v|
-          tag = name == :inclusion ? k.to_s.dup : "~#{k}".dup
+          tag = name == :inclusion ? k.to_s.dup : "~#{k}"
           tag << ":#{v}" if v.is_a?(String)
           argv << "--tag" << tag
         end unless hash.empty?

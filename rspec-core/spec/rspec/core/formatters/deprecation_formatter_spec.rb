@@ -112,13 +112,11 @@ module RSpec::Core::Formatters
         end
 
         # Revisit in RSpec 4
-        # rubocop:disable Style/FileNull
         it "can handle when the stream is reopened to a system stream", :skip => RSpec::Support::OS.windows? do
           send_notification :deprecation, notification(:deprecated => 'foo')
-          deprecation_stream.reopen(IO.for_fd(IO.sysopen('/dev/null', "w+")))
+          deprecation_stream.reopen(IO.for_fd(IO.sysopen('/dev/null', "w+"))) # rubocop:disable Style/FileNull
           send_notification :deprecation_summary, null_notification
         end
-        # rubocop:enable Style/FileNull
       end
 
       context "with an Error deprecation_stream" do

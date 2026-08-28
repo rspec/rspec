@@ -1,6 +1,5 @@
-# rubocop:disable Style/GlobalVars
+# rubocop:disable-next Style/GlobalVars
 $_rspec_core_load_started_at = Time.now
-# rubocop:enable Style/GlobalVars
 
 require "rspec/support"
 RSpec::Support.require_rspec_support "caller_filter"

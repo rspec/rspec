@@ -15,8 +15,7 @@ module RSpec
           implementation.highlight_syntax(lines)
         end
 
-        # rubocop:disable Lint/RescueException
-        # rubocop:disable Lint/HandleExceptions
+        # rubocop:disable-next Lint/RescueException
         def self.attempt_to_add_rspec_terms_to_coderay_keywords
           CodeRay::Scanners::Ruby::Patterns::IDENT_KIND.add(%w[
             describe context
@@ -31,8 +30,6 @@ module RSpec
           # to CodeRay it is not a big deal and not worth raising an
           # error over, so we ignore it.
         end
-      # rubocop:enable Lint/HandleExceptions
-      # rubocop:enable Lint/RescueException
 
       private
 

@@ -83,8 +83,8 @@ module RSpec
 
       RSpec.describe RecentlyModified do
         before do
-          allow(File).to receive(:mtime).with('./file_1.rb').and_return(::Time.new)
-          allow(File).to receive(:mtime).with('./file_2.rb').and_return(::Time.new + 1)
+          allow(File).to receive(:mtime).with('./file_1.rb').and_return(::Time.now)
+          allow(File).to receive(:mtime).with('./file_2.rb').and_return(::Time.now + 1)
         end
 
         it 'orders list by file modification time' do

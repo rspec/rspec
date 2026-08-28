@@ -615,12 +615,11 @@ module RSpec
         @reporter = reporter
       end
 
-      # rubocop:disable Naming/AccessorMethodName
+      # rubocop:disable-next Naming/AccessorMethodName
       def set_exception(exception)
         reporter.notify_non_example_exception(exception, "An error occurred in #{description}.")
         RSpec.world.wants_to_quit = true
       end
-      # rubocop:enable Naming/AccessorMethodName
     end
   end
 end

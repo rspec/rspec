@@ -341,6 +341,10 @@ Lint/ConstantDefinitionInBlock:
     - 'spec/rspec/core/hooks_spec.rb'
     - 'spec/rspec/core/shared_example_group_spec.rb'
 
+Lint/DuplicateMethods:
+  Exclude:
+    - 'spec/rspec/core/configuration_spec.rb'
+
 # Offense count: 1
 Lint/DuplicateRequire:
   Exclude:

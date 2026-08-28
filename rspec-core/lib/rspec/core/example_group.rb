@@ -537,9 +537,8 @@ module RSpec
         unless defined?(@@example_groups_configured)
           RSpec.configuration.configure_mock_framework
           RSpec.configuration.configure_expectation_framework
-          # rubocop:disable Style/ClassVars
+          # rubocop:disable-next Style/ClassVars
           @@example_groups_configured = true
-          # rubocop:enable Style/ClassVars
         end
       end
 
