@@ -15,7 +15,7 @@ module ExampleExpectations
       return @expected == target
     end
 
-    def with(new_value)
+    def with(new_value, &_)
       @expected = new_value
       self
     end

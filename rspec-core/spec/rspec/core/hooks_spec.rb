@@ -209,7 +209,7 @@ module RSpec::Core
       it 'does not consider the hook to have run when passed as a block to a method that does not yield' do
         ex = nil
         group = RSpec.describe do
-          def transactionally; end
+          def transactionally(&_); end
 
           around { |e| transactionally(&e) }
           ex = example("not run") { }
