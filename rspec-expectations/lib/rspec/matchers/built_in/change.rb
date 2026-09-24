@@ -44,12 +44,12 @@ module RSpec
         end
 
         # @private
-        def matches?(event_proc)
+        def matches?(event_proc, &_)
           raise_block_syntax_error if block_given?
           perform_change(event_proc) && change_details.changed?
         end
 
-        def does_not_match?(event_proc)
+        def does_not_match?(event_proc, &_)
           raise_block_syntax_error if block_given?
           perform_change(event_proc) && !change_details.changed?
         end
