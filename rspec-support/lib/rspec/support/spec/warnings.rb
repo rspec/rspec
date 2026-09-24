@@ -9,6 +9,7 @@ module RSpec
         SUPPORTED_WARNINGS =
           %i[
             deprecated
+            experimental
           ]
         SUPPORTED_WARNINGS << :strict_unused_block if RUBY_VERSION.to_f >= 3.4 && !RSpec::Support::Ruby.jruby?
         SUPPORTED_WARNINGS.freeze
