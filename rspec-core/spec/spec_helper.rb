@@ -4,6 +4,8 @@ require 'io/console' if RSpec::Support::Ruby.jruby? && RSpec::Support::OS.apple_
 
 $rspec_core_without_stderr_monkey_patch = RSpec::Core::Configuration.new
 
+RSpec::Support::Spec::Warnings.setup
+
 class RSpec::Core::Configuration
   def self.new(*args, &block)
     super.tap do |config|
