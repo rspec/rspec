@@ -175,6 +175,15 @@ module RSpec
             allow_any_instance_of(sub_class).to receive(:foo).and_call_original
             expect(sub_class.new.foo).to eq("bar")
           end
+
+          it 'does not create recorders for ancestors that are not stubbed' do
+            allow_any_instance_of(sub_class).to receive(:foo).and_return('baz')
+
+            expect(sub_class.new.foo).to eq('baz')
+            expect(sub_class.ancestors.drop(1).map { |ancestor|
+              RSpec::Mocks.space.any_instance_recorder_for(ancestor, true)
+            }.compact).to eq([])
+          end
         end
 
         context "when the class has a prepended module" do

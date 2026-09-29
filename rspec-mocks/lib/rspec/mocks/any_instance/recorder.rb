@@ -159,8 +159,11 @@ module RSpec
         def ancestor_is_an_observer?(ancestor, method_name)
           return false if ancestor == @klass
 
-          ::RSpec::Mocks.space.
-            any_instance_recorder_for(ancestor).already_observing?(method_name)
+          # Callers visit every ancestor, so one without a recorder can be skipped.
+          recorder = ::RSpec::Mocks.space.any_instance_recorder_for(ancestor, true)
+          return false unless recorder
+
+          recorder.already_observing?(method_name)
         end
 
         def super_class_observers_for(method_name)
