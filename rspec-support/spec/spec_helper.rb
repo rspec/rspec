@@ -1,4 +1,6 @@
 require 'rspec/support/spec'
+
+RSpec::Support::Spec::Warnings.setup
 RSpec::Support::Spec.setup_simplecov
 
 RSpec::Matchers.define_negated_matcher :avoid_raising_errors, :raise_error

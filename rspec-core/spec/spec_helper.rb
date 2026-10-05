@@ -4,6 +4,8 @@ require 'rspec/support/spec'
 
 $rspec_core_without_stderr_monkey_patch = RSpec::Core::Configuration.new
 
+RSpec::Support::Spec::Warnings.setup
+
 class RSpec::Core::Configuration
   def self.new(*args, &block)
     super.tap do |config|

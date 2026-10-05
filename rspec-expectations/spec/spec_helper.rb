@@ -1,6 +1,8 @@
 require 'rspec/support/spec'
 require 'rspec/support/spec/in_sub_process'
 
+RSpec::Support::Spec::Warnings.setup
+
 RSpec::Support::Spec.setup_simplecov do
   minimum_coverage 100
 end

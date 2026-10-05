@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...3-13-maintenance)
 
+Bug Fixes:
+
+* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
 
