@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.8...main)
 
+Bug Fixes:
+
+* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+
 # 4.0.0.beta1 / 2026-02-18
 
 Breaking Changes:
