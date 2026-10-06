@@ -4,6 +4,8 @@
 Bug Fixes:
 
 * Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+* When creating an 'any isntance' mock, prevent the check of that classes ancestos from
+  creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
 
 # 4.0.0.beta1 / 2026-02-18
 
