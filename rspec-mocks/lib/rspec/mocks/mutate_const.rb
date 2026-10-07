@@ -139,6 +139,9 @@ module RSpec
       class BaseMutator
         include Support::RecursiveConstMethods
 
+        CONST_SETTER_SOURCE = "lambda { |name, value| const_set(name, value) }".freeze
+        private_constant :CONST_SETTER_SOURCE
+
         attr_reader :original_value, :full_constant_name
 
         def initialize(full_constant_name, mutated_value, transfer_nested_constants)
@@ -161,6 +164,23 @@ module RSpec
           reset unless @reset_performed
           @reset_performed = true
         end
+
+      private
+
+        def record_original_source_location
+          @original_source_location = @context.const_source_location(@const_name, false)
+        end
+
+        def restore_original_value
+          file, line = @original_source_location
+
+          if file
+            setter = @context.module_eval(CONST_SETTER_SOURCE, file, line)
+            setter.call(@const_name, @original_value)
+          else
+            @context.const_set(@const_name, @original_value)
+          end
+        end
       end
 
       # Hides a defined constant for the duration of an example.
@@ -171,6 +191,7 @@ module RSpec
           return unless (@defined = recursive_const_defined?(full_constant_name))
           @context = recursive_const_get(@context_parts.join('::'))
           @original_value = get_const_defined_on(@context, @const_name)
+          record_original_source_location
 
           @context.__send__(:remove_const, @const_name)
         end
@@ -187,7 +208,7 @@ module RSpec
 
         def reset
           return unless @defined
-          @context.const_set(@const_name, @original_value)
+          restore_original_value
         end
       end
 
@@ -203,6 +224,7 @@ module RSpec
         def mutate
           @context = recursive_const_get(@context_parts.join('::'))
           @original_value = get_const_defined_on(@context, @const_name)
+          record_original_source_location
 
           @constants_to_transfer = verify_constants_to_transfer!
 
@@ -226,7 +248,7 @@ module RSpec
           end
 
           @context.__send__(:remove_const, @const_name)
-          @context.const_set(@const_name, @original_value)
+          restore_original_value
         end
 
         def transfer_nested_constants
