@@ -422,7 +422,7 @@ module RSpec
         def initialize(error_generator, expectation_ordering, expected_from, method_double,
                        type=:expectation, opts={}, &implementation_block)
           @type = type
-          @error_generator = error_generator
+          @error_generator = error_generator.dup
           @error_generator.opts = error_generator.opts.merge(opts)
           @expected_from = expected_from
           @method_double = method_double
