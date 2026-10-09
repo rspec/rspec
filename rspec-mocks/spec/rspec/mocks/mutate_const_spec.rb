@@ -42,6 +42,13 @@ module RSpec
         define_method :last_const_part do
           const_name.split('::').last
         end
+
+        define_method :redefine_const_here do
+          value = const
+          parent_const.__send__(:remove_const, last_const_part)
+          parent_const.const_set(last_const_part, value)
+          parent_const.const_source_location(last_const_part)
+        end
       end
 
       shared_examples "loaded constant stubbing" do |const_name|
@@ -69,12 +76,21 @@ module RSpec
           expect(const).to be(original_value)
         end
 
+        it 'restores its original source location when rspec clears its mocks' do
+          original_location = redefine_const_here
+          stub_const(const_name, :a)
+          reset_rspec_mocks
+          expect(parent_const.const_source_location(last_const_part)).to eq(original_location)
+        end
+
         it 'returns the stubbed value' do
           expect(stub_const(const_name, 7)).to eq(7)
         end
       end
 
       shared_examples "loaded constant hiding" do |const_name|
+        include_context "constant example methods", const_name
+
         before do
           expect(recursive_const_defined?(const_name)).to be_truthy
         end
@@ -88,6 +104,13 @@ module RSpec
           hide_const(const_name)
           reset_rspec_mocks
           expect(recursive_const_defined?(const_name)).to be_truthy
+        end
+
+        it 'restores its original source location when rspec clears its mocks' do
+          original_location = redefine_const_here
+          hide_const(const_name)
+          reset_rspec_mocks
+          expect(parent_const.const_source_location(last_const_part)).to eq(original_location)
         end
 
         it 'returns nil' do
@@ -183,6 +206,16 @@ module RSpec
           it_behaves_like "unloaded constant hiding", "X::Y"
         end
 
+        context 'for a loaded constant without a Ruby source location' do
+          it 'resets it to its original value when rspec clears its mocks' do
+            original_value = Math::E
+            allow(Math).to receive(:const_source_location).with("E", false).and_return([])
+            hide_const("Math::E")
+            reset_rspec_mocks
+            expect(Math::E).to be(original_value)
+          end
+        end
+
         it 'can be hidden multiple times but still restores the original value properly' do
           orig_value = TestClass
           hide_const("TestClass")
@@ -213,6 +246,16 @@ module RSpec
 
         it "requires a string argument" do
           expect { stub_const(10, 1) }.to raise_error(ArgumentError, /requires a String/i)
+        end
+
+        context 'for a loaded constant without a Ruby source location' do
+          it 'resets it to its original value when rspec clears its mocks' do
+            original_value = Math::E
+            allow(Math).to receive(:const_source_location).with("E", false).and_return([])
+            stub_const("Math::E", 3)
+            reset_rspec_mocks
+            expect(Math::E).to be(original_value)
+          end
         end
 
         context 'for a loaded unnested constant' do

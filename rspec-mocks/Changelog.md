@@ -6,6 +6,8 @@ Bug Fixes:
 * Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
 * When creating an 'any isntance' mock, prevent the check of that classes ancestos from
   creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
+* Restore the original `const_source_location` of a constant after `stub_const` or
+  `hide_const` is reset, rather than leaving it pointing at rspec-mocks. (Ngan Pham, rspec/rspec#350)
 
 # 4.0.0.beta1 / 2026-02-18
 
