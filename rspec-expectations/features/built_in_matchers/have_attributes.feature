@@ -21,7 +21,9 @@ Feature: `have_attributes` matcher
       """ruby
       Person = Struct.new(:name, :age)
 
-      RSpec.describe Person.new("Jim", 32) do
+      RSpec.describe "Person" do
+        subject(:person) { Person.new("Jim", 32) }
+
         it { is_expected.to have_attributes(:name => "Jim") }
         it { is_expected.to have_attributes(:name => a_string_starting_with("J") ) }
         it { is_expected.to have_attributes(:age => 32) }

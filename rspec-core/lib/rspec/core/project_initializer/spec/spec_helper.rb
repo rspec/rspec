@@ -32,6 +32,12 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  # Requires the first argument of an example or example group to be a doc
+  # string. Without it, a `Symbol` or a `Hash` passed in the hope of it being
+  # treated as metadata is silently turned into a doc string instead, e.g.
+  # `it :slow do` describes an example as "slow" rather than tagging it.
+  config.strict_docstring!
+
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
 =begin

@@ -70,7 +70,9 @@ Feature: `respond_to` matcher
   Scenario: Specify arguments
     Given a file named "respond_to_matcher_argument_checking_spec.rb" with:
       """ruby
-      RSpec.describe 7 do
+      RSpec.describe "Integer" do
+        subject(:number) { 7 }
+
         it { is_expected.to respond_to(:zero?).with(0).arguments }
         it { is_expected.not_to respond_to(:zero?).with(1).argument }
 

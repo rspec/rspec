@@ -21,7 +21,9 @@ Feature: `all` matcher
   Scenario: Array usage
     Given a file named "array_all_matcher_spec.rb" with:
       """ruby
-      RSpec.describe [1, 3, 5] do
+      RSpec.describe "Array" do
+        subject(:array) { [1, 3, 5] }
+
         it { is_expected.to all( be_odd ) }
         it { is_expected.to all( be_an(Integer) ) }
         it { is_expected.to all( be < 10 ) }
@@ -42,7 +44,9 @@ Feature: `all` matcher
   Scenario: Compound matcher usage
     Given a file named "compound_all_matcher_spec.rb" with:
       """ruby
-      RSpec.describe ['anything', 'everything', 'something'] do
+      RSpec.describe "Array" do
+        subject(:array) { ['anything', 'everything', 'something'] }
+
         it { is_expected.to all( be_a(String).and include("thing") ) }
         it { is_expected.to all( be_a(String).and end_with("g") ) }
         it { is_expected.to all( start_with("s").or include("y") ) }

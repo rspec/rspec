@@ -21,7 +21,9 @@ Feature: `contain_exactly` matcher
   Scenario: Array is expected to contain every value
     Given a file named "contain_exactly_matcher_spec.rb" with:
       """ruby
-      RSpec.describe [1, 2, 3] do
+      RSpec.describe "Array" do
+        subject(:array) { [1, 2, 3] }
+
         it { is_expected.to contain_exactly(1, 2, 3) }
         it { is_expected.to contain_exactly(1, 3, 2) }
         it { is_expected.to contain_exactly(2, 1, 3) }
@@ -48,7 +50,9 @@ Feature: `contain_exactly` matcher
   Scenario: Array is not expected to contain every value
     Given a file named "contain_exactly_matcher_spec.rb" with:
       """ruby
-      RSpec.describe [1, 2, 3] do
+      RSpec.describe "Array" do
+        subject(:array) { [1, 2, 3] }
+
         it { is_expected.to_not contain_exactly(1, 2, 3, 4) }
         it { is_expected.to_not contain_exactly(1, 2) }
 

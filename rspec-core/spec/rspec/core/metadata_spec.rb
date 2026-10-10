@@ -625,7 +625,7 @@ module RSpec
         it "finds the first non-rspec lib file in the caller array" do
           value = nil
 
-          RSpec.describe(:caller => ["./lib/rspec/core/foo.rb", "#{__FILE__}:#{__LINE__}"]) do
+          RSpec.describe("docstring", :caller => ["./lib/rspec/core/foo.rb", "#{__FILE__}:#{__LINE__}"]) do
             value = metadata[:file_path]
           end
 

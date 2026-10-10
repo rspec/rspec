@@ -26,7 +26,9 @@ Feature: Type matchers
         include MyModule
       end
 
-      RSpec.describe 17.0 do
+      RSpec.describe "Float" do
+        subject(:float_number) { 17.0 }
+
         # the actual class
         it { is_expected.to be_kind_of(Float) }
         it { is_expected.to be_a_kind_of(Float) }
@@ -79,7 +81,9 @@ Feature: Type matchers
         include MyModule
       end
 
-      RSpec.describe 17.0 do
+      RSpec.describe "Float" do
+        subject(:float_number) { 17.0 }
+
         # the actual class
         it { is_expected.to be_instance_of(Float) }
         it { is_expected.to be_an_instance_of(Float) }
