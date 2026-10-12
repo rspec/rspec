@@ -35,7 +35,9 @@ Feature: `include` matcher
   Scenario: Array usage
     Given a file named "array_include_matcher_spec.rb" with:
       """ruby
-      RSpec.describe [1, 3, 7] do
+      RSpec.describe "[1, 3, 7]" do
+        subject(:array) { [1, 3, 7] }
+
         it { is_expected.to include(1) }
         it { is_expected.to include(3) }
         it { is_expected.to include(7) }
@@ -108,7 +110,9 @@ Feature: `include` matcher
   Scenario: Hash usage
     Given a file named "hash_include_matcher_spec.rb" with:
       """ruby
-      RSpec.describe :a => 7, :b => 5 do
+      RSpec.describe "{a: 7, b: 5}" do
+        subject(:hash) { {a: 7, b: 5} }
+
         it { is_expected.to include(:a) }
         it { is_expected.to include(:b, :a) }
         it { is_expected.to include(:a => 7) }
@@ -158,9 +162,11 @@ Feature: `include` matcher
   Scenario: Counts usage
     Given a file named "include_matcher_with_counts_spec.rb" with:
       """ruby
-        RSpec.describe [{:c => 7}, {:a => 1}, {:b => 2}, {:c => 1}, {:a => 3}, {:c => 7}] do
-          it { is_expected.to include(:b => 2).exactly(1).times }
-          it { is_expected.to include(:b => 2).once }
+        RSpec.describe "[{c: 7}, {a: 1}, {b: 2}, {c: 1}, {a: 3}, {c: 7}]" do
+          subject(:array) { [{c: 7}, {a: 1}, {b: 2}, {c: 1}, {a: 3}, {c: 7}] }
+
+          it { is_expected.to include(b: 2).exactly(1).times }
+          it { is_expected.to include(b: 2).once }
           it { is_expected.to include(have_key(:a)).twice }
           it { is_expected.to include(have_key(:c)).at_least(2).times }
           it { is_expected.to include(have_key(:a)).at_least(:once) }

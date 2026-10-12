@@ -340,7 +340,9 @@ module RSpec::Core
       end
 
       it 'supports a new expect-based syntax' do
-        group = RSpec.describe([1, 2, 3]) do
+        group = RSpec.describe("[1, 2, 3]") do
+          subject(:array) { [1, 2, 3] }
+
           it { is_expected.to be_an Array }
           it { is_expected.not_to include 4 }
         end

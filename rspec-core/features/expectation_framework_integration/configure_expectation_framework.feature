@@ -21,7 +21,8 @@ Feature: Configuring an expectation framework
         end
       end
 
-      RSpec.describe 6 do
+      RSpec.describe "multiple" do
+        subject(:number) { 6 }
         it { is_expected.to be_a_multiple_of 3 }
       end
       """
@@ -35,7 +36,7 @@ Feature: Configuring an expectation framework
         config.expect_with :rspec
       end
 
-      RSpec.describe 5 do
+      RSpec.describe "5" do
         it "is greater than 4" do
           expect(5).to be > 4
         end
@@ -52,7 +53,7 @@ Feature: Configuring an expectation framework
         config.expect_with :test_unit
       end
 
-      RSpec.describe [1] do
+      RSpec.describe "[1]" do
         it "is equal to [1]" do
           assert_equal [1], [1], "expected [1] to equal [1]"
         end
@@ -113,13 +114,13 @@ Feature: Configuring an expectation framework
         config.expect_with :rspec, :test_unit
       end
 
-      RSpec.describe [1] do
+      RSpec.describe "[1]" do
         it "is equal to [1]" do
           assert_equal [1], [1], "expected [1] to equal [1]"
         end
 
         it "matches array [1]" do
-          is_expected.to match_array([1])
+          expect([1]).to match_array([1])
         end
       end
       """
@@ -155,7 +156,7 @@ Feature: Configuring an expectation framework
         config.expect_with :test_unit, :minitest
       end
 
-      RSpec.describe [1] do
+      RSpec.describe "[1]" do
         it "is equal to [1]" do
           assert_equal [1], [1], "expected [1] to equal [1]"
         end

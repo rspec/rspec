@@ -15,22 +15,22 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(3) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(3) }
       end
 
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(4) }
-      end
-
-      # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(4) }
+      RSpec.describe "9" do
+        it { expect(9).not_to be_a_multiple_of(4) }
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(3) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(4) }
+      end
+
+      # fail intentionally to generate expected output
+      RSpec.describe "9" do
+        it { expect(9).not_to be_a_multiple_of(3) }
       end
       """
     When I run `rspec ./matcher_with_default_message_spec.rb --format documentation`
@@ -38,8 +38,8 @@ Feature: Defining a custom matcher
 
     And the output should contain "is expected to be a multiple of 3"
     And the output should contain "is expected not to be a multiple of 4"
-    And the output should contain "Failure/Error: it { is_expected.to be_a_multiple_of(4) }"
-    And the output should contain "Failure/Error: it { is_expected.not_to be_a_multiple_of(3) }"
+    And the output should contain "Failure/Error: it { expect(9).to be_a_multiple_of(4) }"
+    And the output should contain "Failure/Error: it { expect(9).not_to be_a_multiple_of(3) }"
 
     And the output should contain "4 examples, 2 failures"
     And the output should contain "expected 9 to be a multiple of 4"
@@ -60,8 +60,8 @@ Feature: Defining a custom matcher
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(4) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(4) }
       end
       """
     When I run `rspec ./matcher_with_failure_message_spec.rb`
@@ -84,8 +84,8 @@ Feature: Defining a custom matcher
       end
 
       # fail intentionally to generate expected output
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(3) }
+      RSpec.describe "9" do
+        it { expect(9).not_to be_a_multiple_of(3) }
       end
       """
     When I run `rspec ./matcher_with_failure_for_message_spec.rb`
@@ -107,12 +107,12 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(3) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(3) }
       end
 
-      RSpec.describe 9 do
-        it { is_expected.not_to be_a_multiple_of(4) }
+      RSpec.describe "9" do
+        it { expect(9).not_to be_a_multiple_of(4) }
       end
       """
     When I run `rspec ./matcher_overriding_description_spec.rb --format documentation`
@@ -156,8 +156,8 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 10 do
-        it { is_expected.to be_the_sum_of(1,2,3,4) }
+      RSpec.describe "10" do
+        it { expect(10).to be_the_sum_of(1,2,3,4) }
       end
       """
     When I run `rspec ./matcher_with_multiple_args_spec.rb --format documentation`
@@ -178,8 +178,8 @@ Feature: Defining a custom matcher
         description { "be lazily equal to #{block_arg.call}" }
       end
 
-      RSpec.describe 10 do
-        it { is_expected.to be_lazily_equal_to { 10 } }
+      RSpec.describe "10" do
+        it { expect(10).to be_lazily_equal_to { 10 } }
       end
       """
     When I run `rspec ./matcher_with_block_arg_spec.rb --format documentation`
@@ -290,13 +290,15 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe [1, 2, 3] do
-        it { is_expected.to contain(1, 2) }
-        it { is_expected.not_to contain(4, 5, 6) }
+      RSpec.describe "[1, 2, 3]" do
+        subject(:array) { [1, 2, 3] }
+
+        it { expect(array).to contain(1, 2) }
+        it { expect(array).not_to contain(4, 5, 6) }
 
         # deliberate failures
-        it { is_expected.to contain(1, 4) }
-        it { is_expected.not_to contain(1, 4) }
+        it { expect(array).to contain(1, 4) }
+        it { expect(array).not_to contain(1, 4) }
       end
       """
     When I run `rspec matcher_with_separate_not_to_logic_spec.rb`
@@ -315,13 +317,13 @@ Feature: Defining a custom matcher
         match { |actual| is_multiple?(actual) }
       end
 
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(3) }
-        it { is_expected.not_to be_a_multiple_of(4) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(3) }
+        it { expect(9).not_to be_a_multiple_of(4) }
 
         # deliberate failures
-        it { is_expected.to be_a_multiple_of(2) }
-        it { is_expected.not_to be_a_multiple_of(3) }
+        it { expect(9).to be_a_multiple_of(2) }
+        it { expect(9).not_to be_a_multiple_of(3) }
       end
       """
     When I run `rspec define_method_spec.rb`
@@ -344,13 +346,13 @@ Feature: Defining a custom matcher
         match { |actual| is_multiple?(actual, expected) }
       end
 
-      RSpec.describe 9 do
-        it { is_expected.to be_a_multiple_of(3) }
-        it { is_expected.not_to be_a_multiple_of(4) }
+      RSpec.describe "9" do
+        it { expect(9).to be_a_multiple_of(3) }
+        it { expect(9).not_to be_a_multiple_of(4) }
 
         # deliberate failures
-        it { is_expected.to be_a_multiple_of(2) }
-        it { is_expected.not_to be_a_multiple_of(3) }
+        it { expect(9).to be_a_multiple_of(2) }
+        it { expect(9).not_to be_a_multiple_of(3) }
       end
       """
     When I run `rspec include_module_spec.rb`
@@ -418,12 +420,12 @@ Feature: Defining a custom matcher
         end
       end
 
-      RSpec.describe 1 do
-        it { is_expected.to is_lower_than 2 }
+      RSpec.describe "1" do
+        it { expect(1).to is_lower_than 2 }
       end
 
-      RSpec.describe 1 do
-        it { is_expected.not_to is_lower_than 'a' }
+      RSpec.describe "1" do
+        it { expect(1).not_to is_lower_than 'a' }
       end
 
       RSpec.describe CustomClass do
@@ -448,8 +450,8 @@ Feature: Defining a custom matcher
 
       RSpec::Matchers.alias_matcher :be_n_of , :be_a_multiple_of
 
-      RSpec.describe 9 do
-        it { is_expected.to be_n_of(3) }
+      RSpec.describe "9" do
+        it { expect(9).to be_n_of(3) }
       end
       """
     When I run `rspec ./alias_spec.rb --format documentation`

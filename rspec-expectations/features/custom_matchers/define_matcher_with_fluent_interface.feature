@@ -15,8 +15,8 @@ Feature: Defining a matcher with fluent interface
         end
       end
 
-      RSpec.describe 5 do
-        it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
+      RSpec.describe "5" do
+        it { expect(5).to be_bigger_than(4).and_smaller_than(6) }
       end
       """
     When I run `rspec between_spec.rb --format documentation`
@@ -34,8 +34,8 @@ Feature: Defining a matcher with fluent interface
         chain :and_smaller_than, :second
       end
 
-      RSpec.describe 5 do
-        it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
+      RSpec.describe "5" do
+        it { expect(5).to be_bigger_than(4).and_smaller_than(6) }
       end
       """
     When I run `rspec between_spec.rb --format documentation`
@@ -55,8 +55,8 @@ Feature: Defining a matcher with fluent interface
           end
         end
 
-        RSpec.describe 5 do
-          it { is_expected.to be_bigger_than(4).and_smaller_than(6) }
+        RSpec.describe "5" do
+          it { expect(5).to be_bigger_than(4).and_smaller_than(6) }
         end
         """
       When I run `rspec between_spec.rb --format documentation`
