@@ -17,7 +17,7 @@ Feature: Run with `ruby` command
           expect(1).to be < 2
         end
 
-        it "has an intentional failure" do
+        it "is > 2 causes an intentional failure" do
           expect(1).to be > 2
         end
       end

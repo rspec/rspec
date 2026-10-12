@@ -47,7 +47,7 @@ Feature: Running specs multiple times with different runner options in the same 
           expect(false).to be_falsy
         end
 
-        it "is truthy" do
+        it "is not truthy" do
           expect(false).not_to be_truthy
         end
       end
