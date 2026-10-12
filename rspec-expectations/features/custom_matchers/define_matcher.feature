@@ -221,7 +221,7 @@ Feature: Defining a custom matcher
         extend RSpec::Matchers::DSL
 
         matcher :be_just_like do |expected|
-          match {|actual| actual == expected}
+          match { |actual| actual == expected }
         end
       end
 
@@ -251,7 +251,7 @@ Feature: Defining a custom matcher
 
       RSpec.describe "group with matcher" do
         matcher :be_just_like do |expected|
-          match {|actual| actual == expected}
+          match { |actual| actual == expected }
         end
 
         it "has access to the defined matcher" do
