@@ -32,7 +32,7 @@ Feature: Running specs multiple times with different runner options in the same 
     require 'spec_helper'
 
     RSpec.describe "truth" do
-      describe true do
+      describe "true" do
         it "is truthy" do
           expect(true).to be_truthy
         end
@@ -42,12 +42,12 @@ Feature: Running specs multiple times with different runner options in the same 
         end
       end
 
-      describe false do
+      describe "false" do
         it "is falsy" do
           expect(false).to be_falsy
         end
 
-        it "is truthy" do
+        it "is not truthy" do
           expect(false).not_to be_truthy
         end
       end
