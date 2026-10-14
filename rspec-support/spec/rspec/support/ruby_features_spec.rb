@@ -106,6 +106,31 @@ module RSpec
         expect(RubyFeatures.supports_syntax_suggest?).to eq(RUBY_VERSION.to_f >= 3.2)
       end
 
+      describe "#prism_supported?" do
+        def prism_is_implemented?
+          in_sub_process_if_possible do
+            begin
+              require 'prism'
+              true
+            rescue LoadError
+              false
+            end
+          end
+        end
+
+        it 'returns true only on MRI 3.3+, where Prism ships as a default gem' do
+          expect(RubyFeatures.prism_supported?).to eq(RUBY_VERSION.to_f >= 3.3 && !Ruby.jruby? && !Ruby.rbx?)
+        end
+
+        it 'only returns true where Prism can be loaded', :skip => !RubyFeatures.prism_supported? do
+          expect(prism_is_implemented?).to be(true)
+        end
+
+        it 'does not load Prism' do
+          expect { RubyFeatures.prism_supported? }.not_to change { defined?(::Prism) }
+        end
+      end
+
       describe "#ripper_supported?" do
         def ripper_is_implemented?
           in_sub_process_if_possible do
