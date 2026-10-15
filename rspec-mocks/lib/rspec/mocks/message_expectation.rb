@@ -167,6 +167,7 @@ module RSpec
       # @overload and_raise(ExceptionClass)
       # @overload and_raise(ExceptionClass, message)
       # @overload and_raise(exception_instance)
+      # @overload and_raise(ExceptionClass, cause: exception)
       #
       # Tells the object to raise an exception when the message is received.
       #
@@ -183,11 +184,13 @@ module RSpec
       #   allow(car).to receive(:go).and_raise(OutOfGas)
       #   allow(car).to receive(:go).and_raise(OutOfGas, "At least 2 oz of gas needed to drive")
       #   allow(car).to receive(:go).and_raise(OutOfGas.new(2, :oz))
+      #   allow(car).to receive(:go).and_raise(OutOfGas, cause: EmptyTank.new)
       def and_raise(*args)
         raise_already_invoked_error_if_necessary(__method__)
         self.terminal_implementation_action = Proc.new { raise(*args) }
         nil
       end
+      ruby2_keywords(:and_raise) if respond_to?(:ruby2_keywords, true)
 
       # @overload and_throw(symbol)
       # @overload and_throw(symbol, object)
