@@ -29,6 +29,7 @@ module RSpec
             :pending_count => summary.pending_count,
             :errors_outside_of_examples_count => summary.errors_outside_of_examples_count
           }
+          @output_hash[:summary][:expectation_count] = summary.expectation_count unless summary.expectation_count.nil?
           @output_hash[:summary_line] = summary.totals_line
         end
 
