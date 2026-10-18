@@ -364,17 +364,17 @@ module RSpec
         expect { @double.something }.to raise_error(RuntimeError, "error message")
       end
 
-      it "raises an exception of a given type with a cause", :if => Exception.method_defined?(:cause) do
+      it "raises an exception of a given type with a cause", :if => RUBY_VERSION.to_f >= 2.2 do
         cause = ArgumentError.new("original error")
-        expect(@double).to receive(:something).and_raise(RuntimeError, cause: cause)
+        expect(@double).to receive(:something).and_raise(RuntimeError, :cause => cause)
         expect { @double.something }.to raise_error(RuntimeError) { |e|
           expect(e.cause).to be cause
         }
       end
 
-      it "raises an exception of a given type with a message and a cause", :if => Exception.method_defined?(:cause) do
+      it "raises an exception of a given type with a message and a cause", :if => RUBY_VERSION.to_f >= 2.2 do
         cause = ArgumentError.new("original error")
-        expect(@double).to receive(:something).and_raise(RuntimeError, "error message", cause: cause)
+        expect(@double).to receive(:something).and_raise(RuntimeError, "error message", :cause => cause)
         expect { @double.something }.to raise_error(RuntimeError, "error message") { |e|
           expect(e.cause).to be cause
         }
