@@ -1,6 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.6...main)
 
+Bug Fixes:
+
+* Apply `config.extend` modules to example groups before `config.include` modules so
+  shared contexts added with `config.include_context` can use extended methods. (Ngan Pham, rspec/rspec#353)
+
 # 4.0.0.beta1 / 2026-02-18
 
 Breaking Changes:

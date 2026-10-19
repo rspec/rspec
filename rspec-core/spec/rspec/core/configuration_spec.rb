@@ -1046,6 +1046,23 @@ module RSpec::Core
           expect(foo_value).to eq 19
         end
       end
+
+      it "can call methods from modules added with `config.extend`" do
+        mod = Module.new do
+          def defined_by_extend
+            17
+          end
+        end
+        RSpec.configuration.extend mod
+        value = nil
+        RSpec.shared_context "shared group" do
+          value = defined_by_extend
+        end
+        RSpec.configuration.include_context "shared group"
+        RSpec.describe
+
+        expect(value).to eq 17
+      end
     end
 
     describe "#include" do
