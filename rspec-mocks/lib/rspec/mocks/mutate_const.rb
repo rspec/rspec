@@ -109,7 +109,11 @@ module RSpec
           raise ArgumentError, "`stub_const` requires a String, but you provided a #{constant_name.class.name}"
         end
 
-        mutator = if recursive_const_defined?(constant_name, &raise_on_invalid_const)
+        defined = recursive_const_defined?(constant_name, &raise_on_invalid_const)
+
+        verify_constant_name(constant_name) unless defined
+
+        mutator = if defined
                     DefinedConstantReplacer
                   else
                     UndefinedConstantSetter
@@ -117,6 +121,29 @@ module RSpec
 
         mutate(mutator.new(constant_name, value, options[:transfer_nested_constants]))
         value
+      end
+
+      # @private
+      def self.verify_constant_name(constant_name)
+        mode = RSpec::Mocks.configuration.verify_stub_constant_mode
+        return if mode == :none
+
+        if mode == :namespace
+          parts = normalize_const_name(constant_name).split('::')
+          return if parts.size < 2
+          namespace = parts[0..-2].join('::')
+          return if recursive_const_defined?(namespace)
+
+          raise VerifyingDoubleNotDefinedError,
+                "#{namespace.inspect} is not a defined constant. " \
+                "Perhaps you misspelt #{constant_name.inspect}? " \
+                "Disable check with the `verify_stub_constant_mode` configuration option."
+        else
+          raise VerifyingDoubleNotDefinedError,
+                "#{constant_name.inspect} is not a defined constant. " \
+                "Perhaps you misspelt it? " \
+                "Disable check with the `verify_stub_constant_mode` configuration option."
+        end
       end
 
       # Hides a constant.
