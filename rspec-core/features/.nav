@@ -27,6 +27,7 @@
   - modules.feature
 - metadata:
   - current_example.feature
+  - define_derived_metadata.feature
   - described_class.feature
   - user_defined.feature
 - filtering:
