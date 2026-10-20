@@ -66,9 +66,9 @@ Feature: Running specs multiple times with different runner options in the same 
     When I run `ruby scripts/multiple_runs.rb`
     Then the output should match:
       """
-      4 examples, 0 failures
+      4 examples, 0 failures, 4 expectations
       .*
-      4 examples, 0 failures
+      4 examples, 0 failures, 4 expectations
       """
 
   Scenario: Running specs multiple times in the same process with different parameters
@@ -97,10 +97,10 @@ Feature: Running specs multiple times with different runner options in the same 
     When I run `ruby scripts/different_parameters.rb`
     Then the output should match:
       """
-      1 example, 0 failures
+      1 example, 0 failures, 1 expectation
       .*
-      2 examples, 0 failures
+      2 examples, 0 failures, 2 expectations
       .*
-      3 examples, 0 failures
+      3 examples, 0 failures, 3 expectations
       """
 
