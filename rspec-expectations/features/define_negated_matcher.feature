@@ -3,7 +3,7 @@ Feature: Define negated matcher
   You can use `RSpec::Matchers.define_negated_matcher` to define a negated version of
   an existing matcher. This is particularly useful in composed matcher expressions.
 
-  @skip-when-ripper-unsupported
+  @skip-when-parser-unsupported
   Scenario: Composed negated matcher expression
     Given a file named "composed_negated_expression_spec.rb" with:
       """ruby

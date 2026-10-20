@@ -21,12 +21,12 @@ Before do
   end
 end
 
-Before('@skip-when-no-ripper-or-jruby') do |scenario|
-  if RSpec::Support::Ruby.jruby? || !RSpec::Support::RubyFeatures.ripper_supported?
+Before('@skip-when-no-parser-or-jruby') do |scenario|
+  if RSpec::Support::Ruby.jruby? || !RSpec::Support::RubyFeatures.parser_supported?
     if RSpec::Support::Ruby.jruby?
       warn "Skipping scenario due to lack of support by JRuby"
     else
-      warn "Skipping scenario due to lack of Ripper support"
+      warn "Skipping scenario due to lack of parser support"
     end
 
     if Cucumber::VERSION.to_f >= 3.0
