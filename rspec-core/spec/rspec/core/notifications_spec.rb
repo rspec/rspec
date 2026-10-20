@@ -452,6 +452,24 @@ module RSpec::Core::Notifications
           expect(fully_formatted).to include('<red>2 examples, 0 failures, 1 error occurred outside of examples</red>')
         end
       end
+
+      context "when there are specs expected to have been run which are missing" do
+        subject(:notification) do
+          summary_notification(
+            duration,
+            examples,
+            failed_examples,
+            pending_examples,
+            load_time,
+            errors_outside_of_examples_count,
+            3
+          )
+        end
+
+        it "turns the summary like red" do
+          expect(fully_formatted).to include('<red>2 examples, 0 failures, 1 example not run for unknown reasons</red>')
+        end
+      end
     end
   end
 end
