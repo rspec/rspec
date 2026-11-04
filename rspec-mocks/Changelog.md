@@ -4,6 +4,7 @@
 Bug Fixes:
 
 * Prevent infinite loops when stubbing `:respond_to?` on later Rubies. (Jon Rowe, rspec/rspec#282)
+* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
 * When creating an 'any instance' mock, prevent the check of that classes ancestors from
   creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
 
