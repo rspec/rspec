@@ -30,8 +30,8 @@ Note, 4.0.0.beta1 was released at the time of 3.13.7, and will contain contain b
 
 Bug Fixes:
 
-* Improve thread safety of mocks invocation recording. (Chad Wilson, #286)
-* Expand `any_instance` warning about prepended methods to private/protected methods. (Alex Dean, #297)
+* Improve thread safety of mocks invocation recording. (Chad Wilson, rspec/rspec#286)
+* Expand `any_instance` warning about prepended methods to private/protected methods. (Alex Dean, rspec/rspec#297)
 
 ### 3.13.7 / 2025-10-31
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.6...rspec-mocks-v3.13.7)

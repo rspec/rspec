@@ -19,7 +19,7 @@ Enhancements
 Bug Fixes:
 
 * Switch current thread data to alias/accessors to avoid issues with mocked systems.
-  (Jon Rowe, #610)
+  (Jon Rowe, rspec/rspec#610)
 * Always return a boolean from `RSpec::Support::Ruby.rbx?` and
  `RSpec::Support::Ruby.truffleruby?` (Phil Pirozhkov, rspec/rspec-support#486)
 
@@ -58,7 +58,7 @@ Bug Fixes:
 
 Bug Fixes:
 
-* Support for changes in diff-lcs and Ruby 3.4 in spec helpers. (Jon Rowe, #164 etc)
+* Support for changes in diff-lcs and Ruby 3.4 in spec helpers. (Jon Rowe, rspec/rspec#164 etc)
 
 ### 3.13.2 / 2024-12-02
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.1...rspec-support-v3.13.2)
