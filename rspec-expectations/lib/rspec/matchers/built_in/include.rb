@@ -170,6 +170,7 @@ module RSpec
 
         def actual_collection_includes?(expected_item)
           return actual.scan(expected_item).size > 0 if Regexp === expected_item && String === actual
+          return false if String === actual && !expected_item.respond_to?(:to_str, true)
           return true if actual.include?(expected_item)
 
           # String lacks an `any?` method...

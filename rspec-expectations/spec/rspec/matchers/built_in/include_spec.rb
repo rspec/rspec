@@ -228,6 +228,10 @@ RSpec.describe "#include matcher" do
         }.to fail_matching("expected \"abc\" to include \"d\"")
       end
 
+      it "does not match, rather than raise, when expected is not a string" do
+        expect(a_hash_including("a" => 1) === "abc").to be false
+      end
+
       it "includes a diff when actual is multiline" do
         expect {
           expect("abc\ndef").to include("g")
