@@ -1,6 +1,10 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.8...3-13-maintenance)
 
+Bug Fixes:
+
+* Prevent infinite loops when stubbing `:respond_to?` on later Rubies. (Jon Rowe, rspec/rspec#282)
+
 ### 3.13.8 / 2026-02-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.7...rspec-mocks-v3.13.8)
 
