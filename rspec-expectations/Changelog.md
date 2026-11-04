@@ -4,6 +4,8 @@
 Bug Fixes:
 
 * Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+* Make `include` short circuit when comparing strings to things which can't be co-erced into strings.
+  (Don Yin, rspec/rspec#354)
 
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
