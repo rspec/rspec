@@ -8,6 +8,8 @@ Bug Fixes:
   creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
 * Restore the original `const_source_location` of a constant after `stub_const` or
   `hide_const` is reset, rather than leaving it pointing at rspec-mocks. (Ngan Pham, rspec/rspec#350)
+* Fix passing `cause` to `and_raise`, it was previously erroneously treated as a hash argument and
+  not a keyword. (Takeshi Komiya, rspec/rspec#352)
 
 # 4.0.0.beta1 / 2026-02-18
 
