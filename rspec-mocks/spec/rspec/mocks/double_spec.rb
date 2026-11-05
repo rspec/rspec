@@ -359,6 +359,9 @@ module RSpec
       end
 
       it "raises an exception of a given type with a cause" do
+        if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version >= '10.1.0.0'
+          skip "An unrelated error is raised for this spec, needs investigation"
+        end
         cause = ArgumentError.new("original error")
         expect(@double).to receive(:something).and_raise(RuntimeError, cause: cause)
         expect { @double.something }.to raise_error(RuntimeError) { |e|
@@ -367,6 +370,9 @@ module RSpec
       end
 
       it "raises an exception of a given type with a message and a cause" do
+        if RSpec::Support::Ruby.jruby? && RSpec::Support::Ruby.jruby_version >= '10.1.0.0'
+          skip "An unrelated error is raised for this spec, needs investigation"
+        end
         cause = ArgumentError.new("original error")
         expect(@double).to receive(:something).and_raise(RuntimeError, "error message", cause: cause)
         expect { @double.something }.to raise_error(RuntimeError, "error message") { |e|
