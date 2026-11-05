@@ -9,6 +9,8 @@ Bug Fixes:
   creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
 * Restore the original `const_source_location` of a constant after `stub_const` or
   `hide_const` is reset, rather than leaving it pointing at rspec-mocks. (Ngan Pham, rspec/rspec#350)
+* Fix passing `cause` to `and_raise`, it was previously erroneously treated as a hash argument and
+  not a keyword. (Takeshi Komiya, rspec/rspec#352)
 
 ### 3.13.8 / 2026-02-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.7...rspec-mocks-v3.13.8)
