@@ -1,6 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.6...3-13-maintenance)
 
+Bug Fixes:
+
+* Always return a boolean from `RSpec::Support::Ruby.rbx?` and
+ `RSpec::Support::Ruby.truffleruby?` (Phil Pirozhkov, rspec/rspec-support#486)
+
 ### 3.13.7 / 2026-01-28
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.6...rspec-support-v3.13.7)
 
