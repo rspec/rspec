@@ -92,3 +92,16 @@ Feature: `--tag` option
       | exclude {skip: true, speed: "slow"} |
       | exclude {speed: "slow", skip: true} |
     Then the examples should all pass
+
+  Scenario: Exclude examples matching any of several tags
+    Given a file named "suite_spec.rb" with:
+      """ruby
+      RSpec.describe "suite" do
+        it "slow", :slow => true do; fail; end
+        it "flaky", :flaky => true do; fail; end
+        it "legacy", :legacy => true do; fail; end
+        it "fast" do; end
+      end
+      """
+    When I run `rspec suite_spec.rb --tag ~slow --tag ~flaky --tag ~legacy`
+    Then the output should contain "1 example, 0 failures"
