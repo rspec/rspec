@@ -1,10 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.6...main)
-
-Bug Fixes:
-
-* Apply `config.extend` modules to example groups before `config.include` modules so
-  shared contexts added with `config.include_context` can use extended methods. (Ngan Pham, rspec/rspec#353)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.7...main)
 
 # 4.0.0.beta1 / 2026-02-18
 
@@ -52,6 +47,14 @@ Enhancements:
   (Baden Ashford, rspec/rspec-core#3085)
 * Expand `RSpec::Core::Configuration#warnings=` to take `:all`, `:deprecations_only` and `:none`
   options. (Jean Boussier, rspec/rspec#161)
+
+### 3.13.7 / 2026-11-06
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.6...rspec-core-v3.13.7)
+
+Bug Fixes:
+
+* Apply `config.extend` modules to example groups before `config.include` modules so
+  shared contexts added with `config.include_context` can use extended methods. (Ngan Pham, rspec/rspec#353)
 
 ### 3.13.6 / 2025-10-19
 [Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.5...rspec-core-v3.13.6)
