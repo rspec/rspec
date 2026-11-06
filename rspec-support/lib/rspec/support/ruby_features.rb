@@ -86,6 +86,18 @@ module RSpec
         end
       end
 
+      # Prism ships as a default gem from Ruby 3.3. JRuby reports a 3.3+
+      # RUBY_VERSION but does not ship the prism gem as a default gem.
+      if RUBY_VERSION.to_f >= 3.3 && !Ruby.rbx? && !Ruby.jruby?
+        def prism_supported?
+          true
+        end
+      else
+        def prism_supported?
+          false
+        end
+      end
+
       # TruffleRuby disables ripper due to low performance
       if Ruby.rbx? || Ruby.truffleruby?
         def ripper_supported?
@@ -95,6 +107,10 @@ module RSpec
         def ripper_supported?
           true
         end
+      end
+
+      def parser_supported?
+        prism_supported? || ripper_supported?
       end
     end
   end
