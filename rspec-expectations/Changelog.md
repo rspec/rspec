@@ -1,9 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...main)
-
-Bug Fixes:
-
-* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.6...main)
 
 # 4.0.0.beta1 / 2026-02-18
 
@@ -31,6 +27,13 @@ Enhancements:
   by adding `as_tty` and `as_not_tty` to change the `tty?` flags. (Sergio Gil Pérez de la Manga, rspec/rspec-expectations#1459)
 * Improve the error message when using constraints with a negated `change` matcher.
   (Qingyu Chai, rspec/rspec#177)
+
+### 3.13.6 / 2026-11-06
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.5...rspec-expectations-v3.13.6)
+
+Bug Fixes:
+
+* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
 
 ### 3.13.5 / 2025-05-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-expectations-v3.13.4...rspec-expectations-v3.13.5)
@@ -655,7 +658,7 @@ Bug Fixes:
 
 * Add a missing `require` that would cause the `respond_to` matcher to
   fail when used in a project where the rest of RSpec (e.g. core and
-  expecatations) weren't being used. (Myron Marston, rspec/rspec-expectations#566)
+  expectations) weren't being used. (Myron Marston, rspec/rspec-expectations#566)
 * Structs are no longer treated as arrays when diffed. (Jon Rowe, rspec/rspec-expectations#576)
 
 ### 3.0.0 / 2014-06-01
