@@ -2,7 +2,7 @@
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.7...3-13-maintenance)
 
 ### 3.13.7 / 2026-11-06
-[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.4...rspec-core-v3.13.5)
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-core-v3.13.6...rspec-core-v3.13.7)
 
 Bug Fixes:
 
