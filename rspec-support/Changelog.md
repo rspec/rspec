@@ -1,5 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.6...main)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-support-v3.13.8...main)
 
 # 4.0.0.beta1 / 2026-02-18
 
@@ -15,6 +15,9 @@ Enhancements
 
 * Improve diff for `anything` matchers by hiding the value "anything" is matched
   against. (Karl Heitmann, rspec/rspec-mocks#599)
+
+### 3.13.8 / 2026-11-06
+[Full Changelog](http://github.com/rspec/rspec/compare/rspec-support-v3.13.7...rspec-support-v3.13.8)
 
 Bug Fixes:
 
