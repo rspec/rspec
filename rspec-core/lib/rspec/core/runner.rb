@@ -63,6 +63,7 @@ module RSpec
       #   failed.
       def self.run(args, err=$stderr, out=$stdout)
         trap_interrupt
+        trap_backtrace
         options = ConfigurationOptions.new(args)
 
         if options.options[:runner]
@@ -174,6 +175,35 @@ module RSpec
       # @private
       def self.trap_interrupt
         trap('INT') { handle_interrupt }
+      end
+
+      # @private
+      def self.trap_backtrace
+        trap(backtrace_signal) { handle_backtrace } if backtrace_signal
+      end
+
+      # @private
+      def self.backtrace_signal
+        if Signal.list.key?("INFO")
+          "SIGINFO"
+        elsif Signal.list.key?("PWR")
+          "SIGPWR"
+        end
+      end
+
+      # @private
+      def self.handle_backtrace
+        Thread.list.each do |thread|
+          prefix = "Thread TID-#{(thread.object_id ^ Process.pid).to_s(36)} #{thread.name || "<no name>"}"
+
+          if thread.backtrace && thread.backtrace.any?
+            thread.backtrace.each do |line|
+              $stderr.puts("#{prefix} #{line}")
+            end
+          else
+            $stderr.puts("#{prefix} <no backtrace available>")
+          end
+        end
       end
 
       # @private
