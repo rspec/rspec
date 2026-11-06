@@ -1,6 +1,11 @@
 ### Development
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-core-v3.13.7...main)
 
+Bug Fixes:
+
+* Exclude examples matching any exclusion filter, rather than only those
+  matching all of them. (Andrew Fader, rspec/rspec#357)
+
 # 4.0.0.beta1 / 2026-02-18
 
 Breaking Changes:

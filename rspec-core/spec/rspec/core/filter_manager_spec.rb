@@ -304,6 +304,32 @@ module RSpec::Core
         end
       end
 
+      context "with multiple exclusion filters" do
+        it 'excludes objects that match any of them' do
+          examples = [
+            included = example_with(:baz => true),
+                       example_with(:foo => true),
+                       example_with(:bar => true),
+                       example_with(:foo => true, :bar => true)
+          ]
+
+          filter_manager.exclude :foo => true, :bar => true
+          expect(prune(examples)).to contain_exactly(included)
+        end
+
+        it 'excludes objects that match any of them when added separately' do
+          examples = [
+            included = example_with(:baz => true),
+                       example_with(:foo => true),
+                       example_with(:bar => true)
+          ]
+
+          filter_manager.exclude :foo => true
+          filter_manager.exclude :bar => true
+          expect(prune(examples)).to contain_exactly(included)
+        end
+      end
+
       context "with :id filters" do
         it 'selects only the matched example when a single example id is given' do
           ex_1 = ex_2 = nil
