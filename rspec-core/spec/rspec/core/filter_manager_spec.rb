@@ -304,6 +304,57 @@ module RSpec::Core
         end
       end
 
+      context "with multiple exclusion filters" do
+        let(:fast)   { example_with }
+        let(:slow)   { example_with(:slow => true) }
+        let(:flaky)  { example_with(:flaky => true) }
+        let(:legacy) { example_with(:legacy => true) }
+
+        it 'excludes examples matching any of them' do
+          filter_manager.exclude :slow => true, :flaky => true, :legacy => true
+
+          expect(prune([fast, slow, flaky, legacy])).to contain_exactly(fast)
+        end
+
+        it 'excludes examples matching several of them' do
+          slow_and_flaky = example_with(:slow => true, :flaky => true)
+          filter_manager.exclude :slow => true, :flaky => true
+
+          expect(prune([fast, slow_and_flaky])).to contain_exactly(fast)
+        end
+
+        it 'keeps examples whose tags have other values' do
+          not_slow = example_with(:slow => false, :flaky => false)
+          filter_manager.exclude :slow => true, :flaky => true
+
+          expect(prune([not_slow, slow])).to contain_exactly(not_slow)
+        end
+
+        it 'excludes examples matching any of them when added separately' do
+          filter_manager.exclude :slow => true
+          filter_manager.exclude :flaky => true
+          filter_manager.exclude :legacy => true
+
+          expect(prune([fast, slow, flaky, legacy])).to contain_exactly(fast)
+        end
+
+        it 'excludes examples matching a low priority default or an explicit filter' do
+          filter_manager.exclude_with_low_priority :slow => true
+          filter_manager.exclude :flaky => true
+
+          expect(prune([fast, slow, flaky])).to contain_exactly(fast)
+        end
+
+        it 'excludes examples matching any of them from an inclusion filter' do
+          focused = example_with(:focus => true)
+          focused_and_flaky = example_with(:focus => true, :flaky => true)
+          filter_manager.include :focus => true
+          filter_manager.exclude :slow => true, :flaky => true
+
+          expect(prune([focused, focused_and_flaky, fast])).to contain_exactly(focused)
+        end
+      end
+
       context "with :id filters" do
         it 'selects only the matched example when a single example id is given' do
           ex_1 = ex_2 = nil
