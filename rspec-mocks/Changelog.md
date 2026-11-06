@@ -1,15 +1,5 @@
 ### Development
-[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.8...main)
-
-Bug Fixes:
-
-* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
-* When creating an 'any isntance' mock, prevent the check of that classes ancestos from
-  creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
-* Restore the original `const_source_location` of a constant after `stub_const` or
-  `hide_const` is reset, rather than leaving it pointing at rspec-mocks. (Ngan Pham, rspec/rspec#350)
-* Fix passing `cause` to `and_raise`, it was previously erroneously treated as a hash argument and
-  not a keyword. (Takeshi Komiya, rspec/rspec#352)
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.9...main)
 
 # 4.0.0.beta1 / 2026-02-18
 
@@ -26,6 +16,20 @@ Breaking Changes:
 * Fix stubbing of prepended-only methods. (Lin Jen-Shin, rspec/rspec-mocks#1218)
 
 Note, 4.0.0.beta1 was released at the time of 3.13.7, and will contain contain bugfixes after that point.
+
+### 3.13.9 / 2026-11-06
+[Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.8...rspec-mocks-v3.13.9)
+
+Bug Fixes:
+
+* Prevent infinite loops when stubbing `:respond_to?` on later Rubies. (Jon Rowe, rspec/rspec#282)
+* Declare unused block arguments to prevent a warning being issued. (Jon Rowe, rspec/rspec#349)
+* When creating an 'any instance' mock, prevent the check of that classes ancestors from
+  creating new unused recorders. (Igor Drozdov, rspec/rspec#347)
+* Restore the original `const_source_location` of a constant after `stub_const` or
+  `hide_const` is reset, rather than leaving it pointing at rspec-mocks. (Ngan Pham, rspec/rspec#350)
+* Fix passing `cause` to `and_raise`, it was previously erroneously treated as a hash argument and
+  not a keyword. (Takeshi Komiya, rspec/rspec#352)
 
 ### 3.13.8 / 2026-02-27
 [Full Changelog](https://github.com/rspec/rspec/compare/rspec-mocks-v3.13.7...rspec-mocks-v3.13.8)
