@@ -34,7 +34,7 @@ module RSpec
         )
       end
 
-      def unadvise(_)
+      def unadvise(&_)
       end
     end
 
@@ -548,7 +548,10 @@ module RSpec
           similar_messages << args
         end
 
-        def unadvise(args)
+        def unadvise
+          return if similar_messages.empty?
+
+          args = yield
           similar_messages.delete_if { |message| args.include?(message) }
         end
 
@@ -616,8 +619,12 @@ module RSpec
           @exception_source_id ||= "#{self.class.name} #{__id__}"
         end
 
+        def invoking_internals_key
+          @invoking_internals_key ||= :"__rspec_#{object_id}_invoking_internals"
+        end
+
         def invoking_internals
-          RSpec::Support.thread_local_data[:"__rspec_#{object_id}_invoking_internals"]
+          RSpec::Support.thread_local_data[invoking_internals_key]
         end
 
         def invoking_internals=(value)
@@ -625,9 +632,9 @@ module RSpec
           # thread local data will keep growing over the lifetime of the thread (which is a long
           # time on a single threaded spec run e.g standard MRI)
           if value
-            RSpec::Support.thread_local_data[:"__rspec_#{object_id}_invoking_internals"] = true
+            RSpec::Support.thread_local_data[invoking_internals_key] = true
           else
-            RSpec::Support.thread_local_data.delete(:"__rspec_#{object_id}_invoking_internals")
+            RSpec::Support.thread_local_data.delete(invoking_internals_key)
           end
         end
 

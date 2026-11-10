@@ -205,7 +205,7 @@ module RSpec
           end
           stub.invoke(nil, *args, &block)
         elsif expectation
-          expectation.unadvise(messages_arg_list)
+          expectation.unadvise { messages_arg_list }
           expectation.invoke(stub, *args, &block)
         elsif (expectation = find_almost_matching_expectation(message, *args))
           expectation.advise(*args) if null_object? unless expectation.expected_messages_received?
