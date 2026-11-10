@@ -137,9 +137,10 @@ module RSpec
 
         def failure_lines
           @failure_lines ||= [].tap do |lines|
-            lines.concat(failure_slash_error_lines)
+            slash_error_lines = failure_slash_error_lines
+            lines.concat(slash_error_lines)
 
-            sections = [failure_slash_error_lines, exception_lines]
+            sections = [slash_error_lines, exception_lines]
             if sections.any? { |section| section.size > 1 } && !exception_lines.first.empty?
               lines << ''
             end

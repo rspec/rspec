@@ -410,6 +410,17 @@ module RSpec::Core
           end
         end
 
+        describe "code snippet" do
+          let(:expression) do
+            expect('RSpec').to be_a(Integer)
+          end
+
+          it 'is extracted from the source file once' do
+            expect(Formatters::SnippetExtractor).to receive(:extract_expression_lines_at).once.and_call_original
+            presenter.fully_formatted(1)
+          end
+        end
+
         context 'with single line expression and single line RSpec exception message' do
           let(:expression) do
             expect('RSpec').to be_a(Integer)
