@@ -171,7 +171,11 @@ module RSpec
     end
 
     # @private
-    ExclusionRules = FilterRules
+    class ExclusionRules < FilterRules
+      def include_example?(example)
+        @rules.any? { |key, value| MetadataFilter.filter_applies?(key, value, example.metadata) }
+      end
+    end
 
     # @private
     class InclusionRules < FilterRules

@@ -92,3 +92,7 @@ Feature: `--tag` option
       | exclude {skip: true, speed: "slow"} |
       | exclude {speed: "slow", skip: true} |
     Then the examples should all pass
+
+  Scenario: Exclude examples matching any of several tags
+    When I run `rspec . --tag ~type --tag ~skip --tag ~speed`
+    Then the output should contain "2 examples, 0 failures"
