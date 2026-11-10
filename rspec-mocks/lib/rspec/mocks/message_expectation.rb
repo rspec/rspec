@@ -794,20 +794,17 @@ module RSpec
       attr_accessor :initial_action, :inner_action, :terminal_action
 
       def call(*args, &block)
-        actions.map do |action|
-          action.call(*args, &block)
-        end.last
+        initial, inner, terminal = initial_action, inner_action, terminal_action
+        result = nil
+        result = initial.call(*args, &block) if initial
+        result = inner.call(*args, &block) if inner
+        result = terminal.call(*args, &block) if terminal
+        result
       end
       ruby2_keywords :call if respond_to?(:ruby2_keywords, true)
 
       def present?
-        actions.any?
-      end
-
-    private
-
-      def actions
-        [initial_action, inner_action, terminal_action].compact
+        !!(initial_action || inner_action || terminal_action)
       end
     end
 
