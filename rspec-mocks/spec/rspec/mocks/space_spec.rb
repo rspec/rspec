@@ -225,6 +225,23 @@ module RSpec::Mocks
       end
     end
 
+    describe "#any_instance_recorders_from_ancestry_of" do
+      it "returns the recorders of the object's ancestors, nearest ancestor first" do
+        mod          = Module.new
+        parent_class = Class.new { include mod }
+        child_class  = Class.new(parent_class)
+
+        parent_recorder = space.any_instance_recorder_for(parent_class)
+        mod_recorder    = space.any_instance_recorder_for(mod)
+        space.any_instance_recorder_for(String)
+        child_recorder  = space.any_instance_recorder_for(child_class)
+
+        expect(space.any_instance_recorders_from_ancestry_of(child_class.new)).to eq(
+          [child_recorder, parent_recorder, mod_recorder]
+        )
+      end
+    end
+
     it 'can be diffed in a failure when it has references to an error generator via a proxy' do
       space1 = Space.new
       space2 = Space.new

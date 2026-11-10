@@ -55,6 +55,9 @@ module RSpec
 
     # @private
     class Space
+      # Bound explicitly so a class that overrides `self.===` cannot hide its instances.
+      MODULE_CASE_EQUALITY = ::Module.instance_method(:===)
+
       attr_reader :proxies, :any_instance_recorders, :proxy_mutex, :any_instance_mutex
 
       def initialize
@@ -135,13 +138,17 @@ module RSpec
         # ancestors in the object's class hierarchy.
         return [] if any_instance_recorders.empty?
 
+        recorders = any_instance_recorders.values.select do |recorder|
+          MODULE_CASE_EQUALITY.bind_call(recorder.klass, object)
+        end
+        return recorders if recorders.size < 2
+
         # We access the ancestors through the singleton class, to avoid calling
         # `class` in case `class` has been stubbed.
         # We can't use `object.singleton_class` here, as this method creates
         # a new singleton class for the object if the object doesn't have one.
-        (class << object; ancestors; end).map do |klass|
-          any_instance_recorders[klass.__id__]
-        end.compact
+        ancestors = (class << object; ancestors; end)
+        recorders.sort_by { |recorder| ancestors.index(recorder.klass) }
       end
 
     private

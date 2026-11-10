@@ -156,25 +156,19 @@ module RSpec
 
       private
 
-        def ancestor_is_an_observer?(ancestor, method_name)
-          return false if ancestor == @klass
-
-          recorder = ::RSpec::Mocks.space.any_instance_recorder_for(ancestor, true)
-          return false unless recorder
-
-          recorder.already_observing?(method_name)
-        end
-
         def super_class_observers_for(method_name)
-          @klass.ancestors.select do |ancestor|
-            ancestor_is_an_observer?(ancestor, method_name)
+          space = ::RSpec::Mocks.space
+          space.any_instance_mutex.synchronize do
+            @klass.ancestors.select do |ancestor|
+              next false if ancestor == @klass
+
+              space.any_instance_recorders[ancestor.__id__]&.already_observing?(method_name)
+            end
           end
         end
 
         def super_class_observing?(method_name)
-          @klass.ancestors.any? do |ancestor|
-            ancestor_is_an_observer?(ancestor, method_name)
-          end
+          super_class_observers_for(method_name).any?
         end
 
         def normalize_chain(*args)

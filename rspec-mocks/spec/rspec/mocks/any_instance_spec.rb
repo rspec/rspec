@@ -746,6 +746,16 @@ module RSpec
               klass.new.foo
             }.to fail_with(/has already been received/)
           end
+
+          it "passes on verify when the class overrides `.===`" do
+            klass.define_singleton_method(:===) { |_other| false }
+            expect_any_instance_of(klass).to receive(:foo)
+            instance = klass.new
+            allow(instance).to receive(:foo).and_return(17)
+
+            expect(instance.foo).to eq(17)
+            expect { verify_all }.not_to raise_error
+          end
         end
 
         context "when argument matching is used and an instance has stubbed the message" do
