@@ -9,6 +9,17 @@ module RSpec
       class DynamicPredicate < BaseMatcher
         include BeHelpers
 
+        # @private
+        def self.predicate_for(method_name)
+          predicates = @predicates || {}
+          predicates.fetch(method_name) do
+            predicate = predicate_from_root(self::REGEX.match(method_name).captures.first)
+            # Replace the hash instead of mutating it: JRuby's Hash is unsafe under concurrent writes.
+            @predicates = predicates.merge(method_name => predicate).freeze
+            predicate
+          end
+        end
+
         def initialize(method_name, *args, &block)
           @method_name, @args, @block = method_name, args, block
         end
@@ -67,6 +78,10 @@ module RSpec
           # :nocov:
         end
 
+        def predicate
+          @predicate ||= self.class.predicate_for(@method_name)
+        end
+
         def predicate_accessible?
           really_responds_to?(predicate)
         end
@@ -89,10 +104,6 @@ module RSpec
           else
             value == !!predicate_result
           end
-        end
-
-        def root
-          self.class::REGEX.match(@method_name).captures.first
         end
 
         def method_description
@@ -133,9 +144,10 @@ module RSpec
       class Has < DynamicPredicate
         # :nodoc:
         REGEX = Matchers::HAS_REGEX
-      private
-        def predicate
-          @predicate ||= :"has_#{root}?"
+
+        # @private
+        def self.predicate_from_root(root)
+          :"has_#{root}?"
         end
       end
 
@@ -145,11 +157,13 @@ module RSpec
       class BePredicate < DynamicPredicate
         # :nodoc:
         REGEX = Matchers::BE_PREDICATE_REGEX
-      private
-        def predicate
-          @predicate ||= :"#{root}?"
+
+        # @private
+        def self.predicate_from_root(root)
+          :"#{root}?"
         end
 
+      private
         def failure_to_respond_explanation
           super || if predicate == :true?
                      " or perhaps you meant `be true` or `be_truthy`"
