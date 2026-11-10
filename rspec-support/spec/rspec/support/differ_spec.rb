@@ -304,6 +304,25 @@ module RSpec
           expect(diff).to be_diffed_as(expected_diff)
         end
 
+        it "outputs unified diff message of two hashes with nil, boolean and numeric keys in the same key order" do
+          expected_diff = dedent(<<-"EOD")
+            |
+            |@@ -1,6 +1,6 @@
+            | 1 => "a",
+            | 2.5 => "b",
+            | false => "c",
+            |-nil => "e",
+            |+nil => "d",
+            | true => "f",
+            | :apple => "g",
+            |
+          EOD
+
+          keys = [:apple, true, nil, false, 2.5, 1]
+          diff = differ.diff(Hash[keys.zip(%w[g f d c b a])], Hash[keys.zip(%w[g f e c b a])])
+          expect(diff).to be_diffed_as(expected_diff)
+        end
+
       context 'when special-case objects are inside hashes' do
         let(:time) { Time.utc(1969, 12, 31, 19, 01, 40, 101) }
         let(:formatted_time) { ObjectFormatter.format(time) }
