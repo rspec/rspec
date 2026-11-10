@@ -143,7 +143,7 @@ module RSpec
                                    end
 
           relative_file_path            = Metadata.relative_path(file_path)
-          absolute_file_path            = File.expand_path(relative_file_path)
+          absolute_file_path            = File.expand_path(file_path)
           metadata[:file_path]          = relative_file_path
           metadata[:line_number]        = line_number.to_i
           metadata[:location]           = "#{relative_file_path}:#{line_number}"

@@ -90,6 +90,8 @@ module RSpec
       # defined in the same file as the location filters. Excluded specs in
       # other files should still be excluded.
       def file_scoped_include?(ex_metadata, ids, locations)
+        return yield if ids.empty? && locations.empty?
+
         no_id_filters = ids[ex_metadata[:rerun_file_path]].empty?
         no_location_filters = locations[
           File.expand_path(ex_metadata[:rerun_file_path])
