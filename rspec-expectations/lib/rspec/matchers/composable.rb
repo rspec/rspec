@@ -131,7 +131,9 @@ module RSpec
         if Matchers.is_a_matcher?(object)
           object.clone
         elsif Hash === object
-          Hash[with_matchers_cloned(object.to_a)]
+          cloned = {}
+          object.each { |key, value| cloned[with_matchers_cloned(key)] = with_matchers_cloned(value) }
+          cloned
         elsif should_enumerate?(object)
           object.map { |subobject| with_matchers_cloned(subobject) }
         else

@@ -70,6 +70,15 @@ module RSpec
             )
           end
         end
+
+        context "when the matcher is a hash value" do
+          it "works properly in spite of the memoization" do
+            expect([{ :name => "a" }, { :name => "foo" }]).to contain_exactly(
+              { :name => have_string_length(3) },
+              { :name => "a" }
+            )
+          end
+        end
       end
 
       describe "cloning data structures containing matchers" do
