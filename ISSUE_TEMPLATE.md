@@ -1,7 +1,11 @@
 <!---
-Note, we know RelishApp is down, its out of our hands...
+Thank you for contributing to RSpec!
 
-Please search for existing issues before reporting new ones.
+We ask that you have read CONTRIBUTING.md, that you follow our
+code of conduct (in CODE_OF_CONDUCT.md), our llm usage policy (in LLM_USAGE_POLICY.md) and
+that you please search for existing issues before reporting new ones.
+
+Note, the former documentation site Relish no longer exists, please use https://rspec.info/documentation.
 -->
 ### Subject of the issue
 <!---
