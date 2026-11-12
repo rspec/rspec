@@ -1,7 +1,10 @@
 # Contributing
 
-RSpec is a community-driven project that has benefited from improvements from over *500* contributors.
-We welcome contributions from *everyone*. While contributing, please follow the project [code of conduct](CODE_OF_CONDUCT.md), so that everyone can be included.
+RSpec is a community-driven project that has benefited from improvements from over *500* contributors over nearly
+two decades and whilst we welcome contributions from *everyone*, we expect those contributions to be human driven.
+
+While contribuing to RSpec we expect you to follow both our [code of conduct](CODE_OF_CONDUCT.md) (so that everyone
+can continue to be included) and our [llm usage policy](LLM_USAGE_POLICY.md).
 
 If you'd like to help make RSpec better, here are some ways you can contribute:
 
