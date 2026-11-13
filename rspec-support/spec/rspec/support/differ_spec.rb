@@ -223,6 +223,47 @@ module RSpec
           expect(diff).to be_diffed_as(expected_diff)
         end
 
+        it 'outputs unified diff message of two string arrays' do
+          expected = ['foo', 'bar', 'baz', 'quux']
+          actual = ['foo', 'bar', 'corge', 'quux', 'garply']
+
+          added_line_index = ::Diff::LCS::VERSION.to_f < 1.4 ? 7 : 5
+          expected_diff = dedent(<<-EOD)
+            |
+            |
+            |@@ -1,6 +1,#{added_line_index} @@
+            | foo
+            | bar
+            |-corge
+            |+baz
+            | quux
+            |-garply
+            |
+          EOD
+          diff = differ.diff(expected,actual)
+          expect(diff).to be_diffed_as(expected_diff)
+        end
+
+        it 'outputs unified diff message of nested string arrays' do
+          expected = ['foo', ['bar', 'baz'], 'quux']
+          actual = ['foo', ['bar', 'corge'], 'quux', 'garply']
+
+          added_line_index = ::Diff::LCS::VERSION.to_f < 1.4 ? 6 : 4
+          expected_diff = dedent(<<-EOD)
+            |
+            |
+            |@@ -1,5 +1,#{added_line_index} @@
+            | foo
+            |-["bar", "corge"]
+            |+["bar", "baz"]
+            | quux
+            |-garply
+            |
+          EOD
+          diff = differ.diff(expected,actual)
+          expect(diff).to be_diffed_as(expected_diff)
+        end
+
         it "outputs unified diff message of two hashes" do
           expected = { :foo => 'bar', :baz => 'quux', :metasyntactic => 'variable', :delta => 'charlie', :width =>'quite wide' }
           actual   = { :foo => 'bar', :metasyntactic => 'variable', :delta => 'charlotte', :width =>'quite wide' }
