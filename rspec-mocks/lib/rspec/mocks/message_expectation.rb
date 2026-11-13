@@ -233,6 +233,10 @@ module RSpec
       # Constrain a message expectation to be received a specific number of
       # times.
       #
+      # If the message is received too many times, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
+      #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
       #   expect(dealer).to receive(:deal_card).exactly(10).times
@@ -265,6 +269,10 @@ module RSpec
       # Constrain a message expectation to be received at most a specific
       # number of times.
       #
+      # If the message is received too many times, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
+      #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
       #   expect(dealer).to receive(:deal_card).at_most(10).times
@@ -290,6 +298,10 @@ module RSpec
 
       # Expect a message not to be received at all.
       #
+      # If the message is received anyway, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
+      #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
       #   expect(car).to receive(:stop).never
@@ -300,6 +312,10 @@ module RSpec
       end
 
       # Expect a message to be received exactly one time.
+      #
+      # If the message is received more than once, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
       #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
@@ -312,6 +328,10 @@ module RSpec
 
       # Expect a message to be received exactly two times.
       #
+      # If the message is received more than twice, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
+      #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
       #   expect(car).to receive(:go).twice
@@ -322,6 +342,10 @@ module RSpec
       end
 
       # Expect a message to be received exactly three times.
+      #
+      # If the message is received more than thrice, a {MockExpectationError}
+      # will be raised immediately. This usually stops the rest of the example
+      # from running, but not always. See the {MockExpectationError} documentation.
       #
       # @return [MessageExpectation] self, to support further chaining.
       # @example
