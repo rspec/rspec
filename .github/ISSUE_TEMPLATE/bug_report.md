@@ -30,7 +30,7 @@ Describe your issue here.
 ### Steps to reproduce
 <!---
 Tell us how to reproduce this issue. Please provide a working demo, you can use
-this [templates](REPORT_TEMPLATE.md) as a base.
+REPORT_TEMPLATE.md as a base.
 -->
 
 ### Expected behavior
