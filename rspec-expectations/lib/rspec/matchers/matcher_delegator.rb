@@ -44,6 +44,12 @@ module RSpec
         base_matcher.__send__(*args, &block)
       end
 
+      # ActiveSupport defines `Object#with`; when it loads after this file the
+      # blank slate above can't remove it, so `with` is forwarded explicitly.
+      def with(...)
+        method_missing(:with, ...)
+      end
+
       def respond_to_missing?(name, include_all=false)
         super || base_matcher.respond_to?(name, include_all)
       end
