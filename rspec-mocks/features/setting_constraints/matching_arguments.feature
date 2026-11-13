@@ -132,7 +132,7 @@ Feature: Matching arguments
       | expected: (a collection containing exactly 1 and 2)           |
       | got: ([1, 3])                                                 |
 
-  @skip-when-no-ripper-or-jruby
+  @skip-when-no-parser-or-jruby
   Scenario: Using satisfy for complex custom expecations
     Given a file named "rspec_satisfy_spec.rb" with:
       """ruby

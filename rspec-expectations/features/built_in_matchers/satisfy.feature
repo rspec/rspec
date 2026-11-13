@@ -17,7 +17,7 @@ Feature: `satisfy` matcher
   end
   ```
 
-  @skip-when-ripper-unsupported
+  @skip-when-parser-unsupported
   Scenario: Basic usage
     Given a file named "satisfy_matcher_spec.rb" with:
       """ruby
