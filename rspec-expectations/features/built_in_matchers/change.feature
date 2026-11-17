@@ -26,7 +26,7 @@ Feature: `change` matcher
       end
       """
 
-  @skip-when-ripper-unsupported
+  @skip-when-parser-unsupported
   Scenario: Expect change
     Given a file named "spec/example_spec.rb" with:
       """ruby
@@ -47,7 +47,7 @@ Feature: `change` matcher
     Then the output should contain "1 failure"
     Then the output should contain "expected `Counter.count` to have changed by 2, but was changed by 1"
 
-  @skip-when-ripper-unsupported
+  @skip-when-parser-unsupported
   Scenario: Expect no change
     Given a file named "spec/example_spec.rb" with:
       """ruby
