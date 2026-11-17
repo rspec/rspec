@@ -107,6 +107,30 @@ module RSpec
         expect(false).to not_keyword_override(some: :arg)
       end
 
+      context "when the base matcher chains `with`" do
+        RSpec::Matchers.define :a_chainable_matcher do
+          match { |actual| actual == @expected }
+          chain(:with) { |expected| @expected = expected }
+        end
+        RSpec::Matchers.alias_matcher :alias_of_chainable_matcher, :a_chainable_matcher
+        RSpec::Matchers.define_negated_matcher :not_chainable, :a_chainable_matcher
+
+        it 'forwards `with` to the base matcher' do
+          expect(2).to alias_of_chainable_matcher.with(2)
+          expect(2).to not_chainable.with(3)
+          expect(alias_of_chainable_matcher.with(2).description).to eq("alias of chainable matcher with 2")
+        end
+
+        it 'forwards `with` when `Object#with` is defined after RSpec loads (as ActiveSupport does)' do
+          in_sub_process do
+            Object.class_exec { def with(**); end }
+
+            expect(2).to alias_of_chainable_matcher.with(2)
+            expect(2).to not_chainable.with(3)
+          end
+        end
+      end
+
       context "when negating a matcher that does not define `description` (which is an optional part of the matcher protocol)" do
         def matcher_without_description
           matcher = Object.new
