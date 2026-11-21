@@ -7,7 +7,7 @@ output of a LLM.
 ## What this means in practice.
 
 You should write your own pull request descriptions, commits, comments, and other text. If you need to translate
-it we ask you use a traditional tool rather than an LLM, wed prefer to read the direct translation of your own
+it we ask you use a traditional tool rather than an LLM, we would prefer to read the direct translation of your own
 words than have the LLM inferred meaning.
 
 As a contributor, you are always the author and fully accountable for your contributions. This includes an
@@ -22,15 +22,15 @@ If you must contribute direct LLM output, we ask that you treat it as an attachm
 and tell us why it is relevant. e.g  `The model produced a benchmark which I have verified: <details>output</details>`
 
 This policy applies to all kinds of contributions, be it code, feature proposals, issues and/or security
-vulnerabilities, comments/feedback on issues and pull requests and posts in community spaces.
+vulnerabilities, comments/feedback on issues and/or pull requests and/or posts in community spaces.
 
 ## Agents
 
-Agents are not allowed to interact with the RSpec project, any pull request opened by an agent will be immediately
+Agents are not allowed to interact with the RSpec project. Any pull request opened by an agent will be immediately
 locked and closed. If you have commits from an agent we will ask you to re-write your contribution in respect of
 this policy. Similarly we do not wish to have automated review tools interacting with our repository and issue tracker.
 
-We will not add material that supports agent usage to the repository, except that which tell agents to respect this
+We will not add material that supports agent usage to the repository, except that which tells agents to respect this
 policy. We welcome documentation improvements providing they are written as if for other humans.
 
 ## Handling Violations
