@@ -1165,6 +1165,26 @@ module RSpec::Matchers::DSL
       expect(matcher.for_block { 3 }.matches?(4)).to be false
     end
 
+    it 'allows chainable methods to accept optional keyword arguments' do
+      matcher = new_matcher(:name) do
+        chain(:expecting) { |value, offset: 0| @expected_value = value + offset }
+        match { |actual| actual == @expected_value }
+      end
+
+      expect(matcher.expecting(1, offset: 2).matches?(3)).to be true
+      expect(matcher.expecting(1, offset: 2).matches?(1)).to be false
+    end
+
+    it 'allows chainable methods to capture keyword arguments with a double splat' do
+      matcher = new_matcher(:name) do
+        chain(:expecting) { |value, **options| @expected_value = value + options.fetch(:offset, 0) }
+        match { |actual| actual == @expected_value }
+      end
+
+      expect(matcher.expecting(1, offset: 2).matches?(3)).to be true
+      expect(matcher.expecting(1, offset: 2).matches?(1)).to be false
+    end
+
     it "prevents name collisions on chainable methods from different matchers" do
       m1 = new_matcher(:m1) { chain(:foo) { raise "foo in m1" } }
       m2 = new_matcher(:m2) { chain(:foo) { raise "foo in m2" } }
