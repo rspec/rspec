@@ -155,6 +155,99 @@ module RSpec::Core
       end
     end
 
+    describe "backtrace handling" do
+      it "prints the backtrace of main thread" do
+        # JRuby names the main thread "main", so we need to stub it to get a consistent output.
+        allow(Thread.main).to receive(:name).and_return(nil)
+
+        tid = (Thread.main.object_id ^ Process.pid).to_s(36)
+
+        expect {
+          Runner.handle_backtrace
+        }.to output(/Thread TID-#{tid} <no name> #{__FILE__}:#{__LINE__ - 1}:in /).to_stderr
+      end
+
+      it "prints the backtrace of a named thread" do
+        thread = Thread.new { sleep }
+        thread.name = "my sleeping thread"
+        tid = (thread.object_id ^ Process.pid).to_s(36)
+
+        # It is not guaranteed that the scheduler will run the thread before we can assert the backtrace.
+        Thread.pass until thread.status == "sleep"
+
+        expect {
+          Runner.handle_backtrace
+        }.to output(/Thread TID-#{tid} #{thread.name} #{thread.backtrace[0]}/).to_stderr
+      ensure
+        thread&.kill
+      end
+
+      it "prints the no backtrace of a thread that has no name and no backtrace" do
+        thread = Thread.new { sleep }
+        tid = (thread.object_id ^ Process.pid).to_s(36)
+
+        # It is not guaranteed that the scheduler will not run the thread before we can assert the backtrace.
+        allow(thread).to receive(:backtrace).and_return(nil)
+
+        expect {
+          Runner.handle_backtrace
+        }.to output(/Thread TID-#{tid} <no name> <no backtrace available>/).to_stderr
+      ensure
+        thread&.kill
+      end
+    end
+
+    describe "backtrace catching" do
+      shared_examples "signal supported" do |signal, code|
+        let(:backtrace_handlers) { [] }
+
+        def backtrace
+          backtrace_handlers.each(&:call)
+        end
+
+        before do
+          allow(Signal).to receive(:list).and_return(signal => code)
+
+          allow(Runner).to receive(:trap).with("SIG#{signal}", any_args) do |&block|
+            backtrace_handlers << block
+          end
+        end
+
+        it "adds a handler for SIG#{signal}" do
+          expect(backtrace_handlers).to be_empty
+          Runner.send(:trap_backtrace)
+          expect(backtrace_handlers.size).to eq(1)
+        end
+
+        context "with SIG#{signal}" do
+          it "prints the backtrace of all threads" do
+            Runner.send(:trap_backtrace)
+            expect(Runner).to receive(:handle_backtrace)
+            backtrace
+          end
+        end
+      end
+
+      context "when INFO is supported" do
+        include_examples "signal supported", "INFO", 29
+      end
+
+      context "when PWR is supported" do
+        include_examples "signal supported", "PWR", 30
+      end
+
+      context "when BACKTRACE_SIGNAL is not supported" do
+        before do
+          allow(Signal).to receive(:list).and_return({})
+        end
+
+        it "does nothing" do
+          expect(Runner).not_to receive(:trap).with(nil, any_args)
+          Runner.send(:trap_backtrace)
+        end
+      end
+    end
+
     # This is intermittently slow because this method calls out to the network
     # interface.
     describe ".running_in_drb?", :slow do
