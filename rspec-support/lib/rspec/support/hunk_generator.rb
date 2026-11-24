@@ -26,11 +26,11 @@ module RSpec
       end
 
       def expected_lines
-        @expected.split("\n").map! { |e| e.chomp }
+        @expected_lines ||= @expected.split("\n").map! { |e| e.chomp }
       end
 
       def actual_lines
-        @actual.split("\n").map! { |e| e.chomp }
+        @actual_lines ||= @actual.split("\n").map! { |e| e.chomp }
       end
 
       def build_hunk(piece)
