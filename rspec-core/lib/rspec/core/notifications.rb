@@ -283,9 +283,11 @@ module RSpec::Core
     # @attr errors_outside_of_examples_count [Integer] the number of errors that
     #                                                  have occurred processing
     #                                                  the spec suite
+    # @attr expectation_count [Integer] the number of expectations made during the run
     SummaryNotification = Struct.new(:duration, :examples, :failed_examples,
                                      :pending_examples, :load_time,
-                                     :errors_outside_of_examples_count)
+                                     :errors_outside_of_examples_count,
+                                     :expectation_count)
     class SummaryNotification
       # @api
       # @return [Fixnum] the number of examples run
@@ -317,6 +319,9 @@ module RSpec::Core
             Formatters::Helpers.pluralize(errors_outside_of_examples_count, "error") +
             " occurred outside of examples"
           )
+        end
+        if (expectation_count || 0) > 0
+          summary += ", " + Formatters::Helpers.pluralize(expectation_count, "expectation")
         end
         summary
       end
