@@ -38,14 +38,40 @@ module RSpec
         "#<#{self.class} #{path}>"
       end
 
-      if RSpec::Support::RubyFeatures.ripper_supported?
-        RSpec::Support.require_rspec_support 'source/node'
-        RSpec::Support.require_rspec_support 'source/token'
+      class BaseSource
+        attr_reader :source
 
+        def initialize(source)
+          @source = source
+        end
+
+        def path
+          source.path
+        end
+
+        def lines
+          source.lines
+        end
+
+        def inspect
+          source.inspect
+        end
+      end
+
+      class PrismSource < BaseSource
+        def parse_result
+          @parse_result ||= begin
+            require 'prism'
+            Prism.parse(source.source.to_str)
+          end
+        end
+      end
+
+      class RipperSource < BaseSource
         def ast
           @ast ||= begin
             require 'ripper'
-            sexp = Ripper.sexp(source)
+            sexp = Ripper.sexp(source.source)
             raise SyntaxError unless sexp
             Node.new(sexp)
           end
@@ -54,7 +80,7 @@ module RSpec
         def tokens
           @tokens ||= begin
             require 'ripper'
-            tokens = Ripper.lex(source)
+            tokens = Ripper.lex(source.source)
             Token.tokens_from_ripper_tokens(tokens)
           end
         end
@@ -73,6 +99,13 @@ module RSpec
           end
         end
       end
+
+      # :nocov:
+      if RSpec::Support::RubyFeatures.ripper_supported?
+        RSpec::Support.require_rspec_support 'source/node'
+        RSpec::Support.require_rspec_support 'source/token'
+      end
+      # :nocov:
     end
   end
 end

@@ -1,4 +1,5 @@
 RSpec::Support.require_rspec_support 'ruby_features'
+RSpec::Support.require_rspec_support 'source'
 
 module RSpec
   module Core
@@ -8,37 +9,110 @@ module RSpec
         NoSuchFileError = Class.new(StandardError)
         NoSuchLineError = Class.new(StandardError)
 
-        def self.extract_line_at(file_path, line_number)
-          source = source_from_file(file_path)
-          line = source.lines[line_number - 1]
-          raise NoSuchLineError unless line
-          line
+        # There are three scenarios in which we could be extracting snippets.
+        # One in which Prism is supported (all Rubies 3.3+), one in which Ripper
+        # is supported (CRuby 1.9+, most JRubies), and one in which neither is
+        # supported.
+        class BaseExtractor
+          private
+
+          def extract_line_at(file_path, line_number)
+            source = source_from_file(file_path)
+            line = source.lines[line_number - 1]
+            raise NoSuchLineError unless line
+            line
+          end
+
+          def source_from_file(path)
+            raise NoSuchFileError unless File.exist?(path)
+            RSpec.world.source_from_file(path)
+          end
         end
 
-        def self.source_from_file(path)
-          raise NoSuchFileError unless File.exist?(path)
-          RSpec.world.source_from_file(path)
+        class PrismExtractor < BaseExtractor
+          # Extracts the lines of the expression at the given line number up to
+          # the maximum line count using Prism.
+          def extract(file_path, beginning_line_number, max_line_count)
+            try_extract(file_path, beginning_line_number, max_line_count) ||
+              [extract_line_at(file_path, beginning_line_number)]
+          end
+
+          private
+
+          # Use a breadth-first search to find the first node that starts on the
+          # given line number and is a child of a `Prism::StatementsNode`. This
+          # effectively means it is the outermost node that starts on the given
+          # line number.
+          def find_node(root, line_number)
+            queue = [[nil, root]]
+
+            until queue.empty?
+              parent, node = queue.shift
+              if parent.is_a?(Prism::StatementsNode)
+                break node if node.is_a?(Prism::CallNode) && node.message_loc&.start_line == line_number
+                break node if node.start_line == line_number
+              end
+              node.compact_child_nodes.each { |child| queue << [node, child] }
+            end
+          end
+
+          def try_extract(file_path, beginning_line_number, max_line_count)
+            # If only one line is allowed, then there is nothing to extract.
+            return if max_line_count == 1
+
+            # If the source has a syntax error, then we will not attempt to
+            # extract anything.
+            source = Support::Source::PrismSource.new(source_from_file(file_path))
+            result = source.parse_result
+            return if result.failure?
+
+            # If we did not find a node, then we will bail out here.
+            return unless (found = find_node(result.value, beginning_line_number))
+
+            end_line = found.end_line
+
+            # If we found a node, then we want to make sure we include any
+            # heredoc content as well, which may extend beyond the end line
+            # of the node.
+            queue = [found]
+            while (child = queue.shift)
+              case child.type
+              when :string_node, :interpolated_string_node, :x_string_node, :interpolated_x_string_node
+                end_line = [end_line, child.closing_loc.end_line - 1].max if child.heredoc?
+              end
+              queue.concat(child.compact_child_nodes)
+            end
+
+            # Now clamp the end line based on the max line count if given,
+            # and slice out the lines from the source.
+            start_line = found.start_line
+            end_line = [end_line, start_line + max_line_count - 1].min if max_line_count
+            source.lines[(start_line - 1)..(end_line - 1)]
+          end
         end
 
-        if RSpec::Support::RubyFeatures.ripper_supported?
+        class RipperExtractor < BaseExtractor
+          # Raised when we are unable to find an expression at the given line
+          # number.
           NoExpressionAtLineError = Class.new(StandardError)
 
           attr_reader :source, :beginning_line_number, :max_line_count
 
-          def self.extract_expression_lines_at(file_path, beginning_line_number, max_line_count=nil)
+          # Extracts the lines of the expression at the given line number up to
+          # the maximum line count using Ripper.
+          def extract(file_path, beginning_line_number, max_line_count)
+            @source = Support::Source::RipperSource.new(source_from_file(file_path))
+            @beginning_line_number = beginning_line_number
+            @max_line_count = max_line_count
+
             if max_line_count == 1
               [extract_line_at(file_path, beginning_line_number)]
             else
-              source = source_from_file(file_path)
-              new(source, beginning_line_number, max_line_count).expression_lines
+              expression_lines
             end
           end
 
-          def initialize(source, beginning_line_number, max_line_count=nil)
-            @source = source
-            @beginning_line_number = beginning_line_number
-            @max_line_count = max_line_count
-          end
+          private
 
           def expression_lines
             line_range = line_range_of_expression
@@ -49,10 +123,8 @@ module RSpec
 
             source.lines[(line_range.begin - 1)..(line_range.end - 1)]
           rescue SyntaxError, NoExpressionAtLineError
-            [self.class.extract_line_at(source.path, beginning_line_number)]
+            [extract_line_at(source.path, beginning_line_number)]
           end
-
-          private
 
           def line_range_of_expression
             @line_range_of_expression ||= begin
@@ -119,16 +191,38 @@ module RSpec
           def location_nodes_at_beginning_line
             source.nodes_by_line_number[beginning_line_number]
           end
-        else
-          # :nocov:
-          def self.extract_expression_lines_at(file_path, beginning_line_number, *)
-            [extract_line_at(file_path, beginning_line_number)]
-          end
-          # :nocov:
         end
 
-        def self.least_indentation_from(lines)
-          lines.map { |line| line[/^[ \t]*/] }.min
+        class ParserlessExtractor < BaseExtractor
+          # If we do not have a parser available, then we will just return the
+          # line at the given line number.
+          def extract(file_path, beginning_line_number, *)
+            [extract_line_at(file_path, beginning_line_number)]
+          end
+        end
+
+        class << self
+          def extract_expression_lines_at(file_path, beginning_line_number, max_line_count=nil)
+            extractor.extract(file_path, beginning_line_number, max_line_count)
+          end
+
+          def least_indentation_from(lines)
+            lines.map { |line| line[/^[ \t]*/] }.min
+          end
+
+          private
+
+          # :nocov:
+          def extractor
+            if RSpec::Support::RubyFeatures.prism_supported?
+              PrismExtractor.new
+            elsif RSpec::Support::RubyFeatures.ripper_supported?
+              RipperExtractor.new
+            else
+              ParserlessExtractor.new
+            end
+          end
+          # :nocov:
         end
       end
     end
