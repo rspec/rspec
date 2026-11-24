@@ -61,11 +61,10 @@ module RSpec
           prepare_array(object)
         when Hash
           prepare_hash(object)
-        when Symbol
+        when Symbol, Integer, Float, NilClass, TrueClass, FalseClass
           object
         else
-          inspector_class = INSPECTOR_CLASSES.find { |inspector| inspector.can_inspect?(object) }
-          inspector_class.new(object, self)
+          inspector_for(object)
         end
       end
 
@@ -77,11 +76,19 @@ module RSpec
 
       def prepare_hash(input_hash)
         with_entering_structure(input_hash) do
-          sort_hash_keys(input_hash).inject({}) do |output_hash, key_and_value|
-            key, value = key_and_value.map { |element| prepare_element(element) }
-            output_hash[key] = value
+          sort_hash_keys(input_hash).inject({}) do |output_hash, (key, value)|
+            output_hash[prepare_hash_key(key)] = prepare_element(value)
             output_hash
           end
+        end
+      end
+
+      def prepare_hash_key(key)
+        case key
+        when Symbol, Array, Hash
+          prepare_element(key)
+        else
+          inspector_for(key)
         end
       end
 
@@ -237,6 +244,11 @@ module RSpec
       ]
 
     private
+
+      def inspector_for(object)
+        inspector_class = INSPECTOR_CLASSES.find { |inspector| inspector.can_inspect?(object) }
+        inspector_class.new(object, self)
+      end
 
       # Returns the substring defined by the start_index and end_index
       # If the string ends with a partial ANSI code code then that

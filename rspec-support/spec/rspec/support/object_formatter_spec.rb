@@ -368,5 +368,13 @@ module RSpec
         end
       end
     end
+
+    RSpec.describe ObjectFormatter, ".prepare_for_inspection" do
+      it 'returns symbols, integers, floats, nil, true and false as they are, since their own inspect is used' do
+        [:sym, 1, 2**100, 1.5, nil, true, false].each do |value|
+          expect(ObjectFormatter.prepare_for_inspection(value)).to equal(value)
+        end
+      end
+    end
   end
 end
