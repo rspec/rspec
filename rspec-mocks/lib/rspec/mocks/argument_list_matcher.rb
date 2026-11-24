@@ -56,6 +56,8 @@ module RSpec
       #
       # @see #initialize
       def args_match?(*actual_args)
+        return true if expected_args.size == 1 && ArgumentMatchers::AnyArgsMatcher::INSTANCE == expected_args[0]
+
         expected_args = resolve_expected_args_based_on(actual_args)
 
         return false if expected_args.size != actual_args.size

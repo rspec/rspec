@@ -143,6 +143,19 @@ module RSpec
         expect(@double.do_something).to eq 'bar'
       end
 
+      it "does not rebuild the list of received messages on every call" do
+        builds = 0
+        allow(RSpec::Mocks.space.proxy_for(@double)).to receive(:messages_arg_list).and_wrap_original do |original|
+          builds += 1
+          original.call
+        end
+        expect(@double).to receive(:do_something).at_least(:once)
+
+        3.times { @double.do_something }
+
+        expect(builds).to eq(0)
+      end
+
       context "when called with negative expectation" do
         it "raises an error" do
           expect {
