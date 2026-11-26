@@ -26,9 +26,11 @@ module RSpec
 
       def synchronize
         enter
-        yield
-      ensure
-        exit
+        begin
+          yield
+        ensure
+          exit
+        end
       end
 
     private

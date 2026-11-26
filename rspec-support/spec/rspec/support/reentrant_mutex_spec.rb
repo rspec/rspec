@@ -37,6 +37,15 @@ RSpec.describe RSpec::Support::ReentrantMutex do
     order.join_all
   end
 
+  it 'will not raise if the thread waiting for the lock is killed' do
+    mutex.synchronize do
+      thread = Thread.new { mutex.synchronize { } }
+      Thread.pass until thread.status == 'sleep'
+      thread.kill
+      expect { thread.join }.not_to raise_error
+    end
+  end
+
   # On Ruby 3.1.3+, 3.2.0 and RUBY_HEAD the raise in this spec can
   # bypass the `raise_error` capture and break this spec but
   # it is not sufficient to pend it as the raise can escape to the other
